@@ -163,15 +163,15 @@ git commit -m "chore : 서버 포트 변경"
 
 → 깃 담당자가 직접 분기
 
-##### 3. 서버(포트)별 branch → feature(기능)별 branch 분기 : Jira Issue 연동
+##### 3. 서버별 branch → feature(기능)별 branch 분기 : Jira Issue 연동
 
 → 기능 담당하는 개인이 직접 분기
 
-##### 4. feature branch에서 각자 역할 나눠서 작업 및 MR
+##### 4. 서버별 branch에서 각자 역할 나눠서 작업 및 MR
 
 → 기능 담당하는 인원들끼리 MR 수행 및 충돌 해결
 
-##### 5. 작업 후 서버(포트)별 branch로 MR
+##### 5. 작업 후 서버별 branch에서 develop으로 MR
 
 → 깃 담당자가 확인
 
