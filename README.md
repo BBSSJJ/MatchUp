@@ -152,6 +152,7 @@ git commit -m "chore : 서버 포트 변경"
 - **bigdata-server** : 빅데이터 추천 기능을 제공하는 WAS
 - **statistics-server** : 통계처리를 하는 서버로 차후 해당 서버에서 처리 및 저장한 데이터를 기반으로 빅데이터 추천 서버가 작동함
 - **api-gateway** : 다른 WAS(Web Application Server)로 API 요청을 전송하는 Gateway병합
+- **file-server** : 정적 파일(이미지, 동영상 등)을 업로드 및 관리하기 위한 서버
 
 #### 브랜치 작업 순서
 
