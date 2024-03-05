@@ -179,6 +179,42 @@ git commit -m "chore : 서버 포트 변경"
 
 → 깃 담당자 & 인프라 담당자가 확인
 
+### 4-3. MR 컨벤션
+
+MR 시 다음 양식에 맞춰 문서를 작성한다.
+```
+# MR이 필요한 이유
+- MR이 수행되어야 하는 이유, 수행 후 변경사항 등을 작성한다.
+ex)
+ - 사용자 회원가입 로직 구현
+ - 이제 사용자는 회원가입을 할 수 있다.
+
+# 구현
+- 다른 MR 참여자가 쉽게 이해할 수 있는 구현 내용을 추가한다.
+ex) 웹페이지 화면 캡쳐, 기능 동작 동영상 첨부 등
+
+# 주요 코드
+- 해당 MR에서 변경되거나 핵심 로직 등을 코드로 첨부한다.
+ex) 
+    // (생략)
+    // 정적 참조 변수
+    private static Singleton singletonObject;
+
+    // 객체 생성자(private)
+    private Singleton() {
+    }
+    
+    // 객체 획득 메서드(public)
+    public static Singleton getInstance() {
+        if (singletonObject == null) {
+            singletonObject = new Singleton();
+        }
+        
+        return singletonObject;
+    }
+    // (생략)
+```
+
 [맨위로](#a405-프로젝트)
 
 ## 5. 기능 정의서
