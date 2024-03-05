@@ -139,7 +139,7 @@ git commit -m "chore : 서버 포트 변경"
 
 ### 4-2. 브랜치 컨벤션
 
-![git-graph](/uploads/d0d7b4152fc90d1e7ddd2a9b8c5db9f0/git-graph.png)
+![git-graph](/assets/img/git-graph.png)
 
 #### 브랜치 구분
 - **master** : 제품의 버전 변경시 작업하기 위한 브랜치
