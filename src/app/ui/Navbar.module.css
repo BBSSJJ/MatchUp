@@ -1,0 +1,26 @@
+.nav {
+    background-color: #161A1E;
+}
+
+.active {
+    color: #1DEBEC;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    background-color: #1DEBEC;
+    width: 100px;
+    height: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
+    padding: auto;
+    color: #09161f;
+}
+
+.input {
+    width: 250px;
+}
