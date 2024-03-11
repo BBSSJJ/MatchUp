@@ -6,3 +6,47 @@
 .match {
     margin: 10px auto;
 }
+
+.container {
+    background-color: #152B53;
+}
+
+.playerInfo {
+    display: flex;
+    background-color: #193566;
+    height: 200px;
+    font-size: small;
+    border-radius: 5px;
+    
+}
+
+.playerProfile {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.playInfo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100px;
+}
+
+.playInfoDetail {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+}
+
+.playInfoDetail > * {
+    margin-right: 5px;
+}
+
+.thisUser{
+    background-color: #425b87;
+}
+
+.hide {
+    display: none;
+}
