@@ -2,3 +2,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/matchup_statistics_db
+
+# riot api
+riot:
+  api-key: "RGAPI-541e9b87-00b2-41a5-9aeb-e66d706b1250"
+
+# mongodb
+mongodb:
+  matchup_statistics_db:
+    connectionString: mongodb://localhost:27017/matchup_statistics_db
