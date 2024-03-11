@@ -22,7 +22,7 @@ export default async function MatchIds({ puuid }: {
         <div>
             {matchArray.map((item: string) => {
                 let index: number = 0;
-                return <MatchDetail key={index++} matchId={item} />
+                return <MatchDetail key={index++} matchId={item} puuid={puuid}/>
             })}
         </div>
     )

@@ -1,5 +1,7 @@
-import { RIOT_API_KEY } from "./summoner-info"
+import { Avatar, AvatarGroup, Button } from "@nextui-org/react";
 import styles from "./match-info.module.css"
+
+import { RIOT_API_KEY } from "../ui/summoner-info";
 
 async function getMatchDetail(matchId: string) {
     const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`
@@ -10,15 +12,23 @@ async function getMatchDetail(matchId: string) {
     return response.json();
 }
 
-export default async function MatchDetail({ matchId }: {
-    matchId: string
+
+export default async function MatchDetail({ matchId, puuid }: {
+    matchId: string,
+    puuid: string,
 }) {
     const matchInfo = await getMatchDetail(matchId); // 
     const players = matchInfo.metadata?.participants; // array
     const data = matchInfo.info
     const gameDuration = data?.gameDuration
-    const playerData = matchInfo.info?.participants
-    const teamData = matchInfo.info.teams
+    const playerData = matchInfo.info?.participants // 보통 10명
+    const teamData = matchInfo.info?.teams
+    const playerChampionImgs = playerData.map((item) => {
+        return item.championName;
+    }) // 챔피언 이름 
+    const playerSummonerIds = playerData.map((item) => {
+        return item.riotIdGameName;
+    }) // 소환사명
     const result = teamData.map((team) => {
         if (team.win) {
             return 'win';
@@ -27,38 +37,103 @@ export default async function MatchDetail({ matchId }: {
         }
     })
     let index = 0;
+    // let buttonToggle = false;
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.match}>
                 <p>matchId : {matchId}</p>
-                <p>gameDuration : {gameDuration}</p>
+                <div className={styles.playInfo}>
+                    <p>gameDuration : {Math.trunc(gameDuration/60)}m {Math.trunc(((gameDuration/60)-Math.trunc(gameDuration/60))*60)}s</p>
+                    <AvatarGroup>
+                        {playerChampionImgs.slice(0, playerChampionImgs.length/2).map((url, index) => (
+                            <Avatar
+                            key={index}
+                            size="md"
+                            src={"https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/" + url + ".png"}
+                            />
+                        ))}
+                    </AvatarGroup>
+                    <Button color="primary" variant="shadow">
+                        More
+                    </Button> 
+                </div>
+                <div>
+                    {
+                        playerData.slice(0, playerChampionImgs.length/2).map((player: object, index: number) => {
+                            const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
+                            console.log(index);
+                            return (
+                                <div className={players[index] === puuid ? styles.thisUser : styles.playerInfo} key={index++}>
+                                    <p>{index}</p>
+                                    <div className={styles.playerProfile}>
+                                        {/* <img src={profileImgUrl} alt="profile" className={styles.profile} /> */}
+                                        <span>{player.riotIdGameName}</span>
+                                        <span>#{player.riotIdTagline}</span>
+                                        <span>{player.puuid}</span>
+                                        <span>summonerLevel : {player.summonerLevel}</span>
+                                        {player.summonerName !== "" ? <span>Prev.summonerName : {player.summonerName}</span> : null}
+                                        <img src={champImgUrl} alt="champion" className={styles.profile} />
+                                        <span>Champion : {player.championName}</span>
+                                    </div>
+                                    <div className={styles.playInfoDetail}>
+                                        <span>KDA : {player.kills}/{player.deaths}/{player.assists}</span>
+                                        <span>item : {player.item0} {player.item1} {player.item2} {player.item3} {player.item4} {player.item5} {player.item6}</span>
+                                        <span>spell : {player.spell1Casts} {player.spell2Casts} {player.spell3Casts}</span>
+                                        <span>largest Multi Kill : {player.largestMultiKill}</span>
+                                        {/* <span>pentaKills : {player.pentaKills}</span> */}
+                                        <span>Individual Position : {player.individualPosition}</span>
+                                        <span>lane : {player.lane}</span>
+                                        <span>role	: {player.role}</span>
+                                        <span>teamId : {player.teamId}</span>
+                                        <span>team Position : {player.teamPosition}</span>
+                                    </div>
+                                    {index === 4 ? <p>{result[0]}</p> : index === 9 ? <p>{result[1]}</p> : null}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                
             </div>
             {/* {JSON.stringify(matchInfo)} */}
             <div>
+                <AvatarGroup>
+                    {playerChampionImgs.slice(playerChampionImgs.length/2, playerChampionImgs.length).map((url, index) => (
+                        <Avatar
+                        key={index}
+                        size="md"
+                        src={"https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/" + url + ".png"}
+                        />
+                    ))}
+                </AvatarGroup>
                 {
-                    playerData.map((player: object) => {
+                    playerData.slice(playerChampionImgs.length/2, playerChampionImgs.length).map((player: object) => {
                         const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${player.profileIcon}.png`
+                        const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
                         return (
-                            <div key={index++}>
+                            <div className={players[index+players.length/2] === puuid ? styles.thisUser : styles.playerInfo} key={index++}>
                                 <p>{index}</p>
-                                <img src={profileImgUrl} alt="profile" className={styles.profile} />
-                                <p>Id : {player.riotIdGameName}</p>
-                                <p>TagLine : {player.riotIdTagline}</p>
-                                <p>summonerLevel : {player.summonerLevel}</p>
-                                <p>summonerName : {player.summonerName}</p>
-                                <p>Champion : {player.championName}</p>
-                                <p>assists : {player.assists}</p>
-                                <p>deaths : {player.deaths}</p>
-                                <p>kills : {player.kills}</p>
-                                <p>largest Multi Kill : {player.largestMultiKill}</p>
-                                <p>pentaKills : {player.pentaKills}</p>
-                                <p>Individual Position : {player.individualPosition}</p>
-                                <p>lane : {player.lane}</p>
-                                <p>role	: {player.role}</p>
-                                <p>teamId : {player.teamId}</p>
-                                <p>teamPosition : {player.teamPosition}</p>
-                                {index === 4 ? <p>win: {result[0]}</p> : index === 9 ? <p>win : {result[1]}</p> : null}
+                                <div className={styles.playerProfile}>
+                                    {/* <img src={profileImgUrl} alt="profile" className={styles.profile} /> */}
+                                    <span>{player.riotIdGameName}</span>
+                                    <span>#{player.riotIdTagline}</span>
+                                    <span>summonerLevel : {player.summonerLevel}</span>
+                                    {player.summonerName !== "" ? <span>Prev.summonerName : {player.summonerName}</span> : null}
+                                    <img src={champImgUrl} alt="champion" className={styles.profile} />
+                                    <span>Champion : {player.championName}</span>
+                                </div>
+                                <div className={styles.playInfo}>
+                                    <span>KDA : {player.kills}/{player.deaths}/{player.assists}</span>
+                                    <span>largest Multi Kill : {player.largestMultiKill}</span>
+                                    {/* <span>pentaKills : {player.pentaKills}</span> */}
+                                    <span>Individual Position : {player.individualPosition}</span>
+                                    <span>lane : {player.lane}</span>
+                                    <span>role	: {player.role}</span>
+                                    <span>teamId : {player.teamId}</span>
+                                    <span>team Position : {player.teamPosition}</span>
+                                </div>
+                                {index === 4 ? <p>{result[0]}</p> : index === 9 ? <p>{result[1]}</p> : null}
                             </div>
                         )
                     })
