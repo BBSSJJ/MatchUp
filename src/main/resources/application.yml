@@ -2,6 +2,8 @@ server:
   port: 9002
 
 spring:
+  profiles:
+    include: oauth2
   jpa:
     open-in-view: true
     hibernate:
