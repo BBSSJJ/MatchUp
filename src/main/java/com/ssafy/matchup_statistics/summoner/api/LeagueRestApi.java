@@ -2,9 +2,10 @@ package com.ssafy.matchup_statistics.summoner.api;
 
 import com.ssafy.matchup_statistics.summoner.api.dto.response.LeagueInfoResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-@Service
+@Component
 @RequiredArgsConstructor
 public class LeagueRestApi {
 
