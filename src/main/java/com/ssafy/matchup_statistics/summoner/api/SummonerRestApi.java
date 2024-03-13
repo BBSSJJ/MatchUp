@@ -1,6 +1,5 @@
 package com.ssafy.matchup_statistics.summoner.api;
 
-import com.ssafy.matchup_statistics.summoner.api.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.api.dto.response.SummonerInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.summoner.entity;
+package com.ssafy.matchup_statistics.league.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
