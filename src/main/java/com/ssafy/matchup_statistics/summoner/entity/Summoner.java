@@ -1,5 +1,6 @@
 package com.ssafy.matchup_statistics.summoner.entity;
 
+import com.ssafy.matchup_statistics.league.entity.League;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "summoner")
+@Document(collection = "summoners")
 @Builder
 @AllArgsConstructor
 @Getter
@@ -21,7 +22,4 @@ public class Summoner {
     private Integer profileIconId;
     private Long revisionDate;
     private Long summonerLevel;
-    private List<String> matchIds;
-    private League league;
-
 }
