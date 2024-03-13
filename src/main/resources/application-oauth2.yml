@@ -4,21 +4,21 @@ spring:
       client:
         registration:
           google:
-            client-id: 277005555389-m0jqui7duqki8ec5i3ohued0uvjetdiq.apps.googleusercontent.com
-            client-secret: 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
-            redirect-uri: http://localhost:9002/api/user/oauth2/callback/google
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/google
             scope: profile, email
           kakao:
-            client-id: de83b1c4ade048952fd79041030d4751
-            client-secret: SXK7wYtmSRsnfbNmaDHrn5Q4P1cukt0U
-            redirect-uri: http://localhost:9002/api/user/oauth2/callback/kakao
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope: profile_nickname
           naver:
-            client-id: VQfU539iE9qAm8lYl_QC
-            client-secret: PVneF0FChl
-            redirect-uri: http://localhost:9002/api/user/oauth2/callback/naver
+            client-id: ${NAVER_CLIENT_ID}
+            client-secret: ${NAVER_CLIENT_SECRET}
+            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/naver
             authorization-grant-type: authorization_code
             scope: name, email
 
