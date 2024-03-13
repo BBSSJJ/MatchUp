@@ -1,17 +1,18 @@
 package com.ssafy.matchup_statistics.summoner.service.sub;
 
-import com.ssafy.matchup_statistics.summoner.api.LeagueRestApi;
-import com.ssafy.matchup_statistics.summoner.api.dto.response.LeagueInfoResponseDto;
+import com.ssafy.matchup_statistics.league.api.LeagueRestApi;
+import com.ssafy.matchup_statistics.league.api.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.api.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.api.SummonerRestApi;
-import com.ssafy.matchup_statistics.summoner.entity.League;
+import com.ssafy.matchup_statistics.league.entity.League;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
 import com.ssafy.matchup_statistics.summoner.service.mapper.SummonerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class SummonerRegistService {
 
