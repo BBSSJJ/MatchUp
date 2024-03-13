@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,21 @@ import java.util.Properties;
 @PropertySource("classpath:application.yml")
 public class JpaConfig implements EnvironmentAware {
 
+    @Value("${ip.db.user}")
+    String userDB;
+
+    @Value("${ip.db-repl.user}")
+    String userDBRepl;
+
+    @Value("${id.db}")
+    String DBId;
+
+    @Value("${id.db-repl}")
+    String DBReplId;
+
+    @Value("${password.db}")
+    String DBPassword;
+
     private Environment env;
 
     @Override
@@ -39,9 +55,9 @@ public class JpaConfig implements EnvironmentAware {
     public DataSource userDataSource() {
         HikariDataSource dataSource = DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://70.12.246.246:3308/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
-                .username("matchup_user")
-                .password("Matchupa405!")
+                .url("jdbc:mysql://" + userDB + ":3308/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
+                .username(DBId)
+                .password(DBPassword)
                 .type(HikariDataSource.class)
                 .build();
         dataSource.setMaximumPoolSize(5);
@@ -53,9 +69,9 @@ public class JpaConfig implements EnvironmentAware {
     public DataSource userReplDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://70.12.246.246:3309/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
-                .username("matchup_user_repl")
-                .password("Matchupa405!")
+                .url("jdbc:mysql://" + userDBRepl + ":3309/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
+                .username(DBReplId)
+                .password(DBPassword)
                 .type(HikariDataSource.class)
                 .build();
     }
