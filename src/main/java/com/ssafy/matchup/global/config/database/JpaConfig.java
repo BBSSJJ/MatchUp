@@ -39,7 +39,7 @@ public class JpaConfig implements EnvironmentAware {
     public DataSource userDataSource() {
         HikariDataSource dataSource = DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://localhost:3308/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
+                .url("jdbc:mysql://70.12.246.246:3308/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
                 .username("matchup_user")
                 .password("Matchupa405!")
                 .type(HikariDataSource.class)
@@ -53,7 +53,7 @@ public class JpaConfig implements EnvironmentAware {
     public DataSource userReplDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://localhost:3309/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
+                .url("jdbc:mysql://70.12.246.246:3309/matchup_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8")
                 .username("matchup_user_repl")
                 .password("Matchupa405!")
                 .type(HikariDataSource.class)
@@ -62,7 +62,7 @@ public class JpaConfig implements EnvironmentAware {
 
     @Bean // DataSource 종류에 따른 DataSource 라우팅(변경)
     public DataSource routingDataSource(@Qualifier("userDataSource") DataSource userDataSource,
-                                        @Qualifier("userReplDataSource") DataSource userReplDataSource){
+                                        @Qualifier("userReplDataSource") DataSource userReplDataSource) {
         ReplicationRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
 
         // DataSource 라우팅
@@ -78,11 +78,12 @@ public class JpaConfig implements EnvironmentAware {
     }
 
     @Bean  // Transaction 실행 시점에 DataSource를 결정하기 위한 Proxy
-    public DataSource routingLazyDataSource(@Qualifier("routingDataSource")DataSource routingDataSource) {
+    public DataSource routingLazyDataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
         return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 
-    @Bean // Entity를 관리하기 위한 JPA Manager 설정
+    @Bean
+        // Entity를 관리하기 위한 JPA Manager 설정
     LocalContainerEntityManagerFactoryBean entityManagerFactory(
             @Qualifier("routingLazyDataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
@@ -93,23 +94,24 @@ public class JpaConfig implements EnvironmentAware {
         return emf;
     }
 
-    private JpaVendorAdapter jpaVendorAdapter(){
+    private JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
         return jpaVendorAdapter;
     }
+
     private Properties customProperties() {
         Properties properties = new Properties();
         properties.setProperty("spring.jpa.hibernate.ddl-auto", env.getProperty("ddl-auto"));
         properties.setProperty("spring.jpa.show-sql", env.getProperty("show-sql"));
-        properties.setProperty("spring.jpa.properties.hibernate.format_sql",  env.getProperty("format_sql"));
-        properties.setProperty("spring.jpa.properties.hibernate.dialect",  env.getProperty("dialect"));
+        properties.setProperty("spring.jpa.properties.hibernate.format_sql", env.getProperty("format_sql"));
+        properties.setProperty("spring.jpa.properties.hibernate.dialect", env.getProperty("dialect"));
         return properties;
     }
 
     @Bean  // 트랜잭션 매니저 설정
     public PlatformTransactionManager transactionManager(
-            EntityManagerFactory entityManagerFactory){
+            EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
         return jpaTransactionManager;
