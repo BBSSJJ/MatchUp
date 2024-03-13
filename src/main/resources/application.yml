@@ -2,6 +2,9 @@ server:
   port: 9002
 
 spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
   profiles:
     include: oauth2, swagger
   jpa:
@@ -19,3 +22,20 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+ip:
+  db:
+    user: ${MATCHUP_USER_DB}
+  db-repl:
+      user: ${MATCHUP_USER_DB_REPL}
+
+  server:
+    user: ${USER_SERVER}
+    auth: ${AUTH_SERVER}
+
+id:
+  db: ${DB_ID}
+  db-repl: ${DB_REPL_ID}
+
+password:
+  db: ${DB_PASSWORD}
