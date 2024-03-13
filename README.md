@@ -96,7 +96,7 @@
    docker run -it --name matchup_user -e MYSQL_ROOT_PASSWORD={패스워드} -e MYSQL_DATABASE=matchup_user_db -e MYSQL_USER=matchup_user -e MYSQL_PASSWORD={패스워드} -p 3308:3308 -d 1eaf/matchup_user
 
    # User Repl DB 이미지 실행
-   docker run -it --name matchup_user_repl -e MYSQL_ROOT_PASSWORD={패스워드} -e MYSQL_DATABASE=matchup_user_db -e MYSQL_USER=matchup_user -e MYSQL_PASSWORD={패스워드} -p 3309:3309 -d 1eaf/matchup_user_repl
+   docker run -it --name matchup_user_repl -e MYSQL_ROOT_PASSWORD={패스워드} -e MYSQL_DATABASE=matchup_user_db -e MYSQL_USER=matchup_user_repl -e MYSQL_PASSWORD={패스워드} -p 3309:3309 -d 1eaf/matchup_user_repl
    ```
 
 3. Dump 파일 복제
