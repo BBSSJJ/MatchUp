@@ -28,8 +28,6 @@ public class WebSecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/user/oauth2/**").permitAll())
-                .authorizeHttpRequests(request -> request.requestMatchers("/test/**").permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/api/user/oauth2/callback/*"))
                         .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
