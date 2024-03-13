@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Avatar, Input, User } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Avatar, Input, User,  Badge } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
