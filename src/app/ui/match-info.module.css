@@ -8,22 +8,29 @@
 }
 
 .container {
-    background-color: #152B53;
+    /* background-color: #152B53; */
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0;
+    width: inherit;
 }
 
 .playerInfo {
     display: flex;
     background-color: #193566;
-    height: 200px;
+    height: 150px;
+    width: 100%;
     font-size: small;
     border-radius: 5px;
-    
+    margin: 5px auto;
 }
 
 .playerProfile {
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 30%;
+    align-items: center;
+    justify-content: center;
 }
 
 .playInfo {
@@ -35,18 +42,79 @@
 
 .playInfoDetail {
     display: flex;
-    flex-wrap: wrap;
-    align-content: start;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    /* align-content: center; */
+    justify-content: center;
+    margin-left: 10px;
 }
 
-.playInfoDetail > * {
+.playInfoDetail>* {
     margin-right: 5px;
 }
 
-.thisUser{
-    background-color: #425b87;
+/* .playInfoDetail > span {
+    display: block;
+} */
+
+.playInfoDetailText {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.thisUser {
+    display: flex;
+    background-color: #7b9bd1;
+    height: 150px;
+    font-size: small;
+    border-radius: 5px;
 }
 
 .hide {
     display: none;
+}
+
+
+.kda {
+    font-size: large;
+    color: deeppink;
+    font-weight: bold;
+}
+
+.itemImg {
+    width: 30px;
+    height: 30px;
+}
+
+.win {
+    background-color: #1e2f54;
+}
+
+.lose {
+    background-color: #4c2739;
+}
+
+.winText {
+    color: rgb(20, 110, 255);
+    margin-right: 5px;
+}
+
+.loseText {
+    color: rgb(255, 20, 59);
+    margin-right: 5px;
+}
+
+.duration {
+    font-size: small;
+}
+
+.playInfoKDA {
+    display: flex;
+    align-items: center;
+    
+}
+
+.playInfoKDA > span {
+    margin-right: 15px;
 }
