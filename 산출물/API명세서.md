@@ -9,7 +9,7 @@
     
     | Description | 입력받은 소환사명을 서버로부터 받은 snsId, snsType과 함께 전송한다. |
     | --- | --- |
-    | URL | https://jsonplaceholder.typicode.com/postsapi/users/signup |
+    | URL | api/users/signup |
     | Auth Required | No |
     
     | Paramater | Type  | Required | Description | Default |
@@ -86,7 +86,7 @@
     
     | Description | 친구 요청을 보낸다. |
     | --- | --- |
-    | URL | https://jsonplaceholder.typicode.com/postsapi/friends/{myId} |
+    | URL | api/friends/{myId} |
     | Auth Required | Yes |
     
     | Paramater | Type  | Required | Description | Default |
@@ -156,7 +156,7 @@
     
     | Description | 친구를 삭제한다. |
     | --- | --- |
-    | URL | https://jsonplaceholder.typicode.com/postsapi/friends/{friendId} |
+    | URL | api/friends/{friendId} |
     | Auth Required | Yes |
     
     | Paramater | Type  | Required | Description | Default |
@@ -190,7 +190,7 @@
     
     | Description | MZ글 목록을 가져온다. |
     | --- | --- |
-    | URL | https://jsonplaceholder.typicode.com/posts/1/commentsapi/mz/articles |
+    | URL | api/mz/articles |
     | Auth Required | No |
     
     | Paramater | Type  | Required | Description |
@@ -359,7 +359,7 @@
     
     | Description | MZ글의 댓글 등록한다. |
     | --- | --- |
-    | URL | https://jsonplaceholder.typicode.com/posts/1/commentsapi/mz/comments |
+    | URL | api/mz/comments |
     | Auth Required | Yes |
     
     | Paramater | Type  | Required | Description |
