@@ -1,3 +1,6 @@
+export default function Data() {
+}
+
 export const demoArticles = [
   {
     id: 1,
