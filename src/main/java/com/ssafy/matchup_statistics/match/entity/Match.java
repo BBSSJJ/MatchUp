@@ -1,8 +1,9 @@
 package com.ssafy.matchup_statistics.match.entity;
 
-import com.ssafy.matchup_statistics.Indicator.entity.riot.additional.EtcIndicator;
-import com.ssafy.matchup_statistics.Indicator.entity.riot.additional.MacroIndicator;
-import com.ssafy.matchup_statistics.Indicator.entity.riot.line.*;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.EtcIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.MacroIndicator;
+//import com.ssafy.matchup_statistics.indicator.entity.riot.beginning.lane.*;
+//import com.ssafy.matchup_statistics.indicator.entity.riot.lane.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,12 +12,12 @@ public class Match {
     @Id
     private String id;
     private LineType lineType;
-    private TopIndicator topIndicator;
-    private JgIndicator jgIndicator;
-    private MidIndicator midIndicator;
-    private AdcIndicator adcIndicator;
-    private SupIndicator supIndicator;
-    private MacroIndicator macroIndicator;
+//    private TopIndicator topIndicator;
+//    private JgIndicator jgIndicator;
+//    private MidIndicator midIndicator;
+//    private AdcIndicator adcIndicator;
+//    private SupIndicator supIndicator;
+//    private MacroIndicator macroIndicator;
     private EtcIndicator etcIndicator;
 }
 

@@ -1,6 +1,6 @@
 package com.ssafy.matchup_statistics.match.service;
 
-import com.ssafy.matchup_statistics.Indicator.entity.SummonerIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.SummonerIndicator;
 import com.ssafy.matchup_statistics.match.api.MatchRestApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
