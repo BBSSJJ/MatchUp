@@ -2,7 +2,9 @@ package com.ssafy.matchup.global.config.database;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.GenerationType;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.type.descriptor.sql.DdlType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -113,6 +115,7 @@ public class JpaConfig implements EnvironmentAware {
     private JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
+        jpaVendorAdapter.setGenerateDdl(true);
         return jpaVendorAdapter;
     }
 
