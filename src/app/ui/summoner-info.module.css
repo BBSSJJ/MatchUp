@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile {
+    width: 160px;
+    height: 150px;
+}
+
+
+.profileInfo {
+    display: flex;
+    margin-top: 15px;
+    font-size: 30px;
+}
+
+.profileText {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}

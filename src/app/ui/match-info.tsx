@@ -1,70 +1,181 @@
-import { RIOT_API_KEY } from "./summoner-info"
+"use client"
+import { Avatar, AvatarGroup, Button, Image } from "@nextui-org/react";
 import styles from "./match-info.module.css"
+import { useState } from 'react';
 
-async function getMatchDetail(matchId: string) {
-    const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`
-    const response = await fetch(RIOT_API_URL,
-        {
-            headers: { "X-Riot-Token": `${RIOT_API_KEY}` }
-        });
-    return response.json();
-}
 
-export default async function MatchDetail({ matchId }: {
-    matchId: string
-}) {
-    const matchInfo = await getMatchDetail(matchId); // 
-    const players = matchInfo.metadata?.participants; // array
-    const data = matchInfo.info
-    const gameDuration = data?.gameDuration
-    const playerData = matchInfo.info?.participants
-    const teamData = matchInfo.info.teams
-    const result = teamData.map((team) => {
+// 나중에 팀별 정보는 컴포넌트로 따로 분리할 예정
+export default function MatchDetail({ matchId, data, puuid }) {
+
+    const playerData = data?.info?.participants;
+    const players = data?.metadata?.participants;
+    const datas = data?.info;
+    const gameDuration = datas?.gameDuration;
+    const teamData = data?.info?.teams;
+    const playerChampionImgs = playerData?.map((item) => {
+        return item.championName;
+    }) // 챔피언 이름 
+    const playerSummonerIds = playerData?.map((item) => {
+        return item.riotIdGameName;
+    }) // 소환사명
+    const result = teamData?.map((team) => {
         if (team.win) {
             return 'win';
         } else {
             return 'lose';
         }
     })
-    let index = 0;
-
+    const team1 = playerData.slice(0, playerChampionImgs.length / 2);
+    const team2 = playerData.slice(playerChampionImgs.length / 2, playerChampionImgs.length);
+    const [toggle, setToggle] = useState(true);
+    const resultOfThisUser = team1.map((player) => {return player.puuid}).includes(puuid) ? result[0] : result[1];
+    console.log(resultOfThisUser, "result");
     return (
-        <div>
-            <div className={styles.match}>
-                <p>matchId : {matchId}</p>
-                <p>gameDuration : {gameDuration}</p>
+        <main>
+            <div className={styles.container}>
+                <div className={styles.match}>
+                    {/* <p>matchId : {matchId}</p> */}
+                    <div className={styles.playInfo}>
+                        <p className={resultOfThisUser === 'win' ? styles.winText : styles.loseText}>{resultOfThisUser}</p>
+                        <p className={styles.duration}>{Math.trunc(gameDuration / 60)}m {Math.trunc(((gameDuration / 60) - Math.trunc(gameDuration / 60)) * 60)}s</p>
+                        <AvatarGroup>
+                            {playerChampionImgs.slice(0, playerChampionImgs.length / 2).map((url, index) => (
+                                <Avatar
+                                    key={index}
+                                    size="md"
+                                    src={"https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/" + url + ".png"}
+                                />
+                            ))}
+                        </AvatarGroup>
+                        VS
+                        <AvatarGroup>
+                        {playerChampionImgs.slice(playerChampionImgs.length / 2, playerChampionImgs.length).map((url: string, index: number) => (
+                            <Avatar
+                                key={index}
+                                size="md"
+                                src={"https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/" + url + ".png"}
+                            />
+                        ))}
+                        </AvatarGroup>
+                        <Button color="primary" variant="shadow" onClick={() => setToggle(prev => !prev)}>
+                            {toggle ? 'More' : 'Close'}
+                        </Button>
+                    </div>
+                    <div className={toggle ? styles.hide : ""}>
+                        {
+                            team1.map((player: object, index: number) => {
+                                const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
+                                const items = [player.item0, player.item1, player.item2, player.item3, player.item4, player.item5, player.item6];
+                                return (
+                                        <div className={`${players[index] === puuid ? styles.thisUser : styles.playerInfo} ${result[0] === 'win' ? styles.win : styles.lose}`} key={index}>
+                                        {/* <p>{index}</p> */}
+                                        <div className={styles.playerProfile}>
+                                            <Image
+                                                width={50}
+                                                src={champImgUrl}
+                                                isZoomed
+                                            />
+                                            {/* <img src={profileImgUrl} alt="profile" className={styles.profile} /> */}
+                                            <span>{player.riotIdGameName}</span>
+                                            <span>#{player.riotIdTagline}</span>
+                                            {/* <span>{player.puuid}</span> */}
+                                            <span>Level : {player.summonerLevel}</span>
+                                            {player.summonerName !== "" ? <span>Prev. {player.summonerName}</span> : null}
+                                           
+                                            {/* <img src={champImgUrl} alt="champion" className={styles.profile} /> */}
+                                            <span>Champion : {player.championName}</span>
+                                        </div>
+                                        <div className={styles.playInfoDetail}>
+                                            <div className={styles.playInfoKDA}>
+                                                <span className={styles.kda}>KDA : {player.kills}/{player.deaths}/{player.assists}</span>
+                                                {items.map((item, index) => {
+                                                    return (
+                                                        <Image 
+                                                            src={'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/item/' + item + '.png'}
+                                                            key={index}
+                                                            width={20}
+                                                            height={20}
+                                                            isBlurred
+                                                            fallbackSrc="https://via.placeholder.com/300x200"
+                                                        />
+                                                        // <img className={styles.itemImg} key={index} src={'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/item/' + item + '.png'} alt="item" />
+                                                    )
+                                                })}
+                                            </div>
+                                            <div className={styles.playInfoDetailText}>
+                                                {/* <span>spell : {player.spell1Casts} {player.spell2Casts} {player.spell3Casts}</span> */}
+                                                <span>largest Multi Kill : {player.largestMultiKill}</span>
+                                                {/* <span>pentaKills : {player.pentaKills}</span> */}
+                                                <span>Individual Position : {player.individualPosition}</span>
+                                                {/* <span>lane : {player.lane}</span> */}
+                                                <span>role	: {player.role}</span>
+                                                <span>teamId : {player.teamId}</span>
+                                                <span>team Position : {player.teamPosition}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                <div className={toggle ? styles.hide : ""}>
+                    
+                    {
+                        team2.map((player: object, index: number) => {
+                            const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${player.profileIcon}.png`
+                            const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
+                            const items = [player.item0, player.item1, player.item2, player.item3, player.item4, player.item5, player.item6];
+                            return (
+                                <div className={`${players[index] === puuid ? styles.thisUser : styles.playerInfo} ${result[1] === 'win' ? styles.win : styles.lose}`} key={index}>
+                                    {/* <p>{index}</p> */}
+                                    <div className={styles.playerProfile}>
+                                        <Image
+                                            width={50}
+                                            src={champImgUrl}
+                                            isZoomed
+                                        />
+                                        {/* <img src={profileImgUrl} alt="profile" className={styles.profile} /> */}
+                                        <span>{player.riotIdGameName}</span>
+                                        <span>#{player.riotIdTagline}</span>
+                                        <span>Level : {player.summonerLevel}</span>
+                                        {player.summonerName !== "" ? <span>Prev. {player.summonerName}</span> : null}
+                                        {/* <img src={champImgUrl} alt="champion" className={styles.profile} /> */}
+                                        <span>Champion : {player.championName}</span>
+                                    </div>
+                                    <div className={styles.playInfoDetail}>
+                                        <div className={styles.playInfoKDA}>
+                                            <span className={styles.kda}>KDA : {player.kills}/{player.deaths}/{player.assists}</span>
+                                            {items.map((item, index) => {
+                                                return (
+                                                    <Image 
+                                                        src={'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/item/' + item + '.png'}
+                                                        key={index}
+                                                        width={20}
+                                                        height={20}
+                                                        isBlurred
+                                                        fallbackSrc="https://via.placeholder.com/300x200"
+                                                    />
+                                                    // <img className={styles.itemImg} key={index} src={'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/item/' + item + '.png'} alt="item" />
+                                                )
+                                            })}
+                                        </div>
+                                        <div className={styles.playInfoDetailText}>
+                                            <p>largest Multi Kill : {player.largestMultiKill}</p>
+                                            {/* <span>pentaKills : {player.pentaKills}</span> */}
+                                            <span>Individual Position : {player.individualPosition}</span>
+                                            {/* <span>lane : {player.lane}</span> */}
+                                            <span>role	: {player.role}</span>
+                                            {/* <span>teamId : {player.teamId}</span> */}
+                                            <span>team Position : {player.teamPosition}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
-            {/* {JSON.stringify(matchInfo)} */}
-            <div>
-                {
-                    playerData.map((player: object) => {
-                        const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${player.profileIcon}.png`
-                        return (
-                            <div key={index++}>
-                                <p>{index}</p>
-                                <img src={profileImgUrl} alt="profile" className={styles.profile} />
-                                <p>Id : {player.riotIdGameName}</p>
-                                <p>TagLine : {player.riotIdTagline}</p>
-                                <p>summonerLevel : {player.summonerLevel}</p>
-                                <p>summonerName : {player.summonerName}</p>
-                                <p>Champion : {player.championName}</p>
-                                <p>assists : {player.assists}</p>
-                                <p>deaths : {player.deaths}</p>
-                                <p>kills : {player.kills}</p>
-                                <p>largest Multi Kill : {player.largestMultiKill}</p>
-                                <p>pentaKills : {player.pentaKills}</p>
-                                <p>Individual Position : {player.individualPosition}</p>
-                                <p>lane : {player.lane}</p>
-                                <p>role	: {player.role}</p>
-                                <p>teamId : {player.teamId}</p>
-                                <p>teamPosition : {player.teamPosition}</p>
-                                {index === 4 ? <p>win: {result[0]}</p> : index === 9 ? <p>win : {result[1]}</p> : null}
-                            </div>
-                        )
-                    })
-                }
-            </div>
-        </div>
+        </main>
     )
-
 }
