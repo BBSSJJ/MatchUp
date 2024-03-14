@@ -25,14 +25,14 @@ export default async function MatchIds({ puuid }: {
     puuid: string
 }) {
     const matchIds: string[] = await getMatch(puuid);
-    console.log(matchIds, puuid);
+    // console.log(matchIds, puuid);
     const matchArray = JSON.parse(JSON.stringify(matchIds)); // 20개의 최근 경기 아이디 배열
     const detailsPromises = matchIds.map(id => getMatchDetail(id));
     const matchDetails = await Promise.all(detailsPromises);
     // const dataArray = matchIds.map(async (id) => {
     //     return await getMatchDetail(id);
     // })
-    console.log(matchDetails, "print");
+    // console.log(matchDetails, "print");
     return (
         <div>
             {matchArray.map((item: string, index: number) => {
