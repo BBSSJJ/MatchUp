@@ -1,7 +1,7 @@
-import Create from "@/app/ui/article/create/create"
+// import Create from "@/app/ui/article/create/create"
 
 export default function Page() {
   return (
-    <Create />
+    <h1>Article Creation Page</h1>
   )
 }

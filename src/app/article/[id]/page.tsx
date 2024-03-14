@@ -1,4 +1,4 @@
-import demoArticles from "@/app/lib/placeholder-data"
+import { demoArticles } from "@/app/lib/placeholder-data"
 import { ArticleForm } from "@/app/lib/definitions"
 import Article from "@/app/ui/article/article"
 
