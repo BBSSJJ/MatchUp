@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.Indicator.entity.user;
+package com.ssafy.matchup_statistics.indicator.entity.user;
 
 public class UserIndicator {
     private Long feedback;

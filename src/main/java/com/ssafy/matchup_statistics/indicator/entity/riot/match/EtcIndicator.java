@@ -1,6 +1,4 @@
-package com.ssafy.matchup_statistics.Indicator.entity.riot.additional;
-
-import org.bson.BsonTimestamp;
+package com.ssafy.matchup_statistics.indicator.entity.riot.match;
 
 public class EtcIndicator {
     private Long pingCount;
