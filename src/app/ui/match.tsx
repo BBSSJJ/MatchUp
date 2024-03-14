@@ -36,7 +36,7 @@ export default async function MatchIds({ puuid }: {
     return (
         <div>
             {matchArray.map((item: string, index: number) => {
-                return <MatchDetail key={index} matchId={item} puuid={puuid} data={matchDetails[index]} />
+                return <MatchDetail key={index} puuid={puuid} data={matchDetails[index]} />
             })}
         </div>
     )
