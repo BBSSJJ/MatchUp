@@ -1,5 +1,7 @@
-export default function CreateArticle() {
+import Create from "@/app/ui/article/create/create"
+
+export default function Page() {
   return (
-    <h1>Create Article</h1>
+    <Create />
   )
 }

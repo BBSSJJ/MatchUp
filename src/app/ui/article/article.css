@@ -1,27 +1,11 @@
-.orderBy {
-  width: 100px;
-}
-
-.searchBy {
-  color: white;
-  width: 100px;
-  height: 30px;
-}
-
 *:focus {
   outline: none;
-}
-
-.searchInput {
-  width: 250px;
-  height: 30px;
-  margin-left: 10px;
 }
 
 .searchButton {
   background-color: #0AC8B9;
   width: 100px;
-  height: 30px;
+  height: 3rem;
   margin-left: 10px;
   border-radius: 5px;
   padding: auto;
@@ -33,7 +17,7 @@
 .writeLink {
   background-color: #C89B3C;
   width: 100px;
-  height: 30px;
+  height: 3rem;
   border-radius: 5px;
   color: #09161f;
   font-weight: bold;
@@ -49,25 +33,30 @@
   width: 65%;
 }
 
+.searchInput {
+  display: flex;
+}
+
 .article {
   display: flex;
   border: solid 1px white;
   width: 90%;
   margin: 0 auto;
+  background-color: #161A1E;
 }
 
-.articleContent {
+.articleListContent {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   margin-left: 3%;
 }
 
-.articleTitle {
+.articleListTitle {
   font-size: 200%;
 }
 
-.articleAuthor {
+.articleListAuthor {
   font-size: 100%;
   margin-bottom: -3%;
 }
@@ -95,6 +84,87 @@
   font-size: 100%;
   font-weight: bold;
   height: 200%;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-right: 5%;
+}
+
+.articleContainer {
+  width: 80%;
+  border: solid 1px white;
+  margin-left: 10%;
+  padding: 5%;
+}
+
+.articleTitle {
+  font-size: 300%;
+  margin-bottom: 5%;
+}
+
+.articleInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 130%;
+  margin-bottom: 1%;
+}
+
+.articleContent {
+  margin-top: 5%;
+  font-size: 200%;
+  line-height: 120%;
+  white-space: pre-wrap;
+}
+
+.articleVoteButtons {
+  width: 50%;
+  margin: 5% auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.leftButton {
+  background-color: blue;
+  border-radius: 20px;
+  font-size: 120%;
+  width: 150px;
+  height: 50px;
+  font-weight: bold;
+}
+
+.rightButton {
+  background-color: red;
+  border-radius: 20px;
+  font-size: 120%;
+  width: 150px;
+  height: 50px;
+  font-weight: bold;
+}
+
+.articleVote {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.articleVoteLeft {
+  background-color: blue;
+  font-size: 150%;
+  font-weight: bold;
+  height: 50px;
+  border-radius: 20px 0 0 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 5%;
+}
+
+.articleVoteRight {
+  background-color: red;
+  font-size: 150%;
+  font-weight: bold;
+  height: 50px;
   border-radius: 0 20px 20px 0;
   display: flex;
   flex-direction: row-reverse;
