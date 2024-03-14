@@ -1,5 +1,8 @@
 import MatchIds from "./match";
 import Summoner from "./summoner";
+import { User, Avatar } from "@nextui-org/react";
+
+import styles from "./summoner-info.module.css";
 
 export const RIOT_API_KEY = "RGAPI-50d26fab-b452-417b-a70b-1d3b59e789fd";
 
@@ -17,10 +20,18 @@ export default async function SummonerInfo({ id }: { id: string }) {
     const summoner = await getSummoner(id);
     const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${summoner.profileIconId}.png`;
     return (
-        <div>
-            <img src={profileImgUrl} alt="profile" />
-            <p>player name : {summoner.name}</p>
-            <p>solo rank :{summoner.summonerLevel} </p>
+        <div className={styles.container}>
+            <div className={styles.profileInfo}>
+                <Avatar
+                    src={profileImgUrl}
+                    className={styles.profile}
+                />
+                {/* <img src={profileImgUrl} alt="profile" className={styles.profile}/> */}
+                <div className={styles.profileText}>
+                    <p>{summoner.name}</p>
+                    <p>solo rank : {summoner.summonerLevel} </p>
+                </div>
+            </div>
             {/* <Summoner puuid={summoner.puuid} /> */}
             <MatchIds puuid={summoner.puuid} />
         </div>
