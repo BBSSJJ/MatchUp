@@ -1,4 +1,4 @@
-package com.ssafy.matchup.config;
+package com.ssafy.matchup.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
