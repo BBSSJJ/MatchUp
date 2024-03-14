@@ -8,7 +8,7 @@
 
 ```py
 # 로컬과 도커 내부 볼륨 연결하여 데이터 백업
-docker run --name matchup_statistics_db -v ~/data:/data/db -d -p 3310:27017 mongo
+docker run --name matchup_statistics_db -v ~/data:/data/db -d -p 3311:27017 mongo
 ```
 
 ## DB 생성
