@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 
 // 나중에 팀별 정보는 컴포넌트로 따로 분리할 예정
-export default function MatchDetail({ matchId, data, puuid }) {
+export default function MatchDetail({ data, puuid }) {
 
     const playerData = data?.info?.participants;
     const players = data?.metadata?.participants;
