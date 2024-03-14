@@ -27,7 +27,7 @@ ip:
   db:
     user: ${MATCHUP_USER_DB}
   db-repl:
-      user: ${MATCHUP_USER_DB_REPL}
+    user: ${MATCHUP_USER_DB_REPL}
 
   server:
     user: ${USER_SERVER}
@@ -39,3 +39,8 @@ id:
 
 password:
   db: ${DB_PASSWORD}
+
+jwt:
+  period:
+    access-token: 86400000 # 1일
+    refresh-token: 2419200000 #4주
