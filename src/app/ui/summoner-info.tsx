@@ -4,7 +4,8 @@ import { User, Avatar } from "@nextui-org/react";
 
 import styles from "./summoner-info.module.css";
 
-export const RIOT_API_KEY = "RGAPI-50d26fab-b452-417b-a70b-1d3b59e789fd";
+// export const RIOT_API_KEY = "RGAPI-50d26fab-b452-417b-a70b-1d3b59e789fd";
+export const RIOT_API_KEY = "RGAPI-9375852d-f530-4428-93b7-b70f6c0fcf51";
 
 // 이 컴포넌트에서 api요청을 보내고 응답을 받음 
 async function getSummoner(id: string) {
