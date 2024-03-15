@@ -1,0 +1,23 @@
+server:
+  port: 9000
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+
+  cloud:
+    gateway:
+      routes:
+        - id: auth-server
+          uri: http://${AUTH_SERVER}:9001
+          predicates:
+            - Path=/api/auth/**
+        - id: user-server
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/users/**
+        - id: chat-server
+          uri: http://${CHAT_SERVER}:9003
+          predicates:
+            - Path=/api/chat/**
