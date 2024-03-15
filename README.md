@@ -8,7 +8,7 @@
 
 1. [Directory 구조](#Directory-구조)
 2. [ERD](#ERD)
-3. [DB 포팅 메뉴얼](#DB-포팅-메뉴얼)
+3. [DB 포팅 메뉴얼](#포팅-메뉴얼)
 
 # Directory 구조
 

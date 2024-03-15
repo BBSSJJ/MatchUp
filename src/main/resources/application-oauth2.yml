@@ -6,19 +6,19 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/google
+            redirect-uri: http://${USER_SERVER}:9002/api/oauth2/callback/google
             scope: profile, email
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/kakao
+            redirect-uri: http://${USER_SERVER}:9002/api/oauth2/callback/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope: profile_nickname
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect-uri: http://${USER_SERVER}:9002/api/user/oauth2/callback/naver
+            redirect-uri: http://${USER_SERVER}:9002/api/oauth2/callback/naver
             authorization-grant-type: authorization_code
             scope: name, email
 
