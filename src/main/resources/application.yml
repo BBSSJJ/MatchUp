@@ -5,19 +5,40 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+  data:
+    redis:
+      host: ${MATCHUP_TOKEN_REDIS}
+      port: 3312
+      password: ${DB_PASSWORD}
 
   cloud:
     gateway:
       routes:
-        - id: auth-server
-          uri: http://${AUTH_SERVER}:9001
+        - id: user-server-oauth2
+          uri: http://${USER_SERVER}:9002
           predicates:
-            - Path=/api/auth/**
-        - id: user-server
+            - Path=/api/oauth2/**
+          filters:
+            - LoginFilter
+
+        - id: user-server-user
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/users/**
+          filters:
+            - JwtTokenFilter
+
         - id: chat-server
           uri: http://${CHAT_SERVER}:9003
           predicates:
             - Path=/api/chat/**
+          filters:
+            - JwtTokenFilter
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  period:
+    access-token: 86400000 # 1일
+    refresh-token: 2419200000 #4주
+
+
