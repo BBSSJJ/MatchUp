@@ -1,4 +1,4 @@
-package com.ssafy.matchup.user.oauth2.dto;
+package com.ssafy.matchup.user.main.dto.request;
 
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtTokenRequestDto {
-    Long id;
+public class RegistUserRequestDto {
+    String snsId;
     AuthorityType role;
+    String name;
 }
