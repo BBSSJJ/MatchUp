@@ -25,6 +25,9 @@ public class ChatController {
     public ResponseEntity<?> showChatRooms(@PathVariable Long userId) {
 
         List<ChatRoomDto> data = chatService.findRooms(userId);
+        for(ChatRoomDto cr : data) {
+            log.error("가져온 채팅룸 ID : {}", cr.getRoomId());
+        }
 
         return new ResponseEntity<>(new ListDataDto(data), HttpStatus.OK);
     }
