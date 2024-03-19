@@ -38,3 +38,26 @@ dependencies {
 tasks.named('test') {
   useJUnitPlatform()
 }
+
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.stream.Collectors
+
+tasks.register('loadEnvFile') {
+  doLast {
+    if (file('.env').exists()) {
+      def env = Files.lines(Paths.get('.env'))
+          .filter { line -> line =~ /^[A-Z_]+=.+$/ }
+          .collect(Collectors.toList())
+      env.each {
+        def (key, value) = it.split('=')
+        System.setProperty(key, value)
+      }
+    }
+  }
+}
+
+tasks.withType(JavaExec).configureEach {
+  dependsOn loadEnvFile
+}
+
