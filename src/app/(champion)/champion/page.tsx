@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import Movie from "../ui/movie";
+import Movie from "../../ui/movie";
 import styles from "./styles.module.css";
-import { RIOT_API_KEY } from "../ui/summoner-info";
+import { RIOT_API_KEY } from "../../ui/summoner-info";
 
 export const metadata = {
   title: "Home",

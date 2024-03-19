@@ -1,7 +1,8 @@
-import { Inter } from 'next/font/google';
-import { Lusitana } from 'next/font/google';
-import { AR_One_Sans } from 'next/font/google';
-import { Tektur } from 'next/font/google';
+// import { Inter } from 'next/font/google';
+// import { Lusitana } from 'next/font/google';
+// import { AR_One_Sans } from 'next/font/google';
+// import { Tektur } from 'next/font/google';
+import { Inter, Lusitana, AR_One_Sans, Tektur } from 'next/font/google';
 
 export const inter = Inter({ subsets: ['latin'] });
 export const lusitana = Lusitana({ subsets: ['latin'], weight: ["400", "700"] });

@@ -1,6 +1,6 @@
 import UserProfile from "@/app/ui/user/user-info"
 import styles from "./styles.module.css"
-import RIOT_API_KEY from "@/app/ui/summoner-info"
+import { RIOT_API_KEY } from "@/app/ui/summoner-info";
 
 const encryptedSummonerId = 'ALCPx8GgXfWuiYEmZvQzzuuTeINIORAsA3FA_SuuOf-fpw';
 async function GetTier(encryptedSummonerId :string) {
@@ -8,7 +8,7 @@ async function GetTier(encryptedSummonerId :string) {
 		// Make a fetch request
 		const response = await fetch(`https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedSummonerId}`,
 		{
-            headers: { "X-Riot-Token": `${RIOT_API_KEY}` }
+            headers : { "X-Riot-Token": RIOT_API_KEY }
         });
 		
 		
@@ -20,9 +20,9 @@ async function GetTier(encryptedSummonerId :string) {
 		// Parse response data
 		const data = await response.json();
 		const userData =  {
-			'tier': data.tier,
-			'win': data.wins,
-			'lose': data.losses,
+			tier : data.tier,
+			win: data.wins,
+			lose : data.losses,
 		}
 		return userData;
 		} catch (error) {
