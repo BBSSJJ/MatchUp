@@ -22,3 +22,4 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
