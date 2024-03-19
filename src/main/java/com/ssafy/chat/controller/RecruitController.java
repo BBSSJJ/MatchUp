@@ -1,7 +1,7 @@
 package com.ssafy.chat.controller;
 
-import com.ssafy.chat.dto.RecruitDto;
 import com.ssafy.chat.dto.ListDataDto;
+import com.ssafy.chat.dto.RecruitDto;
 import com.ssafy.chat.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
