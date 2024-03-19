@@ -13,7 +13,7 @@ public class MatchService {
     private MatchRestApi matchRestApi;
     public SummonerIndicator produceStatistics(String puuid) {
         // TODO 라이엇 서버로부터 최근 20경기 id 받아오기
-        List<String> recentMatches = matchRestApi.getTwentyMatchesResponseDtoByPuuid(puuid);
+        List<String> recentMatches = matchRestApi.getMatchesResponseDtoByPuuid(puuid);
 
         // TODO 20경기 각각의 요청을 보내기
 
