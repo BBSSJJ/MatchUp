@@ -33,8 +33,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         Optional<User> optionalUser = userRepository.findUserBySnsTypeAndSnsId(snsType, snsId);
 
+        // TODO : 유저 정보랑 함께 보내주기
         if (optionalUser.isEmpty()) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(HttpStatus.NO_CONTENT.value());
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
         else {
