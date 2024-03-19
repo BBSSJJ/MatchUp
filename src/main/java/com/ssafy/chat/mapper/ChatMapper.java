@@ -21,7 +21,7 @@ public interface ChatMapper {
 
     List<ChatDto> convertListChatDto(List<Chat> chat);
 
-    @Mapping(target = "objectId", source = "objectId", qualifiedByName = "objectIdToString")
+    @Mapping(source = "objectId", target = "roomId", qualifiedByName = "objectIdToString")
     ChatRoomDto convertChatRoomDto(ChatRoom chatRoom);
 
     @Named("objectIdToString")
