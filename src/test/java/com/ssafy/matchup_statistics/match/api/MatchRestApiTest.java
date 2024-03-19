@@ -7,10 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +32,7 @@ class MatchRestApiTest {
 
         //when
         puuid = summonerRestApi.getSummonerInfoResponseDtoByName(username).getPuuid();
-        matches =  matchRestApi.getTwentyMatchesResponseDtoByPuuid(puuid);
+        matches =  matchRestApi.getMatchesResponseDtoByPuuid(puuid);
 
         //then
         matches.stream().forEach(match -> {log.info("match id : {}", match);});
@@ -43,8 +41,8 @@ class MatchRestApiTest {
         matches.stream().forEach(match -> {
             MatchDetailResponseDto matchDetail = matchRestApi.getMatchDetailResponseDtoByMatchId(match);
 
-            assertEquals(match, matchDetail.getMetadataDto().getMatchId());
-            log.info("매치 유저 확인 : {}", matchDetail.getInfoDto());
+            assertEquals(match, matchDetail.getMetadata().getMatchId());
+            log.info("매치 유저 확인 : {}", matchDetail.getInfo());
         });
 
     }
