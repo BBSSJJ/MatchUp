@@ -19,10 +19,11 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "chat", containerFactory = "kafkaChatListenerContainerFactory") // 추가: 컨테이너 팩토리를 지정합니다.
     public void listenChat(Chat chat) {
 
+        log.error("Received roomID : {}", chat.getRoomId());
         log.error("Received message: {}", chat.getContent());
 
         // 메시지를 처리하는 추가적인 로직을 여기에 구현할 수 있습니다.
-        simpMessagingTemplate.convertAndSend("/topic/" + chat.getRoomId(), ChatMapper.instance.convertChatDto(chat));
+        simpMessagingTemplate.convertAndSend("/topic/" + chat.getRoomId(), chat);
     }
 
     @KafkaListener(topics = "recruit", containerFactory = "kafkaRecruitListenerContainerFactory")
