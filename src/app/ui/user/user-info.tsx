@@ -6,15 +6,20 @@ interface UserData {
 	tier: string;
 	win: number;
 	lose: number;
+} 
+
+interface UserProfileProps {
+	data: UserData;
 }
 
-export default function UserProfile(data :UserData) {
+export default function UserProfile({ data } :UserProfileProps) {
 	const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
-	console.log(data)
+	const userdata = data ?? { tier: 'Default', win: 0, lose: 0 };
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.item1}>
-			<Badge content={data.tier} color="primary" className="w-[50px] h-[30px]" >
+			<Badge content={userdata.tier} color="primary" className="w-[50px] h-[30px]" >
 				<Card
 					isFooterBlurred
 					radius="lg"
@@ -49,8 +54,8 @@ export default function UserProfile(data :UserData) {
 			</div>
 			<div className={styles.item3}>
 				<p>전적 정보</p>
-				<p>{data.win} / {data.lose}</p>
-				<p>{ data.win / (data.win + data.lose) }%</p>
+				<p>{userdata.win} / {userdata.lose}</p>
+				<p>{ userdata.win / (userdata.win + userdata.lose) }%</p>
 				<p>티어</p>
 			</div>
 		</div>

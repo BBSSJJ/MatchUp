@@ -66,6 +66,7 @@ export default function MatchDetail({ data, puuid } : {
     // const playerSummonerIds = playerData?.map((item) => {
     //     return item.riotIdGameName;
     // }) // 소환사명
+    console.log(teamData);
     const result = teamData?.map((team) => {
         if (team.win) {
             return 'win';
@@ -73,11 +74,12 @@ export default function MatchDetail({ data, puuid } : {
             return 'lose';
         }
     })
+    console.log(result);
     const team1 :Participant[] | undefined  = playerData?.slice(0, playerChampionImgs.length / 2);
     const team2 :Participant[] | undefined = playerData?.slice(playerChampionImgs.length / 2, playerChampionImgs.length);
     const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
     const resultOfThisUser :string | undefined = team1?.map((player) => {return player.puuid}).includes(puuid) ? result[0] : result[1];
-    console.log(resultOfThisUser, "result");
+    // console.log(resultOfThisUser, "result");
     return (
         <main>
             <div className={styles.container}>
