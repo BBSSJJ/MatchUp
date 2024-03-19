@@ -15,7 +15,7 @@ public interface RecruitMapper {
 
     RecruitMapper instance = Mappers.getMapper(RecruitMapper.class);
 
-    @Mapping(target = "objectId", source = "objectId", qualifiedByName = "objectIdToString")
+    @Mapping(source = "objectId", target = "objectId", qualifiedByName = "objectIdToString")
     RecruitDto convertRecruitDto(Recruit recruit);
 
     @Named("objectIdToString")
