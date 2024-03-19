@@ -44,3 +44,6 @@ jwt:
   period:
     access-token: 86400000 # 1일
     refresh-token: 2419200000 #4주
+
+riot:
+  api-key: ${RIOT_API_KEY}
