@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import Movie from "../ui/movie";
+import Movie from "../../ui/movie";
 import styles from "./styles.module.css";
-import { RIOT_API_KEY } from "../ui/summoner-info";
+import { RIOT_API_KEY } from "../../ui/summoner-info";
 
 export const metadata = {
   title: "Home",
@@ -10,12 +10,6 @@ export const metadata = {
 
 const API_FOR_CHAMPION = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations";
 
-// async function getMovies() {
-//   // await new Promise((resolve) => setTimeout(resolve, 1000));
-//   const response = await fetch(API_URL);
-//   const json = await response.json();
-//   return json;
-// }
 
 // 오늘의 무료 챔피언 - 20가지
 async function getFreeChampions() {
@@ -36,7 +30,7 @@ export default async function HomePage() {
   const freeChampionNames = freeChampionIdArray.map((id :number) => {
     return champions[`${id}`]
   })
-  console.log(freeChampionNames);
+  // console.log(freeChampionNames);
 
   return (
     <div>

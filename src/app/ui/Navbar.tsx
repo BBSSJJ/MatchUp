@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState } from "react";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Avatar, Input, User,  Badge } from "@nextui-org/react";
+import React, { useState, MouseEvent } from "react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Input, User,  Badge, Button } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -23,6 +23,10 @@ export default function NavigationBar() {
   const handleClear = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.target.value = "";
   }
+  const handleLogin = () => {
+    router.push('/login');
+  }
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <Navbar isBordered className={styles.nav}>
@@ -70,13 +74,22 @@ export default function NavigationBar() {
         </NavbarItem>
       </NavbarContent>
       <NavbarContent as="div" className="items-center" justify="end">
-        <User
-          name="Username"
-          description="Lv.712"
-          avatarProps={{
-            src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"
-          }}
-        />
+        {
+          isLoggedIn ?  
+          <User
+            name="Username"
+            description="Lv.712"
+            avatarProps={{
+              src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"
+            }}
+          />
+          : <Button
+            onClick={handleLogin}
+          >
+          Log In
+          </Button>
+        }
+        
       </NavbarContent>
     </Navbar>
   );

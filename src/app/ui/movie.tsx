@@ -10,10 +10,6 @@ interface MovieProps {
 
 export default function Movie({ title, poster_path }: MovieProps) {
     const router = useRouter();
-    // const onClick = () => {
-    //     router.push(`/movies/${id}`);
-    // }
-
 
     return (
         <div className={styles.movie}>
