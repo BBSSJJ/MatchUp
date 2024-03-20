@@ -20,6 +20,7 @@ spring:
           predicates:
             - Path=/api/oauth2/**
           filters:
+            - LogFilter
             - LoginFilter
 
         - id: user-server-user
@@ -29,7 +30,8 @@ spring:
             - Path=/api/mz/**
             - Path=/api/comments/**
             - Path=/api/sympathies/**
-#          filters:
+          filters:
+            - LogFilter
 #            - JwtTokenFilter
 
         - id: chat-server
@@ -37,7 +39,8 @@ spring:
           predicates:
             - Path=/api/chats/**
             - Path=/api/ws/**
-#          filters:
+          filters:
+            - LogFilter
 #            - JwtTokenFilter
 
 jwt:
