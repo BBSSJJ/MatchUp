@@ -32,9 +32,9 @@ export default function RiotLoginForm() {
 
     return (
         <div>
-            <p><span className='font-bold'>주의사항</span>"아이디는 대소문자를 구분하지 않습니다." "Riot Games 계정과 연동되어 있지 않은 아이디는 입력할 수 없습니다."</p>
+            <p><span className='font-bold'>주의사항</span>아이디는 대소문자를 구분하지 않습니다. Riot Games 계정과 연동되어 있지 않은 아이디는 입력할 수 없습니다.</p>
             <form action="submit" className={styles.container}>
-                <p><span className='font-bold'>개인정보 안내</span> "입력한 아이디는 Riot Games 서버에서 사용자 정보를 가져오는 용도로만 사용되며, 개인정보 보호 정책에 따라 안전하게 처리됩니다."</p>
+                <p><span className='font-bold'>개인정보 안내</span> 입력한 아이디는 Riot Games 서버에서 사용자 정보를 가져오는 용도로만 사용되며, 개인정보 보호 정책에 따라 안전하게 처리됩니다.</p>
                 <Input
                     value={riotId}
                     label="Riot ID"

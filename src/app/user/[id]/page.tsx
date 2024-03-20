@@ -1,6 +1,7 @@
 import UserProfile from "@/app/ui/user/user-info"
 import styles from "./styles.module.css"
 import { RIOT_API_KEY } from "@/app/ui/summoner-info";
+import { UserData } from "@/app/ui/user/user-info";
 
 const encryptedSummonerId = 'ALCPx8GgXfWuiYEmZvQzzuuTeINIORAsA3FA_SuuOf-fpw';
 async function GetTier(encryptedSummonerId :string) {
@@ -38,13 +39,13 @@ export default async function UserPage({
   params: { id :string, };
 }) {
 	
-	const UserData = await GetTier(encryptedSummonerId)
-	console.log(UserData, 'Userdata');
+	const userData2 = await GetTier(encryptedSummonerId)
+	console.log(userData2, 'Userdata');
 
 	return (
 		<div className={styles.container}>
 			<h3>User Page :{id}</h3>
-			<UserProfile data= {UserData}/>
+			<UserProfile data= {userData2 as UserData}/>
 		</div>
 	)
 }
