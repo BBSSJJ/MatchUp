@@ -5,7 +5,8 @@ const nextConfig = {
       'ddragon.leagueoflegends.com',
       'i.namu.wiki',
     ]
-  }
+  },
+  output: "standalone"
 };
 
 export default nextConfig;
