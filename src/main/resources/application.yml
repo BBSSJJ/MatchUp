@@ -35,7 +35,8 @@ spring:
         - id: chat-server
           uri: http://${CHAT_SERVER}:9003
           predicates:
-            - Path=/api/chat/**
+            - Path=/api/chats/**
+            - Path=/api/ws/**
 #          filters:
 #            - JwtTokenFilter
 
