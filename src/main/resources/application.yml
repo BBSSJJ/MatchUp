@@ -23,21 +23,33 @@ spring:
             - LogFilter
             - LoginFilter
 
-        - id: user-server-user
+        - id: user-server-users
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/users/**
-            - Path=/api/mz/**
-            - Path=/api/comments/**
-            - Path=/api/sympathies/**
           filters:
             - LogFilter
-#            - JwtTokenFilter
+        #            - JwtTokenFilter
 
-        - id: chat-server
+        - id: user-server-mz
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/mz/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
+        - id: chat-server-chats
           uri: http://${CHAT_SERVER}:9003
           predicates:
             - Path=/api/chats/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
+        - id: chat-server-ws
+          uri: http://${CHAT_SERVER}:9003
+          predicates:
             - Path=/api/ws/**
           filters:
             - LogFilter
