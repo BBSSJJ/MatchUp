@@ -5,6 +5,7 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
   data:
     redis:
       host: ${MATCHUP_TOKEN_REDIS}
