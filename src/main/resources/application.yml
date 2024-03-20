@@ -25,15 +25,18 @@ spring:
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/users/**
-          filters:
-            - JwtTokenFilter
+            - Path=/api/mz/**
+            - Path=/api/comments/**
+            - Path=/api/sympathies/**
+#          filters:
+#            - JwtTokenFilter
 
         - id: chat-server
           uri: http://${CHAT_SERVER}:9003
           predicates:
             - Path=/api/chat/**
-          filters:
-            - JwtTokenFilter
+#          filters:
+#            - JwtTokenFilter
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
