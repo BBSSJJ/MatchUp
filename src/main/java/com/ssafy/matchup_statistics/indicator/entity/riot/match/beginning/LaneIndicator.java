@@ -1,23 +1,29 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning;
 
-import com.ssafy.matchup_statistics.match.entity.Match;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneType;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base.AggresiveLaneAbilility;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base.BasicWeight;
+import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
-public class LaneIndicator {
+@NoArgsConstructor
+@Slf4j
+public abstract class LaneIndicator {
+    private BasicWeight basicWeight = new BasicWeight();
+    private AggresiveLaneAbilility aggresiveLaneAbilility = new AggresiveLaneAbilility();
 
-    private List<String> calculatedTopMatches;
-    private DetailLaneIndicator totalTopIndicator;
-    private List<String> calculatedJgMatchIds;
-    private DetailLaneIndicator totalJgIndicator;
-    private List<String> calculatedMidMatchIds;
-    private DetailLaneIndicator totalMidIndicator;
-    private List<String> calculatedAdcMatchIds;
-    private DetailLaneIndicator totalAdcIndicator;
-    private List<String> calculatedSupMatchIds;
-    private DetailLaneIndicator totalSupIndicator;
-    private List<String> calculatedAllMatchIds;
+    protected MatchTimelineResponseDto.ParticipantNumber getMy_15Data(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
+        return matchTimelineResponseDto.getInfo().getFrames().get(15).getParticipantFrames()
+                .getDataByNumber(laneInfo.getMyLaneNumber());
+    }
 
+    protected MatchTimelineResponseDto.ParticipantNumber getOpposite_15Data(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
+        return matchTimelineResponseDto.getInfo().getFrames().get(15).getParticipantFrames()
+                .getDataByNumber(laneInfo.getOppositeLaneNumber());
+    }
 }
