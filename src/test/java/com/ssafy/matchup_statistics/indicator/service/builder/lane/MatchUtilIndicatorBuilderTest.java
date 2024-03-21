@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.indicator.service.builder;
+package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -7,6 +7,7 @@ import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.JgIndicator;
+import com.ssafy.matchup_statistics.indicator.service.builder.MatchIndicatorBuilder;
 import com.ssafy.matchup_statistics.match.api.MatchRestApi;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
@@ -34,7 +35,7 @@ import static org.mockito.BDDMockito.given;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @Tag("MatchLaneIndicatorBuilderTest")
-class MatchBtmIndicatorBuilderTest {
+class MatchUtilIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
@@ -62,25 +63,25 @@ class MatchBtmIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        // 본인 아이디 : 9
-        // 상대 아이디 : 4
-        // 라인 : 원딜
+        // 본인 아이디 : 10
+        // 상대 아이디 : 5
+        // 라인 : 서폿
         List<String> matches = new ArrayList<>();
         matches.add("KR_6994313306");
-        puuid = "zWFgg99DZI0jDJko1LubnkROHog-RFuHspB4M6LOx7kCOPB4MHgFgsLFL33aO83f5ZRFlBIsjQvMsw";
+        puuid = "Iv3stYunzeNyf4oz0GapSekWpW8bba3lclg77BiKnR_FrPXzI42G4a7v3Ncq6GAkngWHWQSYCwRDvg";
         given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
         given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
         given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
-                .teamPosition(TeamPosition.BOTTOM)
+                .teamPosition(TeamPosition.UTILITY)
                 .isBottomLane(true)
-                .myLaneNumber(9)
+                .myLaneNumber(10)
                 .myTeamId(200)
-                .oppositeLaneNumber(4)
-                .myBottomDuoNumber(10)
-                .oppositeBottomDuoNumber(5)
+                .oppositeLaneNumber(5)
+                .myBottomDuoNumber(9)
+                .oppositeBottomDuoNumber(4)
                 .build();
 
         // 메타정보 빌드
@@ -109,7 +110,7 @@ class MatchBtmIndicatorBuilderTest {
 
     @Test
     @Order(2)
-    @DisplayName("원딜 기초체력 : 경험치, cs 차이 확인")
+    @DisplayName("서폿 기초체력 : 경험치 차이 확인")
     void xpCsDifferTest() {
         // given
 
@@ -121,17 +122,12 @@ class MatchBtmIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getExpDiffer())
-                .isEqualTo(5100 - 5199);
-        assertThat(matchIndicators.get(0)
-                .getLaneIndicator()
-                .getBasicWeight()
-                .getCsDiffer())
-                .isEqualTo(121 - 143);
+                .isEqualTo(3885 - 4224);
     }
 
     @Test
     @Order(3)
-    @DisplayName("원딜 기초체력 : 포골차이 확인")
+    @DisplayName("서폿 기초체력 : 서폿템 완성시간 확인")
     void towerGoldDifferTest() {
         // given
 
@@ -142,13 +138,13 @@ class MatchBtmIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
-                .getTowerGoldDiffer())
-                .isEqualTo(2 - 2);
+                .getSupportItemFinishedTimeDiffer())
+                .isEqualTo(806527 - 897281);
     }
 
     @Test
     @Order(4)
-    @DisplayName("원딜 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
+    @DisplayName("서폿 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
     void solokillDifferTest() {
         // given
 
@@ -166,7 +162,7 @@ class MatchBtmIndicatorBuilderTest {
 
     @Test
     @Order(5)
-    @DisplayName("원딜 공격적인 라인전 : 딜량차이 확인")
+    @DisplayName("서폿 공격적인 라인전 : 딜량차이 확인")
     void dealDifferTest() {
         // given
 
@@ -178,6 +174,6 @@ class MatchBtmIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getDealDiffer())
-                .isEqualTo(8081 - 7108);
+                .isEqualTo(1966 - 2468);
     }
 }
