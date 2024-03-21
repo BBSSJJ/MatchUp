@@ -2,29 +2,32 @@ package com.ssafy.matchup_statistics.indicator.entity;
 
 import com.ssafy.matchup_statistics.indicator.entity.riot.league.LeagueIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
-import com.ssafy.matchup_statistics.indicator.entity.user.UserIndicator;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Document(collection = "summoner_indicators")
+@ToString
 public class SummonerIndicator {
     @Id
-    private Long summonerId;
+    private String summonerId;
 
-    private MatchIndicator matchIndicator;
-    private LeagueIndicator leagueIndicator;
-    private UserIndicator userIndicator;
+    private final List<MatchIndicator> matchIndicators;
+    private final LeagueIndicator leagueIndicator;
 
-    public SummonerIndicator(MatchIndicator matchIndicator,
-                             LeagueIndicator leagueIndicator,
-                             UserIndicator userIndicator) {
-        this.matchIndicator = matchIndicator;
+    public SummonerIndicator(String summonerId,
+                             List<MatchIndicator> matchIndicators,
+                             LeagueIndicator leagueIndicator) {
+        this.summonerId = summonerId;
+        this.matchIndicators = matchIndicators;
         this.leagueIndicator = leagueIndicator;
-        this.userIndicator = userIndicator;
+    }
+
+    public void eraseUnnecessarilyField() {
+        this.matchIndicators.forEach(m -> {
+            m.getMacroIndicator().setMacroData(null);
+        });
     }
 }
