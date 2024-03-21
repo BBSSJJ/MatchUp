@@ -34,6 +34,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
+@Tag("MatchIndicatorBuilderTest")
 class MatchJgIndicatorBuilderTest {
 
     @InjectMocks
@@ -164,7 +165,6 @@ class MatchJgIndicatorBuilderTest {
     @Test
     @Order(5)
     @DisplayName("정글 공격적인 라인전 : 적진영 킬관여 확인")
-    @Tag("MatchIndicatorBuilderTest")
     void solokillDifferTest() {
         // given
 
