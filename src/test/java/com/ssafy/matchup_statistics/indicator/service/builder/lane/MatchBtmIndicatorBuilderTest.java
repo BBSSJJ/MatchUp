@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.indicator.service.builder;
+package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -6,9 +6,12 @@ import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.JgIndicator;
+import com.ssafy.matchup_statistics.indicator.service.builder.MatchIndicatorBuilder;
 import com.ssafy.matchup_statistics.match.api.MatchRestApi;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,18 +33,18 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 @Tag("MatchLaneIndicatorBuilderTest")
-class MatchTopIndicatorBuilderTest {
-
+class MatchBtmIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
+    @Qualifier("kang_chan_bob_detail")
     @Autowired
-    @Qualifier("hide_on_bush_detail")
     MatchDetailResponseDto matchDetailResponseDto;
 
+    @Qualifier("kang_chan_bob_timeline")
     @Autowired
-    @Qualifier("hide_on_bush_timeline")
     MatchTimelineResponseDto matchTimelineResponseDto;
 
     @Mock
@@ -49,6 +52,8 @@ class MatchTopIndicatorBuilderTest {
 
     LaneInfo laneInfo;
     MatchIndicator.Metadata metadata;
+    String puuid;
+
 
     @BeforeAll
     public static void initLog() {
@@ -58,25 +63,25 @@ class MatchTopIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        // 본인 아이디 : 5
-        // 상대 아이디 : 6
-        // 라인 : 탑
+        // 본인 아이디 : 9
+        // 상대 아이디 : 4
+        // 라인 : 원딜
         List<String> matches = new ArrayList<>();
-        matches.add("KR_6987867218");
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
+        matches.add("KR_6994313306");
+        puuid = "zWFgg99DZI0jDJko1LubnkROHog-RFuHspB4M6LOx7kCOPB4MHgFgsLFL33aO83f5ZRFlBIsjQvMsw";
         given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
-        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
-        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
+        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
-                .teamPosition(TeamPosition.TOP)
-                .isBottomLane(false)
-                .myLaneNumber(5)
-                .myTeamId(100)
-                .oppositeLaneNumber(6)
-                .myBottomDuoNumber(0)
-                .oppositeBottomDuoNumber(0)
+                .teamPosition(TeamPosition.BOTTOM)
+                .isBottomLane(true)
+                .myLaneNumber(9)
+                .myTeamId(200)
+                .oppositeLaneNumber(4)
+                .myBottomDuoNumber(10)
+                .oppositeBottomDuoNumber(5)
                 .build();
 
         // 메타정보 빌드
@@ -92,7 +97,6 @@ class MatchTopIndicatorBuilderTest {
     @DisplayName("라인 정보 잘 가져오는지 테스트")
     void laneInfoTest() {
         // given
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
@@ -106,10 +110,9 @@ class MatchTopIndicatorBuilderTest {
 
     @Test
     @Order(2)
-    @DisplayName("탑 기초체력 : 경험치, cs 차이 확인")
+    @DisplayName("원딜 기초체력 : 경험치, cs 차이 확인")
     void xpCsDifferTest() {
         // given
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
@@ -119,20 +122,19 @@ class MatchTopIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getExpDiffer())
-                .isEqualTo(6583 - 7337);
+                .isEqualTo(5100 - 5199);
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getCsDiffer())
-                .isEqualTo(105 - 109);
+                .isEqualTo(121 - 143);
     }
 
     @Test
     @Order(3)
-    @DisplayName("탑 기초체력 :  포골차이 확인")
+    @DisplayName("원딜 기초체력 : 포골차이 확인")
     void towerGoldDifferTest() {
         // given
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
@@ -142,15 +144,14 @@ class MatchTopIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getTowerGoldDiffer())
-                .isEqualTo(1 - 2);
+                .isEqualTo(2 - 2);
     }
 
     @Test
     @Order(4)
-    @DisplayName("탑 공격적인 라인전 : 솔킬차이 확인")
+    @DisplayName("원딜 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
     void solokillDifferTest() {
         // given
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
@@ -159,17 +160,16 @@ class MatchTopIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
-                .getSoloKillDiffer())
-                .isEqualTo(1 - 1);
+                .getDuoKillDiffer())
+                .isEqualTo(2 - 0);
     }
 
 
     @Test
     @Order(5)
-    @DisplayName("탑 공격적인 라인전 : 딜량차이 확인")
+    @DisplayName("원딜 공격적인 라인전 : 딜량차이 확인")
     void dealDifferTest() {
         // given
-        String puuid = "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg";
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
@@ -179,6 +179,6 @@ class MatchTopIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getDealDiffer())
-                .isEqualTo(15559 - 10355);
+                .isEqualTo(8081 - 7108);
     }
 }
