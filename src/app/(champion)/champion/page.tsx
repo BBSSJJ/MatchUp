@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import Movie from "../../ui/movie";
 import styles from "./styles.module.css";
 import { RIOT_API_KEY } from "../../ui/summoner-info";
+import Champion from "../../ui/champion";
 
 export const metadata = {
   title: "Home",
@@ -41,7 +41,7 @@ export default async function HomePage() {
           // const championName = champions[`${championId}`];
           // const championImgUrl = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
           freeChampionNames.map((championId : string) => (
-            <Movie
+            <Champion
               key={championId}
               poster_path={championImgUrl + championId + '_0.jpg'}
               title={championId}

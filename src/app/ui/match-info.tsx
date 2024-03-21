@@ -74,7 +74,6 @@ export default function MatchDetail({ data, puuid } : {
             return 'lose';
         }
     })
-    console.log(result);
     const team1 :Participant[] | undefined  = playerData?.slice(0, playerChampionImgs.length / 2);
     const team2 :Participant[] | undefined = playerData?.slice(playerChampionImgs.length / 2, playerChampionImgs.length);
     const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);

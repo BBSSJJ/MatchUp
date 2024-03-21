@@ -1,5 +1,8 @@
-.container {
+.card {
     width: 80%;
     height: 60vh;
-    background-color: #5aad8a;
+    background-color: #a8dddd;
+    margin: 0 auto;
+    border-radius: 5px;
 }
+

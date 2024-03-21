@@ -3,16 +3,16 @@ import Link from "next/link";
 import styles from "./movie.module.css";
 import { useRouter } from "next/navigation";
 
-interface MovieProps {
+interface ChampionProps {
     title: string;
     poster_path: string;
 }
 
-export default function Movie({ title, poster_path }: MovieProps) {
+export default function Champion({ title, poster_path }: ChampionProps) {
     const router = useRouter();
 
     return (
-        <div className={styles.movie}>
+        <div className={styles.champ}>
             <img src={poster_path} alt={title} />
             <p>{title}</p>
         </div>

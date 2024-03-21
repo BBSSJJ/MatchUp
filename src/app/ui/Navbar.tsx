@@ -41,11 +41,6 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/lobby" className={path === '/lobby' ? styles.active : ""}>
-            Lobby
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
           <Link href="/article" className={path === '/article' ? styles.active : ""}>
             MatchUP Zone
           </Link>
