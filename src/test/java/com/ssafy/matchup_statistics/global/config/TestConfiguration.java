@@ -3,7 +3,11 @@ package com.ssafy.matchup_statistics.global.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -11,6 +15,12 @@ import java.io.IOException;
 public class TestConfiguration {
 
     ObjectMapper objectMapper = new ObjectMapper();
+
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertiesResolver() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean(name = "hide_on_bush_timeline")
     public MatchTimelineResponseDto matchTimelineResponseDto() {

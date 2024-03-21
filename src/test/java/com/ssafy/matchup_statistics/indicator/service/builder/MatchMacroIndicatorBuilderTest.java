@@ -6,6 +6,7 @@ import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.base.SplitPoint;
 import com.ssafy.matchup_statistics.match.api.MatchRestApi;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
@@ -18,19 +19,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @ContextConfiguration(classes = TestConfiguration.class)
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@EnableConfigurationProperties
 @Slf4j
 @Tag("MatchMacroIndicatorBuilderTest")
 class MatchMacroIndicatorBuilderTest {
@@ -52,6 +59,7 @@ class MatchMacroIndicatorBuilderTest {
     MatchIndicator.Metadata metadata;
     String puuid;
 
+    private final int DEFAULT_ROUND_UP = 100_000;
 
     @BeforeAll
     public static void initLog() {
@@ -126,13 +134,13 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTotalDamageDealt())
-                .isEqualTo((double) 3734 / 327344);
+                .isEqualTo( 3734 * DEFAULT_ROUND_UP / 327344);
         // 팀 내 타워데미지 비중
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTeamTotalTowerDamageDone())
-                .isEqualTo((double) 3734 / (6714 + 3734 + 3592 + 6015 + 920));
+                .isEqualTo( 3734 * DEFAULT_ROUND_UP / (6714 + 3734 + 3592 + 6015 + 920));
     }
 
     @Test
@@ -150,21 +158,21 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalTimeCCingOthersPerTotalDamageTaken())
-                .isEqualTo((double) 28 / 27649);
+                .isEqualTo(13 * DEFAULT_ROUND_UP / 27649);
 
         // 받은 피해량
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalDamageTakenPerTeamTotalDamageTaken())
-                .isEqualTo((double) 27649 / (17452 + 27649 + 18517 + 13622 + 18728));
+                .isEqualTo((long) 27649 * DEFAULT_ROUND_UP / (17452 + 27649 + 18517 + 13622 + 18728));
 
         // 감소시킨 데미지
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getDamageSelfMitigatedPerTotalDamageTaken())
-                .isEqualTo((double) 15806 / 27649);
+                .isEqualTo((long) 15806 * DEFAULT_ROUND_UP / 27649);
     }
 
 
@@ -183,7 +191,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getJungleHoldPoint()
                 .getTotalJungleObjectivePerGameDuration())
-                .isEqualTo((double) 27 / 1713);
+                .isEqualTo(27 * DEFAULT_ROUND_UP / 1713);
     }
 
     @Test
@@ -219,7 +227,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getVisionPoint()
                 .getVisionScorePerDeath())
-                .isEqualTo(41 / (2 + 1));
+                .isEqualTo(41 * DEFAULT_ROUND_UP / (2 + 1));
     }
 
     @Test
@@ -237,13 +245,13 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getDamagePerMinute())
-                .isEqualTo(899.0909564443765);
+                .isEqualTo((long) 899.0909564443765 * DEFAULT_ROUND_UP);
         // 골드당 딜
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getDealPerGold())
-                .isEqualTo(899.0909564443765 / 345.698109566159);
+                .isEqualTo((long)((long) 899.0909564443765 * DEFAULT_ROUND_UP / 496.7942995806239));
         // 딜 비중
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()

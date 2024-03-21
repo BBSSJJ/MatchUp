@@ -1,6 +1,7 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match;
 
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.*;
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroData;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroIndicator;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
@@ -21,13 +22,10 @@ public class MatchIndicator {
             MatchDetailResponseDto matchDetailResponseDto,
             MatchTimelineResponseDto matchTimelineResponseDto) {
 
-        // 메타데이터 생성
+        // 라인 정보 생성
         LaneInfo laneInfo = new LaneInfo(puuid, matchDetailResponseDto);
-        this.metadata = new Metadata(laneInfo, matchTimelineResponseDto);
 
-        // 세부 지표 생성
-
-        // 라인지표
+        // 라인지표 생성
         switch (laneInfo.getTeamPosition()) {
             case TOP:
                 this.laneIndicator = new TopIndicator(laneInfo, matchTimelineResponseDto);
@@ -46,8 +44,11 @@ public class MatchIndicator {
                 break;
         }
 
-        // 운영지표
-        this.macroIndicator = new MacroIndicator(matchDetailResponseDto);
+        // 운영지표 생성
+        this.macroIndicator = new MacroIndicator(laneInfo, matchDetailResponseDto);
+
+        // 메타데이터 생성
+        this.metadata = new Metadata(laneInfo, macroIndicator.getMacroData(), matchTimelineResponseDto);
     }
 
     @Data
@@ -55,14 +56,17 @@ public class MatchIndicator {
     @AllArgsConstructor
     public static class Metadata {
         private LaneInfo laneInfo;
-        private Boolean isFinishedBeforeFifteen;
-        private Long pingCount;
-        private Long earlySurrenderCount;
-        private Long itemGetTime;
+        private boolean isFinishedBeforeFifteen;
+        private boolean isOurTeamEarlySurrendered;
+        private int pingCount;
 
-        public Metadata(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
+        public Metadata(LaneInfo laneInfo,
+                        MacroData macroData,
+                        MatchTimelineResponseDto matchTimelineResponseDto) {
             this.laneInfo = laneInfo;
-            this.isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
+            isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
+            isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
+            pingCount = macroData.getMyData().getAllInPings();
         }
     }
 }

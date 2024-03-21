@@ -15,3 +15,5 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+
+#default_round_up: 100000
