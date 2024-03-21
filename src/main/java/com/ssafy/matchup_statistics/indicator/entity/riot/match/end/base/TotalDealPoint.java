@@ -1,7 +1,10 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.end.base;
 
+import lombok.Data;
+
+@Data
 public class TotalDealPoint {
-    private Double dealPerMinute;
+    private Double damagePerMinute;
     private Double dealPerGold;
-    private Double dealRatio;
+    private Double teamDamagePercentage;
 }

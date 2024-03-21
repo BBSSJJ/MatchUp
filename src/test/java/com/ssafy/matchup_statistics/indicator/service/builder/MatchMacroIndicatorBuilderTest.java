@@ -6,8 +6,6 @@ import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.JgIndicator;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.LaneIndicator;
 import com.ssafy.matchup_statistics.match.api.MatchRestApi;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
@@ -34,9 +32,8 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
-@Tag("MatchLaneIndicatorBuilderTest")
-class MatchJgIndicatorBuilderTest {
-
+@Tag("MatchMacroIndicatorBuilderTest")
+class MatchMacroIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
@@ -54,6 +51,7 @@ class MatchJgIndicatorBuilderTest {
     LaneInfo laneInfo;
     MatchIndicator.Metadata metadata;
     String puuid;
+
 
     @BeforeAll
     public static void initLog() {
@@ -109,55 +107,148 @@ class MatchJgIndicatorBuilderTest {
 
     @Test
     @Order(2)
-    @DisplayName("정글 기초체력 : 경험치, cs 차이 확인")
-    void xpCsDifferTest() {
+    @DisplayName("스플릿 점수 확인 : 타워철거, 타워 데미지 비중, 팀 내 타워데미지 비중")
+    void splitPointTest() {
         // given
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
 
         // then
+        // 타워철거
         assertThat(matchIndicators.get(0)
-                .getLaneIndicator()
-                .getBasicWeight()
-                .getExpDiffer())
-                .isEqualTo(6308 - 5928);
+                .getMacroIndicator()
+                .getSplitPoint()
+                .getDeathsDifferTurretKills())
+                .isEqualTo(2 - 1);
+        // 타워 데미지 비중
         assertThat(matchIndicators.get(0)
-                .getLaneIndicator()
-                .getBasicWeight()
-                .getCsDiffer())
-                .isEqualTo(100 - 98);
+                .getMacroIndicator()
+                .getSplitPoint()
+                .getDamageDealtToTurretsPerTotalDamageDealt())
+                .isEqualTo((double) 3734 / 327344);
+        // 팀 내 타워데미지 비중
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getSplitPoint()
+                .getDamageDealtToTurretsPerTeamTotalTowerDamageDone())
+                .isEqualTo((double) 3734 / (6714 + 3734 + 3592 + 6015 + 920));
     }
 
     @Test
     @Order(3)
-    @DisplayName("정글 라인관여 : 킬어시, 관여율 확인")
-    void towerGoldDifferTest() {
+    @DisplayName("이니시 점수 확인 : cc시간, 받은 피해량, 감소시킨 데미지")
+    void initiatingPointTest() {
         // given
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
-        JgIndicator jgIndicator = (JgIndicator) matchIndicators.get(0).getLaneIndicator();
-        int killAssistDiffer = jgIndicator.getLaneAssist().getKillAssistDiffer();
-        int killInvolvementRate = jgIndicator.getLaneAssist().getKillInvolvementRate();
 
         // then
-        assertThat(killAssistDiffer).isEqualTo(3 + 2 - 2 - 1);
-        assertThat(killInvolvementRate).isEqualTo(3 / 8);
+        // cc시간
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getInitiatingPoint()
+                .getTotalTimeCCingOthersPerTotalDamageTaken())
+                .isEqualTo((double) 28 / 27649);
+
+        // 받은 피해량
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getInitiatingPoint()
+                .getTotalDamageTakenPerTeamTotalDamageTaken())
+                .isEqualTo((double) 27649 / (17452 + 27649 + 18517 + 13622 + 18728));
+
+        // 감소시킨 데미지
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getInitiatingPoint()
+                .getDamageSelfMitigatedPerTotalDamageTaken())
+                .isEqualTo((double) 15806 / 27649);
     }
+
 
     @Test
     @Order(4)
-    @DisplayName("정글 공격적인 라인전 : 적진영 킬관여 확인")
-    void solokillDifferTest() {
+    @DisplayName("정글 장악 점수 : 빼먹은 정글몬스터")
+    void getJungleHoldPointTest() {
         // given
 
         // when
         List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
-        JgIndicator jgIndicator = (JgIndicator) matchIndicators.get(0).getLaneIndicator();
-        int killInvolvementInEnemyCamp = jgIndicator.getAggresiveJgAbility().getKillInvolvementInEnemyCamp();
 
         // then
-        assertThat(killInvolvementInEnemyCamp).isEqualTo(3 - 1);
+        // 빼먹은 정글몬스터
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getJungleHoldPoint()
+                .getTotalJungleObjectivePerGameDuration())
+                .isEqualTo((double) 27 / 1713);
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("오브젝트 점수 : 획득한 오브젝트 차이")
+    void getObjectivePointTest() {
+        // given
+
+        // when
+        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+
+        // then
+        // 획득한 오브젝트 차이
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getObjectivePoint()
+                .getGetObjectiveDiffer())
+                .isEqualTo((0 + 3 + 2 + 0) - (1 + 1 + 3 + 1));
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("시야 점수 : 시야 점수")
+    void getVisionPointTest() {
+        // given
+
+        // when
+        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+
+        // then
+        // 시야 점수(death + 1)
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getVisionPoint()
+                .getVisionScorePerDeath())
+                .isEqualTo(41 / (2 + 1));
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("딜 점수 : 분당 딜, 골드당 딜, 딜 비중")
+    void getTotalDealPointTest() {
+        // given
+
+        // when
+        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+
+        // then
+        // 분당 딜
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getTotalDealPoint()
+                .getDamagePerMinute())
+                .isEqualTo(899.0909564443765);
+        // 골드당 딜
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getTotalDealPoint()
+                .getDealPerGold())
+                .isEqualTo(899.0909564443765 / 345.698109566159);
+        // 딜 비중
+        assertThat(matchIndicators.get(0)
+                .getMacroIndicator()
+                .getTotalDealPoint()
+                .getTeamDamagePercentage())
+                .isEqualTo(0.253161905915865);
     }
 }
