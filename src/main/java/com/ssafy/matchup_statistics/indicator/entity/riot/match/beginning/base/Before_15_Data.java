@@ -14,44 +14,117 @@ import java.util.Arrays;
 @Slf4j
 public class Before_15_Data {
 
-    private TopMidData topMidData = new TopMidData();
+    private CommonData commonData = new CommonData();
     private JgData jgData = new JgData();
+    private BottomData bottomData = new BottomData();
 
     public Before_15_Data(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
-        int myLaneNumber = laneInfo.getMyLaneNumber();
-        int oppositeLaneNumber = laneInfo.getOppositeLaneNumber();
-        int myTeamId = laneInfo.getMyTeamId();
-        TeamPosition myTeamPosition = laneInfo.getTeamPosition();
-
         for (int minute = 0; minute <= 15; minute++) {
             MatchTimelineResponseDto.Frame frame = matchTimelineResponseDto.getInfo().getFrames().get(minute);
             frame.getEvents().forEach(event -> {
 
                 // 탑, 미드
-                if (myTeamPosition.equals(TeamPosition.TOP) || myTeamPosition.equals(TeamPosition.MIDDLE)) {
+                if (laneInfo.getTeamPosition().equals(TeamPosition.TOP) || laneInfo.getTeamPosition().equals(TeamPosition.MIDDLE)) {
                     switch (event.type) {
                         case "TURRET_PLATE_DESTROYED": {
-                            this.countTurretPlateDestroy(myTeamId, myTeamPosition, event);
+                            countTurretPlateDestroy(laneInfo, event);
                             break;
                         }
                         case "CHAMPION_KILL": {
-                            this.countSoloKill(myLaneNumber, oppositeLaneNumber, event);
+                            countSoloKill(laneInfo, event);
                             break;
                         }
                     }
                 }
 
                 // 정글
-                else if (myTeamPosition.equals(TeamPosition.JUNGLE)) {
+                else if (laneInfo.getTeamPosition().equals(TeamPosition.JUNGLE)) {
+                    if (event.type.equals("CHAMPION_KILL")) {
+                        if (judgeIsOurKill(laneInfo.getMyTeamId(), event.killerId)) addMyKillCount(laneInfo, event);
+                        else addOppositeKillCount(laneInfo, event);
+                    }
+                }
+
+                // 원딜
+                else if (laneInfo.getTeamPosition().equals(TeamPosition.BOTTOM)) {
                     switch (event.type) {
+                        case "TURRET_PLATE_DESTROYED": {
+                            countTurretPlateDestroy(laneInfo, event);
+                            break;
+                        }
                         case "CHAMPION_KILL": {
-                            if (judgeIsOurKill(myTeamId, event.killerId)) addMyKillCount(laneInfo, event);
-                            else addOppositeKillCount(laneInfo, event);
+                            counterDuoKill(laneInfo, event);
                             break;
                         }
                     }
                 }
+
+                // 서폿
+                else if (laneInfo.getTeamPosition().equals(TeamPosition.UTILITY)) {
+                    switch (event.type) {
+                        case "ITEM_DESTROYED": {
+                            checkSupportItemFinishedTime(laneInfo, event);
+                            break;
+                        }
+                        case "CHAMPION_KILL": {
+                            counterDuoKill(laneInfo, event);
+                            break;
+                        }
+                    }
+                }
+
             });
+        }
+    }
+
+    public void countTurretPlateDestroy(LaneInfo laneInfo,
+                                        MatchTimelineResponseDto.Event event) {
+        if (laneInfo.getTeamPosition().equals(TeamPosition.JUNGLE)) return;
+        LaneType myLaneType = laneInfo.getTeamPosition().parseLaneType();
+        if (event.laneType.equals(myLaneType.toString())) {
+            if (event.teamId == laneInfo.getMyTeamId()) commonData.myTurretPlateDestroyCount++;
+            else commonData.oppositeTurretPlateDestroyCount++;
+        }
+    }
+
+    public void countSoloKill(LaneInfo laneInfo, MatchTimelineResponseDto.Event event) {
+
+        // 관여한 사람이 없을때만 학인
+        if (event.assistingParticipantIds == null)
+
+            // 내가 상대방 죽였을때
+            if (event.killerId == laneInfo.getMyLaneNumber() && event.victimId == laneInfo.getOppositeLaneNumber())
+                commonData.mySoloKillCount++;
+
+                // 상대가 나를 죽였을떄
+            else if (event.killerId == laneInfo.getOppositeLaneNumber() && event.victimId == laneInfo.getMyLaneNumber())
+                commonData.oppositeSoloKillCount++;
+    }
+
+    private void counterDuoKill(LaneInfo laneInfo, MatchTimelineResponseDto.Event event) {
+        int[] ourBottomDuoNumbers = new int[]{laneInfo.getMyLaneNumber(), laneInfo.getMyBottomDuoNumber()};
+        int[] oppositeDuoNumbers = new int[]{laneInfo.getOppositeLaneNumber(), laneInfo.getOppositeBottomDuoNumber()};
+
+        // 관여한 사람이 봇듀오가 아닐때만 확인
+        if (event.assistingParticipantIds != null) {
+            for (int assist : event.assistingParticipantIds) {
+                if (Arrays.stream(ourBottomDuoNumbers).noneMatch(our -> our == assist)
+                        && Arrays.stream(oppositeDuoNumbers).noneMatch(opp -> opp == assist))
+                    return;
+            }
+        }
+
+        // 상대 봇듀오가 죽었을때 상대 봇듀오 킬
+        if (Arrays.stream(oppositeDuoNumbers).anyMatch(v -> v == event.victimId)) {
+            if (Arrays.stream(ourBottomDuoNumbers).anyMatch(k -> k == event.killerId)) {
+                bottomData.myDuoKillCount++;
+            }
+
+            // 우리 봇듀오가 죽었을때 상대 봇듀오 킬
+        } else if (Arrays.stream(ourBottomDuoNumbers).anyMatch(v -> v == event.victimId)) {
+            if (Arrays.stream(oppositeDuoNumbers).anyMatch(k -> k == event.killerId)) {
+                bottomData.oppositeDuoKillCount++;
+            }
         }
     }
 
@@ -107,41 +180,38 @@ public class Before_15_Data {
         }
     }
 
-    public void countTurretPlateDestroy(int myTeamId, TeamPosition myTeamPosition,
-                                        MatchTimelineResponseDto.Event event) {
-        if (myTeamPosition.equals(TeamPosition.JUNGLE)) return;
-        LaneType myLaneType = myTeamPosition.parseLaneType();
-        if (event.laneType.equals(myLaneType.toString())) {
-            if (event.teamId == myTeamId) topMidData.myTurretPlateDestroyCount++;
-            else topMidData.oppositeTurretPlateDestroyCount++;
-        }
-    }
-
-    public void countSoloKill(int myLaneNumber, int oppositeLaneNumber, MatchTimelineResponseDto.Event event) {
-        if (event.assistingParticipantIds == null)
-            if (event.killerId == myLaneNumber && event.victimId == oppositeLaneNumber)
-                topMidData.mySoloKillCount++;
-            else if (event.killerId == oppositeLaneNumber && event.victimId == myLaneNumber)
-                topMidData.oppositeSoloKillCount++;
+    private void checkSupportItemFinishedTime(LaneInfo laneInfo, MatchTimelineResponseDto.Event event) {
+        if (event.itemId != 3866) return;
+        if (laneInfo.getMyLaneNumber() == event.getParticipantId())
+            bottomData.mySupportItemFinishedTime = event.timestamp;
+        else if (laneInfo.getOppositeLaneNumber() == event.getParticipantId())
+            bottomData.oppositeSupportItemFinishedTime = event.timestamp;
     }
 
     @Data
-    public static class TopMidData {
+    public static class CommonData {
         private int myTurretPlateDestroyCount;
         private int oppositeTurretPlateDestroyCount;
         private int mySoloKillCount;
         private int oppositeSoloKillCount;
-
     }
 
     @Data
     public static class JgData {
-        private int myKillInvolvementInEnemyCamp;
         private int myTotalKillCount;
         private int myKillCount;
         private int myAssistCount;
-        private int oppositeKillInvolvementInEnemyCamp;
+        private int myKillInvolvementInEnemyCamp;
         private int oppositeKillCount;
         private int oppositeAssistCount;
+        private int oppositeKillInvolvementInEnemyCamp;
+    }
+
+    @Data
+    public static class BottomData {
+        private int myDuoKillCount;
+        private long mySupportItemFinishedTime;
+        private int oppositeDuoKillCount;
+        private long oppositeSupportItemFinishedTime;
     }
 }

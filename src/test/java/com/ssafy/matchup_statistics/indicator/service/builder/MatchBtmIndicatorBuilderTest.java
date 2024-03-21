@@ -38,12 +38,12 @@ class MatchBtmIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
+    @Qualifier("kang_chan_bob_detail")
     @Autowired
-    @Qualifier("hide_on_bush_detail")
     MatchDetailResponseDto matchDetailResponseDto;
 
+    @Qualifier("kang_chan_bob_timeline")
     @Autowired
-    @Qualifier("hide_on_bush_timeline")
     MatchTimelineResponseDto matchTimelineResponseDto;
 
     @Mock
@@ -62,25 +62,25 @@ class MatchBtmIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        // 본인 아이디 : 4
-        // 상대 아이디 : 8
+        // 본인 아이디 : 9
+        // 상대 아이디 : 4
         // 라인 : 원딜
         List<String> matches = new ArrayList<>();
-        matches.add("KR_6987867218");
-        puuid = "eiUZJHoAA1Gp56T_CePfsYGnuOpMsnjDIZsoNCHzRiQcfTqops2BwnPMnLWvG1Vy96bNuHDWx1ZBvw";
+        matches.add("KR_6994313306");
+        puuid = "zWFgg99DZI0jDJko1LubnkROHog-RFuHspB4M6LOx7kCOPB4MHgFgsLFL33aO83f5ZRFlBIsjQvMsw";
         given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
-        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
-        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
+        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
                 .teamPosition(TeamPosition.BOTTOM)
                 .isBottomLane(true)
-                .myLaneNumber(4)
-                .myTeamId(100)
-                .oppositeLaneNumber(9)
-                .myBottomDuoNumber(1)
-                .oppositeBottomDuoNumber(10)
+                .myLaneNumber(9)
+                .myTeamId(200)
+                .oppositeLaneNumber(4)
+                .myBottomDuoNumber(10)
+                .oppositeBottomDuoNumber(5)
                 .build();
 
         // 메타정보 빌드
@@ -136,12 +136,12 @@ class MatchBtmIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getExpDiffer())
-                .isEqualTo(4393 - 5578);
+                .isEqualTo(5100 - 5199);
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getCsDiffer())
-                .isEqualTo(129 - 132);
+                .isEqualTo(121 - 143);
     }
 
     @Test
@@ -158,8 +158,7 @@ class MatchBtmIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getTowerGoldDiffer())
-                // TODO : 확인필요
-                .isEqualTo(1 - 2);
+                .isEqualTo(2 - 2);
     }
 
     @Test
@@ -175,8 +174,7 @@ class MatchBtmIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
-                .getSoloKillDiffer())
-                // TODO : 확인필요
+                .getDuoKillDiffer())
                 .isEqualTo(2 - 0);
     }
 
@@ -195,6 +193,6 @@ class MatchBtmIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getDealDiffer())
-                .isEqualTo(5238 - 3392);
+                .isEqualTo(8081 - 7108);
     }
 }
