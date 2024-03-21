@@ -38,12 +38,12 @@ class MatchUtilIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
+    @Qualifier("kang_chan_bob_detail")
     @Autowired
-    @Qualifier("hide_on_bush_detail")
     MatchDetailResponseDto matchDetailResponseDto;
 
+    @Qualifier("kang_chan_bob_timeline")
     @Autowired
-    @Qualifier("hide_on_bush_timeline")
     MatchTimelineResponseDto matchTimelineResponseDto;
 
     @Mock
@@ -53,6 +53,7 @@ class MatchUtilIndicatorBuilderTest {
     MatchIndicator.Metadata metadata;
     String puuid;
 
+
     @BeforeAll
     public static void initLog() {
         Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -61,25 +62,25 @@ class MatchUtilIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        // 본인 아이디 : 1
-        // 상대 아이디 : 10
+        // 본인 아이디 : 10
+        // 상대 아이디 : 5
         // 라인 : 서폿
         List<String> matches = new ArrayList<>();
-        matches.add("KR_6987867218");
-        puuid = "MluI4kf3Z0BNzvXCb9fQiMakbrYU2_sOJEwYmpfC3RtlZpyBnN2uHHh9VveJYqK7FSEA5sTfIoCY_g";
+        matches.add("KR_6994313306");
+        puuid = "Iv3stYunzeNyf4oz0GapSekWpW8bba3lclg77BiKnR_FrPXzI42G4a7v3Ncq6GAkngWHWQSYCwRDvg";
         given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
-        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
-        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
+        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
                 .teamPosition(TeamPosition.UTILITY)
                 .isBottomLane(true)
-                .myLaneNumber(1)
-                .myTeamId(100)
-                .oppositeLaneNumber(10)
-                .myBottomDuoNumber(4)
-                .oppositeBottomDuoNumber(9)
+                .myLaneNumber(10)
+                .myTeamId(200)
+                .oppositeLaneNumber(5)
+                .myBottomDuoNumber(9)
+                .oppositeBottomDuoNumber(4)
                 .build();
 
         // 메타정보 빌드
@@ -135,7 +136,7 @@ class MatchUtilIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getExpDiffer())
-                .isEqualTo(4393 - 3887);
+                .isEqualTo(3885 - 4224);
     }
 
     @Test
@@ -151,14 +152,13 @@ class MatchUtilIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
-                .getTowerGoldDiffer())
-                // TODO : 확인필요
-                .isEqualTo(1 - 2);
+                .getSupportItemFinishedTimeDiffer())
+                .isEqualTo(806527 - 897281);
     }
 
     @Test
     @Order(5)
-    @DisplayName("원딜 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
+    @DisplayName("서폿 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
     void solokillDifferTest() {
         // given
 
@@ -169,8 +169,7 @@ class MatchUtilIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
-                .getSoloKillDiffer())
-                // TODO : 확인필요
+                .getDuoKillDiffer())
                 .isEqualTo(2 - 0);
     }
 
@@ -189,6 +188,6 @@ class MatchUtilIndicatorBuilderTest {
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getDealDiffer())
-                .isEqualTo(1691 - 2762);
+                .isEqualTo(1966 - 2468);
     }
 }
