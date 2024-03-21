@@ -9,12 +9,14 @@ import lombok.*;
 public class AggresiveLaneAbilility {
     private int dealDiffer;
     private int soloKillDiffer;
+    private int duoKillDiffer;
 
     public void setAggresiveLaneAbililityByData_15(MatchTimelineResponseDto.ParticipantNumber myData, MatchTimelineResponseDto.ParticipantNumber oppositeData) {
-        this.dealDiffer = myData.damageStats.totalDamageDoneToChampions - oppositeData.damageStats.totalDamageDoneToChampions;
+        dealDiffer = myData.damageStats.totalDamageDoneToChampions - oppositeData.damageStats.totalDamageDoneToChampions;
     }
 
     public void setAggresiveLaneAbililityByDataBefore_15(Before_15_Data before15Data) {
-        this.soloKillDiffer = before15Data.getTopMidData().getMySoloKillCount() - before15Data.getTopMidData().getOppositeSoloKillCount();
+        soloKillDiffer = before15Data.getCommonData().getMySoloKillCount() - before15Data.getCommonData().getOppositeSoloKillCount();
+        duoKillDiffer = before15Data.getBottomData().getMyDuoKillCount() - before15Data.getBottomData().getOppositeDuoKillCount();
     }
 }
