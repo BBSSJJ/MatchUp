@@ -55,6 +55,14 @@ spring:
             - LogFilter
 #            - JwtTokenFilter
 
+        - id: chat-server-recruits
+          uri: http://${CHAT_SERVER}:9003
+          predicates:
+            - Path=/api/recruits/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   period:
