@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 /**
  * Match Rest API를 통해 매치정보를 받아온 후, 매치 지표를 생성하는 빌더
