@@ -33,7 +33,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
-@Tag("MatchIndicatorBuilderTest")
+@Tag("MatchLaneIndicatorBuilderTest")
 class MatchUtilIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
@@ -109,21 +109,6 @@ class MatchUtilIndicatorBuilderTest {
 
     @Test
     @Order(2)
-    @DisplayName("메타데이터 잘 가져오는지 테스트")
-    void metadataTest() {
-        // given
-
-        // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
-
-        // then
-        assertThat(matchIndicators.get(0)
-                .getMetadata())
-                .isEqualTo(metadata);
-    }
-
-    @Test
-    @Order(3)
     @DisplayName("서폿 기초체력 : 경험치 차이 확인")
     void xpCsDifferTest() {
         // given
@@ -140,7 +125,7 @@ class MatchUtilIndicatorBuilderTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     @DisplayName("서폿 기초체력 : 서폿템 완성시간 확인")
     void towerGoldDifferTest() {
         // given
@@ -157,7 +142,7 @@ class MatchUtilIndicatorBuilderTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     @DisplayName("서폿 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인")
     void solokillDifferTest() {
         // given
@@ -175,7 +160,7 @@ class MatchUtilIndicatorBuilderTest {
 
 
     @Test
-    @Order(6)
+    @Order(5)
     @DisplayName("서폿 공격적인 라인전 : 딜량차이 확인")
     void dealDifferTest() {
         // given

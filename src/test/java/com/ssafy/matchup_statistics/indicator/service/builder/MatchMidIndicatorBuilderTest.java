@@ -33,7 +33,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Tag("MatchIndicatorBuilderTest")
+@Tag("MatchLaneIndicatorBuilderTest")
 class MatchMidIndicatorBuilderTest {
     @InjectMocks
     MatchIndicatorBuilder target = new MatchIndicatorBuilder();
@@ -111,22 +111,6 @@ class MatchMidIndicatorBuilderTest {
 
     @Test
     @Order(2)
-    @DisplayName("메타데이터 잘 가져오는지 테스트")
-    void metadataTest() {
-        // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
-
-        // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
-
-        // then
-        assertThat(matchIndicators.get(0)
-                .getMetadata())
-                .isEqualTo(metadata);
-    }
-
-    @Test
-    @Order(3)
     @DisplayName("미드 기초체력 : 경험치, cs 차이 확인")
     void xpCsDifferTest() {
         // given
@@ -149,7 +133,7 @@ class MatchMidIndicatorBuilderTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     @DisplayName("미드 기초체력 :  포골차이 확인")
     void towerGoldDifferTest() {
         // given
@@ -167,7 +151,7 @@ class MatchMidIndicatorBuilderTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     @DisplayName("미드 공격적인 라인전 : 솔킬차이 확인")
     void solokillDifferTest() {
         // given
@@ -186,7 +170,7 @@ class MatchMidIndicatorBuilderTest {
 
 
     @Test
-    @Order(6)
+    @Order(5)
     @DisplayName("미드 공격적인 라인전 : 딜량차이 확인")
     void dealDifferTest() {
         // given

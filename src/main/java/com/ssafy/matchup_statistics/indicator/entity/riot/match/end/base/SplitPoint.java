@@ -6,5 +6,5 @@ import lombok.Data;
 public class SplitPoint {
     private Integer deathsDifferTurretKills;
     private Double damageDealtToTurretsPerTotalDamageDealt;
-    private Double totalTowerDamageDonePerTeamTotalTowerDamageDone;
+    private Double damageDealtToTurretsPerTeamTotalTowerDamageDone;
 }
