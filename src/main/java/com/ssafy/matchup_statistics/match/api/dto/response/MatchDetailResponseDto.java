@@ -57,6 +57,8 @@ public class MatchDetailResponseDto {
         public int flawlessAces;
         public int fullTeamTakedown;
         public double gameLength;
+        public double shortestTimeToAceFromFirstTakedown;
+        public int fasterSupportQuestCompletion;
         public int getTakedownsInAllLanesEarlyJungleAsLaner;
         public double goldPerMinute;
         public int hadOpenNexus;
@@ -215,6 +217,18 @@ public class MatchDetailResponseDto {
         public int playerScore7;
         public int playerScore8;
         public int playerScore9;
+        public int PlayerScore0;
+        public int PlayerScore1;
+        public int PlayerScore10;
+        public int PlayerScore11;
+        public int PlayerScore2;
+        public int PlayerScore3;
+        public int PlayerScore4;
+        public int PlayerScore5;
+        public int PlayerScore6;
+        public int PlayerScore7;
+        public int PlayerScore8;
+        public int PlayerScore9;
     }
 
     @Data

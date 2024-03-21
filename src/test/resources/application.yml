@@ -1,0 +1,17 @@
+logging:
+  level:
+    root: info
+
+# riot api
+riot:
+  api-key: ${RIOT_API_KEY}
+
+# mongodb
+mongodb:
+  matchup_statistics_db:
+    connectionString: mongodb://${MATCHUP_STATISTIC_DB}:3311/matchup_statistics_db
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
