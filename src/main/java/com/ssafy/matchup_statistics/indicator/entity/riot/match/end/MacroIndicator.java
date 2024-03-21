@@ -1,14 +1,21 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.end;
 
+import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.base.*;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.entity.Match;
+import lombok.Data;
 
-import java.util.List;
-
+@Data
 public class MacroIndicator {
-    private DetailMacroIndicator detailMacroIndicator;
-    private List<String> calculatedMatchIds;
 
-    public MacroIndicator(MatchDetailResponseDto matchDetailResponseDto){};
+    private SplitPoint splitPoint;
+    private InitiatingPoint initiatingPoint;
+    private JungleHoldPoint jungleHoldPoint;
+    private ObjectivePoint objectivePoint;
+    private VisionPoint visionPoint;
+    private TotalDealPoint totalDealPoint;
 
+
+    public MacroIndicator(MatchDetailResponseDto matchDetailResponseDto) {
+
+    }
 }

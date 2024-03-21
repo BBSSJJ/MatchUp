@@ -1,7 +1,6 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match;
 
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.*;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.EtcIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroIndicator;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
@@ -16,7 +15,6 @@ public class MatchIndicator {
     private Metadata metadata;
     private LaneIndicator laneIndicator;
     private MacroIndicator macroIndicator;
-    private EtcIndicator etcIndicator;
 
     public MatchIndicator(
             String puuid,
@@ -28,8 +26,8 @@ public class MatchIndicator {
         this.metadata = new Metadata(laneInfo, matchTimelineResponseDto);
 
         // 세부 지표 생성
-        this.macroIndicator = new MacroIndicator(matchDetailResponseDto);
-        this.etcIndicator = new EtcIndicator(matchDetailResponseDto);
+
+        // 라인지표
         switch (laneInfo.getTeamPosition()) {
             case TOP:
                 this.laneIndicator = new TopIndicator(laneInfo, matchTimelineResponseDto);
@@ -47,6 +45,9 @@ public class MatchIndicator {
                 this.laneIndicator = new UtilIndicator(laneInfo, matchTimelineResponseDto);
                 break;
         }
+
+        // 운영지표
+        this.macroIndicator = new MacroIndicator(matchDetailResponseDto);
     }
 
     @Data

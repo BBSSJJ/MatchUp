@@ -27,9 +27,13 @@ public class MatchIndicatorBuilder {
     public List<MatchIndicator> buildMatches(String puuid) {
         List<String> matchesResponseDtoByPuuid = matchRestApi.getMatchesResponseDtoByPuuid(puuid);
         List<MatchIndicator> matchIndicators = new ArrayList<>();
+
+        // 20개 매치에 대해 각각 세부정보 조회
         matchesResponseDtoByPuuid.forEach(matchId -> {
             MatchDetailResponseDto matchDetailResponseDtoByMatchId = matchRestApi.getMatchDetailResponseDtoByMatchId(matchId);
             MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = matchRestApi.getMatchTimelineResponseDtoByMatchId(matchId);
+
+            // 세부정보를 통해 매치 지표 생성
             MatchIndicator matchIndicator = new MatchIndicator(puuid, matchDetailResponseDtoByMatchId, matchTimelineResponseDtoByMatchId);
             matchIndicators.add(matchIndicator);
         });

@@ -8,7 +8,6 @@ public class UtilIndicator extends LaneIndicator {
     public UtilIndicator(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
         // 15분까지 데이터 모두 확인
         Before_15_Data before15Data = new Before_15_Data(laneInfo, matchTimelineResponseDto);
-        System.out.println("before15Data = " + before15Data);
 
         // 15분 데이터만 확인
         MatchTimelineResponseDto.ParticipantNumber my15Data = super.getMy_15Data(laneInfo, matchTimelineResponseDto);
