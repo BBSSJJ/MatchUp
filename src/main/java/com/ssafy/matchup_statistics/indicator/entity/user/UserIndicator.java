@@ -5,4 +5,7 @@ public class UserIndicator {
     private final Long[] playTimeSpectrum = new Long[2];
     private Long avgPlayTime;
     private Long fourScore;
+    public UserIndicator () {
+
+    }
 }

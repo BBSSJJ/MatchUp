@@ -33,7 +33,7 @@ class RiotRestApiTest {
     @DisplayName("puuid 조회 후 20개 요청 불러오는지 테스트")
     void getTwentyRequestTest(){
         //given
-        String summonerName = "Hide on bush";
+        String summonerName = "보던가";
 
         //when : puuid, matches, league 받아오는지 검증
         SummonerInfoResponseDto summonerInfoResponseDto = summonerRestApi.getSummonerInfoResponseDtoByName(summonerName);
@@ -63,9 +63,9 @@ class RiotRestApiTest {
                     .getFrames()
                     .get(0)
                     .getParticipantFrames()._1.currentGold).isEqualTo(500);
-//            log.info("매치 타임라인 확인 : {}", matchTimelineDto);
         });
-
+        MatchTimelineResponseDto cur = matchRestApi.getMatchTimelineResponseDtoByMatchId(matches.get(0));
+//        log.info("매치 타임라인 확인 : {}", cur);
     }
 
 }
