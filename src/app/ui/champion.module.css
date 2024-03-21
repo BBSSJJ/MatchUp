@@ -1,4 +1,4 @@
-.movie {
+.champ {
     display: grid;
     grid-template-rows: 1fr auto;
     gap: 20px;
@@ -6,21 +6,21 @@
     place-items: center;
 }
 
-.movie img {
+.champ img {
     max-width: 100%;
     min-height: 100%;
     border-radius: 10px;
     transition: opacity 0.3s ease-in-out;
 }
 
-.movie img {
+.champ img {
     opacity: 0.75;
 }
 
-.movie img:hover {
+.champ img:hover {
     opacity: 1;
 }
 
-.movie a {
+.champ a {
     text-align: center;
 }
