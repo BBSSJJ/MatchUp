@@ -1,6 +1,8 @@
 package com.ssafy.matchup_statistics.match.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.matchup_statistics.global.exception.RiotDataError;
+import com.ssafy.matchup_statistics.global.exception.RiotDataException;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class MatchTimelineResponseDto {
     public Info info;
 
     @Data
-    public static class _1 {
+    public static class ParticipantNumber {
         public ChampionStats championStats;
         public int currentGold;
         public DamageStats damageStats;
@@ -25,151 +27,6 @@ public class MatchTimelineResponseDto {
         public int totalGold;
         public int xp;
     }
-
-    @Data
-    public static class _10 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _2 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _3 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _4 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _5 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _6 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _7 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _8 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
-    @Data
-    public static class _9 {
-        public ChampionStats championStats;
-        public int currentGold;
-        public DamageStats damageStats;
-        public int goldPerSecond;
-        public int jungleMinionsKilled;
-        public int level;
-        public int minionsKilled;
-        public int participantId;
-        public Position position;
-        public int timeEnemySpentControlled;
-        public int totalGold;
-        public int xp;
-    }
-
     @Data
     public static class ChampionStats {
         public int abilityHaste;
@@ -250,6 +107,7 @@ public class MatchTimelineResponseDto {
         public String towerType;
         public long gameId;
         public int winningTeam;
+        public int actualStartTime;
     }
 
     @Data
@@ -284,25 +142,41 @@ public class MatchTimelineResponseDto {
     @Data
     public static class ParticipantFrames {
         @JsonProperty("1")
-        public _1 _1;
+        public ParticipantNumber _1;
         @JsonProperty("2")
-        public _2 _2;
+        public ParticipantNumber _2;
         @JsonProperty("3")
-        public _3 _3;
+        public ParticipantNumber _3;
         @JsonProperty("4")
-        public _4 _4;
+        public ParticipantNumber _4;
         @JsonProperty("5")
-        public _5 _5;
+        public ParticipantNumber _5;
         @JsonProperty("6")
-        public _6 _6;
+        public ParticipantNumber _6;
         @JsonProperty("7")
-        public _7 _7;
+        public ParticipantNumber _7;
         @JsonProperty("8")
-        public _8 _8;
+        public ParticipantNumber _8;
         @JsonProperty("9")
-        public _9 _9;
+        public ParticipantNumber _9;
         @JsonProperty("10")
-        public _10 _10;
+        public ParticipantNumber _10;
+
+        public ParticipantNumber getDataByNumber(int number) {
+            return switch (number) {
+                case 1 -> _1;
+                case 2 -> _2;
+                case 3 -> _3;
+                case 4 -> _4;
+                case 5 -> _5;
+                case 6 -> _6;
+                case 7 -> _7;
+                case 8 -> _8;
+                case 9 -> _9;
+                case 10 -> _10;
+                default -> throw new RiotDataException(RiotDataError.ILLEGAL_LANE_NUMBER_ERROR);
+            };
+        }
     }
 
     @Data
