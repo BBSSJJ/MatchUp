@@ -2,7 +2,7 @@
 <html xmlns:str="http://exslt.org/strings" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Test Results &mdash; 매치 라인지표 테스트</title>
+        <title>Test Results &mdash; MatchMacroIndicatorBuilderTest</title>
         <style type="text/css">
           html {
             height: 100%
@@ -572,9 +572,9 @@ jQuery.cookie = function(name, value, options) {
     <body>
         <div id="container">
             <div id="header">
-                <div class="time" xmlns="">164 ms</div>
+                <div class="time" xmlns="">126 ms</div>
                 <h1>
-                    매치 라인지표 테스트: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">25 total, </span><span class="failed">8 failed, </span><span class="passed">17 passed</span></strong>
+                    MatchMacroIndicatorBuilderTest: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">7 total, </span><span class="passed">7 passed</span></strong>
                 </h1>
                 <div id="treecontrol">
                     <ul>
@@ -591,294 +591,45 @@ jQuery.cookie = function(name, value, options) {
             </div>
             <div id="content">
                 <ul id="tree">
-                    "C:\Program Files\Java\jdk-17\bin\java.exe" -ea -Didea.test.cyclic.buffer.size=1048576 "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.4\lib\idea_rt.jar=52384:C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.4\bin" -Dfile.encoding=UTF-8 -classpath "C:\Users\SSAFY\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.2\junit-platform-launcher-1.10.2.jar;C:\Users\SSAFY\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\SSAFY\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\SSAFY\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\SSAFY\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\SSAFY\.m2\repository\org\junit\vintage\junit-vintage-engine\5.10.2\junit-vintage-engine-5.10.2.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.4\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.4\plugins\junit\lib\junit5-rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.4\plugins\junit\lib\junit-rt.jar;C:\ssafy\A405\build\classes\java\test;C:\ssafy\A405\build\resources\test;C:\ssafy\A405\build\classes\java\main;C:\ssafy\A405\build\resources\main;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-security\3.2.3\f6353a8e62be7372b3968ab71e613b5188d55c3b\spring-boot-starter-security-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-web\3.2.3\bf2b775d4f4e6349129c64de30939a5493779706\spring-boot-starter-web-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-mongodb\3.2.3\f694a3e4b7cf60003cdb152a19b0fd3fdec11c60\spring-boot-starter-data-mongodb-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mapstruct\mapstruct\1.5.3.Final\5f5d063858957ef086858bc3d003f702082297f3\mapstruct-1.5.3.Final.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.projectlombok\lombok\1.18.30\f195ee86e6c896ea47a1d39defbe20eb59cd149d\lombok-1.18.30.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-test\3.2.3\edfce43fbd303d556f3951af65dfb6e335d8230e\spring-boot-starter-test-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-test\6.2.2\6d8452daa49f69078b7952f1c5229b308276819b\spring-security-test-6.2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter\3.2.3\15f3e03b0fd9570f90bdce9651610cc152534cf4\spring-boot-starter-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-config\6.2.2\e1e3d332d9268aca2ce321be73215222f9a721f\spring-security-config-6.2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-web\6.2.2\ad30f4614a6e88a1ac7e0b1e701d950d7bcda143\spring-security-web-6.2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-aop\6.1.4\26ae2c9e7f69b0235a2faca1c58416c51eaebef6\spring-aop-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-json\3.2.3\c71ec683425f09b7a213358d3b22959d929d1108\spring-boot-starter-json-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-webmvc\6.1.4\e7aad7c53e05c8772209e915029e121262a7bc33\spring-webmvc-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-tomcat\3.2.3\ac392404d41766194b8fce6834c71879f9e8f479\spring-boot-starter-tomcat-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-web\6.1.4\b237532e03330a7cf8f66dc147e62bbbe44c702f\spring-web-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-mongodb\4.2.3\dbeeeae37477f6d9be5cf96fa7e58dc78f91e38d\spring-data-mongodb-4.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mongodb\mongodb-driver-sync\4.11.1\745dd8183b5f89e6211db8c1acdf30cc44447759\mongodb-driver-sync-4.11.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-test-autoconfigure\3.2.3\ea2e1778142fc8a05bd9325b433b13fe0a6845c1\spring-boot-test-autoconfigure-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-test\3.2.3\4f440305c921caa9eb11624c1c6fa8fcc5200a64\spring-boot-test-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.jayway.jsonpath\json-path\2.9.0\37fe2217f577b0b68b18e62c4d17a8858ecf9b69\json-path-2.9.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\jakarta.xml.bind\jakarta.xml.bind-api\4.0.1\ca2330866cbc624c7e5ce982e121db1125d23e15\jakarta.xml.bind-api-4.0.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\net.minidev\json-smart\2.5.0\57a64f421b472849c40e77d2e7cce3a141b41e99\json-smart-2.5.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.assertj\assertj-core\3.24.2\ebbf338e33f893139459ce5df023115971c2786f\assertj-core-3.24.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.awaitility\awaitility\4.2.0\2c39784846001a9cffd6c6b89c78de62c0d80fb8\awaitility-4.2.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.hamcrest\hamcrest\2.2\1820c0968dba3a11a1b30669bb1f01978a91dedc\hamcrest-2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.jupiter\junit-jupiter\5.10.2\831c0b86ddc2ce38391c5b81ea662b0cfdc02cce\junit-jupiter-5.10.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mockito\mockito-junit-jupiter\5.7.0\ac2d6a3431747a7986b8f4abef465f72bf3a21ae\mockito-junit-jupiter-5.7.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mockito\mockito-core\5.7.0\a1c258331ab91d66863c983aff7136357e9de056\mockito-core-5.7.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.skyscreamer\jsonassert\1.5.1\6d842d0faf4cf6725c509a5e5347d319ee0431c3\jsonassert-1.5.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-test\6.1.4\acef358552d3bb56a4da0894b8d2277de8ae39d9\spring-test-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-core\6.1.4\3b4dde8f55c3d5d4e948de64b866d7bb27e5a8d4\spring-core-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.xmlunit\xmlunit-core\2.9.1\e5833662d9a1279a37da3ef6f62a1da29fcd68c4\xmlunit-core-2.9.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-core\6.2.2\8cf7e96179c6f253ab36f76ebb24538a7e619f49\spring-security-core-6.2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-autoconfigure\3.2.3\59db74eb4196885bb5a149417ab1ab51dc9b6952\spring-boot-autoconfigure-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot\3.2.3\b4aa6e3fdc4078fee4a4b9d702d9cc64e3fad1d4\spring-boot-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-logging\3.2.3\c186015229d7f5cbd30ea99bf903a8cede6d849f\spring-boot-starter-logging-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\jakarta.annotation\jakarta.annotation-api\2.1.1\48b9bda22b091b1f48b13af03fe36db3be6e1ae3\jakarta.annotation-api-2.1.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.yaml\snakeyaml\2.2\3af797a25458550a16bf89acc8e4ab2b7f2bfce0\snakeyaml-2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-context\6.1.4\765316bef55e41e4523f9b2780b8721ce5dd0fe2\spring-context-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-beans\6.1.4\e311cc9937d522a1051622580b4a2c250fc74164\spring-beans-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-expression\6.1.4\a1f2e3af83c7222b7f95f68a8e0666fdcceb35e1\spring-expression-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.datatype\jackson-datatype-jsr310\2.15.4\7de629770a4559db57128d35ccae7d2fddd35db3\jackson-datatype-jsr310-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.module\jackson-module-parameter-names\2.15.4\e654497a08359db2521b69b5f710e00836915d8c\jackson-module-parameter-names-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.datatype\jackson-datatype-jdk8\2.15.4\694777f182334a21bf1aeab1b04cc4398c801f3f\jackson-datatype-jdk8-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.15.4\560309fc381f77d4d15c4a4cdaa0db5025c4fd13\jackson-databind-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-websocket\10.1.19\adf4710fac2471236f8a466ca678cdf7e6a8257c\tomcat-embed-websocket-10.1.19.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-core\10.1.19\3dbbca8acbd4dd6a137c3d6f934a2931512b42ce\tomcat-embed-core-10.1.19.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apache.tomcat.embed\tomcat-embed-el\10.1.19\c61a582c391aca130884a5421deedfe1a96c7415\tomcat-embed-el-10.1.19.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\io.micrometer\micrometer-observation\1.12.3\105f768c211564fcebe4d79419bda4ebef0d0ac7\micrometer-observation-1.12.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-tx\6.1.4\7179b3c7febc0514556ea4e3f1613cacb358078d\spring-tx-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-commons\3.2.3\9b09afa13803c321e4b72ef5448e0d93d9f8ca18\spring-data-commons-3.2.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mongodb\mongodb-driver-core\4.11.1\ff92549ef5bdfbc451edeb23dd42ee395223d6e4\mongodb-driver-core-4.11.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\2.0.12\48f109a2a6d8f446c794f3e3fa0d86df0cdfa312\slf4j-api-2.0.12.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mongodb\bson\4.11.1\b88ffb4f994f5fef89084f037bb17f8285aaa925\bson-4.11.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\jakarta.activation\jakarta.activation-api\2.1.2\640c0d5aff45dbff1e1a1bc09673ff3a02b1ba12\jakarta.activation-api-2.1.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\net.minidev\accessors-smart\2.5.0\aca011492dfe9c26f4e0659028a4fe0970829dd8\accessors-smart-2.5.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy\1.14.12\6e37f743dc15a8d7a4feb3eb0025cbc612d5b9e1\byte-buddy-1.14.12.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.jupiter\junit-jupiter-params\5.10.2\359132c82a9d3fa87a325db6edd33b5fdc67a3d8\junit-jupiter-params-5.10.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.jupiter\junit-jupiter-api\5.10.2\fb55d6e2bce173f35fd28422e7975539621055ef\junit-jupiter-api-5.10.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.14.12\be4984cb6fd1ef1d11f218a648889dfda44b8a15\byte-buddy-agent-1.14.12.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.vaadin.external.google\android-json\0.0.20131108.vaadin1\fa26d351fe62a6a17f5cda1287c1c6110dec413f\android-json-0.0.20131108.vaadin1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework\spring-jcl\6.1.4\a244bd674a5431dfdce68d28cdf857104e6fff67\spring-jcl-6.1.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.springframework.security\spring-security-crypto\6.2.2\bd1b47ce6593b4d66a1f12e023b59dacc00db00a\spring-security-crypto-6.2.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\ch.qos.logback\logback-classic\1.4.14\d98bc162275134cdf1518774da4a2a17ef6fb94d\logback-classic-1.4.14.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-to-slf4j\2.21.1\d77b2ba81711ed596cd797cc2b5b5bd7409d841c\log4j-to-slf4j-2.21.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.slf4j\jul-to-slf4j\2.0.12\eb5f48f782b41cc881b0bf1fb4d88ae2ff6d5b93\jul-to-slf4j-2.0.12.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.15.4\5223ea5a9bf52cdc9c5e537a0e52f2432eaf208b\jackson-annotations-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.15.4\aebe84b45360debad94f692a4074c6aceb535fa0\jackson-core-2.15.4.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\io.micrometer\micrometer-commons\1.12.3\83add2dda5cdc811fefb83e858c7412a176fe5b1\micrometer-commons-1.12.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm\9.3\8e6300ef51c1d801a7ed62d07cd221aca3a90640\asm-9.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apiguardian\apiguardian-api\1.1.2\a231e0d844d2721b0fa1b238006d15c6ded6842a\apiguardian-api-1.1.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.platform\junit-platform-commons\1.10.2\3197154a1f0c88da46c47a9ca27611ac7ec5d797\junit-platform-commons-1.10.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.opentest4j\opentest4j\1.3.0\152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e\opentest4j-1.3.0.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\ch.qos.logback\logback-core\1.4.14\4d3c2248219ac0effeb380ed4c5280a80bf395e8\logback-core-1.4.14.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.apache.logging.log4j\log4j-api\2.21.1\74c65e87b9ce1694a01524e192d7be989ba70486\log4j-api-2.21.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.jupiter\junit-jupiter-engine\5.10.2\f1f8fe97bd58e85569205f071274d459c2c4f8cd\junit-jupiter-engine-5.10.2.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.objenesis\objenesis\3.3\1049c09f1de4331e8193e579448d0916d75b7631\objenesis-3.3.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.mongodb\bson-record-codec\4.11.1\d7c145266733ead62fa55883b83840931f6eefe5\bson-record-codec-4.11.1.jar;C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\org.junit.platform\junit-platform-engine\1.10.2\d53bb4e0ce7f211a498705783440614bfaf0df2e\junit-platform-engine-1.10.2.jar;C:\Users\SSAFY\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\SSAFY\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar" com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 @w@C:\Users\SSAFY\AppData\Local\Temp\idea_working_dirs_junit.tmp @C:\Users\SSAFY\AppData\Local\Temp\idea_junit.tmp
-Process finished with exit code -1
-
                     <li xmlns="" class="level top open">
                         <span><em class="time">
-                                <div class="time">90 ms</div>
-                            </em>MatchJgIndicatorBuilderTest</span>
+                                <div class="time">126 ms</div>
+                            </em>MatchMacroIndicatorBuilderTest</span>
                         <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">90 ms</div>
-                                    </em><em class="status">passed</em>정글 공격적인 라인전 : 적진영 킬관여 확인</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top open">
-                        <span><em class="time">
-                                <div class="time">18 ms</div>
-                            </em>MatchMidIndicatorBuilderTest</span>
-                        <ul>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">4 ms</div>
+                                        <div class="time">103 ms</div>
                                     </em><em class="status">passed</em>라인 정보 잘 가져오는지 테스트</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">4 ms</div>
-                                    </em><em class="status">passed</em>메타데이터 잘 가져오는지 테스트</span>
+                                        <div class="time">7 ms</div>
+                                    </em><em class="status">passed</em>스플릿 점수 확인 : 타워철거, 타워 데미지 비중, 팀 내 타워데미지 비중</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">3 ms</div>
-                                    </em><em class="status">passed</em>미드 기초체력 : 경험치, cs 차이 확인</span>
+                                    </em><em class="status">passed</em>이니시 점수 확인 : cc시간, 받은 피해량, 감소시킨 데미지</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">3 ms</div>
-                                    </em><em class="status">passed</em>미드 기초체력 :  포골차이 확인</span>
+                                    </em><em class="status">passed</em>정글 장악 점수 : 빼먹은 정글몬스터</span>
                             </li>
                             <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>미드 공격적인 라인전 : 솔킬차이 확인</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>미드 공격적인 라인전 : 딜량차이 확인</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top open">
-                        <span><em class="time">
-                                <div class="time">10 ms</div>
-                            </em>MatchTopIndicatorBuilderTest</span>
-                        <ul>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>라인 정보 잘 가져오는지 테스트</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>메타데이터 잘 가져오는지 테스트</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>탑 기초체력 : 경험치, cs 차이 확인</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>탑 기초체력 :  포골차이 확인</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>탑 공격적인 라인전 : 솔킬차이 확인</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>탑 공격적인 라인전 : 딜량차이 확인</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top failed open">
-                        <span><em class="time">
-                                <div class="time">30 ms</div>
-                            </em>MatchBtmIndicatorBuilderTest</span>
-                        <ul>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>라인 정보 잘 가져오는지 테스트</span>
-                            </li>
-                            <li class="level test">
-                                <span><em class="time">
-                                        <div class="time">1 ms</div>
-                                    </em><em class="status">passed</em>메타데이터 잘 가져오는지 테스트</span>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">19 ms</div>
-                                    </em><em class="status">failed</em>원딜 기초체력 : 경험치, cs 차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: -1185
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchBtmIndicatorBuilderTest.xpCsDifferTest(MatchBtmIndicatorBuilderTest.java:139)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">failed</em>원딜 기초체력 : 포골차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: -1
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchBtmIndicatorBuilderTest.towerGoldDifferTest(MatchBtmIndicatorBuilderTest.java:162)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="level test failed open">
                                 <span><em class="time">
                                         <div class="time">3 ms</div>
-                                    </em><em class="status">failed</em>원딜 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: 2
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchBtmIndicatorBuilderTest.solokillDifferTest(MatchBtmIndicatorBuilderTest.java:180)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
+                                    </em><em class="status">passed</em>오브젝트 점수 : 획득한 오브젝트 차이</span>
                             </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">3 ms</div>
-                                    </em><em class="status">failed</em>원딜 공격적인 라인전 : 딜량차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: 1846
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchBtmIndicatorBuilderTest.dealDifferTest(MatchBtmIndicatorBuilderTest.java:198)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level top failed open">
-                        <span><em class="time">
-                                <div class="time">16 ms</div>
-                            </em>MatchUtilIndicatorBuilderTest</span>
-                        <ul>
                             <li class="level test">
                                 <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">passed</em>라인 정보 잘 가져오는지 테스트</span>
+                                        <div class="time">3 ms</div>
+                                    </em><em class="status">passed</em>시야 점수 : 시야 점수</span>
                             </li>
                             <li class="level test">
                                 <span><em class="time">
                                         <div class="time">4 ms</div>
-                                    </em><em class="status">passed</em>메타데이터 잘 가져오는지 테스트</span>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">3 ms</div>
-                                    </em><em class="status">failed</em>서폿 기초체력 : 경험치 차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: 506
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchUtilIndicatorBuilderTest.xpCsDifferTest(MatchUtilIndicatorBuilderTest.java:138)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">failed</em>서폿 기초체력 : 서폿템 완성시간 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: -1
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchUtilIndicatorBuilderTest.towerGoldDifferTest(MatchUtilIndicatorBuilderTest.java:156)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">3 ms</div>
-                                    </em><em class="status">failed</em>원딜 공격적인 라인전 : 솔킬 및 듀오킬 차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: 2
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchUtilIndicatorBuilderTest.solokillDifferTest(MatchUtilIndicatorBuilderTest.java:174)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="level test failed open">
-                                <span><em class="time">
-                                        <div class="time">2 ms</div>
-                                    </em><em class="status">failed</em>서폿 공격적인 라인전 : 딜량차이 확인</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stderr">org.opentest4j.AssertionFailedError: 
-<br/>expected: -1071
-<br/> but was: 0
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-<br/>	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-<br/>	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-<br/>	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-<br/>	at com.ssafy.matchup_statistics.indicator.service.builder.lane.MatchUtilIndicatorBuilderTest.dealDifferTest(MatchUtilIndicatorBuilderTest.java:192)
-<br/>	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/>	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-<br/></span>
-                                    </li>
-                                </ul>
+                                    </em><em class="status">passed</em>딜 점수 : 분당 딜, 골드당 딜, 딜 비중</span>
                             </li>
                         </ul>
                     </li>
@@ -886,7 +637,7 @@ Process finished with exit code -1
             </div>
         </div>
         <div id="footer">
-            <p>Generated by IntelliJ IDEA on 24. 3. 21. 오전 9:11</p>
+            <p>Generated by IntelliJ IDEA on 24. 3. 21. 오후 3:50</p>
         </div>
     </body>
 </html>
