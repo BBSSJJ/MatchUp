@@ -24,10 +24,4 @@ public class SummonerIndicator {
         this.matchIndicators = matchIndicators;
         this.leagueIndicator = leagueIndicator;
     }
-
-    public void eraseUnnecessarilyField() {
-        this.matchIndicators.forEach(m -> {
-            m.getMacroIndicator().setMacroData(null);
-        });
-    }
 }

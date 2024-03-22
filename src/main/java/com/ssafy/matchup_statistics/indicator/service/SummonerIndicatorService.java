@@ -25,9 +25,6 @@ public class SummonerIndicatorService {
         LeagueIndicator leagueIndicator = leagueIndicatorBuilder.build(summonerInfo.getId());
         List<MatchIndicator> matchIndicators = matchIndicatorBuilder.buildMatches(summonerInfo.getPuuid());
 
-        SummonerIndicator summonerIndicator = new SummonerIndicator(summonerInfo.getId(), matchIndicators, leagueIndicator);
-        summonerIndicator.eraseUnnecessarilyField();
-
-        return summonerIndicator;
+        return new SummonerIndicator(summonerInfo.getId(), matchIndicators, leagueIndicator);
     }
 }
