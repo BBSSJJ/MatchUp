@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import {Button, Avatar} from "@nextui-org/react";
 
 const SideBar: React.FC = () => {
+
 	return (
 		<div style={{
 			position: 'fixed', // 고정 위치
