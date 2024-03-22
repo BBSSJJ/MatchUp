@@ -40,6 +40,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         Optional<User> optionalUser = userRepository.findUserBySnsTypeAndSnsId(snsType, snsId);
 
+        // TODO : 유저 정보랑 함께 보내주기
         if (optionalUser.isEmpty()) {
             response.setHeader("Sns-Type", String.valueOf(snsType));
             response.setHeader("Sns-Id", snsId);
