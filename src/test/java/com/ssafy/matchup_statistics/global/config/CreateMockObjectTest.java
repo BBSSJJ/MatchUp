@@ -1,7 +1,7 @@
 package com.ssafy.matchup_statistics.global.config;
 
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

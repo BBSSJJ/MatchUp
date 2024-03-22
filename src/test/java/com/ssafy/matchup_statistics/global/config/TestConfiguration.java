@@ -1,11 +1,9 @@
 package com.ssafy.matchup_statistics.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
-import org.springframework.beans.factory.annotation.Value;
+import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.io.File;

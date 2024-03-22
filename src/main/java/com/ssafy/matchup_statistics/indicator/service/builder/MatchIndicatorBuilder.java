@@ -1,11 +1,10 @@
 package com.ssafy.matchup_statistics.indicator.service.builder;
 
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
-import com.ssafy.matchup_statistics.match.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.global.api.MatchRestApi;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
