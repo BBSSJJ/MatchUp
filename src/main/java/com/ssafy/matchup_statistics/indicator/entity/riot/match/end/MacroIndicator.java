@@ -16,10 +16,7 @@ public class MacroIndicator {
     private TotalDealPoint totalDealPoint;
     private MacroData macroData;
 
-    public MacroIndicator(LaneInfo laneInfo, MatchDetailResponseDto matchDetailResponseDto) {
-
-        // 라인정보와 response로부터 운영 정보 생성
-        macroData = new MacroData(laneInfo, matchDetailResponseDto);
+    public MacroIndicator(MacroData macroData) {
 
         // 운영정보와 매치 dto로부터 각 지표 생성
         splitPoint = new SplitPoint(macroData);
