@@ -1,5 +1,4 @@
 import Image from "next/image"
-import axios from "axios"
 import MatchupChats from "../ui/onmatchup/matchupChats"
 
 export default async function Page() {
