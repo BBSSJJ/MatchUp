@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -22,6 +23,9 @@ import java.util.Optional;
 @Slf4j
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Value("${ip.server.web}")
+    String webServer;
+
     private final UserRepository userRepository;
 
     @Override
@@ -31,10 +35,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         SnsType snsType = oAuth2User.getSnsType();
         String snsId = oAuth2User.getSnsId();
 
+        log.info("get user data success : {} / {}", snsType, snsId);
+        log.info(oAuth2User.toString());
+
         Optional<User> optionalUser = userRepository.findUserBySnsTypeAndSnsId(snsType, snsId);
 
         if (optionalUser.isEmpty()) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setHeader("Sns-Type", String.valueOf(snsType));
+            response.setHeader("Sns-Id", snsId);
+            response.sendRedirect("http://" + webServer + ":3000/login/riot-login/" + snsType + "/" + snsId);
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
         else {

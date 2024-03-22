@@ -32,6 +32,7 @@ ip:
   server:
     user: ${USER_SERVER}
     auth: ${AUTH_SERVER}
+    web: ${WEB_SERVER}
 
 id:
   db: ${DB_ID}
@@ -41,6 +42,7 @@ password:
   db: ${DB_PASSWORD}
 
 jwt:
+  secret-key: ${JWT_SECRET_KEY}
   period:
     access-token: 86400000 # 1일
     refresh-token: 2419200000 #4주
