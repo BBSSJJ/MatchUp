@@ -1,8 +1,8 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base;
 
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

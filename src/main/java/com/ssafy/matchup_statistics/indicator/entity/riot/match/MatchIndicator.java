@@ -1,12 +1,10 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match;
 
-import com.ssafy.matchup_statistics.global.exception.RiotDataError;
-import com.ssafy.matchup_statistics.global.exception.RiotDataException;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.*;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroData;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroIndicator;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.ssafy.matchup_statistics.indicator.service.builder;
 
 import com.ssafy.matchup_statistics.indicator.entity.riot.league.LeagueIndicator;
-import com.ssafy.matchup_statistics.league.api.LeagueRestApi;
+import com.ssafy.matchup_statistics.global.api.LeagueRestApi;
 import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

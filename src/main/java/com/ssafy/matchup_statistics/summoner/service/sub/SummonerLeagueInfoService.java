@@ -1,11 +1,11 @@
 package com.ssafy.matchup_statistics.summoner.service.sub;
 
 import com.ssafy.matchup_statistics.account.api.AccountRestApi;
-import com.ssafy.matchup_statistics.league.api.LeagueRestApi;
+import com.ssafy.matchup_statistics.global.api.LeagueRestApi;
 import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
-import com.ssafy.matchup_statistics.summoner.api.SummonerRestApi;
+import com.ssafy.matchup_statistics.global.api.SummonerRestApi;
 import com.ssafy.matchup_statistics.account.dto.response.AccountResponseDto;
-import com.ssafy.matchup_statistics.summoner.dto.response.SummonerInfoResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

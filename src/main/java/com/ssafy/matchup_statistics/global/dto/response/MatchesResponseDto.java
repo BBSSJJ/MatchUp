@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.match.api.dto;
+package com.ssafy.matchup_statistics.global.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;

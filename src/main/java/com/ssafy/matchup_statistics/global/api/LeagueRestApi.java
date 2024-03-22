@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.league.api;
+package com.ssafy.matchup_statistics.global.api;
 
 import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
 import lombok.RequiredArgsConstructor;

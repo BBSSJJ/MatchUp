@@ -1,14 +1,11 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning;
 
-import com.ssafy.matchup_statistics.global.exception.RiotDataError;
-import com.ssafy.matchup_statistics.global.exception.RiotDataException;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneType;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base.AggresiveLaneAbilility;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base.BasicWeight;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.base.Before_15_Data;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchTimelineResponseDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +17,7 @@ public abstract class LaneIndicator {
     private BasicWeight basicWeight = new BasicWeight();
     private AggresiveLaneAbilility aggresiveLaneAbilility = new AggresiveLaneAbilility();
 
-    public LaneIndicator (LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
+    public LaneIndicator(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
         // 15분까지 데이터 모두 확인
         Before_15_Data before15Data = new Before_15_Data(laneInfo, matchTimelineResponseDto);
 

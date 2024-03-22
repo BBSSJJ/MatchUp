@@ -1,8 +1,6 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match.end;
 
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.base.*;
-import com.ssafy.matchup_statistics.match.api.dto.response.MatchDetailResponseDto;
 import lombok.Data;
 
 @Data

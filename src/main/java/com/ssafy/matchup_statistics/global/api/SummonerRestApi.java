@@ -1,13 +1,9 @@
-package com.ssafy.matchup_statistics.summoner.api;
+package com.ssafy.matchup_statistics.global.api;
 
-import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
-import com.ssafy.matchup_statistics.summoner.dto.response.SummonerInfoResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
