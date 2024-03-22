@@ -33,6 +33,7 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(HttpBasicConfigurer::disable)
                 .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/oauth2"))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/api/oauth2/callback/*"))
                         .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
                         .successHandler(oAuth2SuccessHandler)
@@ -43,7 +44,7 @@ public class WebSecurityConfig {
 
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8002", "http://localhost:8080", "http://localhost:9000"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8002", "http://localhost:8080", "http://localhost:9000", "http://localhost:3000", "http://70.12.247.47:9000"));
         corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowCredentials(true);
