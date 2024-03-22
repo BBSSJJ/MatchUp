@@ -135,7 +135,7 @@
 
   ```py
   # Slave DB 접속
-  docker exec -it matchup_user /bin/bash
+  docker exec -it matchup_user_repl /bin/bash
   mysql -u root -p # 정확한 패스워드 입력
 
   # Slave 설정
