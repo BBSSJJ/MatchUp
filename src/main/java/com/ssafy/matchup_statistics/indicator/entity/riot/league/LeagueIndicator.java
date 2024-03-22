@@ -1,8 +1,7 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.league;
 
+import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
 import lombok.Data;
-
-import java.util.LinkedHashMap;
 
 @Data
 public class LeagueIndicator {
@@ -11,10 +10,10 @@ public class LeagueIndicator {
     private Integer wins;
     private Integer losses;
 
-    public LeagueIndicator(LinkedHashMap<String, Object> leagueInfo) {
-        this.tier = (String) leagueInfo.get("tier");
-        this.rank = (String) leagueInfo.get("rank");
-        this.wins = (Integer) leagueInfo.get("wins");
-        this.losses = (Integer) leagueInfo.get("losses");
+    public LeagueIndicator(LeagueInfoResponseDto leagueInfo) {
+        this.tier = leagueInfo.getTier();
+        this.rank = leagueInfo.getRank();
+        this.wins = leagueInfo.getWins();
+        this.losses = leagueInfo.getLosses();
     }
 }

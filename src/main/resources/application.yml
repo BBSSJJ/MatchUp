@@ -12,3 +12,6 @@ spring:
     import:
       - optional:file:.env[.properties]
 
+  profiles:
+    include: swagger
+

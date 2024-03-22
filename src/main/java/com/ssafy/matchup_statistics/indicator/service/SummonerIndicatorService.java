@@ -6,7 +6,7 @@ import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.LeagueIndicatorBuilder;
 import com.ssafy.matchup_statistics.indicator.service.builder.MatchIndicatorBuilder;
 import com.ssafy.matchup_statistics.summoner.api.SummonerRestApi;
-import com.ssafy.matchup_statistics.summoner.api.dto.response.SummonerInfoResponseDto;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class SummonerIndicatorService {
     private final MatchIndicatorBuilder matchIndicatorBuilder;
 
     public SummonerIndicator createSummonerIndicatorBySummonerName(String summonerName) {
-        SummonerInfoResponseDto summonerInfo = summonerRestApi.getSummonerInfoResponseDtoByName(summonerName);
+        SummonerInfoResponseDto summonerInfo = summonerRestApi.getSummonerInfoResponseDtoBySummonerName(summonerName);
         LeagueIndicator leagueIndicator = leagueIndicatorBuilder.build(summonerInfo.getId());
         List<MatchIndicator> matchIndicators = matchIndicatorBuilder.buildMatches(summonerInfo.getPuuid());
 

@@ -1,8 +1,8 @@
 package com.ssafy.matchup_statistics.indicator.service.builder;
 
 import com.ssafy.matchup_statistics.indicator.entity.riot.league.LeagueIndicator;
-import com.ssafy.matchup_statistics.indicator.service.builder.LeagueIndicatorBuilder;
 import com.ssafy.matchup_statistics.league.api.LeagueRestApi;
+import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,13 +28,14 @@ class LeagueIndicatorBuilderTest {
     @DisplayName("리그 정보로부터 리그 지표를 잘 생성하는지 테스트")
     void buildLeagueIndicatorTest() {
         //given
-        LinkedHashMap<String, Object> leagueInfo = new LinkedHashMap<>();
-        leagueInfo.put("tier", "CHALLENGER");
-        leagueInfo.put("rank", "I");
-        leagueInfo.put("wins", 50);
-        leagueInfo.put("losses", 80);
+        LinkedHashMap<String, Object> leagueInfoHashMap = new LinkedHashMap<>();
+        leagueInfoHashMap.put("tier", "CHALLENGER");
+        leagueInfoHashMap.put("rank", "I");
+        leagueInfoHashMap.put("wins", 50);
+        leagueInfoHashMap.put("losses", 80);
         String id = "Hide on bush";
-        given(leagueRestApi.getLeagueResponseDtoById(id)).willReturn(leagueInfo);
+        LeagueInfoResponseDto leagueInfo = new LeagueInfoResponseDto(leagueInfoHashMap);
+        given(leagueRestApi.getLeagueInfoResponseDtoBySummonerId(id)).willReturn(leagueInfo);
 
         //when
         LeagueIndicator leagueIndicator = target.build(id);

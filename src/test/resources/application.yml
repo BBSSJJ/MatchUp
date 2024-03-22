@@ -1,7 +1,3 @@
-logging:
-  level:
-    root: info
-
 # riot api
 riot:
   api-key: ${RIOT_API_KEY}
