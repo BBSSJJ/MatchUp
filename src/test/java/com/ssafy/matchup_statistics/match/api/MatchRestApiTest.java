@@ -31,7 +31,7 @@ class MatchRestApiTest {
         username = "Hide on bush";
 
         //when
-        puuid = summonerRestApi.getSummonerInfoResponseDtoByName(username).getPuuid();
+        puuid = summonerRestApi.getSummonerInfoResponseDtoBySummonerName(username).getPuuid();
         matches =  matchRestApi.getMatchesResponseDtoByPuuid(puuid);
 
         //then

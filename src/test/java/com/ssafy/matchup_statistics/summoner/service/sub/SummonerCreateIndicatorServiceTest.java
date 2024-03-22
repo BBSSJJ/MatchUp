@@ -1,9 +1,5 @@
 package com.ssafy.matchup_statistics.summoner.service.sub;
 
-import com.ssafy.matchup_statistics.summoner.api.dto.response.SummonerInfoResponseDto;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class SummonerCreateIndicatorServiceTest {
     // TODO 1. user name(소환사명) 입력받아서 summoner 조회(riot api)
     // TODO 2. summoner의 leagueDto 조회(riot api)

@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.summoner.api.dto.response;
+package com.ssafy.matchup_statistics.summoner.dto.response;
 
 import lombok.Data;
 
