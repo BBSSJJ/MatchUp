@@ -1,5 +1,7 @@
 package com.ssafy.matchup_statistics.indicator.entity.riot.match;
 
+import com.ssafy.matchup_statistics.global.exception.RiotDataError;
+import com.ssafy.matchup_statistics.global.exception.RiotDataException;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.beginning.*;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroData;
 import com.ssafy.matchup_statistics.indicator.entity.riot.match.end.MacroIndicator;
@@ -27,28 +29,21 @@ public class MatchIndicator {
 
         // 라인지표 생성
         switch (laneInfo.getTeamPosition()) {
-            case TOP:
-                this.laneIndicator = new TopIndicator(laneInfo, matchTimelineResponseDto);
-                break;
-            case JUNGLE:
-                this.laneIndicator = new JgIndicator(laneInfo, matchTimelineResponseDto);
-                break;
-            case MIDDLE:
-                this.laneIndicator = new MidIndicator(laneInfo, matchTimelineResponseDto);
-                break;
-            case BOTTOM:
-                this.laneIndicator = new BtmIndicator(laneInfo, matchTimelineResponseDto);
-                break;
-            case UTILITY:
-                this.laneIndicator = new UtilIndicator(laneInfo, matchTimelineResponseDto);
-                break;
+            case TOP -> this.laneIndicator = new TopIndicator(laneInfo, matchTimelineResponseDto);
+            case JUNGLE -> this.laneIndicator = new JgIndicator(laneInfo, matchTimelineResponseDto);
+            case MIDDLE -> this.laneIndicator = new MidIndicator(laneInfo, matchTimelineResponseDto);
+            case BOTTOM -> this.laneIndicator = new BtmIndicator(laneInfo, matchTimelineResponseDto);
+            case UTILITY -> this.laneIndicator = new UtilIndicator(laneInfo, matchTimelineResponseDto);
         }
 
+        // 라인정보와 response로부터 운영 정보 생성
+        MacroData macroData = new MacroData(laneInfo, matchDetailResponseDto);
+
         // 운영지표 생성
-        this.macroIndicator = new MacroIndicator(laneInfo, matchDetailResponseDto);
+        this.macroIndicator = new MacroIndicator(macroData);
 
         // 메타데이터 생성
-        this.metadata = new Metadata(laneInfo, macroIndicator.getMacroData(), matchTimelineResponseDto);
+        this.metadata = new Metadata(laneInfo, macroData, matchTimelineResponseDto);
     }
 
     @Data
