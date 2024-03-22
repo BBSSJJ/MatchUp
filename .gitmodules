@@ -1,0 +1,32 @@
+[submodule "user-server"]
+	path = user-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = user-server
+[submodule "api-gateway"]
+	path = api-gateway
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = api-gateway
+[submodule "chat-server"]
+	path = chat-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = chat-server
+[submodule "auth-server"]
+	path = auth-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = auth-server
+[submodule "statistics-server"]
+	path = statistics-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = statistics-server
+[submodule "bigdata-server"]
+	path = bigdata-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = bigdata-server
+[submodule "web-server"]
+	path = web-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = web-server
+[submodule "file-server"]
+	path = file-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = file-server

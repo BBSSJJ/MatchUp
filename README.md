@@ -1,4 +1,4 @@
-# A405 프로젝트
+# Develop Branch
 
 ## 목차
 
@@ -10,7 +10,7 @@
 6. [페르소나 분석](#6-페르소나-분석)
 7. [향후 계획](#7-향후-계획)
 
-## 1. 프로젝트 이름 : 매치업(MatchUP)
+## 상위 브랜치
 
 ## 2. 프로젝트 주제
 
@@ -42,13 +42,13 @@
   - 다른 유저들은 댓글 및 공감으로 의견 공유 가능
   - 사람들이 어떤 플레이어의 입장에 더 공감하는지 그래프로 시각화
 
-[맨위로](#a405-프로젝트)
+## 업데이트 이력
 
-## 3. 코드 컨벤션
+- 전체 서버 업데이트 : 240322
 
-### 3-1. 프론트엔드
+## 서브모듈 사용방법
 
-#### [프론트엔드 코드 컨벤션](https://ui.toast.com/fe-guide/ko_CODING-CONVENTION)
+- 새로운 브랜치 서브모듈로 등록하기
 
 ### 3-2. 백엔드
 
@@ -172,7 +172,7 @@ git commit -m "test : 컨트롤러 테스트코드 추가
 git commit -m "chore : 서버 포트 변경"
 ```
 
-### 4-2. 브랜치 컨벤션
+> 이후 .gitmodules 파일 내부에 해당 브랜치명 추가
 
 ![git-graph](/assets/img/git-graph.png)
 
@@ -190,11 +190,14 @@ git commit -m "chore : 서버 포트 변경"
 - **api-gateway** : 다른 WAS(Web Application Server)로 API 요청을 전송하는 Gateway병합
 - **file-server** : 정적 파일(이미지, 동영상 등)을 업로드 및 관리하기 위한 서버
 
-#### 브랜치 작업 순서
+> 첫 업데이트가 아니면 --init 불필요
 
-##### 1. master → develop branch 분기
+```git
+cd {각 서브모듈 경로}
+git pull origin {각 서브모듈 브랜치명}
+```
 
-→ 깃 담당자가 직접 분기
+> 모든 브랜치에서 수행
 
 ##### 2. develop → webserver, appserver, … 등 서버(포트)별 branch 분기
 
