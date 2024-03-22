@@ -8,7 +8,7 @@ import NavigationBar from "./ui/Navbar";
 import SideBar from "./ui/Sidebar";
 import { lusitana, tektur } from "./ui/fonts";
 import { SessionProvider } from "next-auth/react";
-
+// import SockJS from "sockjs-client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +23,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const sock = new SockJS("http://localhost:3000")
+  // sock.onopen = function() {
+  //   console.log('open');
+  //   sock.send('test');
+  // };
+
+  // sock.onmessage = function(e) {
+  //   console.log('message', e.data);
+  //   sock.close();
+  // };
+
+  // sock.onclose = function() {
+  //   console.log('close');
+  // };
+
   return (
     <html lang="en" className="dark">
       <body className={tektur.className}>
