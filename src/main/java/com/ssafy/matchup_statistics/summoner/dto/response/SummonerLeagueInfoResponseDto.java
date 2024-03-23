@@ -1,7 +1,7 @@
 package com.ssafy.matchup_statistics.summoner.dto.response;
 
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
-import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import lombok.Data;
 
 @Data
