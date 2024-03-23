@@ -1,8 +1,8 @@
 package com.ssafy.matchup_statistics.match.api;
 
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.api.SummonerRestApi;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,6 @@ class MatchRestApiTest {
             MatchDetailResponseDto matchDetail = matchRestApi.getMatchDetailResponseDtoByMatchId(match);
 
             assertEquals(match, matchDetail.getMetadata().getMatchId());
-            log.info("매치 유저 확인 : {}", matchDetail.getInfo());
         });
 
     }

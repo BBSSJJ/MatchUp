@@ -16,7 +16,7 @@ public class SummonerRestApi {
         return restTemplate.getForObject(url, SummonerInfoResponseDto.class);
     }
 
-    public SummonerInfoResponseDto getLeagueInfoResponseDtoByPuuid(String puuid) {
+    public SummonerInfoResponseDto getSummonerInfoResponseDtoByPuuid(String puuid) {
         String url = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/" + puuid;
         return restTemplate.getForObject(url, SummonerInfoResponseDto.class);
     }

@@ -2,10 +2,10 @@ package com.ssafy.matchup_statistics;
 
 import com.ssafy.matchup_statistics.account.api.AccountRestApi;
 import com.ssafy.matchup_statistics.global.api.LeagueRestApi;
-import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.global.api.SummonerRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import lombok.extern.slf4j.Slf4j;

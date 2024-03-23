@@ -2,19 +2,23 @@ package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
-import com.ssafy.matchup_statistics.indicator.service.builder.MatchIndicatorBuilder;
+import com.ssafy.matchup_statistics.indicator.entity.Indicator;
+import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
+import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +39,15 @@ import static org.mockito.BDDMockito.given;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("MatchLaneIndicatorBuilderTest")
 class MatchMidIndicatorBuilderTest {
+
+    @Mock
+    RiotApiAdaptor riotApiAdaptor;
+
+    @Mock
+    MatchSaveService matchSaveService;
+
     @InjectMocks
-    MatchIndicatorBuilder target = new MatchIndicatorBuilder();
+    IndicatorBuilder target;
 
     @Autowired
     @Qualifier("hide_on_bush_detail")
@@ -46,33 +57,34 @@ class MatchMidIndicatorBuilderTest {
     @Qualifier("hide_on_bush_timeline")
     MatchTimelineResponseDto matchTimelineResponseDto;
 
-    @Mock
-    MatchRestApi matchRestApi;
-
     LaneInfo laneInfo;
     MatchIndicator.Metadata metadata;
+    String puuid;
+    String summonerId;
 
 
     @BeforeAll
     public static void initLog() {
         Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        logger.setLevel(Level.ERROR);
+        logger.setLevel(Level.INFO);
     }
 
     @BeforeEach
     void init() {
+        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+
         // 본인 아이디 : 3
         // 상대 아이디 : 8
         // 라인 : 미드
         List<String> matches = new ArrayList<>();
         matches.add("KR_6987867218");
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
-        given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
-        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
-        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
 
-        log.info("log test");
-        log.debug("log test");
+        puuid = "c7HMGSOvGZw45MaOwRyrlSVm3Jlrw22YNzm5a8-cmV05vRWQq96caVy3qtKajl5Z8SpJov2PUUkoIw";
+        summonerId = "oS78m3OSr-oIcLFL9_9F_Yvy9Jx3GURUnH2-cWOFEKgWHA";
+        given(riotApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
+        given(riotApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
+        given(riotApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
+
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
                 .teamPosition(TeamPosition.MIDDLE)
@@ -97,15 +109,18 @@ class MatchMidIndicatorBuilderTest {
     @DisplayName("라인 정보 잘 가져오는지 테스트")
     void laneInfoTest() {
         // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMetadata()
                 .getLaneInfo())
+                .usingRecursiveComparison()
                 .isEqualTo(laneInfo);
     }
 
@@ -114,18 +129,20 @@ class MatchMidIndicatorBuilderTest {
     @DisplayName("미드 기초체력 : 경험치, cs 차이 확인")
     void xpCsDifferTest() {
         // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getExpDiffer())
                 .isEqualTo(7913 - 6895);
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
                 .getCsDiffer())
@@ -137,16 +154,18 @@ class MatchMidIndicatorBuilderTest {
     @DisplayName("미드 기초체력 :  포골차이 확인")
     void towerGoldDifferTest() {
         // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
-                .getTowerGoldDiffer())
+                .getTurretPlateDestroyDiffer())
                 .isEqualTo(1 - 2);
     }
 
@@ -155,13 +174,15 @@ class MatchMidIndicatorBuilderTest {
     @DisplayName("미드 공격적인 라인전 : 솔킬차이 확인")
     void solokillDifferTest() {
         // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getSoloKillDiffer())
@@ -174,13 +195,15 @@ class MatchMidIndicatorBuilderTest {
     @DisplayName("미드 공격적인 라인전 : 딜량차이 확인")
     void dealDifferTest() {
         // given
-        String puuid = "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ";
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
                 .getAggresiveLaneAbilility()
                 .getDealDiffer())
