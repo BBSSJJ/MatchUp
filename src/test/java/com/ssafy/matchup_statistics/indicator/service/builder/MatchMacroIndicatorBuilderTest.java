@@ -3,12 +3,12 @@ package com.ssafy.matchup_statistics.indicator.service.builder;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
+import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,6 +106,7 @@ class MatchMacroIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getMetadata()
                 .getLaneInfo())
+                .usingRecursiveComparison()
                 .isEqualTo(laneInfo);
     }
 
@@ -123,8 +124,8 @@ class MatchMacroIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
-                .getDeathsDifferTurretKills())
-                .isEqualTo(2 - 1);
+                .getTurretKillsPerDeaths())
+                .isEqualTo(1  * DEFAULT_ROUND_UP / (2 + 1));
         // 타워 데미지 비중
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
@@ -154,7 +155,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalTimeCCingOthersPerTotalDamageTaken())
-                .isEqualTo(13 * DEFAULT_ROUND_UP / 27649);
+                .isEqualTo(13 * DEFAULT_ROUND_UP / (27649 + 1));
 
         // 받은 피해량
         assertThat(matchIndicators.get(0)
@@ -168,7 +169,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getDamageSelfMitigatedPerTotalDamageTaken())
-                .isEqualTo((long) 15806 * DEFAULT_ROUND_UP / 27649);
+                .isEqualTo((long) 15806 * DEFAULT_ROUND_UP / (27649 + 1));
     }
 
 
@@ -204,8 +205,8 @@ class MatchMacroIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getMacroIndicator()
                 .getObjectivePoint()
-                .getGetObjectiveDiffer())
-                .isEqualTo((0 + 3 + 2 + 0) - (1 + 1 + 3 + 1));
+                .getGetObjectiveDifferPerGameDuration())
+                .isEqualTo(((0 + 3 + 2 + 0) - (1 + 1 + 3 + 1)) * DEFAULT_ROUND_UP / 1713);
     }
 
     @Test

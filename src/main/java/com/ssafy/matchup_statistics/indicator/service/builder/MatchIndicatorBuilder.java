@@ -2,7 +2,7 @@ package com.ssafy.matchup_statistics.indicator.service.builder;
 
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
