@@ -1,6 +1,6 @@
 package com.ssafy.matchup_statistics.global.util;
 
-import com.ssafy.matchup_statistics.indicator.entity.SummonerIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 public class MongoTemplateAdaptor {
     private final MongoTemplate mongoTemplate;
 
-    public SummonerIndicator getSummonerIndicatorById (String id) {
+    public Indicator getSummonerIndicatorById (String id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        return mongoTemplate.findOne(query, SummonerIndicator.class, "summoner_indicators");
+        return mongoTemplate.findOne(query, Indicator.class, "summoner_indicators");
     }
 
-    public void saveSummonerIndicator(SummonerIndicator summonerIndicator) {
-        mongoTemplate.save(summonerIndicator);
+    public void saveSummonerIndicator(Indicator indicator) {
+        mongoTemplate.save(indicator);
     }
 }

@@ -1,11 +1,8 @@
 package com.ssafy.matchup_statistics.summoner.service;
 
-import com.ssafy.matchup_statistics.indicator.entity.SummonerIndicator;
-import com.ssafy.matchup_statistics.indicator.service.IndicatorService;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -3,13 +3,13 @@ package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.LaneInfo;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.MatchIndicator;
-import com.ssafy.matchup_statistics.indicator.entity.riot.match.TeamPosition;
+import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
+import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
+import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.service.builder.MatchIndicatorBuilder;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.match.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.match.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -102,6 +102,7 @@ class MatchTopIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getMetadata()
                 .getLaneInfo())
+                .usingRecursiveComparison()
                 .isEqualTo(laneInfo);
     }
 
@@ -142,7 +143,7 @@ class MatchTopIndicatorBuilderTest {
         assertThat(matchIndicators.get(0)
                 .getLaneIndicator()
                 .getBasicWeight()
-                .getTowerGoldDiffer())
+                .getTurretPlateDestroyDiffer())
                 .isEqualTo(1 - 2);
     }
 
