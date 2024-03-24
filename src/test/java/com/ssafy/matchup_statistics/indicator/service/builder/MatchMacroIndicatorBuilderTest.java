@@ -2,13 +2,15 @@ package com.ssafy.matchup_statistics.indicator.service.builder;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
-import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
+import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -37,25 +38,24 @@ import static org.mockito.BDDMockito.given;
 @Slf4j
 @Tag("MatchMacroIndicatorBuilderTest")
 class MatchMacroIndicatorBuilderTest {
-    @InjectMocks
-    MatchIndicatorBuilder target = new MatchIndicatorBuilder();
 
+    private final int DEFAULT_ROUND_UP = 100_000;
+    @Mock
+    RiotApiAdaptor riotApiAdaptor;
+    @Mock
+    MatchSaveService matchSaveService;
+    @InjectMocks
+    IndicatorBuilder target;
     @Qualifier("kang_chan_bob_detail")
     @Autowired
     MatchDetailResponseDto matchDetailResponseDto;
-
     @Qualifier("kang_chan_bob_timeline")
     @Autowired
     MatchTimelineResponseDto matchTimelineResponseDto;
-
-    @Mock
-    MatchRestApi matchRestApi;
-
     LaneInfo laneInfo;
     MatchIndicator.Metadata metadata;
     String puuid;
-
-    private final int DEFAULT_ROUND_UP = 100_000;
+    String summonerId;
 
     @BeforeAll
     public static void initLog() {
@@ -65,15 +65,19 @@ class MatchMacroIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
+        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+
         // 본인 아이디 : 6
         // 상대 아이디 : 2
         // 라인 : 정글
         List<String> matches = new ArrayList<>();
         matches.add("KR_6994313306");
-        puuid = "imNIUu2xgNM-lXg_OtmxXaCS1inoJ0O52sMImruCq-m_UgMhHc0BoJ-neKBd_u0oRwXPV6HusSRc_w";
-        given(matchRestApi.getMatchesResponseDtoByPuuid(puuid)).willReturn(matches);
-        given(matchRestApi.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
-        given(matchRestApi.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
+
+        puuid = "GweS1V-eVKk-je-x4D6znocszRr02LsMmfeOOykWurawl050dAbp3S8NcGV1JinmjysCLkS5_VOrYQ";
+        summonerId = "XpfTc8FZVplKFNyQJyIXDbHwspU2I0qL2yjau8S7y5qk2w";
+        given(riotApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
+        given(riotApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(riotApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
@@ -100,10 +104,13 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMetadata()
                 .getLaneInfo())
                 .usingRecursiveComparison()
@@ -117,27 +124,30 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // 타워철거
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getTurretKillsPerDeaths())
-                .isEqualTo(1  * DEFAULT_ROUND_UP / (2 + 1));
+                .isEqualTo(1 * DEFAULT_ROUND_UP / (2 + 1));
         // 타워 데미지 비중
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTotalDamageDealt())
-                .isEqualTo( 3734 * DEFAULT_ROUND_UP / 327344);
+                .isEqualTo(3734 * DEFAULT_ROUND_UP / 327344);
         // 팀 내 타워데미지 비중
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTeamTotalTowerDamageDone())
-                .isEqualTo( 3734 * DEFAULT_ROUND_UP / (6714 + 3734 + 3592 + 6015 + 920));
+                .isEqualTo(3734 * DEFAULT_ROUND_UP / (6714 + 3734 + 3592 + 6015 + 920));
     }
 
     @Test
@@ -147,25 +157,28 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // cc시간
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalTimeCCingOthersPerTotalDamageTaken())
                 .isEqualTo(13 * DEFAULT_ROUND_UP / (27649 + 1));
 
         // 받은 피해량
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalDamageTakenPerTeamTotalDamageTaken())
                 .isEqualTo((long) 27649 * DEFAULT_ROUND_UP / (17452 + 27649 + 18517 + 13622 + 18728));
 
         // 감소시킨 데미지
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getDamageSelfMitigatedPerTotalDamageTaken())
@@ -180,11 +193,14 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // 빼먹은 정글몬스터
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getJungleHoldPoint()
                 .getTotalJungleObjectivePerGameDuration())
@@ -198,11 +214,14 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // 획득한 오브젝트 차이
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getObjectivePoint()
                 .getGetObjectiveDifferPerGameDuration())
@@ -216,11 +235,14 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // 시야 점수(death + 1)
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getVisionPoint()
                 .getVisionScorePerDeath())
@@ -234,23 +256,26 @@ class MatchMacroIndicatorBuilderTest {
         // given
 
         // when
-        List<MatchIndicator> matchIndicators = target.buildMatches(puuid);
+        Indicator indicator = target.build(
+                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                summonerId, puuid
+        );
 
         // then
         // 분당 딜
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getDamagePerMinute())
                 .isEqualTo((long) 899.0909564443765 * DEFAULT_ROUND_UP);
         // 골드당 딜
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getDealPerGold())
-                .isEqualTo((long)((long) 899.0909564443765 * DEFAULT_ROUND_UP / 496.7942995806239));
+                .isEqualTo((long) ((long) 899.0909564443765 * DEFAULT_ROUND_UP / 496.7942995806239));
         // 딜 비중
-        assertThat(matchIndicators.get(0)
+        assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getTeamDamagePercentage())

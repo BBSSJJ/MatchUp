@@ -1,7 +1,6 @@
 package com.ssafy.matchup_statistics.indicator.entity.match.end.base;
 
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
@@ -11,9 +10,8 @@ public class TotalDealPoint {
     private long damagePerMinute;
     private long dealPerGold;
     private double teamDamagePercentage;
-    private final int DEFAULT_ROUND_UP = 100_000;
 
-    public TotalDealPoint(MacroData macroData) {
+    public TotalDealPoint(MacroData macroData, int DEFAULT_ROUND_UP) {
         damagePerMinute = (long) macroData.getMyData().challenges.getDamagePerMinute() * DEFAULT_ROUND_UP;
         dealPerGold = (long) ((long) macroData.getMyData().challenges.getDamagePerMinute() * DEFAULT_ROUND_UP
                                 / macroData.getMyData().challenges.getGoldPerMinute());
@@ -21,6 +19,8 @@ public class TotalDealPoint {
     }
 
     public TotalDealPoint(List<TotalDealPoint> totalDealPoints) {
+        if (totalDealPoints.isEmpty()) return;
+
         totalDealPoints.forEach(totalDealPoint -> {
             damagePerMinute += totalDealPoint.getDamagePerMinute();
             dealPerGold += totalDealPoint.getDealPerGold();

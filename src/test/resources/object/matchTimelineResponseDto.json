@@ -3,16 +3,16 @@
     "dataVersion": "2",
     "matchId": "KR_6987867218",
     "participants": [
-      "MluI4kf3Z0BNzvXCb9fQiMakbrYU2_sOJEwYmpfC3RtlZpyBnN2uHHh9VveJYqK7FSEA5sTfIoCY_g",
-      "_jqC2hE8sf4yG-P6xgagT1MmnEmYwTimNqjqeh80lOKlMJP2CmHdJ6DGxKznr4edBdOmHsh1pVdCcA",
-      "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ",
-      "eiUZJHoAA1Gp56T_CePfsYGnuOpMsnjDIZsoNCHzRiQcfTqops2BwnPMnLWvG1Vy96bNuHDWx1ZBvw",
-      "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg",
-      "bhDZBncrtCDvXSjPdzKwbT68Ex7vEmSynERG3q1oZ0OvflZzI9QnxxpciM5r2FSpxnbXi1GPvAGoAg",
-      "zdD6Ox44fvvqoKjok5pQaEhVVmsPpfmX2Mt7A-3yQppScycDa63BPiuZRdp_LOAhHSYwYnZyfBf9_w",
-      "R-IY3ujFuKx317eNNKdBS_x9bEOaAgOo60IY9ZbehFPSWk-wc5-t2FFnkXC841q9I2IfF_WcVEoR7Q",
-      "aKsGuDHpOXGIdzSYHiy7CbLgYskb6IIjcUF_WE3sJGP2wCZ9AXUcrzi_JTqYT_VZM5OVxLRIYb-tuQ",
-      "edZudvOmUDvBfK-kTX35SBOTHkaE2WAAAY8iRln2MyK3HezhT4Ze83bfEbb0R66E0HVsDxsqtc9URg"
+      "Ve33IP_x_6x7-xLolMMSNijD9YBRP0o2cd6x8jnYbOu72IhfF5qVqQkbg9vm01KrUbgGemUh_zdgrQ",
+      "a_OxN8thWKheaLod-gsVkXKt0L1RxNsXzahPkG19Q25y1ve670N1wBOnkJFcqrY4SaQkCTOcfHTrXg",
+      "c7HMGSOvGZw45MaOwRyrlSVm3Jlrw22YNzm5a8-cmV05vRWQq96caVy3qtKajl5Z8SpJov2PUUkoIw",
+      "drPZm-I-m0oHRVxAXwLUtnhmD8wKXWgrOsT3Lop72-YMCIa9KqGwx5NqUaEGR_AgRbxlo-kwB4xMog",
+      "yxCbTPJcfXp9LrzIfA67hZRJshQJpKIIu3wtuV8p5f2wNbv5TGVZTpBXQjmw-SItYwY6CwG51Yrufw",
+      "2c0--tAE_d-xg1_d9exuw7h2Nt_L0XNsEcVL0qUvBT_MKu7a9d4wkfkhOP2JykhxcyrkGeSrlKle3w",
+      "TbMT5vX07loN0DN09ufXXKsWinOzGIlcvUNleASVo9Nq90J3TGxKF-mnjnIvgXjct7Cel7prZeo11Q",
+      "pOqDA_RemCHFthsQnbefTy9JAVEz6ucsEhAkPkWmNTwmyAnsW3cjraJpZ0W_jBKBhor_sI31NLf32A",
+      "SzyAz86P3jG7QpV4ehKbwsCohObxpOGMgkt086Gmb3AOrJv6GR9E718dXXxT3ORQggHRj0tE4KP_nw",
+      "QH8vr7fgxRoGByeYC8lI7qSZ3YN5yvLleVx85_5rASdpuBgMBiekDY8og3rixf49UNobrMzBke4BjQ"
     ]
   },
   "info": {
@@ -2221,7 +2221,10 @@
             "type": "ITEM_DESTROYED"
           },
           {
-            "assistingParticipantIds": [1, 2],
+            "assistingParticipantIds": [
+              1,
+              2
+            ],
             "bounty": 400,
             "killStreakLength": 0,
             "killerId": 4,
@@ -3078,7 +3081,9 @@
       {
         "events": [
           {
-            "assistingParticipantIds": [7],
+            "assistingParticipantIds": [
+              7
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 6,
@@ -3518,7 +3523,9 @@
             "type": "LEVEL_UP"
           },
           {
-            "assistingParticipantIds": [2],
+            "assistingParticipantIds": [
+              2
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 5,
@@ -5239,7 +5246,9 @@
             "type": "ITEM_DESTROYED"
           },
           {
-            "assistingParticipantIds": [2],
+            "assistingParticipantIds": [
+              2
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 3,
@@ -5616,7 +5625,9 @@
             "victimId": 2
           },
           {
-            "assistingParticipantIds": [2],
+            "assistingParticipantIds": [
+              2
+            ],
             "bounty": 300,
             "killStreakLength": 1,
             "killerId": 3,
@@ -8385,7 +8396,9 @@
             "wardType": "CONTROL_WARD"
           },
           {
-            "assistingParticipantIds": [2],
+            "assistingParticipantIds": [
+              2
+            ],
             "bounty": 274,
             "killStreakLength": 3,
             "killerId": 3,
@@ -8701,7 +8714,9 @@
             "wardType": "YELLOW_TRINKET"
           },
           {
-            "assistingParticipantIds": [6],
+            "assistingParticipantIds": [
+              6
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 7,
@@ -10474,7 +10489,9 @@
       {
         "events": [
           {
-            "assistingParticipantIds": [10],
+            "assistingParticipantIds": [
+              10
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 8,
@@ -10935,7 +10952,9 @@
             "wardType": "SIGHT_WARD"
           },
           {
-            "assistingParticipantIds": [3],
+            "assistingParticipantIds": [
+              3
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 2,
@@ -11210,7 +11229,10 @@
             "wardType": "YELLOW_TRINKET"
           },
           {
-            "assistingParticipantIds": [8, 10],
+            "assistingParticipantIds": [
+              8,
+              10
+            ],
             "bounty": 300,
             "killStreakLength": 1,
             "killerId": 7,
@@ -12478,7 +12500,11 @@
             "wardType": "SIGHT_WARD"
           },
           {
-            "assistingParticipantIds": [7, 8, 10],
+            "assistingParticipantIds": [
+              7,
+              8,
+              10
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 9,
@@ -13382,7 +13408,10 @@
       {
         "events": [
           {
-            "assistingParticipantIds": [7, 10],
+            "assistingParticipantIds": [
+              7,
+              10
+            ],
             "bounty": 300,
             "killStreakLength": 1,
             "killerId": 9,
@@ -15813,7 +15842,11 @@
             "wardType": "YELLOW_TRINKET"
           },
           {
-            "assistingParticipantIds": [8, 9, 10],
+            "assistingParticipantIds": [
+              8,
+              9,
+              10
+            ],
             "bounty": 0,
             "killerId": 7,
             "killerTeamId": 200,
@@ -16466,7 +16499,10 @@
             "type": "SKILL_LEVEL_UP"
           },
           {
-            "assistingParticipantIds": [8, 9],
+            "assistingParticipantIds": [
+              8,
+              9
+            ],
             "bounty": 0,
             "killerId": 7,
             "killerTeamId": 200,
@@ -17207,7 +17243,9 @@
             "type": "SKILL_LEVEL_UP"
           },
           {
-            "assistingParticipantIds": [3],
+            "assistingParticipantIds": [
+              3
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 2,
@@ -17597,7 +17635,9 @@
             "type": "SKILL_LEVEL_UP"
           },
           {
-            "assistingParticipantIds": [1],
+            "assistingParticipantIds": [
+              1
+            ],
             "bounty": 0,
             "buildingType": "TOWER_BUILDING",
             "killerId": 4,
@@ -21179,7 +21219,9 @@
             "wardType": "SIGHT_WARD"
           },
           {
-            "assistingParticipantIds": [2],
+            "assistingParticipantIds": [
+              2
+            ],
             "bounty": 300,
             "killStreakLength": 1,
             "killerId": 3,
@@ -21702,7 +21744,11 @@
             "victimId": 5
           },
           {
-            "assistingParticipantIds": [1, 2, 3],
+            "assistingParticipantIds": [
+              1,
+              2,
+              3
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 4,
@@ -21942,7 +21988,11 @@
             "type": "ITEM_PURCHASED"
           },
           {
-            "assistingParticipantIds": [1, 2, 4],
+            "assistingParticipantIds": [
+              1,
+              2,
+              4
+            ],
             "bounty": 0,
             "buildingType": "TOWER_BUILDING",
             "killerId": 3,
@@ -21957,7 +22007,12 @@
             "type": "BUILDING_KILL"
           },
           {
-            "assistingParticipantIds": [1, 2, 4, 5],
+            "assistingParticipantIds": [
+              1,
+              2,
+              4,
+              5
+            ],
             "bounty": 300,
             "killStreakLength": 2,
             "killerId": 3,
@@ -22280,7 +22335,10 @@
             "type": "ITEM_DESTROYED"
           },
           {
-            "assistingParticipantIds": [1, 4],
+            "assistingParticipantIds": [
+              1,
+              4
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 2,
@@ -22497,7 +22555,9 @@
             "type": "LEVEL_UP"
           },
           {
-            "assistingParticipantIds": [9],
+            "assistingParticipantIds": [
+              9
+            ],
             "bounty": 300,
             "killStreakLength": 0,
             "killerId": 8,
@@ -23636,7 +23696,10 @@
             "type": "ITEM_PURCHASED"
           },
           {
-            "assistingParticipantIds": [1, 2],
+            "assistingParticipantIds": [
+              1,
+              2
+            ],
             "bounty": 0,
             "buildingType": "TOWER_BUILDING",
             "killerId": 3,
@@ -24263,43 +24326,43 @@
     "participants": [
       {
         "participantId": 1,
-        "puuid": "MluI4kf3Z0BNzvXCb9fQiMakbrYU2_sOJEwYmpfC3RtlZpyBnN2uHHh9VveJYqK7FSEA5sTfIoCY_g"
+        "puuid": "Ve33IP_x_6x7-xLolMMSNijD9YBRP0o2cd6x8jnYbOu72IhfF5qVqQkbg9vm01KrUbgGemUh_zdgrQ"
       },
       {
         "participantId": 2,
-        "puuid": "_jqC2hE8sf4yG-P6xgagT1MmnEmYwTimNqjqeh80lOKlMJP2CmHdJ6DGxKznr4edBdOmHsh1pVdCcA"
+        "puuid": "a_OxN8thWKheaLod-gsVkXKt0L1RxNsXzahPkG19Q25y1ve670N1wBOnkJFcqrY4SaQkCTOcfHTrXg"
       },
       {
         "participantId": 3,
-        "puuid": "Gacb6Uc2aGHT122L0LgG9FWVMmj1TkHYWrWmqlpwlKKjs5n8IA0NbXUCtYAw8DRyoyziHcTUmnxYmQ"
+        "puuid": "c7HMGSOvGZw45MaOwRyrlSVm3Jlrw22YNzm5a8-cmV05vRWQq96caVy3qtKajl5Z8SpJov2PUUkoIw"
       },
       {
         "participantId": 4,
-        "puuid": "eiUZJHoAA1Gp56T_CePfsYGnuOpMsnjDIZsoNCHzRiQcfTqops2BwnPMnLWvG1Vy96bNuHDWx1ZBvw"
+        "puuid": "drPZm-I-m0oHRVxAXwLUtnhmD8wKXWgrOsT3Lop72-YMCIa9KqGwx5NqUaEGR_AgRbxlo-kwB4xMog"
       },
       {
         "participantId": 5,
-        "puuid": "6g8GCdegfX_qreF_OIQCcqOrMPJPiTChca4yeGzxU8FzXHy2M93tNKAC8yq5QziDwwvFiTyUg8NHmg"
+        "puuid": "yxCbTPJcfXp9LrzIfA67hZRJshQJpKIIu3wtuV8p5f2wNbv5TGVZTpBXQjmw-SItYwY6CwG51Yrufw"
       },
       {
         "participantId": 6,
-        "puuid": "bhDZBncrtCDvXSjPdzKwbT68Ex7vEmSynERG3q1oZ0OvflZzI9QnxxpciM5r2FSpxnbXi1GPvAGoAg"
+        "puuid": "2c0--tAE_d-xg1_d9exuw7h2Nt_L0XNsEcVL0qUvBT_MKu7a9d4wkfkhOP2JykhxcyrkGeSrlKle3w"
       },
       {
         "participantId": 7,
-        "puuid": "zdD6Ox44fvvqoKjok5pQaEhVVmsPpfmX2Mt7A-3yQppScycDa63BPiuZRdp_LOAhHSYwYnZyfBf9_w"
+        "puuid": "TbMT5vX07loN0DN09ufXXKsWinOzGIlcvUNleASVo9Nq90J3TGxKF-mnjnIvgXjct7Cel7prZeo11Q"
       },
       {
         "participantId": 8,
-        "puuid": "R-IY3ujFuKx317eNNKdBS_x9bEOaAgOo60IY9ZbehFPSWk-wc5-t2FFnkXC841q9I2IfF_WcVEoR7Q"
+        "puuid": "pOqDA_RemCHFthsQnbefTy9JAVEz6ucsEhAkPkWmNTwmyAnsW3cjraJpZ0W_jBKBhor_sI31NLf32A"
       },
       {
         "participantId": 9,
-        "puuid": "aKsGuDHpOXGIdzSYHiy7CbLgYskb6IIjcUF_WE3sJGP2wCZ9AXUcrzi_JTqYT_VZM5OVxLRIYb-tuQ"
+        "puuid": "SzyAz86P3jG7QpV4ehKbwsCohObxpOGMgkt086Gmb3AOrJv6GR9E718dXXxT3ORQggHRj0tE4KP_nw"
       },
       {
         "participantId": 10,
-        "puuid": "edZudvOmUDvBfK-kTX35SBOTHkaE2WAAAY8iRln2MyK3HezhT4Ze83bfEbb0R66E0HVsDxsqtc9URg"
+        "puuid": "QH8vr7fgxRoGByeYC8lI7qSZ3YN5yvLleVx85_5rASdpuBgMBiekDY8og3rixf49UNobrMzBke4BjQ"
       }
     ]
   }

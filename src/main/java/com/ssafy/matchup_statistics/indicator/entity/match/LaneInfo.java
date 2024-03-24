@@ -1,15 +1,14 @@
 package com.ssafy.matchup_statistics.indicator.entity.match;
 
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@Slf4j
+@ToString
 public class LaneInfo {
     private TeamPosition teamPosition;
     private boolean isBottomLane;
@@ -52,6 +51,7 @@ public class LaneInfo {
                 this.myBottomDuoNumber = 0;
                 this.oppositeBottomDuoNumber = 0;
             }
+
         });
     }
 }

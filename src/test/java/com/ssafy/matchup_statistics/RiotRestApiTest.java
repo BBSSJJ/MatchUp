@@ -2,7 +2,7 @@ package com.ssafy.matchup_statistics;
 
 import com.ssafy.matchup_statistics.account.api.AccountRestApi;
 import com.ssafy.matchup_statistics.global.api.LeagueRestApi;
-import com.ssafy.matchup_statistics.league.dto.response.LeagueInfoResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.api.MatchRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
