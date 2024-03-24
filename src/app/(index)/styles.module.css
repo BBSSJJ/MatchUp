@@ -1,8 +1,7 @@
 .card {
-    width: 80%;
-    height: 60vh;
+    width: 100%;
+    height: calc(100vh - 64px);
+    padding: 1rem;
     background-color: #a8dddd;
-    margin: 0 auto;
-    border-radius: 5px;
 }
 

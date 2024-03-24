@@ -31,13 +31,17 @@ export default function NavigationBar() {
   return (
     <Navbar isBordered className={styles.nav}>
       <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">MatchUP</p>
+        <Image 
+          src="logo.png"
+          width="40px"
+          height="40px"
+        />
+        <Link href="/lobby" className="font-bold text-inherit">MatchUP</Link>
       </NavbarBrand>
       <NavbarContent justify="start">
         <NavbarItem>
-          <Link color="foreground" className={path === '/' ? styles.active : ""} href="/">
-            Home
+          <Link color="foreground" className={path === '/champion' ? styles.active : ""} href="/champion">
+            Champion
           </Link>
         </NavbarItem>
         <NavbarItem>

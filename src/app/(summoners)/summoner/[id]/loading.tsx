@@ -1,3 +1,3 @@
 export default function Loading() {
-    return <h2>Loading a summoner info :id</h2>;
+    return <h2>Loading a summoner info</h2>;
   }
