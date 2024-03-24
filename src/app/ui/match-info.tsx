@@ -1,7 +1,7 @@
 "use client"
 import { Avatar, AvatarGroup, Button, Image } from "@nextui-org/react";
 import styles from "./match-info.module.css"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Participant {
     championName: string;
@@ -49,24 +49,25 @@ interface ResponseData {
 }
 
 
+
 // 나중에 팀별 정보는 컴포넌트로 따로 분리할 예정
 export default function MatchDetail({ data, puuid } : {
     data : ResponseData,
     puuid : string
 }) {
-    
     const datas :Info | undefined = data?.info;
     const playerData :Participant[] | undefined = datas?.participants;
     const players :string[] | undefined = data?.metadata?.participants;
     const gameDuration :number | undefined = datas?.gameDuration;
     const teamData :Team[] | undefined = data?.info?.teams;
+    console.log("props로 받은 데이터 확인 : ", data)
     const playerChampionImgs : string[] | undefined = playerData?.map((item) => {
         return item.championName;
     }) // 챔피언 이름 
     // const playerSummonerIds = playerData?.map((item) => {
     //     return item.riotIdGameName;
     // }) // 소환사명
-    console.log(teamData);
+    // console.log(teamData);
     const result = teamData?.map((team) => {
         if (team.win) {
             return 'win';
@@ -74,21 +75,24 @@ export default function MatchDetail({ data, puuid } : {
             return 'lose';
         }
     })
-    const team1 :Participant[] | undefined  = playerData?.slice(0, playerChampionImgs.length / 2);
-    const team2 :Participant[] | undefined = playerData?.slice(playerChampionImgs.length / 2, playerChampionImgs.length);
+    const team1 :Participant[] | undefined  = playerData && playerChampionImgs ? playerData.slice(0, playerChampionImgs.length / 2) : [];
+    const team2 :Participant[] | undefined = playerData && playerChampionImgs ? playerData?.slice(playerChampionImgs.length / 2, playerChampionImgs.length) :  [];
     const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
-    const resultOfThisUser :string | undefined = team1?.map((player) => {return player.puuid}).includes(puuid) ? result[0] : result[1];
+    const resultOfThisUser :string | undefined = team1?.length && team2?.length ? team1?.map((player) => {return player.puuid}).includes(puuid) ? result[0] : result[1] : undefined;
     // console.log(resultOfThisUser, "result");
+    
+
     return (
         <main>
             <div className={styles.container}>
                 <div className={styles.match}>
                     {/* <p>matchId : {matchId}</p> */}
+                    
                     <div className={styles.playInfo}>
                         <p className={resultOfThisUser === 'win' ? styles.winText : styles.loseText}>{resultOfThisUser}</p>
                         <p className={styles.duration}>{Math.trunc(gameDuration / 60)}m {Math.trunc(((gameDuration / 60) - Math.trunc(gameDuration / 60)) * 60)}s</p>
                         <AvatarGroup>
-                            {playerChampionImgs.slice(0, playerChampionImgs.length / 2).map((url, index) => (
+                            {playerChampionImgs && playerChampionImgs.length && playerChampionImgs.slice(0, playerChampionImgs.length / 2).map((url, index) => (
                                 <Avatar
                                     key={index}
                                     size="md"
@@ -98,7 +102,7 @@ export default function MatchDetail({ data, puuid } : {
                         </AvatarGroup>
                         VS
                         <AvatarGroup>
-                        {playerChampionImgs.slice(playerChampionImgs.length / 2, playerChampionImgs.length).map((url: string, index: number) => (
+                        {playerChampionImgs && playerChampionImgs.length > 0 && playerChampionImgs.slice(playerChampionImgs.length / 2, playerChampionImgs.length).map((url: string, index: number) => (
                             <Avatar
                                 key={index}
                                 size="md"

@@ -1,11 +1,13 @@
-import Search from "@/app/ui/article/search"
-import Articles from "@/app/ui/article/articleList"
+import ArticleList from "@/app/ui/article/articleList"
 
-export default function Page() {
+// 게시글 전체 목록을 보여주는 페이지 
+export default function ArticleListPage() {
   return (
     <div>
-      <Search />
-      <Articles />
+      <ArticleList />
     </div>
   )
 }
+
+
+

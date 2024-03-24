@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import styles from "./movie.module.css";
+import styles from "./champion.module.css"
 import { useRouter } from "next/navigation";
 
 interface ChampionProps {
