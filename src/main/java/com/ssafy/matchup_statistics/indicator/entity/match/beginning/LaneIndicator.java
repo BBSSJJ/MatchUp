@@ -8,9 +8,11 @@ import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.BasicW
 import com.ssafy.matchup_statistics.indicator.data.Before_15_Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public abstract class LaneIndicator {
     private BasicWeight basicWeight = new BasicWeight();
     private AggresiveLaneAbilility aggresiveLaneAbilility = new AggresiveLaneAbilility();

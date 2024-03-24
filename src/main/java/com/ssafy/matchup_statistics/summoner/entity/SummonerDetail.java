@@ -1,6 +1,11 @@
 package com.ssafy.matchup_statistics.summoner.entity;
 
-public class SummonerInfo {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class SummonerDetail {
     private String puuid;
     private String accountId;
     private String name;

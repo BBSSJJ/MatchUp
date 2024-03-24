@@ -15,3 +15,6 @@ spring:
   profiles:
     include: swagger
 
+logging:
+  level:
+    root: debug

@@ -10,9 +10,8 @@ public class InitiatingPoint {
     private long totalTimeCCingOthersPerTotalDamageTaken;
     private long totalDamageTakenPerTeamTotalDamageTaken;
     private long damageSelfMitigatedPerTotalDamageTaken;
-    private final int DEFAULT_ROUND_UP = 100_000;
 
-    public InitiatingPoint(MacroData macroData) {
+    public InitiatingPoint(MacroData macroData, int DEFAULT_ROUND_UP) {
         totalTimeCCingOthersPerTotalDamageTaken =
                 (long) macroData.getMyData().getTimeCCingOthers() * DEFAULT_ROUND_UP / (macroData.getMyData().getTotalDamageTaken() + 1);
         totalDamageTakenPerTeamTotalDamageTaken =
@@ -22,6 +21,8 @@ public class InitiatingPoint {
     }
 
     public InitiatingPoint(List<InitiatingPoint> initiatingPoints) {
+        if (initiatingPoints.isEmpty()) return;
+
         initiatingPoints.forEach(initiatingPoint -> {
             totalTimeCCingOthersPerTotalDamageTaken += initiatingPoint.getTotalTimeCCingOthersPerTotalDamageTaken();
             totalDamageTakenPerTeamTotalDamageTaken += initiatingPoint.getTotalDamageTakenPerTeamTotalDamageTaken();

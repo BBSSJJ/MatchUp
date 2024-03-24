@@ -13,6 +13,7 @@ public class LaneAssist {
     private int killInvolvementRate;
 
     public LaneAssist(List<LaneAssist> laneAssists) {
+        if (laneAssists.isEmpty()) return;
         laneAssists.forEach(laneAssist -> {
             killAssistDiffer += laneAssist.getKillAssistDiffer();
             killInvolvementRate += laneAssist.getKillInvolvementRate();

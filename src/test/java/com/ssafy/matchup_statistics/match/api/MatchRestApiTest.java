@@ -43,7 +43,6 @@ class MatchRestApiTest {
             MatchDetailResponseDto matchDetail = matchRestApi.getMatchDetailResponseDtoByMatchId(match);
 
             assertEquals(match, matchDetail.getMetadata().getMatchId());
-            log.info("매치 유저 확인 : {}", matchDetail.getInfo());
         });
 
     }

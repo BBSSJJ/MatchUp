@@ -4,10 +4,12 @@ import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.Aggres
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.BasicWeight;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.LaneAssist;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Getter
+@Slf4j
 public class LaneIndicatorStatistics {
 
     private BasicWeight basicWeight;
@@ -17,10 +19,10 @@ public class LaneIndicatorStatistics {
         List<BasicWeight> basicWeights = laneIndicators.stream().map(LaneIndicator::getBasicWeight).toList();
         List<AggresiveLaneAbilility> aggresiveLaneAbililities = laneIndicators.stream().map(LaneIndicator::getAggresiveLaneAbilility).toList();
         List<LaneAssist> laneAssists = laneIndicators.stream().map(
-                laneIndicator -> (laneIndicator.getClass() == JgIndicator.class) ? ((JgIndicator) laneIndicator).getLaneAssist() : null).toList();
+                laneIndicator -> (laneIndicator.getClass() == JgIndicator.class) ? ((JgIndicator) laneIndicator).getLaneAssist() : new LaneAssist()).toList();
 
         basicWeight = new BasicWeight(basicWeights);
         aggresiveLaneAbilility = new AggresiveLaneAbilility(aggresiveLaneAbililities);
-        laneAssist = new LaneAssist(laneAssists);
+        if (!laneAssists.isEmpty()) laneAssist = new LaneAssist(laneAssists);
     }
 }

@@ -7,12 +7,11 @@ import java.util.List;
 
 @Getter
 public class SplitPoint {
-    private final int DEFAULT_ROUND_UP = 100_000;
     private long turretKillsPerDeaths;
     private long damageDealtToTurretsPerTotalDamageDealt;
     private long damageDealtToTurretsPerTeamTotalTowerDamageDone;
 
-    public SplitPoint(MacroData macroData) {
+    public SplitPoint(MacroData macroData, int DEFAULT_ROUND_UP) {
         turretKillsPerDeaths =
                 (long) macroData.getMyData().getTurretKills() * DEFAULT_ROUND_UP / (macroData.getMyData().getDeaths() + 1);
         damageDealtToTurretsPerTotalDamageDealt =
@@ -22,6 +21,8 @@ public class SplitPoint {
     }
 
     public SplitPoint(List<SplitPoint> splitPoints) {
+        if (splitPoints.isEmpty()) return;
+
         splitPoints.forEach(splitPoint -> {
             turretKillsPerDeaths += splitPoint.getTurretKillsPerDeaths();
             damageDealtToTurretsPerTotalDamageDealt += splitPoint.getDamageDealtToTurretsPerTotalDamageDealt();

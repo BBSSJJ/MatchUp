@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public class MatchIndicator {
     private String matchId;
     private Metadata metadata;
@@ -22,9 +23,13 @@ public class MatchIndicator {
             String puuid,
             MatchDetailResponseDto matchDetailResponseDto,
             MatchTimelineResponseDto matchTimelineResponseDto) {
+        // 매치아이디 받아오기
+        matchId = matchDetailResponseDto.getMetadata().getMatchId();
 
         // 라인 정보 생성
         LaneInfo laneInfo = new LaneInfo(puuid, matchDetailResponseDto);
+
+        log.debug("lane info(라인정보) 생성 완료 : {}", laneInfo);
 
         // 라인지표 생성
         switch (laneInfo.getTeamPosition()) {
@@ -35,14 +40,27 @@ public class MatchIndicator {
             case UTILITY -> this.laneIndicator = new UtilIndicator(laneInfo, matchTimelineResponseDto);
         }
 
+        log.debug("lane indicator(라인지표) 생성 완료 : {}", laneIndicator);
+
         // 라인정보와 response로부터 운영 정보 생성
         MacroData macroData = new MacroData(laneInfo, matchDetailResponseDto);
+
+        log.debug("macro data(운영 정보) 생성 완료 : {}", macroData);
 
         // 운영지표 생성
         this.macroIndicator = new MacroIndicator(macroData);
 
+        log.debug("macro indicator(운영지표) 생성 완료 : {}", macroIndicator);
+
         // 메타데이터 생성
         this.metadata = new Metadata(laneInfo, macroData, matchTimelineResponseDto);
+
+        log.debug("metadata(메타데이터) 생성 완료 : {}", metadata);
+    }
+
+    public MatchIndicator(String matchId, boolean isFinishedBeforeFifteen) {
+        this.matchId = matchId;
+        this.metadata = new Metadata(isFinishedBeforeFifteen);
     }
 
     @Getter
@@ -61,6 +79,10 @@ public class MatchIndicator {
             isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
             pingCount = macroData.getMyData().getAllInPings();
+        }
+
+        public Metadata(boolean isFinishedBeforeFifteen) {
+            this.isFinishedBeforeFifteen = isFinishedBeforeFifteen;
         }
     }
 }

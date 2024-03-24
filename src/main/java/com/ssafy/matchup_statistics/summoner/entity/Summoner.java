@@ -1,8 +1,7 @@
 package com.ssafy.matchup_statistics.summoner.entity;
 
 import com.ssafy.matchup_statistics.account.entity.Account;
-import com.ssafy.matchup_statistics.indicator.entity.Indicator;
-import com.ssafy.matchup_statistics.league.entity.LeagueInfo;
+import com.ssafy.matchup_statistics.league.entity.League;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +18,8 @@ public class Summoner {
     @Id
     private String id;
     private Account account;
-    private SummonerInfo summonerInfo;
-    private LeagueInfo leagueInfo;
+    private SummonerDetail summonerDetail;
+    private League league;
     private List<String> matchIds;
     private String indicatorId;
 }

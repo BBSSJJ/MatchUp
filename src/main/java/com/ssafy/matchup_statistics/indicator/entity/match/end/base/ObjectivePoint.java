@@ -9,14 +9,15 @@ import java.util.List;
 public class ObjectivePoint {
 
     private long getObjectiveDifferPerGameDuration;
-    private final int DEFAULT_ROUND_UP = 100_000;
 
-    public ObjectivePoint(MacroData marcoTeamData) {
+    public ObjectivePoint(MacroData marcoTeamData, int DEFAULT_ROUND_UP) {
         getObjectiveDifferPerGameDuration = (long) (marcoTeamData.getTeamData().getMyTeamGetObjectives() - marcoTeamData.getTeamData().getOppositeTeamGetObjectives())
                 * DEFAULT_ROUND_UP / marcoTeamData.getGameDuration();
     }
 
     public ObjectivePoint(List<ObjectivePoint> objectivePoints) {
+        if (objectivePoints.isEmpty()) return;
+
         objectivePoints.forEach(objectivePoint -> {
             getObjectiveDifferPerGameDuration += objectivePoint.getGetObjectiveDifferPerGameDuration();
         });
