@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/regist")
-    ResponseEntity<UserDto> userRegist(RegistUserRequestDto registUserRequestDto) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    ResponseEntity<UserDto> userRegist(@RequestBody RegistUserRequestDto registUserRequestDto) {
+        UserDto user = userService.addUser(registUserRequestDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("id", String.valueOf(user.getUserId()))
+                .header("role", String.valueOf(user.getRole()))
+                .body(user);
     }
+
+
 }

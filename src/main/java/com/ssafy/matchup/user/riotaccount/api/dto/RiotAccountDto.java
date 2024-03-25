@@ -4,8 +4,10 @@ import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
 import com.ssafy.matchup.user.riotaccount.entity.SummonerProfile;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class RiotAccountDto {
     private String id;
     private SummonerProfile summonerProfile;
