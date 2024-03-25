@@ -13,7 +13,6 @@ const deleteFile = (file) => {
       .delete(`${FILESERVER_BASE_URL}/uploads/${file}`)
       .then((success) => console.log(success))
       .then(() => alert('파일 삭제 완료'))
-      .then(() => window.location.reload())
       .catch((fail) => {
         alert('파일 삭제 실패')
         console.log(fail)
