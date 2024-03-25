@@ -40,8 +40,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
-app.use("/uploads", express.static("uploads"));
+app.use("/file/uploads", express.static("uploads"));
 app.use("/file", express.static("dist"));
+
+// redirect root directory
+app.get("/", (req, res) => {
+  const index = path.join(__dirname, "/index.html");
+  res.redirect("https://matchup.site/file");
+});
 
 // Server Listening
 app.get("/file/", (req, res) => {
