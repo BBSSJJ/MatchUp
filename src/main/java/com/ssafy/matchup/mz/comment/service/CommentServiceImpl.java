@@ -1,9 +1,9 @@
 package com.ssafy.matchup.mz.comment.service;
 
 import com.ssafy.matchup.global.dto.ListDto;
-import com.ssafy.matchup.mz.comment.dto.CommentDto;
 import com.ssafy.matchup.mz.article.entity.MzArticle;
 import com.ssafy.matchup.mz.article.repository.MzArticleRepository;
+import com.ssafy.matchup.mz.comment.dto.CommentDto;
 import com.ssafy.matchup.mz.comment.dto.request.RegistCommentRequestDto;
 import com.ssafy.matchup.mz.comment.dto.request.UpdateCommentRequestDto;
 import com.ssafy.matchup.mz.comment.entity.Comment;

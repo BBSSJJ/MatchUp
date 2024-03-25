@@ -40,19 +40,19 @@ public class GlobalExceptionHandler {
     }
 
     // [500]서버 오류
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<MessageDto> handleInternalServerException(Exception e) {
+    @ExceptionHandler(InternalError.class)
+    protected ResponseEntity<MessageDto> handleInternalServerException(InternalError e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    protected ResponseEntity<MessageDto> handleIllegalStateException(Exception e) {
+    protected ResponseEntity<MessageDto> handleIllegalStateException(IllegalStateException e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     // [403] 수정, 삭제 등 data 주인과 요청자가 일치하지 않을 때
     @ExceptionHandler(SecurityException.class)
-    protected ResponseEntity<MessageDto> handleSecurityException(Exception e) {
+    protected ResponseEntity<MessageDto> handleSecurityException(SecurityException e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
