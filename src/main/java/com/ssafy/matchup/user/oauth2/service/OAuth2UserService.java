@@ -1,6 +1,5 @@
 package com.ssafy.matchup.user.oauth2.service;
 
-import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
 import com.ssafy.matchup.user.oauth2.CustomOAuth2User;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

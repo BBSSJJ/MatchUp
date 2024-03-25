@@ -2,23 +2,23 @@ package com.ssafy.matchup.user.riotaccount.entity;
 
 import com.ssafy.matchup.user.main.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "riot_account")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class RiotAccount {
     @Id
-    @Column(name = "riot_token_value")
-    private String riotTokenValue;
+    @Column(name = "riot_account_id")
+    private String id;
 
     @Embedded
     private SummonerProfile summonerProfile;
 
     @Column(name = "revision_data")
-    private String revisionDate;
+    private Long revisionDate;
 
     @Column(name = "tier")
     private String tier;
@@ -27,9 +27,14 @@ public class RiotAccount {
     private String leagueRank;
 
     @Column(name = "league_point")
-    private String leaguePoint;
+    private Integer leaguePoint;
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
 }
