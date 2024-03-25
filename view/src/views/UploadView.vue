@@ -1,8 +1,8 @@
 <script setup>
 import axios from 'axios'
 import { ref, onBeforeMount } from 'vue'
-const FILESERVER_IP = '70.12.246.246'
-const FILESERVER_PORT = 1235
+const FILESERVER_BASE_URL = 'https://matchup.site'
+const FILESERVER_PORT = 8001
 const upload = async () => {
   const files = document.getElementById('uploadFile').files
 
@@ -14,7 +14,7 @@ const upload = async () => {
 
   // 파일 업로드
   await axios
-    .post(`http://${FILESERVER_IP}:${FILESERVER_PORT}/uploads`, files)
+    .post(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads`, files)
     .then((success) => console.log(success))
     .then(() => alert('파일 업로드 완료'))
     .then(() => window.location.reload())
@@ -27,7 +27,7 @@ const upload = async () => {
 onBeforeMount(async () => {
   // 파일 서버 응답여부 확인
   axios
-    .get(`http://${FILESERVER_IP}:${FILESERVER_PORT}/`)
+    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/`)
     .then((success) => console.log(success))
     .catch(() => alert('파일 서버가 응답하지 않습니다. 관리자에게 문의하세요.'))
 })

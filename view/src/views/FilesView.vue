@@ -1,17 +1,17 @@
 <script setup>
 import axios from 'axios'
 import { ref, onBeforeMount } from 'vue'
-const FILESERVER_IP = '70.12.246.246'
-const FILESERVER_PORT = 1235
+const FILESERVER_BASE_URL = 'https://matchup.site'
+const FILESERVER_PORT = 8001
 const files = ref([])
-const baseUrl = `http://${FILESERVER_IP}:${FILESERVER_PORT}/uploads/`
+const baseUrl = `${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads/`
 
 const deleteFile = (file) => {
   console.log(file)
   if (confirm('파일을 삭제하시겠습니까?'))
     // 파일 업로드
     axios
-      .delete(`http://${FILESERVER_IP}:${FILESERVER_PORT}/uploads/${file}`)
+      .delete(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads/${file}`)
       .then((success) => console.log(success))
       .then(() => alert('파일 삭제 완료'))
       .then(() => window.location.reload())
@@ -38,13 +38,13 @@ const getCopy = (fileId) => {
 onBeforeMount(async () => {
   // 파일 서버 응답여부 확인
   axios
-    .get(`http://${FILESERVER_IP}:${FILESERVER_PORT}/`)
+    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/`)
     .then((success) => console.log(success))
     .catch(() => alert('파일 서버가 응답하지 않습니다. 관리자에게 문의하세요.'))
 
   // 파일 서버 응답확인 후 axios 보내기
   await axios
-    .get(`http://${FILESERVER_IP}:${FILESERVER_PORT}/uploads`)
+    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads`)
     .then((success) => (files.value = success.data.files))
     .catch((fail) => console.log(fail))
 })
@@ -64,7 +64,7 @@ onBeforeMount(async () => {
           <div class="p-2">
             <button class="btn btn-primary p-2 pt-0 pb-1 ms-2 me-3" @click="getCopy(`file-${index + 1}`)">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="www.w3.org/2000/svg"
                 width="12"
                 height="12"
                 fill="currentColor"
@@ -79,7 +79,7 @@ onBeforeMount(async () => {
             </button>
             <button class="btn btn-danger p-1 pt-0 pd-0" @click="deleteFile(file)">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="www.w3.org/2000/svg"
                 width="16"
                 height="16"
                 fill="currentColor"

@@ -6,12 +6,13 @@ import path from "path";
 
 const __dirname = path.resolve();
 const app = express();
-const HOST_IP = "70.12.246.246";
-const PORT = 1235;
-
+const HOST_BASE_URL = "https://matchup.site";
+const PORT = 8001;
+// 70.12.246.
 // Cors 설정
 const corsOptions = {
-  origin: `http://${HOST_IP}:${1234}`,
+  // origin: `http://${HOST_BASE_URL}:${1234}`,
+  origin: "*",
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -25,13 +26,7 @@ const saveForm = function (req, file, cb) {
   );
   const ext = path.extname(file.originalname);
 
-  let prefix;
-  if (ext == ".txt" || ext == ".md") prefix = "text";
-  else if (ext == ".png" || ext == ".jpg" || ext == ".jpeg") prefix = "image";
-  else if (ext == ".avi" || ext == ".mp4") prefix = "video";
-  else prefix = "etc";
-
-  cb(null, prefix + "-" + fileName + "-" + now + ext);
+  cb(null, fileName + "-" + now + ext);
 };
 
 // Multer 설정
@@ -46,10 +41,12 @@ const upload = multer({ storage: storage });
 
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
 app.use("/uploads", express.static("uploads"));
+app.use("/", express.static("dist"));
 
 // Server Listening
 app.get("/", (req, res) => {
-  res.status(200).send("Filesystem Server is now Listening!");
+  const index = path.join(__dirname, "/index.html");
+  res.status(200).send(fs.readdir(index));
 });
 
 // 파일목록 보내기
@@ -64,7 +61,8 @@ app.get("/uploads", (req, res) => {
 // 파일 업로드 처리
 app.post("/uploads", upload.any(), (req, res) => {
   console.log(req);
-  res.status(200).send("파일이 업로드되었습니다.");
+  // res.status(200).send({ message: "successfully uploaded!", files: req.files });
+  res.status(200).send({ fileName: req.files[0].filename });
 });
 
 // 파일 삭제 처리
@@ -78,5 +76,5 @@ app.delete("/uploads/:file", upload.any(), (req, res) => {
 
 // 실행여부 콘솔에 찍기
 app.listen(PORT, () => {
-  console.log(`서버가 http://${HOST_IP}:${PORT} 에서 실행 중입니다.`);
+  console.log(`서버가 ${HOST_BASE_URL}:${PORT} 에서 실행 중입니다.`);
 });
