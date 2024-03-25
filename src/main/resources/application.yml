@@ -23,6 +23,14 @@ spring:
             - LogFilter
             - LoginFilter
 
+        - id: user-server-oauth2
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/users/regist
+          filters:
+            - LogFilter
+            - LoginFilter
+
         - id: user-server-users
           uri: http://${USER_SERVER}:9002
           predicates:
