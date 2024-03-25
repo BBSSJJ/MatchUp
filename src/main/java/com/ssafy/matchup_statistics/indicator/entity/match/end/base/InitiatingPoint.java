@@ -17,7 +17,7 @@ public class InitiatingPoint {
         totalTimeCCingOthersPerTotalDamageTaken =
                 (long) macroData.getMyData().getTimeCCingOthers() * DEFAULT_ROUND_UP / (macroData.getMyData().getTotalDamageTaken() + 1);
         totalDamageTakenPerTeamTotalDamageTaken =
-                (long) macroData.getMyData().getTotalDamageTaken() * DEFAULT_ROUND_UP / macroData.getTeamData().getTeamTotalDamageTaken() + 1;
+                (long) macroData.getMyData().getTotalDamageTaken() * DEFAULT_ROUND_UP / (macroData.getTeamData().getTeamTotalDamageTaken() + 1);
         damageSelfMitigatedPerTotalDamageTaken =
                 (long) macroData.getMyData().getDamageSelfMitigated() * DEFAULT_ROUND_UP / (macroData.getMyData().getTotalDamageTaken() + 1);
     }

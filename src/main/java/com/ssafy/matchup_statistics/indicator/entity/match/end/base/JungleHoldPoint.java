@@ -13,7 +13,7 @@ public class JungleHoldPoint {
 
     public JungleHoldPoint(MacroData marcoTeamData, int DEFAULT_ROUND_UP) {
         totalJungleObjectivePerGameDuration =
-                ((long) marcoTeamData.getMyData().getTotalEnemyJungleMinionsKilled() * DEFAULT_ROUND_UP / marcoTeamData.getGameDuration() + 1);
+                ((long) marcoTeamData.getMyData().getTotalEnemyJungleMinionsKilled() * DEFAULT_ROUND_UP / (marcoTeamData.getGameDuration() + 1));
     }
 
     public JungleHoldPoint(List<JungleHoldPoint> jungleHoldPoints) {

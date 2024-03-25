@@ -54,6 +54,8 @@ public class SummonerTotalService {
 
     public int saveLeagueEntry(Integer pages, LeagueEntryRequestDto dto) {
 
+        long totalStart = System.currentTimeMillis();
+
         // 리그 엔트리 돌면서 모든정보 저장
         for (int i = 1; i <pages + 1; i++) {
             List<LeagueInfoResponseDto> leagueInfoResponses = riotApiAdaptor.getLeagueInfoResponseByTier(dto, i);
@@ -85,6 +87,9 @@ public class SummonerTotalService {
                 log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
             });
         }
+
+        log.info("전체 소환사 생성완료[소요시간 : {}ms]", (totalStart - System.currentTimeMillis()));
+
         return pages;
     }
 }
