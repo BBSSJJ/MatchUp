@@ -16,6 +16,7 @@ const upload = async () => {
     .post(`${FILESERVER_BASE_URL}/uploads`, files)
     .then((success) => console.log(success))
     .then(() => alert('파일 업로드 완료'))
+    .then(() => window.location.reload())
     .catch((fail) => {
       alert('파일 업로드 실패')
       console.log(fail)
