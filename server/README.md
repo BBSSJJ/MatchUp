@@ -7,6 +7,6 @@
 ```docker
 # 현재 디렉터리로 이동
 docker pull node:lts-alpine3.19
-docker build . -t node
-docker run -it --name file-view-server -p 8001:8001 -d node
+docker build . -t node:lts-alpine3.19
+docker run -it --name file-view-server -p 8001:8001 -d node:lts-alpine3.19
 ```

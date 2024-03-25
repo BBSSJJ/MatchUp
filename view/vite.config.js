@@ -11,7 +11,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    port: 1234
+  build: {
+    outDir: '../server/dist',
+    publicDir: '/file/'
   }
 })

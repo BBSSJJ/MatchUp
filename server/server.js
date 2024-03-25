@@ -8,7 +8,7 @@ const __dirname = path.resolve();
 const app = express();
 const HOST_BASE_URL = "https://matchup.site/file";
 const PORT = 8001;
-// 70.12.246.
+
 // Cors 설정
 const corsOptions = {
   // origin: `http://${HOST_BASE_URL}:${1234}`,
@@ -40,8 +40,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
-app.use("/file/uploads", express.static("uploads"));
-app.use("/file/", express.static("dist"));
+app.use("/uploads", express.static("uploads"));
+app.use("/file", express.static("dist"));
 
 // Server Listening
 app.get("/file/", (req, res) => {
@@ -76,5 +76,5 @@ app.delete("/file/uploads/:file", upload.any(), (req, res) => {
 
 // 실행여부 콘솔에 찍기
 app.listen(PORT, () => {
-  console.log(`서버가 ${HOST_BASE_URL}:${PORT} 에서 실행 중입니다.`);
+  console.log(`서버가 ${HOST_BASE_URL} 에서 실행 중입니다.`);
 });
