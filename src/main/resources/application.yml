@@ -11,10 +11,11 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
 
   profiles:
     include: swagger
 
 logging:
   level:
-    root: debug
+    root: info
