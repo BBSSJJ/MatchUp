@@ -14,7 +14,7 @@ const upload = async () => {
 
   // 파일 업로드
   await axios
-    .post(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads`, files)
+    .post(`${FILESERVER_BASE_URL}/uploads`, files)
     .then((success) => console.log(success))
     .then(() => alert('파일 업로드 완료'))
     .then(() => window.location.reload())
@@ -27,7 +27,7 @@ const upload = async () => {
 onBeforeMount(async () => {
   // 파일 서버 응답여부 확인
   axios
-    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/`)
+    .get(`${FILESERVER_BASE_URL}/`)
     .then((success) => console.log(success))
     .catch(() => alert('파일 서버가 응답하지 않습니다. 관리자에게 문의하세요.'))
 })
