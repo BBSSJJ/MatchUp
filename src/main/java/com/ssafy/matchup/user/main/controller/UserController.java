@@ -21,7 +21,7 @@ public class UserController {
     ResponseEntity<UserDto> userRegist(@RequestBody RegistUserRequestDto registUserRequestDto) {
         UserDto user = userService.addUser(registUserRequestDto);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("id", String.valueOf(user.getUserId()))
                 .header("role", String.valueOf(user.getRole()))
                 .body(user);
