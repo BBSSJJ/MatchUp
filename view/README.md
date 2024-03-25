@@ -6,5 +6,6 @@
 
 ```java
 npm run build
-// 생성되는 파일 : ./dist > server/dist로 붙여넣기 
 ```
+
+- 하면 자동으로 /sever/dist 로 들어갑니다.

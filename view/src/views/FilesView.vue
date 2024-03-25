@@ -2,7 +2,6 @@
 import axios from 'axios'
 import { ref, onBeforeMount } from 'vue'
 const FILESERVER_BASE_URL = 'https://matchup.site/file'
-const FILESERVER_PORT = 8001
 const files = ref([])
 const baseUrl = `${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads/`
 
@@ -11,7 +10,7 @@ const deleteFile = (file) => {
   if (confirm('파일을 삭제하시겠습니까?'))
     // 파일 업로드
     axios
-      .delete(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads/${file}`)
+      .delete(`${FILESERVER_BASE_URL}/uploads/${file}`)
       .then((success) => console.log(success))
       .then(() => alert('파일 삭제 완료'))
       .then(() => window.location.reload())
@@ -38,7 +37,7 @@ const getCopy = (fileId) => {
 onBeforeMount(async () => {
   // 파일 서버 응답여부 확인
   axios
-    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/`)
+    .get(`${FILESERVER_BASE_URL}/`)
     .then((success) => console.log(success))
     .catch(() => alert('파일 서버가 응답하지 않습니다. 관리자에게 문의하세요.'))
 
