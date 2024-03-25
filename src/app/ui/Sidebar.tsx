@@ -10,9 +10,9 @@ const SideBar: React.FC = () => {
 			right: 0, // 오른쪽에 고정
 			top: '4rem', // 상단에서 시작
 			bottom: 0, // 하단까지 뻗음
-			width: '20%',
+			width: '280px',
 			color: 'white',
-			backgroundColor: '#161A1E', // 배경색
+			backgroundColor: '#333c44', // 배경색
 			overflowY: 'auto', // 내용이 많아질 경우 스크롤
 			padding: '20px', // 내부 패딩
 			zIndex: 1000,

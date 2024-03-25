@@ -3,8 +3,5 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 350px;
-    height: 300px;
-    margin: 100px auto;
-    border: 2px solid lightgoldenrodyellow;
+    margin: 50px auto;
 }

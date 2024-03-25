@@ -1,5 +1,7 @@
-.container {
-    width: 80%;
-    height: 60vh;
-    background-color: #5aad8a;
+.card {
+    width: 100%;
+    height: calc(100vh - 64px);
+    padding: 1rem;
+    background-color: #a8dddd;
 }
+

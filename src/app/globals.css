@@ -38,12 +38,13 @@ body {
 
 .layout-container {
   display: flex;
-  min-height: 100vh;
-  /* 전체 화면 높이를 차지하도록 설정 */
+  height: 100%;
+  /* height: calc(100vh - 64px); */
 }
 
 .main-content {
   flex-grow: 1;
-  width: 80%;
-  margin-right: 300px;
+  width: calc(100% - 280px);
+  height: 100%; 
+  margin-right: 280px;
 }

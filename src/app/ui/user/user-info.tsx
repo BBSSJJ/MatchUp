@@ -19,7 +19,7 @@ export default function UserProfile({ data } :UserProfileProps) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.item1}>
-			<Badge content={data.tier} color="primary" className="w-[50px] h-[30px]" >
+			<Badge content={142} color="primary" className="w-[50px] h-[30px]" >
 				<Card
 					isFooterBlurred
 					radius="lg"
@@ -53,10 +53,14 @@ export default function UserProfile({ data } :UserProfileProps) {
 				}
 			</div>
 			<div className={styles.item3}>
-				<p>전적 정보</p>
-				<p>{data.win} / {data.lose}</p>
-				<p>{ victory_rate }%</p>
-				<p>티어</p>
+				<div className="h-[250px] w-[600px]">
+					<p>전적 정보</p>
+					<p>{data.win} / {data.lose}</p>
+					<p>승률 45{ victory_rate }%</p>
+					<p>티어 : master</p>
+					<p>최근 사용한 챔피언</p>
+					<p>선호 포지션</p>
+				</div>
 			</div>
 		</div>
 	)
