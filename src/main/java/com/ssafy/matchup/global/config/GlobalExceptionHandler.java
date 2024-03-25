@@ -2,6 +2,7 @@ package com.ssafy.matchup.global.config;
 
 import com.ssafy.matchup.global.dto.MessageDto;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -54,6 +55,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SecurityException.class)
     protected ResponseEntity<MessageDto> handleSecurityException(SecurityException e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<MessageDto> handleIllegalArgumentException(Exception e) {
+        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    //소환사 닉네임 이미 사용중일 때
+    @ExceptionHandler(DuplicateKeyException.class)
+    protected ResponseEntity<MessageDto> handleDuplicateKeyException(Exception e) {
+        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.CONFLICT);
     }
 
 }
