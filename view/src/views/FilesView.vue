@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ref, onBeforeMount } from 'vue'
 const FILESERVER_BASE_URL = 'https://matchup.site/file'
 const files = ref([])
-const baseUrl = `${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads/`
+const baseUrl = `${FILESERVER_BASE_URL}/uploads/`
 
 const deleteFile = (file) => {
   console.log(file)
@@ -43,7 +43,7 @@ onBeforeMount(async () => {
 
   // 파일 서버 응답확인 후 axios 보내기
   await axios
-    .get(`${FILESERVER_BASE_URL}:${FILESERVER_PORT}/uploads`)
+    .get(`${FILESERVER_BASE_URL}/uploads`)
     .then((success) => (files.value = success.data.files))
     .catch((fail) => console.log(fail))
 })
