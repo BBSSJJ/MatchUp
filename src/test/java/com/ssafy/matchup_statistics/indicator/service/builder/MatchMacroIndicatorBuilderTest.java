@@ -141,13 +141,13 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTotalDamageDealt())
-                .isEqualTo(3734 * DEFAULT_ROUND_UP / 327344);
+                .isEqualTo(3734 * DEFAULT_ROUND_UP / (327344 + 1));
         // 팀 내 타워데미지 비중
         assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
                 .getSplitPoint()
                 .getDamageDealtToTurretsPerTeamTotalTowerDamageDone())
-                .isEqualTo(3734 * DEFAULT_ROUND_UP / (6714 + 3734 + 3592 + 6015 + 920));
+                .isEqualTo(3734 * DEFAULT_ROUND_UP / (6714 + 3734 + 3592 + 6015 + 920 + 1));
     }
 
     @Test
@@ -175,7 +175,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getInitiatingPoint()
                 .getTotalDamageTakenPerTeamTotalDamageTaken())
-                .isEqualTo((long) 27649 * DEFAULT_ROUND_UP / (17452 + 27649 + 18517 + 13622 + 18728));
+                .isEqualTo((long) 27649 * DEFAULT_ROUND_UP / (17452 + 27649 + 18517 + 13622 + 18728 + 1));
 
         // 감소시킨 데미지
         assertThat(indicator.getMatchIndicators().get(0)
@@ -204,7 +204,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getJungleHoldPoint()
                 .getTotalJungleObjectivePerGameDuration())
-                .isEqualTo(27 * DEFAULT_ROUND_UP / 1713);
+                .isEqualTo(27 * DEFAULT_ROUND_UP / (1713 + 1));
     }
 
     @Test
@@ -225,7 +225,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getObjectivePoint()
                 .getGetObjectiveDifferPerGameDuration())
-                .isEqualTo(((0 + 3 + 2 + 0) - (1 + 1 + 3 + 1)) * DEFAULT_ROUND_UP / 1713);
+                .isEqualTo(((0 + 3 + 2 + 0) - (1 + 1 + 3 + 1)) * DEFAULT_ROUND_UP / (1713 + 1));
     }
 
     @Test
@@ -273,7 +273,7 @@ class MatchMacroIndicatorBuilderTest {
                 .getMacroIndicator()
                 .getTotalDealPoint()
                 .getDealPerGold())
-                .isEqualTo((long) ((long) 899.0909564443765 * DEFAULT_ROUND_UP / 496.7942995806239));
+                .isEqualTo((long) ((long) 899.0909564443765 * DEFAULT_ROUND_UP / (496.7942995806239 + 1)));
         // 딜 비중
         assertThat(indicator.getMatchIndicators().get(0)
                 .getMacroIndicator()
