@@ -1,7 +1,7 @@
 .container {
     display: grid;
     place-items: center;
-    gap: 10px;
+    gap: 15px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 250px 250px;
     grid-template-areas:
@@ -13,8 +13,9 @@
     padding: 10px;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.45);
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    backdrop-filter: blur(5px);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    /* box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
+    backdrop-filter: blur(3px);
 }
 
 .item1 {
@@ -31,8 +32,20 @@
 
 .item3 {
     grid-area: c;
-    margin: 10px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: rgba(209, 207, 207, 0.45);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
 }
+
+.item3:hover {
+    box-shadow: 0 0 5px 1px rgba(54, 196, 190, 0.35); /* 파란색 네온 효과 */
+}
+
 
 .keywords {
     background-color: #384654;

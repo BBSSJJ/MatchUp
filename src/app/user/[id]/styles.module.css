@@ -1,4 +1,7 @@
 .container {
     height: 100vh;
     background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viego_0.jpg");
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-size: cover; /* 배경 이미지를 요소에 맞게 크기 조절 */
+    background-position: center; /* 배경 이미지 위치를 가운데로 설정 */
 }

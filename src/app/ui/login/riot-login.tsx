@@ -7,17 +7,20 @@ import { SERVER_URL } from '@/app/ui/login-button';
 
 
 // sns_type, sns_id, riot_id를 담아 POST요청
-export default function RiotLoginForm() {
+export default function RiotLoginForm({ snsType, snsId } :{
+    snsType :string;
+    snsId :string;
+}) {
     const [riotId, setRiorId] = useState("");
     
     const handleSignIn = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/api/users/signup`, {
+            const response = await fetch("http://70.12.247.47:9000/api/users/register", {
                 method:  'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ riotId }),
+                body: JSON.stringify({ riotId, snsType, snsId }),
             })
 
             if(response.ok) {
