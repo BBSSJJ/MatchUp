@@ -107,6 +107,7 @@ class MatchMetadataBuilderTest {
         assertThat(indicator.getMatchIndicators().get(0)
                 .getMetadata()
                 .getLaneInfo())
+                .usingRecursiveComparison()
                 .isEqualTo(laneInfo);
     }
 
@@ -120,6 +121,7 @@ class MatchMetadataBuilderTest {
                 .laneInfo(laneInfo)
                 .isFinishedBeforeFifteen(false)
                 .isOurTeamEarlySurrendered(false)
+                .isWin(true)
                 .pingCount(1)
                 .build();
 
@@ -132,6 +134,7 @@ class MatchMetadataBuilderTest {
         // then
         assertThat(indicator.getMatchIndicators().get(0)
                 .getMetadata())
+                .usingRecursiveComparison()
                 .isEqualTo(metadata);
     }
 
