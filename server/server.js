@@ -40,17 +40,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
-app.use("/uploads", express.static("uploads"));
-app.use("/", express.static("dist"));
-matchup.site / file;
+app.use("/file/uploads", express.static("uploads"));
+app.use("/file/", express.static("dist"));
+
 // Server Listening
-app.get("/", (req, res) => {
+app.get("/file/", (req, res) => {
   const index = path.join(__dirname, "/index.html");
   res.status(200).send(fs.readdir(index));
 });
 
 // 파일목록 보내기
-app.get("/uploads", (req, res) => {
+app.get("/file/uploads", (req, res) => {
   const uploadPath = path.join(__dirname, "uploads");
   fs.readdir(uploadPath, (err, files) => {
     if (err) return res.status(500).send("서버 오류");
@@ -59,14 +59,14 @@ app.get("/uploads", (req, res) => {
 });
 
 // 파일 업로드 처리
-app.post("/uploads", upload.any(), (req, res) => {
+app.post("/file/uploads", upload.any(), (req, res) => {
   console.log(req);
   // res.status(200).send({ message: "successfully uploaded!", files: req.files });
   res.status(200).send({ fileName: req.files[0].filename });
 });
 
 // 파일 삭제 처리
-app.delete("/uploads/:file", upload.any(), (req, res) => {
+app.delete("/file/uploads/:file", upload.any(), (req, res) => {
   const deletePath = path.join(__dirname, `uploads/${req.params.file}`);
   fs.unlink(deletePath, (err) => {
     if (err) return res.status(500).send("서버 오류");
