@@ -7,5 +7,5 @@ import lombok.Data;
 public class RegistUserRequestDto {
     private SnsType snsType;
     private String snsId;
-    private String name;
+    private String summonerName;
 }
