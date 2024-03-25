@@ -17,7 +17,7 @@
           <li class="p-1">vue: ^3.3.11</li>
           <li class="p-1">axios : ^1.6.5</li>
           <li class="p-1">express: ^4.18.2</li>
-          <li class="p-1">multer: ^1.4.5-LTS.1</li>
+          <li class="p-1">multer: ^1.4.4</li>
         </ul>
         <hr />
 
