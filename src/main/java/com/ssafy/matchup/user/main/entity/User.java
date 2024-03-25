@@ -43,8 +43,8 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
     private Lbti lbti;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
-    private List<Friendship> friends;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "myself", orphanRemoval = true)
+    private List<Friendship> friends = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feedBackedUser")
     private final List<Feedback> feedbacked = new ArrayList<>();

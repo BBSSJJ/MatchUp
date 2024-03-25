@@ -7,16 +7,21 @@ import lombok.Data;
 
 @Data
 public class RiotAccountDto {
-    private String riotTokenValue;
+    private String id;
     private SummonerProfile summonerProfile;
     private String tier;
     private String leagueRank;
-    private String leaguePoint;
+    private Integer leaguePoint;
 
     @Builder
     public RiotAccountDto(RiotAccount riotAccount) {
-        this.riotTokenValue = riotAccount.getRiotTokenValue();
-        this.summonerProfile = riotAccount.getSummonerProfile();
+        this.id = riotAccount.getId();
+        this.summonerProfile = SummonerProfile.builder()
+                .name(riotAccount.getSummonerProfile().getName())
+                .iconUrl(riotAccount.getSummonerProfile().getIconUrl())
+                .level(riotAccount.getSummonerProfile().getLevel())
+                .tag(riotAccount.getSummonerProfile().getTag())
+                .build();
         this.tier = riotAccount.getTier();
         this.leagueRank = riotAccount.getLeagueRank();
         this.leaguePoint = riotAccount.getLeaguePoint();
