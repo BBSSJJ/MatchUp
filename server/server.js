@@ -45,8 +45,19 @@ app.use("/file", express.static("dist"));
 
 // redirect root directory
 app.get("/", (req, res) => {
-  const index = path.join(__dirname, "/index.html");
   res.redirect("https://matchup.site/file");
+});
+
+// for prevent 404
+app.get("/file/upload", (req, res) => {
+  const index = path.join(__dirname, "/index.html");
+  res.status(200).send(fs.readdir(index));
+});
+
+// for prevent 404
+app.get("/file/files", (req, res) => {
+  const index = path.join(__dirname, "/index.html");
+  res.status(200).send(fs.readdir(index));
 });
 
 // Server Listening
