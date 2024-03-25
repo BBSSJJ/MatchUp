@@ -25,9 +25,15 @@ public class IndicatorBuilder {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
 
         // 검색한 매치들에 대해 각각 세부정보 조회
+        log.debug("분석할 매치 배열 : {}", matchIds);
         matchIds.forEach(matchId -> {
+            long start = System.currentTimeMillis();
+            log.debug("매치 id({}) 분석 시작", matchId);
             MatchDetailResponseDto matchDetailResponseDtoByMatchId = riotApiAdaptor.getMatchDetailResponseDtoByMatchId(matchId);
             MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = riotApiAdaptor.getMatchTimelineResponseDtoByMatchId(matchId);
+
+            // 매치정보는 별도로 저장
+            matchSaveService.save(matchDetailResponseDtoByMatchId);
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {
@@ -38,13 +44,12 @@ public class IndicatorBuilder {
 
             // 세부정보를 통해 매치 지표 생성
             MatchIndicator matchIndicator = new MatchIndicator(puuid, matchDetailResponseDtoByMatchId, matchTimelineResponseDtoByMatchId);
-            log.debug("matchIndicator(매치 지표) 생성완료 : {}", matchIndicator.getMatchId());
+            log.debug("matchIndicator(매치 지표) 생성완료 : {}ms 소요", System.currentTimeMillis() - start);
 
             matchIndicators.add(matchIndicator);
-
-            // 매치정보는 별도로 저장
-            matchSaveService.save(matchDetailResponseDtoByMatchId);
         });
+
+        log.debug("생성된 매치 지표들 확인 : {}", matchIndicators);
 
         return new Indicator(summonerId, matchIndicators);
     }

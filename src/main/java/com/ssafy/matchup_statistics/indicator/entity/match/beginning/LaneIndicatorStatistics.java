@@ -21,8 +21,11 @@ public class LaneIndicatorStatistics {
         List<LaneAssist> laneAssists = laneIndicators.stream().map(
                 laneIndicator -> (laneIndicator.getClass() == JgIndicator.class) ? ((JgIndicator) laneIndicator).getLaneAssist() : new LaneAssist()).toList();
 
-        basicWeight = new BasicWeight(basicWeights);
-        aggresiveLaneAbilility = new AggresiveLaneAbilility(aggresiveLaneAbililities);
-        if (!laneAssists.isEmpty()) laneAssist = new LaneAssist(laneAssists);
+        if (!basicWeights.isEmpty())
+            basicWeight = new BasicWeight(basicWeights);
+        if (!aggresiveLaneAbililities.isEmpty())
+            aggresiveLaneAbilility = new AggresiveLaneAbilility(aggresiveLaneAbililities);
+        if (!laneAssists.isEmpty())
+            laneAssist = new LaneAssist(laneAssists);
     }
 }

@@ -2,10 +2,12 @@ package com.ssafy.matchup_statistics.indicator.entity.match.end.base;
 
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class VisionPoint {
     private long visionScorePerDeath;
 
@@ -14,8 +16,6 @@ public class VisionPoint {
     }
 
     public VisionPoint(List<VisionPoint> visionPoints) {
-        if (visionPoints.isEmpty()) return;
-
         visionPoints.forEach(visionPoint -> {
             visionScorePerDeath += visionPoint.getVisionScorePerDeath();
         });

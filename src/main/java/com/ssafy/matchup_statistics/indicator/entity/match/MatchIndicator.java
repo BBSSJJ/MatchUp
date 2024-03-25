@@ -61,6 +61,8 @@ public class MatchIndicator {
     public MatchIndicator(String matchId, boolean isFinishedBeforeFifteen) {
         this.matchId = matchId;
         this.metadata = new Metadata(isFinishedBeforeFifteen);
+        this.laneIndicator = new TopIndicator();
+        this.macroIndicator = new MacroIndicator();
     }
 
     @Getter
@@ -70,6 +72,7 @@ public class MatchIndicator {
         private LaneInfo laneInfo;
         private boolean isFinishedBeforeFifteen;
         private boolean isOurTeamEarlySurrendered;
+        private boolean isWin;
         private int pingCount;
 
         public Metadata(LaneInfo laneInfo,
@@ -78,10 +81,12 @@ public class MatchIndicator {
             this.laneInfo = laneInfo;
             isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
+            isWin = macroData.getMyData().isWin();
             pingCount = macroData.getMyData().getAllInPings();
         }
 
         public Metadata(boolean isFinishedBeforeFifteen) {
+            this.laneInfo = new LaneInfo();
             this.isFinishedBeforeFifteen = isFinishedBeforeFifteen;
         }
     }
