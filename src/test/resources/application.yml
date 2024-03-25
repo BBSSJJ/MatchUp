@@ -11,5 +11,6 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
 
 #default_round_up: 100000
