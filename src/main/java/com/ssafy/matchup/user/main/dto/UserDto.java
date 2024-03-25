@@ -5,8 +5,10 @@ import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.riotaccount.api.dto.RiotAccountDto;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class UserDto {
     private Long userId;
     private AuthorityType role;

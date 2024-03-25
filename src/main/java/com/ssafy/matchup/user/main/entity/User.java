@@ -7,9 +7,7 @@ import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,8 @@ import java.util.List;
 @Entity(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class User {
     @Embedded
     private Setting setting;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
     private RiotAccount riotAccount;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
@@ -49,4 +49,7 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feedBackedUser")
     private final List<Feedback> feedbacked = new ArrayList<>();
 
+    public void updateRiotAccount(RiotAccount riotAccount) {
+        this.riotAccount = riotAccount;
+    }
 }
