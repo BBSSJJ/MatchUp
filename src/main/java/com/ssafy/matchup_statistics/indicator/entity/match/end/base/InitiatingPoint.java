@@ -2,10 +2,12 @@ package com.ssafy.matchup_statistics.indicator.entity.match.end.base;
 
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class InitiatingPoint {
     private long totalTimeCCingOthersPerTotalDamageTaken;
     private long totalDamageTakenPerTeamTotalDamageTaken;
@@ -15,13 +17,12 @@ public class InitiatingPoint {
         totalTimeCCingOthersPerTotalDamageTaken =
                 (long) macroData.getMyData().getTimeCCingOthers() * DEFAULT_ROUND_UP / (macroData.getMyData().getTotalDamageTaken() + 1);
         totalDamageTakenPerTeamTotalDamageTaken =
-                (long) macroData.getMyData().getTotalDamageTaken() * DEFAULT_ROUND_UP / macroData.getTeamData().getTeamTotalDamageTaken();
+                (long) macroData.getMyData().getTotalDamageTaken() * DEFAULT_ROUND_UP / macroData.getTeamData().getTeamTotalDamageTaken() + 1;
         damageSelfMitigatedPerTotalDamageTaken =
                 (long) macroData.getMyData().getDamageSelfMitigated() * DEFAULT_ROUND_UP / (macroData.getMyData().getTotalDamageTaken() + 1);
     }
 
     public InitiatingPoint(List<InitiatingPoint> initiatingPoints) {
-        if (initiatingPoints.isEmpty()) return;
 
         initiatingPoints.forEach(initiatingPoint -> {
             totalTimeCCingOthersPerTotalDamageTaken += initiatingPoint.getTotalTimeCCingOthersPerTotalDamageTaken();

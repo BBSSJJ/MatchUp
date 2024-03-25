@@ -15,7 +15,6 @@ public class AggresiveLaneAbilility {
     private int duoKillDiffer;
 
     public AggresiveLaneAbilility(List<AggresiveLaneAbilility> aggresiveLaneAbililities) {
-        if (aggresiveLaneAbililities.isEmpty()) return;
         aggresiveLaneAbililities.forEach(aggresiveLaneAbilility -> {
             dealDiffer += aggresiveLaneAbilility.getDealDiffer();
             soloKillDiffer += aggresiveLaneAbilility.getSoloKillDiffer();

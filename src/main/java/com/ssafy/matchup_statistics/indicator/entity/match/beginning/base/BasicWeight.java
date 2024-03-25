@@ -18,7 +18,6 @@ public class BasicWeight {
     private long supportItemFinishedTimeDiffer;
 
     public BasicWeight(List<BasicWeight> basicWeights) {
-        if (basicWeights.isEmpty()) return;
         basicWeights.forEach(basicWeight -> {
             csDiffer += basicWeight.getCsDiffer();
             expDiffer += basicWeight.getExpDiffer();
