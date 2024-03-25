@@ -1,7 +1,7 @@
 package com.ssafy.matchup.mz.comment.dto;
 
-import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.mz.comment.entity.Comment;
+import com.ssafy.matchup.user.main.dto.UserDto;
 import lombok.Builder;
 import lombok.Data;
 
