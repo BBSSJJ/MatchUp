@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { ref, onBeforeMount } from 'vue'
-const FILESERVER_BASE_URL = 'https://matchup.site'
+const FILESERVER_BASE_URL = 'https://matchup.site/file'
 const FILESERVER_PORT = 8001
 const upload = async () => {
   const files = document.getElementById('uploadFile').files

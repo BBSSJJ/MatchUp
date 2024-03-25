@@ -6,7 +6,7 @@ import path from "path";
 
 const __dirname = path.resolve();
 const app = express();
-const HOST_BASE_URL = "https://matchup.site";
+const HOST_BASE_URL = "https://matchup.site/file";
 const PORT = 8001;
 // 70.12.246.
 // Cors 설정
@@ -42,7 +42,7 @@ const upload = multer({ storage: storage });
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
 app.use("/uploads", express.static("uploads"));
 app.use("/", express.static("dist"));
-
+matchup.site / file;
 // Server Listening
 app.get("/", (req, res) => {
   const index = path.join(__dirname, "/index.html");
