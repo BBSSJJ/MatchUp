@@ -3,6 +3,8 @@ import type { InferGetServerSidePropsType, GetServerSideProps, NextPage } from '
 import '@/app/ui/article/article.css'
 import Comment from "./commentList";
 import { Button } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 interface ArticlePageProps {
   title?: string;
@@ -32,41 +34,69 @@ const ArticlePage :NextPage<ArticlePageProps> = (props) => {
           leftSympathyCount,
           rightSympathyCount,
         } = props
- 
+    
+  const router = useRouter()
 
   return (
-    <div className="articleContainer">
-      <h1 className="articleTitle">{title}글 제목</h1>
-      <div className="articleInfo">
-        <p>{author}작성자 이름</p>
-        <p>조회수 {views}123</p>
-      </div>
-      <hr />
-      <p>{createdAt}2024-01-02</p>
-      <p className="articleContent">{content}글내용 blah blah</p>
-      <div className="articleVoteButtons">
-        {/* 버튼 클릭은 한 유저당 한 번으로 제한 */}
-        <Button className="leftButton">
-          {leftSympathyTitle}내 잘못
-        </Button>
+    <div>
+      <Button
+        onClick={() => {router.back()}}
+      >
+        뒤로가기
+      </Button>
+      <div className="articleContainer">
+        <div>
+          <h1 className="articleTitle">{title}글 제목</h1>
+          <div className="articleInfo">
+            <p>{author}작성자 이름</p>
+            <p>조회수 {views}123</p>
+          </div>
+          <hr />
+          <p>{createdAt}2024-01-02</p>
+          <p className="articleContent">{content}글내용 blah blah</p>
+          <div className="articleVoteButtons">
+            {/* 버튼 클릭은 한 유저당 한 번으로 제한 */}
+            <Button className="leftButton" variant="shadow">
+              {leftSympathyTitle}내 잘못
+            </Button>
 
-        <Button className="rightButton">
-          {rightSympathyTitle}상대 잘못
-        </Button>
+            <Button className="rightButton" variant="shadow">
+              {rightSympathyTitle}상대 잘못
+            </Button>
+          </div>
+          {/* 투표현황 */}
+          <div className="articleVote">
+            <motion.div 
+              className="articleVoteLeft" 
+              style={{ width: "25%" }}
+              initial={{ width: '0%', opacity: 0 }}
+              animate={{ width: '25%', opacity: 1 }}
+              transition={{ duration: 0.55}}
+              exit={{ width: "0%", opacity: 0 }}
+            >
+              25%
+            </motion.div>
+            <motion.div 
+              className="articleVoteRight" 
+              style={{ width: "75%" }}
+              initial={{ width: '0%', opacity: 0 }}
+              animate={{ width: '75%', opacity: 1 }}
+              transition={{ duration: 0.55}}
+              exit={{ width: "0%", opacity: 0 }}
+            >
+              75%
+            </motion.div>
+            {/* <div className="articleVoteLeft" style={{ width: `${leftSympathyCount}%` }}></div>
+            <div className="articleVoteRight" style={{ width: `${rightSympathyCount}%` }}></div> */}
+          </div>
+          <div className="comments">
+          {comments && comments.map((comment)=> (
+            <Comment key={comment.id} comment={comment} />
+          ))}
+          </div>
+        </div>
       </div>
-      <div className="articleVote">
-        <div className="articleVoteLeft" style={{ width: "25%" }}>25%</div>
-        <div className="articleVoteRight" style={{ width: "75%" }}>75%</div>
-        {/* <div className="articleVoteLeft" style={{ width: `${leftSympathyCount}%` }}></div>
-        <div className="articleVoteRight" style={{ width: `${rightSympathyCount}%` }}></div> */}
-      </div>
-      <div className="comments">
-      {comments && comments.map((comment)=> (
-        <Comment key={comment.id} comment={comment} />
-      ))}
-      </div>
-    </div>
-    
+    </div> 
   )
 } 
   
@@ -78,6 +108,7 @@ export const getServerSideProps: GetServerSideProps<ArticlePageProps> = async ()
   const commentsResponse = await fetch(GET_COMMENT_URL);
   const articleInfo = await articleInfoResponse.json()
   const comments = await commentsResponse.json();
+  
   return {
     props: {
       title: articleInfo.title,

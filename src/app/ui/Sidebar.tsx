@@ -6,16 +6,17 @@ const SideBar: React.FC = () => {
 
 	return (
 		<div style={{
-			position: 'fixed', // 고정 위치
-			right: 0, // 오른쪽에 고정
-			top: '4rem', // 상단에서 시작
-			bottom: 0, // 하단까지 뻗음
+			position: 'fixed', 
+			right: 0, 
+			top: '4rem',
+			bottom: 0, 
 			width: '280px',
 			color: 'white',
-			backgroundColor: '#333c44', // 배경색
-			overflowY: 'auto', // 내용이 많아질 경우 스크롤
-			padding: '20px', // 내부 패딩
+			backgroundColor: '#161A1E', 
+			overflowY: 'auto',
+			padding: '20px', 
 			zIndex: 1000,
+			boxShadow: '0 0 0.5px 0.15px #36c4be',
 		}}>
 			<p className={styles.title}>Friends</p>
 			<div className="flex flex-col gap-4 items-center">

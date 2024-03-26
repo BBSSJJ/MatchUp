@@ -3,28 +3,29 @@ import { Button } from '@nextui-org/react';
 import {Input} from "@nextui-org/react";
 import { useState } from 'react';
 import styles from './riot-login.module.css';
-import { SERVER_URL } from '@/app/ui/login-button';
-
 
 // sns_type, sns_id, riot_id를 담아 POST요청
 export default function RiotLoginForm({ snsType, snsId } :{
     snsType :string;
     snsId :string;
 }) {
-    const [riotId, setRiorId] = useState("");
-    
+    const [riotId, setRiotId] = useState("");
     const handleSignIn = async () => {
         try {
-            const response = await fetch("http://70.12.247.47:9000/api/users/register", {
+            console.log(riotId)
+            const response = await fetch("http://70.12.247.47:9000/api/users/regist", {
                 method:  'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', 
                 body: JSON.stringify({ riotId, snsType, snsId }),
             })
 
             if(response.ok) {
-                console.log(response)
+                console.log("회원가입 요청에 대한 응답 : ", response)
+                window.location.href = 'http://70.12.246.67:3000/lobby'
+                
             } else {
                 console.log('회원가입 실패')
             }
@@ -42,7 +43,7 @@ export default function RiotLoginForm({ snsType, snsId } :{
                     value={riotId}
                     label="Riot ID"
                     isClearable
-                    onClear={() => setRiorId("")}
+                    onClear={() => setRiotId("")}
                     radius="lg"
                     classNames={{
                     label: "text-black/50 dark:text-white/90",
@@ -65,7 +66,7 @@ export default function RiotLoginForm({ snsType, snsId } :{
                         "!cursor-text",
                     ],
                     }}
-                    onValueChange={(value: string): void => { setRiorId(value) }}
+                    onValueChange={(value: string): void => { setRiotId(value) }}
                     placeholder="Type your Riot Id..."
                     
                 />
