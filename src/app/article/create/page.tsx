@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Button, Input } from '@nextui-org/react';
-
+import { useRouter } from 'next/navigation';
+import styles from './styles.module.css'
 
 interface VideoTemplateCallbackData {
   source: string;
@@ -64,6 +65,7 @@ export default function CreateArticle() {
   const [left, setLeft] = useState('')
   const [right, setRight] = useState('')
   const editorRef = useRef(null); 
+  const router = useRouter()
 
   const handleEditorChange = (content :string, editor : any) => {
     setEditorContent(content);
@@ -99,14 +101,18 @@ export default function CreateArticle() {
 
   const saveLocalImage = async (formData :FormData) :Promise<string | undefined> => {
     try {
-      const response :UploadResponse = await fetch('http://70.12.246.246:1235/uploads' , {
+      const response :UploadResponse = await fetch('https://matchup.site/file/uploads/' , {
         headers: { "Accept": "*/*" },
         method: 'POST',
         body: formData,
       })
-    
+      const responseData = await response.json()
+      console.log("json으로 변환한 응답 데이터", responseData)
+      // const imageUrl = response.fileName
+      // return imageUrl
       if (response.status === 200) {
-        const imageUrl = response.fileName
+        console.log("200", responseData.fileName)
+        const imageUrl = responseData.fileName
         return imageUrl
       }
     } catch (error) {
@@ -116,14 +122,23 @@ export default function CreateArticle() {
     
   
   return (
-    <div className='mx-[50px] my-6 relative'>
-      <div className='flex justify-between mb-5'>
+    <div className='mx-[50px] my-6 relative flex flex-col'>
+      <Button
+        className='w-[50px] my-4'
+        size="sm"
+        variant="ghost"
+        onClick={() => {router.back()}
+      }>
+        뒤로가기
+      </Button>
+      <div className='flex item-center justify-center mb-5 leading-7 w-full'>
+        
         <Input
           label="Title"
           labelPlacement="outside-left"
           placeholder='글의 제목을 입력하세요.'
-          // className='w-[400px]'
-          width="400px"
+          className="max-w-[320px]"
+          // width="450px"
           onValueChange={(value: string): void => { setArticleTitle(value) }}
         />
         <Button 
@@ -149,12 +164,13 @@ export default function CreateArticle() {
           image_title: true,
           media_live_embeds: true,
           automatic_uploads: true,
+          images_upload_url: 'https://matchup.site/file/uploads/',
           file_picker_types: 'file image media',
           video_template_callback: (data :VideoTemplateCallbackData) => {
-            console.log(data)
-            
+            console.log("여기가 문제인가:", data)
+            const newUrl = 'https://matchup.site/file/uploads/' + data.source
             return `<video width="${data.width}" height="${data.height}"${data.poster ? ` poster="${data.poster}"` : ''} controls="controls">\n` +
-            `<source src="${data.source}"${data.sourcemime ? ` type="${data.sourcemime}"` : ''} />\n` +
+            `<source src="${newUrl}"${data.sourcemime ? ` type="${data.sourcemime}"` : ''} />\n` +
             (data.altsource ? `<source src="${data.altsource}"${data.altsourcemime ? ` type="${data.altsourcemime}"` : ''} />\n` : '') +
             '</video>'
           },
@@ -168,10 +184,12 @@ export default function CreateArticle() {
             input.addEventListener('change', (e) => {
               const input = e.target as HTMLInputElement
               if (input.files && input.files.length > 0) {
+                console.log("input tag에 파일을 담음")
                 file = input.files[0]; // 선택한 파일에 접근
               }
               
               if(file) {
+                console.log("파일이 undefined가 아님", file)
                 const reader = new FileReader(); 
                 // base64로 인코딩된 파일 데이터를 가져와서 이미지 blob registry에 등록
                 reader.addEventListener('load', async () => {
@@ -188,16 +206,27 @@ export default function CreateArticle() {
                   // blobCache.add(blobInfo);
                   const formData :FormData = new FormData()
                   formData.append('image', file!)
+                  // console.log("서버로 보내는 데이터", formData)
                   const imageUrl = await saveLocalImage(formData) 
+                  console.log("imageurl", imageUrl)
                   // const imageUrl = "https://us.123rf.com/450wm/nuevoimg/nuevoimg2308/nuevoimg230819575/211219943-%ED%8C%8C%EB%9E%80%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%ED%8C%8C%EB%9E%80-%EB%88%88%EC%9D%84-%EA%B0%80%EC%A7%84-%ED%9D%B0-%EA%B3%A0%EC%96%91%EC%9D%B4%EC%9D%98-%EC%B4%88%EC%83%81%ED%99%94.jpg?ver=6"
                   // 이미지를 에디터에 추가, 첫번째 인자는 새로운 이미지의 URI, file.name은 이미지의 제목 
                   if (typeof imageUrl === 'string') {
-                    cb(imageUrl, { title: file!.name });
+                    const fileType = file?.type
+                    // 배포 후 주소 변경할 것 
+                    console.log("cb함수호출")
+                    const url = "https://matchup.site/file/uploads/"
+                    if(fileType!.startsWith('image/')) {
+                      cb(url + imageUrl, { title: file!.name });
+                    } else {
+                      cb(imageUrl, { title: file!.name });
+                    }
                   }
                 });
+                // 지정된 파일의 내용을 Data URL로 읽어오는 비동기적인 작업을 수행
+                // 파일의 읽기가 완료되면 load 이벤트가 발생하고 이후의 작업은 load 이벤트 핸들러 내부에서 수행
                 reader.readAsDataURL(file);
               }
-              
             });
         
             input.click();
@@ -211,14 +240,14 @@ export default function CreateArticle() {
        
         onEditorChange={handleEditorChange}
       />
-      <div className='mt-10'>
+      <div className={styles.vote}>
         <p className='font-bold my-6'>투표 생성</p>
-        <div className='flex gap-[150px] justify-center'>
+        <div className='flex gap-[50px] justify-center'>
           <Input
             type="email"
             color="primary"
             label="선택 1"
-            className="max-w-[220px]"
+            className="max-w-[320px]"
             onValueChange={(value: string): void => { setLeft(value) }}
           />
           <span className='leading-10'>VS</span>
@@ -226,7 +255,7 @@ export default function CreateArticle() {
             type="email"
             color="danger"
             label="선택 2"
-            className="max-w-[220px]"
+            className="max-w-[320px]"
             onValueChange={(value: string): void => { setRight(value) }}
           />
         </div>
