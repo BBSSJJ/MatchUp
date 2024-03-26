@@ -42,10 +42,18 @@ const upload = multer({ storage: storage });
 // 정적 파일 서빙 (uploads 폴더에 있는 파일들을 웹에서 접근 가능하게 함)
 app.use("/file/uploads", express.static("uploads"));
 app.use("/file", express.static("dist"));
+app.use("/file/upload", express.static("dist"));
+app.use("/file/files", express.static("dist"));
 
 // redirect root directory
 app.get("/", (req, res) => {
   res.redirect("https://matchup.site/file");
+});
+
+// Server Listening
+app.get("/file/", (req, res) => {
+  const index = path.join(__dirname, "/index.html");
+  res.status(200).send(fs.readdir(index));
 });
 
 // for prevent 404
@@ -56,12 +64,6 @@ app.get("/file/upload", (req, res) => {
 
 // for prevent 404
 app.get("/file/files", (req, res) => {
-  const index = path.join(__dirname, "/index.html");
-  res.status(200).send(fs.readdir(index));
-});
-
-// Server Listening
-app.get("/file/", (req, res) => {
   const index = path.join(__dirname, "/index.html");
   res.status(200).send(fs.readdir(index));
 });
