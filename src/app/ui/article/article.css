@@ -27,30 +27,6 @@
   align-items: center;
 } */
 
-.search {
-  display: flex;
-  margin: 15px auto;
-  justify-content: space-between;
-  width: 65%;
-  align-items: center;
-}
-
-.searchInput {
-  display: flex;
-}
-
-.searchButton {
-  background-color: #36dbdb;
-  color: #161A1E;
-  font-weight: bold;
-}
-
-.createButton {
-  background-color: #eacb1e;
-  color: #161A1E;
-  font-weight: bold;
-  
-}
 
 .article {
   display: flex;
@@ -141,7 +117,7 @@
 }
 
 .leftButton {
-  background-color: #1e5fea;
+  background-color: #f4d838;
   border-radius: 20px;
   font-size: 120%;
   width: 150px;
@@ -150,7 +126,7 @@
 }
 
 .rightButton {
-  background-color: #ff1641;
+  background-color: #24b9c1;
   border-radius: 20px;
   font-size: 120%;
   width: 150px;
@@ -166,24 +142,24 @@
 }
 
 .articleVoteLeft {
-  background-color: #1e5fea;
-  font-size: 150%;
+  background-color: #f4d838;
+  font-size: 180%;
+  color: black;
   font-weight: bold;
-  height: 50px;
-  border-radius: 20px 0 0 20px;
+  height: 30px;
+  border-radius: 10px 0 0 10px;
   display: flex;
   align-items: center;
-  padding-left: 5%;
 }
 
 .articleVoteRight {
-  background-color: #ff1641;
-  font-size: 150%;
+  background-color: #24b9c1;
+  font-size: 180%;
+  color: black;
   font-weight: bold;
-  height: 50px;
-  border-radius: 0 20px 20px 0;
+  height: 30px;
+  border-radius: 0 10px 10px 0;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  padding-right: 5%;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+
 const columns = [
   {name: "ID", uid: "id", sortable: true},
   {name: "NAME", uid: "name", sortable: true},
@@ -20,11 +20,27 @@ const columns2 = [
 
 const articles = [
     {
-        id: 1,
-        title: "제목 1",
-        author: "user 1",
-        createdAt: "2024-03-11",
-        views: "32",
+      id: 1,
+      title: "제목 1",
+      author: "summonerId",
+      userId: 1,
+      riotTokenValue: "ThisIsRiotTokenOfUser1",
+      summonerProfile: null,
+      tier: null,
+      leagueRank: null,
+      leaguePoint: null,
+      content: "", // html태그를 문자열로
+      leftSympathyTitle: "leftTitle1",
+      rightSympathyTitle: "rightTitle1",
+      leftSympathies: [
+        {
+          id: 7,
+          userId: 1
+        }
+      ],
+      rightSympathies: [],
+      createdAt: "2024-03-11",
+      views: "32",
     },
     {
         id: 2,
