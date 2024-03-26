@@ -11,7 +11,7 @@ const RiotLoginPage = () => {
     const snsType = tokens[3]
     return (
         <div>
-            <p>params : {snsId}, {snsType}</p>
+            {/* <p>params : {snsId}, {snsType}</p> */}
             <RiotLoginForm snsType={snsType} snsId={snsId} />
         </div>
     )
