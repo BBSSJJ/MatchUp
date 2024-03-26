@@ -64,12 +64,14 @@
     - 아무나
     - 여성, 남성
 
+[맨 위로](#bigdata-server-branch)
+
 ## 2. 리그오브레전드 데이터 분석
 
 ### APIs - Riot Developer Portal
 
 - 공식 문서 및 API 분석
-- [LeagueOfLegendsApi](APIs.md)
+- [LeagueOfLegendsApi](docs/APIs.md)
 
 ### 리그오브레전드 데이터 수집
 
@@ -174,7 +176,11 @@ LEAGUE-V4
 - 표본 설정
   - 표본의 크기를 최대한 증가 시켜 표본 오차를 감소
   - 전체 데이터를 확인하는 과정 자체에 어려움이 있기 때문에 대표성을 높이거나 적절한 추출 방식을 확인하기 어려움
-  - 표본 결정에 대한 논문 참고 [1]
+  - 표본 결정에 대한 논문 참고 [[1]](#1)
+
+![표본 크기에 따른 표본 오차의 변화](/docs/images/error.png)
+
+[맨 위로](#bigdata-server-branch)
 
 ## 3. 추천 시스템
 
@@ -188,6 +194,12 @@ LEAGUE-V4
 
 ### 구인글
 
+[맨 위로](#bigdata-server-branch)
+
 ## 0. 참조
 
-[1]: Park Wonu. Son Seungyeon. Park Haesin. Park Hyesang, "적정 표본크기 결정을 위한 제언", "Seoul Journal of Industrial Relations vol.21", 7, 2010.
+### [1]
+
+Park Wonu. Son Seungyeon. Park Haesin. Park Hyesang, "적정 표본크기 결정을 위한 제언", "Seoul Journal of Industrial Relations vol.21", 7, 2010.
+
+[맨 위로](#bigdata-server-branch)
