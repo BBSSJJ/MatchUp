@@ -43,7 +43,7 @@ const HiddenLogin = ( ) => {
             console.log(error);
         }
     }
-    handleSignIn()
+    handleSignIn() // 이 함수가 2번 호출되는 듯
     // useEffect(() => {
         
     // }, [])

@@ -1,9 +1,9 @@
 import { app } from "./instance-axios"
 
 // 게시판 api
-const article = "/mz/articles"
-const comment = "/mz/comments"
-const sympathies = "/mz/sympathies"
+const article = "api/mz/articles"
+const comment = "api/mz/comments"
+const sympathies = "api/mz/sympathies"
 
 // 전체 게시글 조회
 function getArticleList(success, fail) {
@@ -11,9 +11,9 @@ function getArticleList(success, fail) {
 }
 
 // 단일 게시글 조회
-function getArticle(articleId, success, fail) {
-    app.get(`${article}/${articleId}`).then(success).catch(fail)
-}
+// function getArticle(articleId, success, fail) {
+//     app.get(`${article}/${articleId}`).then(success).catch(fail)
+// }
 
 // 게시글 작성
 function postArticle(params, success, fail) {
