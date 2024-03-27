@@ -8,7 +8,8 @@ import './App.css';
 import Image from 'next/image';
 import MatchupChats from '../ui/onmatchup/matchupChats';
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? 'https://j10a405.p.ssafy.io/openvidu' : 'https://demos.openvidu.io/';
+const APPLICATION_SERVER_URL = 'https://matchup.site/openvidu/'
+const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
 
 class App extends Component {
 	constructor(props) {
@@ -28,7 +29,6 @@ class App extends Component {
 		this.leaveSession = this.leaveSession.bind(this);
 		this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
 		this.handleChangeUserName = this.handleChangeUserName.bind(this);
-		this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
 		this.onbeforeunload = this.onbeforeunload.bind(this);
 	}
 
@@ -57,13 +57,6 @@ class App extends Component {
     });
   }
 
-	handleMainVideoStream(stream) {
-		if (this.state.mainStreamManager !== stream) {
-			this.setState({
-				mainStreamManager: stream
-			});
-		}
-	}
 
 	deleteSubscriber(streamManager) {
 		let subscribers = this.state.subscribers;
@@ -99,7 +92,7 @@ class App extends Component {
 				const updateVolume = () => {
 					analyser.getByteFrequencyData(dataArray);
 					const average = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
-					console.log('>>>>>>볼륨: '+average);
+					// console.log('>>>>>>볼륨: '+average);
 		
 					// average 값으로 UI 업데이트 (예: CSS를 사용하여 높이 조절)
 					// 수정된 부분: volumeMeter가 null이 아닌 경우에만 스타일 조작
@@ -172,28 +165,15 @@ class App extends Component {
 							// element: we will manage it on our own) and with the desired properties
 							let publisher = await this.OV.initPublisherAsync(undefined, {
 								audioSource: undefined, // The source of audio. If undefined default microphone
-								videoSource: undefined, // The source of video. If undefined default webcam
 								publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-								publishVideo: true, // Whether you want to start publishing with your video enabled or not
-								resolution: '640x480', // The resolution of your video
-								frameRate: 30, // The frame rate of your video
-								insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-								mirror: false, // Whether to mirror your local video or not
 							});
 
 							// --- 6) Publish your stream ---
 
 							mySession.publish(publisher);
 
-							// Obtain the current video device in use
-							var devices = await this.OV.getDevices();
-							var videoDevices = devices.filter(device => device.kind === 'videoinput');
-							var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
-							var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
-
 							// Set the main video in the page to display our webcam and store our Publisher
 							this.setState({
-								currentVideoDevice: currentVideoDevice,
 								mainStreamManager: publisher,
 								publisher: publisher,
 							});
@@ -354,16 +334,16 @@ class App extends Component {
 
     async createSession(sessionId) {
         const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-            headers: { 'Content-Type': 'application/json', },
+            headers: headers,
         });
-        return response.data; // The sessionId
+        return response.data.sessionId; // The sessionId
     }
 
     async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-            headers: { 'Content-Type': 'application/json', },
+        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connection', {}, {
+            headers: headers,
         });
-        return response.data; // The token
+        return response.data.token; // The token
     }
 }
 
