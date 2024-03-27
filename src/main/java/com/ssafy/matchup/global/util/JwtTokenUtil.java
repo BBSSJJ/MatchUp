@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ public class JwtTokenUtil {
 
     public Long getUserId(HttpServletRequest request) {
         Cookie[] Cookies = request.getCookies();
+        if (Cookies == null) throw new BadCredentialsException("no jwt cookies");
         String accessToken = null;
         for (Cookie cookie : Cookies) {
             if (cookie.getName().equals("accessToken")) {
@@ -26,7 +28,7 @@ public class JwtTokenUtil {
                 break;
             }
         }
-        if (accessToken == null) return null;
+        if (accessToken == null) throw new BadCredentialsException("no access token");
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
                 .build()
