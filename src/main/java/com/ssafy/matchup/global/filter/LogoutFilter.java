@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,17 +38,22 @@ public class LogoutFilter extends AbstractGatewayFilterFactory<LogoutFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            List<HttpCookie> refreshTokenCookies = request.getCookies().getOrDefault("refreshToken", Collections.emptyList());
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                if (response.getStatusCode() == HttpStatus.OK) {
 
-            if (refreshTokenCookies.size() != 1) {
-                authService.deleteRefreshToken(jwtTokenUtil.getClaimsFromRefreshToken(refreshTokenCookies.get(0).getValue()));
-            }
+                    List<HttpCookie> refreshTokenCookies = request.getCookies().getOrDefault("refreshToken", Collections.emptyList());
 
-            jwtTokenUtil.deleteAccessToken(request);
-            jwtTokenUtil.deleteRefreshToken(request);
+                    if (refreshTokenCookies.size() != 1) {
+                        authService.deleteRefreshToken(jwtTokenUtil.getClaimsFromRefreshToken(refreshTokenCookies.get(0).getValue()));
+                    }
 
-            response.setStatusCode(HttpStatus.OK);
-            return response.setComplete();
+                    jwtTokenUtil.deleteAccessToken(response);
+                    jwtTokenUtil.deleteRefreshToken(response);
+
+                    log.info("logout success");
+                    log.info("cookies after logout in filter : {}", response.getCookies());
+                }
+            }));
         };
     }
 
