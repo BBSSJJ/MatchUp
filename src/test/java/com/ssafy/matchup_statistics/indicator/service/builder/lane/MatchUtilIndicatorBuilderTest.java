@@ -2,7 +2,7 @@ package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
+import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
@@ -36,10 +36,11 @@ import static org.mockito.BDDMockito.given;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @Tag("MatchLaneIndicatorBuilderTest")
+@Tag("IndicatorTotalTest")
 class MatchUtilIndicatorBuilderTest {
 
     @Mock
-    RiotApiAdaptor riotApiAdaptor;
+    RiotRestApiAdaptor riotRestApiAdaptor;
 
     @Mock
     MatchSaveService matchSaveService;
@@ -70,7 +71,7 @@ class MatchUtilIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+        target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
 
         // 본인 아이디 : 10
         // 상대 아이디 : 5
@@ -80,9 +81,9 @@ class MatchUtilIndicatorBuilderTest {
 
         puuid = "YFcHIr9qo-qHWo2Wja0LPvCKrxNOHG3TFEi2szdBD8AJB3V4iSy2IZf8oReZpxl27aPElWlNwVXgjQ";
         summonerId = "XpfTc8FZVplKFNyQJyIXDbHwspU2I0qL2yjau8S7y5qk2w";
-        given(riotApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
-        given(riotApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
-        given(riotApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
+        given(riotRestApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
+        given(riotRestApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
@@ -111,7 +112,7 @@ class MatchUtilIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -131,7 +132,7 @@ class MatchUtilIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -151,7 +152,7 @@ class MatchUtilIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -171,7 +172,7 @@ class MatchUtilIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -192,7 +193,7 @@ class MatchUtilIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 

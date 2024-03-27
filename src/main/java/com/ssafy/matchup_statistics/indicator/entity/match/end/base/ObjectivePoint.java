@@ -14,7 +14,7 @@ public class ObjectivePoint {
 
     public ObjectivePoint(MacroData marcoTeamData, int DEFAULT_ROUND_UP) {
         getObjectiveDifferPerGameDuration = (long) (marcoTeamData.getTeamData().getMyTeamGetObjectives() - marcoTeamData.getTeamData().getOppositeTeamGetObjectives())
-                * DEFAULT_ROUND_UP / (marcoTeamData.getGameDuration() + 1);
+                * DEFAULT_ROUND_UP / (marcoTeamData.getTimeInfo().getGameDuration() + 1);
     }
 
     public ObjectivePoint(List<ObjectivePoint> objectivePoints) {
