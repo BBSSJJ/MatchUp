@@ -7,11 +7,9 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 
-import java.net.HttpCookie;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
@@ -112,17 +110,29 @@ public class JwtTokenUtil {
         response.addCookie(cookie);
     }
 
-    public void deleteAccessToken(ServerHttpRequest request) {
-        HttpCookie cookie = new HttpCookie("accessToken", null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        request.getHeaders().add("Set-Cookie", cookie.toString());
+    public void deleteAccessToken(ServerHttpResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .domain(domainUrl)
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(0)
+                .build();
+
+        response.addCookie(cookie);
     }
 
-    public void deleteRefreshToken(ServerHttpRequest request) {
-        HttpCookie cookie = new HttpCookie("refreshToken", null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        request.getHeaders().add("Set-Cookie", cookie.toString());
+    public void deleteRefreshToken(ServerHttpResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .path("/")
+                .domain(domainUrl)
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(0)
+                .build();
+
+        response.addCookie(cookie);
     }
 }
