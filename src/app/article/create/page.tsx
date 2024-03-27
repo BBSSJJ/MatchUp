@@ -5,6 +5,9 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Button, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import styles from './styles.module.css'
+import { SERVER_API_URL } from "@/utils/instance-axios"
+
+const SERVER_URL = SERVER_API_URL
 
 interface VideoTemplateCallbackData {
   source: string;
@@ -73,7 +76,7 @@ export default function CreateArticle() {
 
   const postContentToServer = async () => {
     try {
-      const response = await fetch('http://70.12.247.47:9000/api/mz/articles', {
+      const response = await fetch(`${SERVER_URL}/api/mz/articles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
