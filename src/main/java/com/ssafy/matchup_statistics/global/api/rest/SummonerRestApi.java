@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.global.api;
+package com.ssafy.matchup_statistics.global.api.rest;
 
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import lombok.RequiredArgsConstructor;

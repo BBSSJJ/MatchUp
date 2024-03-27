@@ -1,9 +1,8 @@
-package com.ssafy.matchup_statistics.global.api;
+package com.ssafy.matchup_statistics.global.api.rest;
 
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.exception.RiotApiError;
 import com.ssafy.matchup_statistics.global.exception.RiotApiException;
-import com.ssafy.matchup_statistics.global.exception.RiotDataException;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +21,14 @@ public class LeagueRestApi {
 
     private final RestTemplate restTemplate;
 
-    public LeagueInfoResponseDto getLeagueInfoResponseDtoBySummonerId(String summonerId) {
+    public LeagueInfoResponseDto getLeagueInfoResponseBySummonerId(String summonerId) {
         String url = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId;
         List<LinkedHashMap<String, Object>> response = restTemplate.getForObject(url, List.class);
         if (response.isEmpty()) return new LeagueInfoResponseDto();
         return new LeagueInfoResponseDto(response.get(0));
     }
 
-    public List<LeagueInfoResponseDto> getLeagueInfoResponseByTier(LeagueEntryRequestDto dto, int page) {
+    public List<LeagueInfoResponseDto> getLeagueInfoResponseByTier(int page, LeagueEntryRequestDto dto) {
         URI url = UriComponentsBuilder
                 .fromUriString("https://kr.api.riotgames.com/lol/league/v4/entries")
                 .path(dto.getLeagueEntryRequestUrl())
