@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface Writer {
-  userId: number;
-  role: string;
-  riotAccount: {
-    riotTokenValue: string;
-    summonerProfile: any; // 여기에 SummonerProfile에 대한 타입을 정의해야 합니다.
-    tier: string | null;
-    leagueRank: string | null;
-    leaguePoint: number | null;
+  userId?: number;
+  role?: string;
+  riotAccount?: {
+    riotTokenValue?: string;
+    summonerProfile?: any; // 여기에 SummonerProfile에 대한 타입을 정의해야 합니다.
+    tier?: string | null;
+    leagueRank?: string | null;
+    leaguePoint?: number | null;
   };
 }
 

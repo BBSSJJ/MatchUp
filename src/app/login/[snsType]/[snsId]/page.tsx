@@ -2,8 +2,9 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { SERVER_API_URL } from "@/utils/instance-axios"
 
-const SERVER_URL = process.env.SERVER_URL
+const SERVER_URL = SERVER_API_URL
 
 // 소셜 로그인 시 이미 가입한 유저인 경우 -> 
 const HiddenLogin = ( ) => {
