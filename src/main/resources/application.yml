@@ -106,6 +106,27 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        # for swagger server
+        - id : user-server-swagger
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/user/swagger.json
+          filters:
+            - LogFilter
+
+        - id : chat-server-swagger
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/chat/swagger.json
+          filters:
+            - LogFilter
+
+        - id : statistics-server-swagger
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/statistics/swagger.json
+          filters:
+            - LogFilter
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   period:
