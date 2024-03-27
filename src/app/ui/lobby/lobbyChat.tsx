@@ -1,12 +1,40 @@
 'use client'
 
-import React from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Image, Textarea } from "@nextui-org/react"
-import { demoLobbyChats } from "@/app/lib/placeholder-data"
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Image, Textarea, button } from "@nextui-org/react"
+import { Client } from "@stomp/stompjs";
 import axios from "axios";
-
+import { useEffect, useState } from "react";
 
 export default function LobbyChat() {
+  const [client, setClient] = useState<Client | null>(null)
+  const [messages, setMessages] = useState<any[]>([])
+
+  useEffect(() => {
+    const stomp = new Client({
+      brokerURL: "wss://matchup.site/api/ws",
+    })
+    setClient(stomp)
+
+    stomp.activate()
+
+    stomp.onConnect = () => {
+      console.log('connected')
+      stomp.subscribe('/topic/recruit', (message) => {
+        // const parsedMessage = JSON.parse(message.body)
+        console.log(message.body)
+        // setMessages((prev: any) => [...prev, parsedMessage])
+      })
+    }
+
+    axios({
+      method: 'get',
+      url: 'https://matchup.site/api/recruits'
+    })
+      .then((response) => {
+        setMessages(response.data.list)
+      })
+  }, [])
+
   const columns = [
     {name: "소환사", uid: "summoner"},
     {name: "주 포지션", uid: "myPosition"},
@@ -15,6 +43,7 @@ export default function LobbyChat() {
     {name: "승률", uid: "winningRate"},
     {name: "KDA", uid: "KDA"},
     {name: "메모", uid: "memo"},
+    {name: "삭제", uid: "delete"}
   ];
 
   const renderCell = (chat: any, columnKey: any) => {
@@ -22,9 +51,9 @@ export default function LobbyChat() {
       case "summoner":
         return (
           <User
-            avatarProps={{src: chat.profileIcon}}
-            description={chat.summonerTag}
-            name={chat.summonerName}
+            avatarProps={{src: chat.iconUrl}}
+            description={chat.name.split(' ')[1]}
+            name={chat.name.split(' ')[0]}
           />
         )
       case "myPosition":
@@ -32,7 +61,7 @@ export default function LobbyChat() {
           <Image 
             width={30}
             alt="positionIcon"
-            src={`/positionIcons/${chat.myPosition}.png`}
+            src={`/positionIcons/${chat.line}.png`}
           />
         )
       case "tier":
@@ -44,7 +73,7 @@ export default function LobbyChat() {
           <Image 
             width={30}
             alt="positionIcon"
-            src={`/positionIcons/${chat.searchingPosition}.png`}
+            src={`/positionIcons/${chat.wishLine}.png`}
           />
         )
       case "winningRate":
@@ -53,20 +82,20 @@ export default function LobbyChat() {
             <div 
               className="bg-blue-700 flex items-center rounded-l-lg" 
               style={{
-                width: `${(chat.wins * 100) / (chat.wins + chat.loses)}%`,
+                width: `${(chat.win * 100) / (chat.win + chat.lose)}%`,
                 paddingLeft: "5%"
               }}
             >
-              {chat.wins}승
+              {chat.win}승
             </div>
             <div 
               className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
               style={{
-                width: `${(chat.loses * 100) / (chat.wins + chat.loses)}%`,
+                width: `${(chat.lose * 100) / (chat.win + chat.lose)}%`,
                 paddingRight: "5%"
               }}
             >
-              {chat.loses}패
+              {chat.lose}패
             </div>
           </div>
         )
@@ -81,36 +110,81 @@ export default function LobbyChat() {
         return (
           <Textarea 
             isReadOnly
-            defaultValue={chat.memo}
+            defaultValue={chat.content}
             size="sm"
             className="w-40"
           />
         )
+      case "delete":
+        return (
+          <button>
+            삭제
+          </button>
+        )
+    }
+  }
+
+  function sendMessage() {
+    if (client && client.connected) {
+      client.publish({
+        destination: '/app/recruit',
+        body: JSON.stringify({
+          method: 'create',
+          userId: 1,
+          name: 'check #KR1',
+          iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/1614.png',
+          tier: 'P1',
+          line: 'top',
+          wishLine: 'jungle',
+          gameType: 'solo rank',
+          content: '부캐 듀오 구합니다.',
+          win: 64,
+          lose: 74,
+          kill: 2.1,
+          death: 3.4,
+          assist: 13.8,
+        })
+      })
+    }
+  }
+
+  function deleteMessage(id: string) {
+    if (client && client.connected) {
+      client.publish({
+        destination: '/app/recruit',
+        body: JSON.stringify({
+          method: 'delete',
+          objectId: id,
+        })
+      })
     }
   }
 
 
 
-
-
   return (
     <div>
-      <Table aria-label="Chat Table">
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn key={column.uid} align="center" className="text-base">
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={demoLobbyChats}>
-          {(chat) => (
-            <TableRow key={chat.id} >
-              {(columnKey) => <TableCell>{renderCell(chat, columnKey)}</TableCell>}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <button>Send</button>
+      {messages ? (
+        <div>
+          <Table aria-label="Chat Table">
+            <TableHeader columns={columns}>
+              {(column) => (
+                <TableColumn key={column.uid} align="center" className="text-base">
+                  {column.name}
+                </TableColumn>
+              )}
+            </TableHeader>
+            <TableBody items={messages}>
+              {(chat) => (
+                <TableRow key={chat.objectId} >
+                  {(columnKey) => <TableCell>{renderCell(chat, columnKey)}</TableCell>}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      ) : null}
     </div>
   )
 }
