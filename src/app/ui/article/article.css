@@ -2,32 +2,6 @@
   outline: none;
 }
 
-/* .searchButton {
-  background-color: #0AC8B9;
-  width: 100px;
-  height: 3rem;
-  margin-left: 10px;
-  border-radius: 5px;
-  padding: auto;
-  color: #09161f;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 15px;
-} */
-
-/* .writeLink {
-  background-color: #C89B3C;
-  width: 100px;
-  height: 3rem;
-  border-radius: 5px;
-  color: #09161f;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-
 .article {
   display: flex;
   border: solid 1px white;
@@ -158,6 +132,29 @@
   color: black;
   font-weight: bold;
   height: 30px;
+  border-radius: 0 10px 10px 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.articleVoteLeftTiny {
+  background-color: #f4d838;
+  font-size: 100%;
+  color: black;
+  font-weight: bold;
+  height: 10px;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.articleVoteRightTiny {
+  background-color: #24b9c1;
+  font-size: 100%;
+  color: black;
+  font-weight: bold;
+  height: 10px;
   border-radius: 0 10px 10px 0;
   display: flex;
   flex-direction: row-reverse;
