@@ -4,8 +4,7 @@ import com.ssafy.matchup.user.main.entity.type.SnsType;
 import lombok.Data;
 
 @Data
-public class RegistUserRequestDto {
+public class LoginUserRequestDto {
     private SnsType snsType;
     private String snsId;
-    private String riotId;
 }

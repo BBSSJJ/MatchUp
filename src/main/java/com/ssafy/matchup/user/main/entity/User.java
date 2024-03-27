@@ -1,5 +1,6 @@
 package com.ssafy.matchup.user.main.entity;
 
+import com.ssafy.matchup.mz.article.entity.MzArticle;
 import com.ssafy.matchup.user.feedback.entity.Feedback;
 import com.ssafy.matchup.user.friend.entity.Friendship;
 import com.ssafy.matchup.user.lbti.entity.Lbti;
@@ -48,6 +49,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feedBackedUser")
     private final List<Feedback> feedbacked = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private final List<MzArticle> mzArticles = new ArrayList<>();
 
     public void updateRiotAccount(RiotAccount riotAccount) {
         this.riotAccount = riotAccount;

@@ -3,12 +3,14 @@ package com.ssafy.matchup.user.main.service;
 import com.ssafy.matchup.user.main.api.StatisticsServerApi;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.UserDto;
+import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.repository.UserRepository;
 import com.ssafy.matchup.user.main.service.sub.InitUserService;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
 import com.ssafy.matchup.user.riotaccount.respository.RiotAccountRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(RegistUserRequestDto registUserRequestDto) {
-        String summonerName = registUserRequestDto.getSummonerName();
+        String summonerName = registUserRequestDto.getRiotId();
         String[] parts = summonerName.split("#");
         String name = parts[0].trim();
         String tag = parts[1].trim();
@@ -56,5 +58,14 @@ public class UserServiceImpl implements UserService {
 
 
         return new UserDto(newUser);
+    }
+
+    @Override
+    public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
+        Optional<User> userOptional = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
+                loginUserRequestDto.getSnsId());
+        if (userOptional.isEmpty()) throw new EntityNotFoundException();
+
+        return new UserDto(userOptional.get());
     }
 }
