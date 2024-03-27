@@ -18,7 +18,6 @@ public class StatisticsServerApi {
     private final RestTemplate restTemplate;
 
     public SummonerLeagueInfoResponseDto getRiotAccountInfo(String name, String tag) {
-        System.out.println("in api");
         String url = "http://" + statisticsServer
                 + ":9004/api/summoners/leagues/riot-ids/"
                 + name + "/tag-lines/" + tag;

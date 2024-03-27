@@ -6,7 +6,9 @@ import com.ssafy.matchup.mz.article.dto.SimpleMzArticleDto;
 import com.ssafy.matchup.mz.article.dto.request.WriteMzArticleRequestDto;
 
 public interface MzArticleService {
-    ListDto<SimpleMzArticleDto> listMzArticle(int pageNo, String criteria);
+//    Page<SimpleMzArticleDto> listMzArticle(int page, String criteria);
+//
+//    Page<SimpleMzArticleDto> listMyMzArticle(Long userId, int page, String criteria);
 
     void addMzArticle(Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto);
 
@@ -15,4 +17,8 @@ public interface MzArticleService {
     void deleteMzArticle(Long articleId, Long userId);
 
     void updateMzArticle(Long articleId, Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto);
+
+    ListDto<SimpleMzArticleDto> listMzArticle();
+
+    ListDto<SimpleMzArticleDto> listMyMzArticle(Long userId);
 }
