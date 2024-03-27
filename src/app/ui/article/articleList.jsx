@@ -21,15 +21,23 @@ import {PlusIcon} from "./PlusIcon";
 import {VerticalDotsIcon} from "./VerticalDotsIcon";
 import { SearchIcon } from "../SearchIcon";
 import {ChevronDownIcon} from "./ChevronDownIcon";
-import {columns, users, statusOptions, columns2, articles} from "./dummyData";
+import {columns, users, statusOptions, columns2} from "./dummyData";
 import {capitalize} from "@/utils/utils";
 import { useRouter } from "next/navigation";
+import useSWR from 'swr';
+import { SERVER_API_URL } from "@/utils/instance-axios";
+
+const fetcher = async (url) => {
+  const response = await fetch(url); // 서버로부터 데이터 가져오기
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return response.json(); // JSON 형식으로 변환하여 반환
+};
 
 
 const INITIAL_VISIBLE_COLUMNS = ["id", "title", "author", "views", "createdAt"];
 export default function ArticleList() {
-  // 현재는 더미 데이터
-
   const router = useRouter();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -40,8 +48,12 @@ export default function ArticleList() {
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
+ 
+  // 데이터 가져오기
+  const { data: articles, error, isLoading } = useSWR(`${SERVER_API_URL}/api/mz/articles`, fetcher)
 
-  const pages = Math.ceil(articles.length / rowsPerPage);
+  // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
+  
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -54,7 +66,7 @@ export default function ArticleList() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredArticles = [...articles];
+    let filteredArticles = [...(articles?.list || [])];
 
     if (hasSearchFilter) {
       filteredArticles = filteredArticles.filter((article) =>
@@ -69,6 +81,14 @@ export default function ArticleList() {
 
     return filteredArticles;
   }, [articles, filterValue]);
+
+  const pages = React.useMemo(() => {
+    if (hasSearchFilter) {
+      return Math.ceil(filteredItems.length / rowsPerPage);
+    } else {
+      return Math.ceil((articles?.list?.length || 0) / rowsPerPage);
+    }
+  }, [articles?.list, filteredItems, hasSearchFilter, rowsPerPage]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -241,7 +261,7 @@ export default function ArticleList() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {articles.length} articles</span>
+          <span className="text-default-400 text-small">Total {articles?.length} articles</span>
         </div>
       </div>
     );
@@ -249,7 +269,7 @@ export default function ArticleList() {
     filterValue,
     visibleColumns,
     onSearchChange,
-    articles.length,
+    articles?.length,
     hasSearchFilter,
   ]);
 
@@ -301,6 +321,9 @@ export default function ArticleList() {
   const handleRowClick = (id) => {
     router.push(`/article/${id}`)
   }
+
+  if (error) return <div>Failed to load</div>
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="m-[5%]">

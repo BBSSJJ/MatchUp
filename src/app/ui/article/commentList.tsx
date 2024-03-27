@@ -1,4 +1,5 @@
 import React from 'react';
+import { Reply } from '@/app/ui/article/article'
 
 interface Writer {
   userId?: number;
@@ -12,17 +13,10 @@ interface Writer {
   };
 }
 
-interface Comment {
-  id: number;
-  content: string;
-  writer: Writer;
-  childrenComments: Comment[];
-  createdAt: string;
-  updatedAt: string;
-}
 
 
-const Comment = ({ comment } : { comment :Comment}) => {
+
+const Comment = ({ comment } : { comment :Reply}) => {
   return (
     <div className="comment">
       <div className="comment-content">{comment.content}</div>
@@ -30,7 +24,7 @@ const Comment = ({ comment } : { comment :Comment}) => {
       <div className="comment-createdAt">작성일시: {comment.createdAt}</div>
       {comment.childrenComments && comment.childrenComments.length > 0 && (
         <div className="children-comments">
-          {comment.childrenComments.map(childComment => (
+          {comment.childrenComments.map((childComment) => (
             <Comment key={childComment.id} comment={childComment} />
           ))}
         </div>

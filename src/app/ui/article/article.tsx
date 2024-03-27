@@ -2,12 +2,16 @@
 import type { InferGetServerSidePropsType, GetServerSideProps, NextPage } from 'next'
 import '@/app/ui/article/article.css'
 import Comment from "./commentList";
-import { Button } from '@nextui-org/react';
+import { Button, Textarea } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { comments2 } from './dummyData';
+import { updateArticle, deleteArticle, getComments, addComment, updateComment, deleteComment, empathize } from "@/utils/api"
+import { SERVER_API_URL } from '@/utils/instance-axios';
+import { useState } from 'react';
+import { getArticle } from '@/app/article/[id]/page';
 
-interface ArticlePageProps {
+interface ArticleProps {
   title?: string;
   author?: string;
   createdAt?: string;
@@ -17,124 +21,207 @@ interface ArticlePageProps {
   leftSympathyTitle?: string;
   rightSympathyCount?: number;
   leftSympathyCount?: number;
-  comments?: Comment[];
+}
+
+interface SummonerProfile {
+  name: string;
+  tag: string;
+  iconUrl: string;
+  level: number;
+}
+
+interface RiotAccount {
+  id: string;
+  summonerProfile: SummonerProfile;
+  tier: string;
+  leagueRank: string;
+  leaguePoint: number;
+}
+
+interface Author {
+  userId: number;
+  role: string;
+  riotAccount: RiotAccount;
+}
+
+interface Article {
+  id: number;
+  title: string;
+  content: string;
+  leftSympathyTitle: string;
+  rightSympathyTitle: string;
+  thumbnailUrl: string | null;
+  views: number;
+  author: Author;
+  leftSympathies: any[]; // leftSympathies의 타입은 확인되지 않았습니다.
+  rightSympathies: any[]; // rightSympathies의 타입은 확인되지 않았습니다.
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface SummonerProfile {
+  name: string;
+  tag: string;
+  iconUrl: string;
+  level: number;
+}
+
+interface RiotAccount {
+  id: string;
+  summonerProfile: SummonerProfile;
+  tier: string;
+  leagueRank: string;
+  leaguePoint: number;
+}
+
+interface Writer {
+  userId: number;
+  role: string;
+  riotAccount: RiotAccount;
+}
+
+export interface Reply {
+  id: number;
+  content: string;
+  writer: Writer;
+  createdAt: string;
+  updatedAt: string;
+  childrenComments?: Reply[];
+}
+
+export interface CommentList {
+  list: Reply[];
 }
 
 
-// 개별 게시글 상세 내용을 보여주는 컴포넌트
 
-const ArticlePage :NextPage<ArticlePageProps> = (props) => {
-  const { title,
-          author,
-          createdAt, 
-          views, 
-          content, 
-          comments, 
-          leftSympathyTitle, 
-          rightSympathyTitle,
-          leftSympathyCount,
-          rightSympathyCount,
-        } = props
-    
+// 개별 게시글 상세 내용을 보여주는 컴포넌트 - props: 2번 게시글, 2번 게시글의 댓글 모음
+
+const ArticlePage = ({article, comments, id} :{article:Article, comments: CommentList, id :number}) => {
   const router = useRouter()
+  const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article.leftSympathies.length || 0, right: article.leftSympathies.length || 0 })
+  // 투표기능 
+  const totalVotes = (voteCount.left === 0 || voteCount.right === 0) ? 1 : voteCount.left + voteCount.right;
+  let leftVotesPercentage
+  let rightVotesPercentage
+  if (voteCount.left === 0 && voteCount.right === 0) {
+    leftVotesPercentage = 50;
+    rightVotesPercentage = 50;
+  } else if (voteCount.left === 0) {
+    leftVotesPercentage = 0
+    rightVotesPercentage = 100;
+  } else if (voteCount.right === 0) {
+    leftVotesPercentage = 100
+    rightVotesPercentage = 0;
+  } else {
+    leftVotesPercentage = (voteCount.left / totalVotes) * 100;
+    rightVotesPercentage = (voteCount.right / totalVotes) * 100;
+  }
 
-  console.log("댓글목록: ", comments)
+  const handleVote = async (lor :string) => {
+    const response = await fetch(`${SERVER_API_URL}/api/mz/sympathies/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ sympathyType: lor })
+    })
+
+    if (response.ok) {
+      const newData = await getArticle(id)
+      setVoteCount(
+        { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
+      ) 
+    }
+  }
+
   return (
     <div>
       <Button
+        size='sm'
+        color='secondary'
+        className='ml-[10%]'
         onClick={() => {router.back()}}
       >
         뒤로가기
       </Button>
-      <div className="articleContainer">
+      <div className="articleContainer tilt-in-fwd-tr">
         <div>
-          <h1 className="articleTitle">{title}글 제목</h1>
+          <h1 className="articleTitle">{article.title}</h1>
           <div className="articleInfo">
-            <p>{author}작성자 이름</p>
-            <p>조회수 {views}123</p>
+            <p>{article.author!.riotAccount?.summonerProfile?.name}</p>
+            <p>조회수 : {article.views}</p>
           </div>
           <hr />
-          <p>{createdAt}2024-01-02</p>
-          <p className="articleContent">{content}글내용 blah blah</p>
+          <p className='mt-3 text-right'>{article.createdAt}</p>
+          <p className="articleContent">{article.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
           <div className="articleVoteButtons">
-            {/* 버튼 클릭은 한 유저당 한 번으로 제한 */}
-            <Button className="leftButton" variant="shadow">
-              {leftSympathyTitle}내 잘못
+            <Button className="leftButton" variant="shadow" onClick={() => handleVote("left")}>
+              {article.leftSympathyTitle}
             </Button>
 
-            <Button className="rightButton" variant="shadow">
-              {rightSympathyTitle}상대 잘못
+            <Button className="rightButton" variant="shadow" onClick={() => handleVote("right")}>
+              {article.rightSympathyTitle}
             </Button>
           </div>
           {/* 투표현황 */}
           <div className="articleVote">
             <motion.div 
               className="articleVoteLeft" 
-              style={{ width: "25%" }}
+              style={{ width: `${leftVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
-              animate={{ width: '25%', opacity: 1 }}
+              animate={{ width: `${leftVotesPercentage}%`, opacity: 1 }}
               transition={{ duration: 0.55}}
               exit={{ width: "0%", opacity: 0 }}
             >
-              25%
+              {article.leftSympathies.length}
             </motion.div>
             <motion.div 
               className="articleVoteRight" 
-              style={{ width: "75%" }}
+              style={{ width: `${rightVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
-              animate={{ width: '75%', opacity: 1 }}
+              animate={{ width: `${rightVotesPercentage}%`, opacity: 1 }}
               transition={{ duration: 0.55}}
               exit={{ width: "0%", opacity: 0 }}
             >
-              75%
+              {article.rightSympathies.length}
             </motion.div>
             {/* <div className="articleVoteLeft" style={{ width: `${leftSympathyCount}%` }}></div>
             <div className="articleVoteRight" style={{ width: `${rightSympathyCount}%` }}></div> */}
           </div>
-          <div className="comments">
-          {comments && comments.map((comment)=> (
-            <Comment key={comment.id} comment={comment} />
-          ))}
-          </div>
+          
+          
         </div>
+        
+      </div>
+      {/* 댓글 목록 */}
+      <div className="flex flex-col items-center justify-between">
+        <div className='flex items-center justify-center mx-4 w-[80%]'>
+          <Textarea
+            minRows={2}
+            className='w-[100%] mx-4'
+            size='md'
+            variant="bordered"
+            color='secondary'
+            label="write a comment"
+            placeholder="Enter your description"
+          />
+          <Button
+            color='secondary'
+            size='sm'
+          >
+            댓글쓰기
+          </Button>
+        </div>
+       
+        {comments.list && comments.list.length > 0 && comments.list.map((comment)=> (
+          <Comment key={comment.id} comment={comment} />
+        ))}
       </div>
     </div> 
   )
-} 
-  
-
-export const getServerSideProps: GetServerSideProps<ArticlePageProps> = async () => {
-  // const GET_ARTICLE_URL = "url"
-  // const GET_COMMENT_URL = "url2"
-  // const articleInfoResponse = await fetch(GET_ARTICLE_URL);
-  // const commentsResponse = await fetch(GET_COMMENT_URL);
-  // const articleInfo = await articleInfoResponse.json()
-  // const comments = await commentsResponse.json();
-  const comments = comments2
-  console.log(comments)
-  return {
-    props: {
-      // title: articleInfo.title,
-      // author: articleInfo.author.userId,
-      // createdAt: articleInfo.createdAt,
-      // views: articleInfo.views,
-      // content: articleInfo.content,
-      // leftSympathyTitle: articleInfo.left_sympathy_title,
-      // rightSympathyTitle: articleInfo.right_sympathy_title,
-      // leftSympathyCount: articleInfo.leftSympathies.length,
-      // rightSympathyCount: articleInfo.rightSympathies.length,
-      comments : comments,
-      title: "",
-      author: "",
-      createdAt: "articleInfo.createdAt",
-      views: 11,
-      content: "articleInfo.content",
-      leftSympathyTitle: "articleInfo.left_sympathy_title",
-      rightSympathyTitle: "articleInfo.right_sympathy_title",
-      leftSympathyCount: 11,
-      rightSympathyCount: 12,
-    },
-  }
 }
+  
 
 export default ArticlePage
