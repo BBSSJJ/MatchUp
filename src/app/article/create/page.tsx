@@ -76,6 +76,7 @@ export default function CreateArticle() {
 
   const postContentToServer = async () => {
     try {
+    
       const response = await fetch(`${SERVER_URL}/api/mz/articles`, {
         method: 'POST',
         headers: {
@@ -94,8 +95,8 @@ export default function CreateArticle() {
         leftSympathyTitle: left,
         rightSympathyTitle: right,
       }));
-      const data = await response.json();
-      console.log("서버로부터의 응답", data);
+      // const data = await response;
+      console.log("서버로부터의 응답", response.status);
     } catch (error) {
       console.log("작성한 글 내용", editorContent);
       console.error('Error posting content to server:', error);
