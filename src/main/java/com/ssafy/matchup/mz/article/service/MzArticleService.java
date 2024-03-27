@@ -18,7 +18,7 @@ public interface MzArticleService {
 
     void updateMzArticle(Long articleId, Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto);
 
-    ListDto<SimpleMzArticleDto> listMzArticle();
+    ListDto<SimpleMzArticleDto> listMzArticle(String title);
 
     ListDto<SimpleMzArticleDto> listMyMzArticle(Long userId);
 }
