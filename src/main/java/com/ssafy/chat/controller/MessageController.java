@@ -10,6 +10,8 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -20,17 +22,16 @@ public class MessageController {
 
     @MessageMapping("/chat/{roomId}")
     public void sendMessage(@DestinationVariable String roomId, ChatDto chatDto) throws Exception {
-        log.error("채팅룸 번호 : {}", roomId);
-        log.error("send message : {}", chatDto.getContent());
 
-        chatService.insertChat(roomId, chatDto);
+        chatService.sendChat(roomId, chatDto);
     }
 
     @MessageMapping("/recruit")
     public void sendRecuit(RecruitDto recruitDto) throws Exception {
 
         String method = recruitDto.getMethod();
-        log.error("메소드 : {}", method);
+        recruitDto.setTimestamp(LocalDateTime.now());
+
         switch (method) {
             case "create":
                 recruitService.insertRecruit(recruitDto);

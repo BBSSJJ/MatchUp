@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection = "recruits")
 @Getter
 @AllArgsConstructor
@@ -16,8 +18,9 @@ public class Recruit {
 
     @Id
     private ObjectId objectId;
+    private Long userId;
     private String name;
-    private String url;
+    private String iconUrl;
     private String tier;
     private String line;
     private String wishLine;
@@ -28,11 +31,13 @@ public class Recruit {
     private Double kill;
     private Double death;
     private Double assist;
+    private LocalDateTime timestamp;
 
-    public void set(RecruitDto recruitDto) {
+    public void setValues(RecruitDto recruitDto) {
 
+        this.userId = recruitDto.getUserId();
         this.name = recruitDto.getName();
-        this.url = recruitDto.getUrl();
+        this.iconUrl = recruitDto.getIconUrl();
         this.tier = recruitDto.getTier();
         this.line = recruitDto.getLine();
         this.wishLine = recruitDto.getWishLine();
@@ -43,6 +48,7 @@ public class Recruit {
         this.kill = recruitDto.getKill();
         this.death = recruitDto.getDeath();
         this.assist = recruitDto.getAssist();
+        this.timestamp = recruitDto.getTimestamp();
 
     }
 }

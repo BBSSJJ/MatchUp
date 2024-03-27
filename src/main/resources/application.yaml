@@ -23,3 +23,6 @@ spring:
     import:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
