@@ -7,9 +7,11 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 
+import java.net.HttpCookie;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
@@ -85,8 +87,9 @@ public class JwtTokenUtil {
     public void writeAccessToken(ServerHttpResponse response, String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-                .httpOnly(true)
-                .secure(true)
+//                .path("http://70.12.246.67:3000")
+//                .httpOnly(true)
+//                .secure(true)
                 .maxAge(periodAccessToken)
                 .build();
         response.addCookie(cookie);
@@ -95,10 +98,26 @@ public class JwtTokenUtil {
     public void writeRefreshToken(ServerHttpResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .path("/")
-                .httpOnly(true)
-                .secure(true)
+//                .path("http://70.12.246.67:3000")
+//                .httpOnly(true)
+//                .secure(true)
                 .maxAge(periodRefreshToken)
                 .build();
+
         response.addCookie(cookie);
+    }
+
+    public void deleteAccessToken(ServerHttpRequest request) {
+        HttpCookie cookie = new HttpCookie("accessToken", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        request.getHeaders().add("Set-Cookie", cookie.toString());
+    }
+
+    public void deleteRefreshToken(ServerHttpRequest request) {
+        HttpCookie cookie = new HttpCookie("refreshToken", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        request.getHeaders().add("Set-Cookie", cookie.toString());
     }
 }
