@@ -6,7 +6,7 @@ import RiotLoginForm from '@/app/ui/login/riot-login';
 const RiotLoginPage = () => {
     const path = usePathname();
     const tokens = path.split('/')
-    console.log(tokens)
+    console.log("tokens : ", tokens)
     const snsId = tokens[4]
     const snsType = tokens[3]
     return (

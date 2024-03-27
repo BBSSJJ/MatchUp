@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 
+const SERVER_URL = process.env.SERVER_URL
+
 // 소셜 로그인 시 이미 가입한 유저인 경우 -> 
 const HiddenLogin = ( ) => {
     const path = usePathname()
@@ -12,7 +14,11 @@ const HiddenLogin = ( ) => {
     const router = useRouter()
     const handleSignIn = async () => {
         try {
-            const response = await fetch("http://70.12.247.47:9000/api/users/login", {
+            console.log("이미 가입한 유저", snsId)
+            if(isNaN(parseInt(snsId, 10))) {
+                return
+            }
+            const response = await fetch(`${SERVER_URL}/api/users/login`, {
                 method:  'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,8 +26,10 @@ const HiddenLogin = ( ) => {
                 credentials: 'include', 
                 body: JSON.stringify({ snsType, snsId }),
             })
+            console.log("로그인 요청 보냄")
 
             if(response.ok) {
+                // console.log("id:~~ ", snsId)
                 console.log("로그인 요청에 대한 응답 : ", response)
                 // redirect 주소
                 router.push('/lobby')
