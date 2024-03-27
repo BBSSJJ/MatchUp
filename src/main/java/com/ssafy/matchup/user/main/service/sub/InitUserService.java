@@ -39,7 +39,7 @@ public class InitUserService {
 
     @Transactional
     public RiotAccount initRiotAccount(RegistUserRequestDto registUserRequestDto, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto) {
-        String summonerName = registUserRequestDto.getSummonerName();
+        String summonerName = registUserRequestDto.getRiotId();
         SummonerInfoDto summonerInfoDto = summonerLeagueInfoResponseDto.getSummonerInfoDto();
         LeagueInfoDto leagueInfoDto = summonerLeagueInfoResponseDto.getLeagueInfoDto();
         String[] parts = summonerName.split("#");

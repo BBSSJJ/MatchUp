@@ -10,15 +10,14 @@ import com.ssafy.matchup.mz.sympathy.dto.SympathyDto;
 import com.ssafy.matchup.mz.sympathy.repository.SympathyRepository;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,21 +26,28 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class MzArticleServiceImpl implements MzArticleService {
 
-    private final int PAGE_SIZE = 10;
+//    private final int PAGE_SIZE = 10;
 
     private final MzArticleRepository mzArticleRepository;
     private final SympathyRepository sympathyRepository;
     private final UserRepository userRepository;
 
-    @Transactional
-    @Override
-    public ListDto<SimpleMzArticleDto> listMzArticle(int pageNo, String criteria) {
-        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE, Sort.Direction.DESC, criteria);
-        List<SimpleMzArticleDto> simpleMzArticles = mzArticleRepository.findAll(pageable).stream()
-                .map(SimpleMzArticleDto::new)
-                .collect(toList());
-        return new ListDto<>(simpleMzArticles);
-    }
+//    @Transactional
+//    @Override
+//    public Page<SimpleMzArticleDto> listMzArticle(int page, String criteria) {
+//        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, criteria);
+//        Page<MzArticle> articles = mzArticleRepository.findAll(pageable);
+//        return articles.map(SimpleMzArticleDto::new);
+//    }
+//
+//    @Transactional
+//    @Override
+//    public Page<SimpleMzArticleDto> listMyMzArticle(Long userId, int page, String criteria) {
+//        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, criteria);
+//        User user = userRepository.getReferenceById(userId);
+//        Page<MzArticle> articles = mzArticleRepository.findMzArticlesByAuthor(user, pageable);
+//        return articles.map(SimpleMzArticleDto::new);
+//    }
 
     @Transactional
     @Override
@@ -61,7 +67,9 @@ public class MzArticleServiceImpl implements MzArticleService {
     @Transactional
     @Override
     public MzArticleDto detailMzArticle(Long articleId) {
-        MzArticle mzArticle = mzArticleRepository.getReferenceById(articleId);
+        Optional<MzArticle> mzArticleOptional = mzArticleRepository.findMzArticleById(articleId);
+        if (mzArticleOptional.isEmpty()) throw new EntityNotFoundException();
+        MzArticle mzArticle = mzArticleOptional.get();
         log.info("mzArticle : {}", mzArticle);
         List<SympathyDto> leftSympathies = sympathyRepository.findLeftSympathiesByMzArticleId(articleId)
                 .stream().map(SympathyDto::new).collect(toList());
@@ -95,5 +103,21 @@ public class MzArticleServiceImpl implements MzArticleService {
                 writeMzArticleRequestDto.getRightSympathyTitle(),
                 thumbnailUrl
         );
+    }
+
+    @Transactional
+    @Override
+    public ListDto<SimpleMzArticleDto> listMzArticle() {
+        List<SimpleMzArticleDto> articles = mzArticleRepository.findAllMzArticles().stream()
+                .map(SimpleMzArticleDto::new).collect(toList());
+        return new ListDto<>(articles);
+    }
+
+    @Transactional
+    @Override
+    public ListDto<SimpleMzArticleDto> listMyMzArticle(Long userId) {
+        List<SimpleMzArticleDto> articles = mzArticleRepository.findMzArticlesByAuthorId(userId).stream()
+                .map(SimpleMzArticleDto::new).collect(toList());
+        return new ListDto<>(articles);
     }
 }
