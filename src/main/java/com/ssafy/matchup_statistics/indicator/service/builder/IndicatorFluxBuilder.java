@@ -1,7 +1,5 @@
 package com.ssafy.matchup_statistics.indicator.service.builder;
 
-import com.ssafy.matchup_statistics.global.api.flux.RiotWebClientFactory;
-import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.global.exception.RiotDataError;
@@ -15,32 +13,30 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class IndicatorBuilder {
+public class IndicatorFluxBuilder {
 
-    private final RiotRestApiAdaptor riotRestApiAdaptor;
     private final MatchSaveService matchSaveService;
 
-    public Indicator build(List<String> matchIds, String summonerId, String puuid) {
+    public Indicator build(List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses, String summonerId, String puuid) {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
+        log.info("매치 지표 생성시작 : {}", matchIndicators);
 
-        // 검색한 매치들에 대해 각각 세부정보 조회
-        log.debug("분석할 매치 배열 : {}", matchIds);
-        matchIds.forEach(matchId -> {
+        matchResponses.forEach(matchResponse -> {
             long start = System.currentTimeMillis();
+
+            MatchDetailResponseDto matchDetailResponseDtoByMatchId = matchResponse.getT1();
+            MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = matchResponse.getT2();
+
+            String matchId = "KR_" + matchDetailResponseDtoByMatchId.getInfo().getGameId();
             log.debug("매치 id({}) 분석 시작", matchId);
-            MatchDetailResponseDto matchDetailResponseDtoByMatchId = riotRestApiAdaptor.getMatchDetailResponseDtoByMatchId(matchId);
-            MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId(matchId);
 
             // 매치정보는 별도로 저장
             matchSaveService.save(matchDetailResponseDtoByMatchId);
@@ -77,11 +73,6 @@ public class IndicatorBuilder {
             matchIndicators.add(matchIndicator);
         });
 
-        log.debug("생성된 매치 지표들 확인 : {}", matchIndicators);
-
         return new Indicator(summonerId, matchIndicators);
     }
-
-
-
 }

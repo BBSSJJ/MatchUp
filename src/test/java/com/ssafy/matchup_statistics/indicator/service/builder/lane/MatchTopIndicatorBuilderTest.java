@@ -2,14 +2,14 @@ package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
+import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
-import com.ssafy.matchup_statistics.global.api.MatchRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.MatchRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
@@ -35,16 +35,17 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("MatchLaneIndicatorBuilderTest")
+@Tag("IndicatorTotalTest")
 class MatchTopIndicatorBuilderTest {
 
     @Mock
-    RiotApiAdaptor riotApiAdaptor;
+    RiotRestApiAdaptor riotRestApiAdaptor;
 
     @Mock
     MatchSaveService matchSaveService;
 
     @InjectMocks
-    IndicatorBuilder target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+    IndicatorBuilder target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
 
     @Autowired
     @Qualifier("hide_on_bush_detail")
@@ -70,7 +71,7 @@ class MatchTopIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+        target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
 
         // 본인 아이디 : 5
         // 상대 아이디 : 6
@@ -80,9 +81,9 @@ class MatchTopIndicatorBuilderTest {
 
         puuid = "yxCbTPJcfXp9LrzIfA67hZRJshQJpKIIu3wtuV8p5f2wNbv5TGVZTpBXQjmw-SItYwY6CwG51Yrufw";
         summonerId = "XpfTc8FZVplKFNyQJyIXDbHwspU2I0qL2yjau8S7y5qk2w";
-        given(riotApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
-        given(riotApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
-        given(riotApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
+        given(riotRestApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
+        given(riotRestApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6987867218")).willReturn(matchDetailResponseDto);
+        given(riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6987867218")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
@@ -111,7 +112,7 @@ class MatchTopIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -131,7 +132,7 @@ class MatchTopIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -156,7 +157,7 @@ class MatchTopIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -176,7 +177,7 @@ class MatchTopIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -197,7 +198,7 @@ class MatchTopIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 

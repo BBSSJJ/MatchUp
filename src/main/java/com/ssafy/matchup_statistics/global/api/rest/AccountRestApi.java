@@ -1,6 +1,6 @@
-package com.ssafy.matchup_statistics.account.api;
+package com.ssafy.matchup_statistics.global.api.rest;
 
-import com.ssafy.matchup_statistics.account.dto.response.AccountResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

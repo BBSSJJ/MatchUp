@@ -1,7 +1,6 @@
-package com.ssafy.matchup_statistics.global.api;
+package com.ssafy.matchup_statistics.global.api.rest;
 
-import com.ssafy.matchup_statistics.account.api.AccountRestApi;
-import com.ssafy.matchup_statistics.account.dto.response.AccountResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RiotApiAdaptor {
+public class RiotRestApiAdaptor {
 
     private final AccountRestApi accountRestApi;
     private final SummonerRestApi summonerRestApi;
@@ -46,12 +45,12 @@ public class RiotApiAdaptor {
         return matchRestApi.getMatchTimelineResponseDtoByMatchId(matchId);
     }
 
-    public List<LeagueInfoResponseDto> getLeagueInfoResponseByTier(LeagueEntryRequestDto dto, int page) {
-        return leagueRestApi.getLeagueInfoResponseByTier(dto, page);
+    public List<LeagueInfoResponseDto> getLeagueInfoResponseByTier(int page, LeagueEntryRequestDto dto) {
+        return leagueRestApi.getLeagueInfoResponseByTier(page, dto);
     }
 
     public LeagueInfoResponseDto getLeagueInfoResponse(String id) {
-        return leagueRestApi.getLeagueInfoResponseDtoBySummonerId(id);
+        return leagueRestApi.getLeagueInfoResponseBySummonerId(id);
     }
 
     public AccountResponseDto getAccountInfo(String gameName, String tagLine) {

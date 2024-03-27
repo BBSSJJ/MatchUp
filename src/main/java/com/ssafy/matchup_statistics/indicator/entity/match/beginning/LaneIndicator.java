@@ -12,7 +12,6 @@ import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-@ToString
 public abstract class LaneIndicator {
     private BasicWeight basicWeight = new BasicWeight();
     private AggresiveLaneAbilility aggresiveLaneAbilility = new AggresiveLaneAbilility();

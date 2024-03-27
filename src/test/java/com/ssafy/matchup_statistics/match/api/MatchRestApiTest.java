@@ -1,7 +1,7 @@
 package com.ssafy.matchup_statistics.match.api;
 
-import com.ssafy.matchup_statistics.global.api.MatchRestApi;
-import com.ssafy.matchup_statistics.global.api.SummonerRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.MatchRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.SummonerRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

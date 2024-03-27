@@ -2,12 +2,11 @@ package com.ssafy.matchup_statistics.indicator.entity.match;
 
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
-import com.ssafy.matchup_statistics.indicator.entity.match.beginning.*;
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
+import com.ssafy.matchup_statistics.indicator.entity.match.beginning.*;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,9 +57,9 @@ public class MatchIndicator {
         log.debug("metadata(메타데이터) 생성 완료 : {}", metadata);
     }
 
-    public MatchIndicator(String matchId, boolean isFinishedBeforeFifteen) {
+    public MatchIndicator(String matchId, TimeInfo timeInfo, boolean isFinishedBeforeFifteen) {
         this.matchId = matchId;
-        this.metadata = new Metadata(isFinishedBeforeFifteen);
+        this.metadata = new Metadata(timeInfo, isFinishedBeforeFifteen);
         this.laneIndicator = new TopIndicator();
         this.macroIndicator = new MacroIndicator();
     }
@@ -70,10 +69,12 @@ public class MatchIndicator {
     @AllArgsConstructor
     public static class Metadata {
         private LaneInfo laneInfo;
+        private TimeInfo timeInfo;
         private boolean isFinishedBeforeFifteen;
         private boolean isOurTeamEarlySurrendered;
         private boolean isWin;
         private int pingCount;
+        private String champion;
 
         public Metadata(LaneInfo laneInfo,
                         MacroData macroData,
@@ -83,10 +84,13 @@ public class MatchIndicator {
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
             isWin = macroData.getMyData().isWin();
             pingCount = macroData.getMyData().getAllInPings();
+            timeInfo = macroData.getTimeInfo();
+            this.champion = macroData.getMyData().getChampionName();
         }
 
-        public Metadata(boolean isFinishedBeforeFifteen) {
+        public Metadata(TimeInfo timeInfo, boolean isFinishedBeforeFifteen) {
             this.laneInfo = new LaneInfo();
+            this.timeInfo = timeInfo;
             this.isFinishedBeforeFifteen = isFinishedBeforeFifteen;
         }
     }
