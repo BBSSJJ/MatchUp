@@ -17,7 +17,9 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://${WEB_SERVER}:3000"
+            allowedOrigins:
+              - "http://${WEB_SERVER}:3000"
+              - "http://localhost:3000"
             allow-credentials: true
             allowed-headers:
               - x-requested-with
@@ -33,6 +35,7 @@ spring:
               - DELETE
               - PATCH
               - OPTIONS
+
 
       routes:
         - id: user-server-oauth2-login
@@ -113,3 +116,5 @@ jwt:
     refresh-token: 2419200000 #4주
 
 
+url:
+  domain: ${DOMAIN_URL}
