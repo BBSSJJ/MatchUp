@@ -54,3 +54,6 @@ riot:
 
 ddragon:
   version: ${DDRAGON_VERSION}
+
+url:
+  domain: ${DOMAIN_URL}
