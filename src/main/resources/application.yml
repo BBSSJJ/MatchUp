@@ -118,14 +118,14 @@ spring:
             - LogFilter
 
         - id : chat-server-swagger
-          uri: http://${USER_SERVER}:9002
+          uri: http://${CHAT_SERVER}:9002
           predicates:
             - Path=/api/chat/swagger.json
           filters:
             - LogFilter
 
         - id : statistics-server-swagger
-          uri: http://${USER_SERVER}:9002
+          uri: http://${STATISTICS_SERVER}:9002
           predicates:
             - Path=/api/statistics/swagger.json
           filters:
