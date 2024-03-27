@@ -11,3 +11,22 @@ export type ArticleForm = {
   left_sympathy_percent: number;
   right_sympathy_percent: number;
 }
+
+export interface LobbyChatForm  {
+  method: string | null;
+  objectId: string;
+  userId: string | null;
+  name: string;
+  iconUrl: string | null;
+  tier: string;
+  line: string;
+  wishLine: string;
+  gameType: string;
+  content: string;
+  win: number;
+  lose: number;
+  kill: number;
+  death: number;
+  assist: number;
+  timestamp: string;
+}

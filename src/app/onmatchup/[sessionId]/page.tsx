@@ -72,9 +72,14 @@ export default function Page({ params }: { params: { sessionId: string }}) {
     session.connect(token, { clientData: username })
       .then(async () => {
         const publisher = await OV.initPublisherAsync(undefined, {
-          audioSource: undefined,
-          publishAudio: true,
-          publishVideo: false
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: '640x480', // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+          mirror: false, // Whether to mirror your local video or not
         })
         session.publish(publisher)
         setOvSession(session)
