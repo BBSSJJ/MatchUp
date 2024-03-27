@@ -5,6 +5,7 @@ import Comment from "./commentList";
 import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { comments2 } from './dummyData';
 
 interface ArticlePageProps {
   title?: string;
@@ -37,6 +38,7 @@ const ArticlePage :NextPage<ArticlePageProps> = (props) => {
     
   const router = useRouter()
 
+  console.log("댓글목록: ", comments)
   return (
     <div>
       <Button
@@ -102,25 +104,35 @@ const ArticlePage :NextPage<ArticlePageProps> = (props) => {
   
 
 export const getServerSideProps: GetServerSideProps<ArticlePageProps> = async () => {
-  const GET_ARTICLE_URL = "url"
-  const GET_COMMENT_URL = "url2"
-  const articleInfoResponse = await fetch(GET_ARTICLE_URL);
-  const commentsResponse = await fetch(GET_COMMENT_URL);
-  const articleInfo = await articleInfoResponse.json()
-  const comments = await commentsResponse.json();
-  
+  // const GET_ARTICLE_URL = "url"
+  // const GET_COMMENT_URL = "url2"
+  // const articleInfoResponse = await fetch(GET_ARTICLE_URL);
+  // const commentsResponse = await fetch(GET_COMMENT_URL);
+  // const articleInfo = await articleInfoResponse.json()
+  // const comments = await commentsResponse.json();
+  const comments = comments2
+  console.log(comments)
   return {
     props: {
-      title: articleInfo.title,
-      author: articleInfo.author.userId,
-      createdAt: articleInfo.createdAt,
-      views: articleInfo.views,
-      content: articleInfo.content,
-      leftSympathyTitle: articleInfo.left_sympathy_title,
-      rightSympathyTitle: articleInfo.right_sympathy_title,
-      leftSympathyCount: articleInfo.leftSympathies.length,
-      rightSympathyCount: articleInfo.rightSympathies.length,
+      // title: articleInfo.title,
+      // author: articleInfo.author.userId,
+      // createdAt: articleInfo.createdAt,
+      // views: articleInfo.views,
+      // content: articleInfo.content,
+      // leftSympathyTitle: articleInfo.left_sympathy_title,
+      // rightSympathyTitle: articleInfo.right_sympathy_title,
+      // leftSympathyCount: articleInfo.leftSympathies.length,
+      // rightSympathyCount: articleInfo.rightSympathies.length,
       comments : comments,
+      title: "",
+      author: "",
+      createdAt: "articleInfo.createdAt",
+      views: 11,
+      content: "articleInfo.content",
+      leftSympathyTitle: "articleInfo.left_sympathy_title",
+      rightSympathyTitle: "articleInfo.right_sympathy_title",
+      leftSympathyCount: 11,
+      rightSympathyCount: 12,
     },
   }
 }

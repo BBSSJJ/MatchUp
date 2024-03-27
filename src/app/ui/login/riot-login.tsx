@@ -3,8 +3,9 @@ import { Button } from '@nextui-org/react';
 import {Input} from "@nextui-org/react";
 import { useState } from 'react';
 import styles from './riot-login.module.css';
+import { SERVER_API_URL } from "@/utils/instance-axios"
 
-const SERVER_URL = process.env.SERVER_URL
+const SERVER_URL = SERVER_API_URL
 
 // sns_type, sns_id, riot_id를 담아 POST요청
 export default function RiotLoginForm({ snsType, snsId } :{

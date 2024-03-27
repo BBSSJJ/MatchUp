@@ -409,5 +409,39 @@ const users = [
   },
 ];
 
+const comments2 = [
+  {
+    "id": 1,
+    "content": "Content of comment 1",
+    "writer": {
+      "userId": 2
+    },
+    "childrenComments": [],
+    "createdAt": "2024-03-25T00:00:00.000Z",
+    "updatedAt": "2024-03-25T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "content": "Content of comment 2",
+    "writer": {
+      "userId": 5
+    },
+    "childrenComments": [
+      {
+        "id": 1,
+        "content": "Content of comment 1",
+        "writer": {
+          "userId": 22
+        },
+        "childrenComments": [],
+        "createdAt": "2024-03-25T00:00:00.000Z",
+        "updatedAt": "2024-03-25T00:00:00.000Z"
+      }
+    ],
+    "createdAt": "2024-03-25T00:00:00.000Z",
+    "updatedAt": "2024-03-25T00:00:00.000Z"
+  },
+]
 
-export {columns, users, statusOptions, columns2, articles};
+
+export {columns, users, statusOptions, columns2, articles, comments2};
