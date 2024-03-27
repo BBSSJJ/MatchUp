@@ -29,6 +29,7 @@ public class JwtTokenRedisService {
     }
 
     public void deleteById(String id) {
+        if (findById(id) == null) return;
         redisOperations.getAndDelete(id);
     }
 }
