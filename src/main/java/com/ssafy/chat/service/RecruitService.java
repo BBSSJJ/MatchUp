@@ -28,7 +28,7 @@ public class RecruitService {
     public void insertRecruit(RecruitDto recruitDto) {
 
         Recruit recruit = new Recruit();
-        recruit.set(recruitDto);
+        recruit.setValues(recruitDto);
 
         mongoTemplate.save(recruit);
 
@@ -39,7 +39,7 @@ public class RecruitService {
 
         ObjectId objectId = new ObjectId(recruitDto.getObjectId());
 
-        mongoTemplate.remove(Query.query(Criteria.where("_id").is(objectId)), Recruit.class);
+        mongoTemplate.findAndRemove(Query.query(Criteria.where("_id").is(objectId)), Recruit.class);
 
         kafkaTemplate.send("recruit", recruitDto);
     }
@@ -50,7 +50,7 @@ public class RecruitService {
 
         Recruit recruit = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(objectId)), Recruit.class);
         if (recruit != null) {
-            recruit.set(recruitDto);
+            recruit.setValues(recruitDto);
 
             mongoTemplate.save(recruit);
 

@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,9 +25,9 @@ public class ChatService {
     private final MongoTemplate mongoTemplate;
     private final KafkaTemplate<String, Chat> kafkaTemplate;
 
-    public void insertChat(String id, ChatDto chatDto) throws Exception {
+    public void sendChat(String id, ChatDto chatDto) throws Exception {
 
-        Chat chat = new Chat(id, chatDto.getSender(), chatDto.getContent(), chatDto.getTimestamp());
+        Chat chat = new Chat(id, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now());
         mongoTemplate.save(chat);
 
         // Produce message to Kafka topic
@@ -41,24 +42,33 @@ public class ChatService {
         return ChatMapper.instance.convertListChatRoomDto(mongoTemplate.find(query, ChatRoom.class));
     }
 
-    public List<ChatDto> findChattings(String roomId) {
+    public List<ChatDto> findChattings(Long userId, String roomId) {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("roomId").is(roomId));
+//        query.addCriteria(Criteria.where("participants").in(userId));
 
         return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
     }
 
-    public void createChatRoom(ChatRoomDto chatRoomDto) {
+    public void createChatRoom(Long userId, ChatRoomDto chatRoomDto) throws Exception {
+
+        if (!chatRoomDto.getParticipants().contains(userId)) {
+            throw new Exception("illegal request");
+        }
 
         ChatRoom chatRoom = new ChatRoom(chatRoomDto.getParticipants());
 
         mongoTemplate.save(chatRoom);
     }
 
-    public void deleteChatRoom(String roomId) {
+    public void deleteChatRoom(Long userId, String roomId) throws Exception {
 
         ObjectId objectId = new ObjectId(roomId);
+        ChatRoom chatRoom = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(objectId)), ChatRoom.class);
+        if (chatRoom != null && !chatRoom.getParticipants().contains(userId)) {
+            throw new Exception("illegal request");
+        }
 
         mongoTemplate.remove(Query.query(Criteria.where("_id").is(objectId)), ChatRoom.class);
     }

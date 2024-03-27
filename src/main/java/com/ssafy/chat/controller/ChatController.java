@@ -5,6 +5,8 @@ import com.ssafy.chat.dto.ChatRoomDto;
 import com.ssafy.chat.dto.ListDataDto;
 import com.ssafy.chat.dto.MessageDataDto;
 import com.ssafy.chat.service.ChatService;
+import com.ssafy.chat.util.JwtTokenUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,38 +22,44 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @GetMapping("/users/{userId}/rooms")
-    public ResponseEntity<?> showChatRooms(@PathVariable Long userId) {
+    @GetMapping("/rooms")
+    public ResponseEntity<?> showChatRooms(HttpServletRequest request) {
 
-        List<ChatRoomDto> data = chatService.findRooms(userId);
-        for(ChatRoomDto cr : data) {
-            log.error("가져온 채팅룸 ID : {}", cr.getRoomId());
+        List<ChatRoomDto> data = chatService.findRooms(jwtTokenUtil.getUserId(request));
+
+        return new ResponseEntity<>(new ListDataDto(data), HttpStatus.OK);
+    }
+
+    @GetMapping("/rooms/{roomId}")
+    public ResponseEntity<?> showChattings(HttpServletRequest request, @PathVariable String roomId) {
+
+        List<ChatDto> data = chatService.findChattings(jwtTokenUtil.getUserId(request), roomId);
+
+        return new ResponseEntity<>(new ListDataDto(data), HttpStatus.OK);
+    }
+
+    @PostMapping("/rooms")
+    public ResponseEntity<?> createChatRoom(HttpServletRequest request, @RequestBody ChatRoomDto chatRoomDto) {
+
+        try {
+            chatService.createChatRoom(jwtTokenUtil.getUserId(request), chatRoomDto);
+        } catch (Exception e){
+            return new ResponseEntity<>(new MessageDataDto(e.getMessage()), HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(new ListDataDto(data), HttpStatus.OK);
-    }
-
-    @GetMapping("/users/{userId}/rooms/{roomId}")
-    public ResponseEntity<?> showChattings(@PathVariable String roomId) {
-
-        List<ChatDto> data = chatService.findChattings(roomId);
-
-        return new ResponseEntity<>(new ListDataDto(data), HttpStatus.OK);
-    }
-
-    @PostMapping("/users/{userId}/rooms")
-    public ResponseEntity<?> createChatRoom(@RequestBody ChatRoomDto chatRoomDto) {
-
-        chatService.createChatRoom(chatRoomDto);
 
         return new ResponseEntity<>(new MessageDataDto("created"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{userId}/rooms/{roomId}")
-    public ResponseEntity<?> deleteChatRoom(@PathVariable String roomId) {
+    @DeleteMapping("/rooms/{roomId}")
+    public ResponseEntity<?> deleteChatRoom(HttpServletRequest request, @PathVariable String roomId) {
 
-        chatService.deleteChatRoom(roomId);
+        try {
+            chatService.deleteChatRoom(jwtTokenUtil.getUserId(request), roomId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new MessageDataDto(e.getMessage()), HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(new MessageDataDto("deleted"), HttpStatus.OK);
     }
