@@ -95,4 +95,4 @@ function deleteFriend(friendId, success, fail) {
     app.delete(`${friend}/${friendId}`).then(success).catch(fail)
 }
 
-export { getArticleList, getArticle, postArticle, updateArticle, deleteArticle, getComments, addComment, updateComment, deleteComment, empathize, getUser, signIn, getFriends, makeFriends, deleteFriend }
+export { getArticleList, postArticle, updateArticle, deleteArticle, getComments, addComment, updateComment, deleteComment, empathize, getUser, signIn, getFriends, makeFriends, deleteFriend }
