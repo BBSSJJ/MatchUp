@@ -14,19 +14,54 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://${WEB_SERVER}:3000"
+            allow-credentials: true
+            allowed-headers:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+
       routes:
-        - id: user-server-oauth2
+        - id: user-server-oauth2-login
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/oauth2/**
           filters:
             - LogFilter
-            - LoginFilter
 
-        - id: user-server-oauth2
+        - id: user-server-regist
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/users/regist
+          filters:
+            - LogFilter
+            - LoginFilter
+
+        - id: user-server-logout
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/users/logout
+          filters:
+            - LogFilter
+            - LogoutFilter
+
+        - id: user-server-login
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/users/login
           filters:
             - LogFilter
             - LoginFilter
@@ -61,7 +96,7 @@ spring:
             - Path=/api/ws/**
           filters:
             - LogFilter
-#            - JwtTokenFilter
+        #            - JwtTokenFilter
 
         - id: chat-server-recruits
           uri: http://${CHAT_SERVER}:9003

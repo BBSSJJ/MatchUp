@@ -50,4 +50,10 @@ public class AuthServiceImpl implements AuthService {
         return jwtTokenUtil.generateAccessToken(id, role);
     }
 
+    @Override
+    public void deleteRefreshToken(Claims claims) {
+        String id = claims.getId();
+        jwtTokenRedisService.deleteById(id);
+    }
+
 }
