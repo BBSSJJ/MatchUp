@@ -2,16 +2,19 @@ package com.ssafy.matchup_statistics.indicator.data;
 
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
+import com.ssafy.matchup_statistics.indicator.entity.match.TimeInfo;
 import lombok.Data;
 
 @Data
 public class MacroData {
     MatchDetailResponseDto.Participant myData;
     TeamData teamData;
-    private long gameDuration;
+    private TimeInfo timeInfo;
 
     public MacroData(LaneInfo laneInfo, MatchDetailResponseDto matchDetailResponseDto) {
-        gameDuration = matchDetailResponseDto.getInfo().gameDuration;
+        timeInfo = new TimeInfo(matchDetailResponseDto.getInfo().gameDuration,
+                matchDetailResponseDto.getInfo().getGameStartTimestamp(),
+                matchDetailResponseDto.getInfo().getGameEndTimestamp());
         myData = matchDetailResponseDto.getInfo().participants.get(laneInfo.getMyLaneNumber() - 1);
         teamData = new TeamData(laneInfo, matchDetailResponseDto);
     }

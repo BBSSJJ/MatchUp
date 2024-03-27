@@ -2,7 +2,7 @@ package com.ssafy.matchup_statistics.indicator.service.builder.lane;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
+import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
@@ -37,10 +37,11 @@ import static org.mockito.BDDMockito.given;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Slf4j
 @Tag("MatchLaneIndicatorBuilderTest")
+@Tag("IndicatorTotalTest")
 class MatchJgIndicatorBuilderTest {
 
     @Mock
-    RiotApiAdaptor riotApiAdaptor;
+    RiotRestApiAdaptor riotApiAdaptor;
 
     @Mock
     MatchSaveService matchSaveService;

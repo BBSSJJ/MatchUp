@@ -15,6 +15,7 @@ public class LaneIndicatorStatistics {
     private BasicWeight basicWeight;
     private AggresiveLaneAbilility aggresiveLaneAbilility;
     private LaneAssist laneAssist;
+
     public LaneIndicatorStatistics(List<LaneIndicator> laneIndicators) {
         List<BasicWeight> basicWeights = laneIndicators.stream().map(LaneIndicator::getBasicWeight).toList();
         List<AggresiveLaneAbilility> aggresiveLaneAbililities = laneIndicators.stream().map(LaneIndicator::getAggresiveLaneAbilility).toList();

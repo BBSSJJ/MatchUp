@@ -2,7 +2,7 @@ package com.ssafy.matchup_statistics.indicator.service.builder;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.ssafy.matchup_statistics.global.api.RiotApiAdaptor;
+import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.config.TestConfiguration;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
@@ -38,11 +38,12 @@ import static org.mockito.BDDMockito.given;
 @EnableConfigurationProperties
 @Slf4j
 @Tag("MatchMacroIndicatorBuilderTest")
+@Tag("IndicatorTotalTest")
 class MatchMacroIndicatorBuilderTest {
 
     private final int DEFAULT_ROUND_UP = 100_000;
     @Mock
-    RiotApiAdaptor riotApiAdaptor;
+    RiotRestApiAdaptor riotRestApiAdaptor;
     @Mock
     MatchSaveService matchSaveService;
     @InjectMocks
@@ -68,7 +69,7 @@ class MatchMacroIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+        target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
 
         // 본인 아이디 : 6
         // 상대 아이디 : 2
@@ -78,9 +79,9 @@ class MatchMacroIndicatorBuilderTest {
 
         puuid = "GweS1V-eVKk-je-x4D6znocszRr02LsMmfeOOykWurawl050dAbp3S8NcGV1JinmjysCLkS5_VOrYQ";
         summonerId = "XpfTc8FZVplKFNyQJyIXDbHwspU2I0qL2yjau8S7y5qk2w";
-        given(riotApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
-        given(riotApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
-        given(riotApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
+        given(riotRestApiAdaptor.getMatchIdsByPuuid(puuid)).willReturn(matches);
+        given(riotRestApiAdaptor.getMatchDetailResponseDtoByMatchId("KR_6994313306")).willReturn(matchDetailResponseDto);
+        given(riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId("KR_6994313306")).willReturn(matchTimelineResponseDto);
 
         // 라인 정보 빌드
         laneInfo = LaneInfo.builder()
@@ -108,7 +109,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -128,7 +129,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -161,7 +162,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -197,7 +198,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -218,7 +219,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -239,7 +240,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 
@@ -260,7 +261,7 @@ class MatchMacroIndicatorBuilderTest {
 
         // when
         Indicator indicator = target.build(
-                riotApiAdaptor.getMatchIdsByPuuid(puuid),
+                riotRestApiAdaptor.getMatchIdsByPuuid(puuid),
                 summonerId, puuid
         );
 

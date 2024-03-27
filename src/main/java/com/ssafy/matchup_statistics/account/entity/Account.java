@@ -1,6 +1,6 @@
 package com.ssafy.matchup_statistics.account.entity;
 
-import com.ssafy.matchup_statistics.account.dto.response.AccountResponseDto;
+import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import lombok.Getter;
 
 @Getter

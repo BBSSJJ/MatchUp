@@ -1,11 +1,13 @@
 package com.ssafy.matchup_statistics.global.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashMap;
 
 @Data
+@AllArgsConstructor
 public class LeagueInfoResponseDto {
     private String leagueId;
     private String queueType;

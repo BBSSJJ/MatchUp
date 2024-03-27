@@ -3,8 +3,13 @@ package com.ssafy.matchup_statistics.summoner.service;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
+import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalFluxService;
+import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalRestService;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalService;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +17,12 @@ import org.springframework.stereotype.Service;
 public class SummonerService {
 
     private final SummonerLeagueInfoService summonerLeagueInfoService;
-    private final SummonerTotalService summonerTotalService;
+
+    @Qualifier("summonerTotalFluxService")
+    private final SummonerTotalService summonerTotalFluxService;
+
+    @Qualifier("summonerTotalRestService")
+    private final SummonerTotalService summonerTotalRestService;
 
     public SummonerLeagueInfoResponseDto getSummonerLeagueInfo(String gameName, String tagLine) {
         return summonerLeagueInfoService.getSummonerInfoWithLeagueInfo(gameName, tagLine);
@@ -26,11 +36,19 @@ public class SummonerService {
         return summonerLeagueInfoService.getSummonerInfoWithLeagueInfoBySummonerName(summonerName);
     }
 
-    public void saveSummonerLeagueIndicatorMatches(String gameName, String tagLine) {
-        summonerTotalService.save(gameName, tagLine);
+    public void saveSummonerLeagueIndicatorMatchesFlux(String gameName, String tagLine) {
+        summonerTotalFluxService.save(gameName, tagLine);
     }
 
-    public int saveAllSummonerLeagueIndicatorMatches(Integer pages, LeagueEntryRequestDto dto) {
-        return summonerTotalService.saveLeagueEntry(pages, dto);
+    public int saveAllSummonerLeagueIndicatorMatchesFlux(Integer pages, LeagueEntryRequestDto dto) {
+        return summonerTotalFluxService.saveLeagueEntry(pages, dto);
+    }
+
+    public void saveSummonerLeagueIndicatorMatchesRest(String gameName, String tagLine) {
+        summonerTotalRestService.save(gameName, tagLine);
+    }
+
+    public int saveAllSummonerLeagueIndicatorMatchesRest(Integer pages, LeagueEntryRequestDto dto) {
+        return summonerTotalRestService.saveLeagueEntry(pages, dto);
     }
 }

@@ -1,12 +1,12 @@
 package com.ssafy.matchup_statistics;
 
-import com.ssafy.matchup_statistics.account.api.AccountRestApi;
-import com.ssafy.matchup_statistics.global.api.LeagueRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.AccountRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.LeagueRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
-import com.ssafy.matchup_statistics.global.api.MatchRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.MatchRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
-import com.ssafy.matchup_statistics.global.api.SummonerRestApi;
+import com.ssafy.matchup_statistics.global.api.rest.SummonerRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +41,7 @@ class RiotRestApiTest {
         //when : puuid, matches, league 받아오는지 검증
         SummonerInfoResponseDto summonerInfoResponseDto = summonerRestApi.getSummonerInfoResponseDtoBySummonerName(summonerName);
         List<String> matches =  matchRestApi.getMatchesResponseDtoByPuuid(summonerInfoResponseDto.getPuuid());
-        LeagueInfoResponseDto leagueInfo = leagueRestApi.getLeagueInfoResponseDtoBySummonerId(summonerInfoResponseDto.getId());
+        LeagueInfoResponseDto leagueInfo = leagueRestApi.getLeagueInfoResponseBySummonerId(summonerInfoResponseDto.getId());
         // 응답 로깅
         log.info("summoner info : {}", summonerInfoResponseDto);
         log.info("league info : {}",leagueInfo);
