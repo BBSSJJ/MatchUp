@@ -3,21 +3,25 @@ import SockJS from "sockjs-client"
 import { Client } from "@stomp/stompjs";
 
 export default function Page() {
-  // const sock = new SockJS("https://j10a405.p.ssafy.io/api/ws")
+  const sock = new SockJS("https://matchup.site/api/ws")
+  console.log(typeof sock)
+  const client  = new Client({
+    webSocketFactory() {
+      sock
+    },
+    // brokerURL: "wss://matchup.site/api/ws",
+    // debug: (str) => {
+    //   console.log(str)
+    // },
+    onConnect(frame) {
+      console.log('연결 성공' + frame)
 
-  // sock.onopen = function() {
-  //   console.log('open');
-  //   sock.send('test');
-  // };
-
-  // sock.onmessage = function(e) {
-  //   console.log('message', e.data);
-  //   sock.close();
-  // };
-
-  // sock.onclose = function() {
-  //   console.log('close');
-  // };
+      client.subscribe('/topic/recruit', (message) => {
+        console.log(message)
+      })
+    },
+  })
+  client.activate()
 
 
   return (

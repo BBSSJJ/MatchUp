@@ -11,12 +11,12 @@ import { Client } from "@stomp/stompjs"
 export default function MatchupChats() {
 
   useEffect(() => {
-    const sock = new SockJS("https://j10a405.p.ssafy.io/api/ws")
+    const sock = new SockJS("https://matchup.site/api/ws")
     const client  = new Client({
-      webSocketFactory() {
-        sock
-      },
-      // brokerURL: "wss://j10a405.p.ssafy.io/api/ws",
+      // webSocketFactory() {
+      //   sock
+      // },
+      brokerURL: "wss://matchup.site/api/ws",
       // debug: (str) => {
       //   console.log(str)
       // },
@@ -28,7 +28,7 @@ export default function MatchupChats() {
         })
       },
     })
-    client.activate()
+    // client.activate()
   }, [])
   
   const me = "배성준"
