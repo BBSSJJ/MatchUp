@@ -39,8 +39,8 @@ public class MzArticleController {
 
     @Operation(summary = "게시글 목록", description = "전체 게시글을 페이지 별로 조회하는 API입니다.")
     @GetMapping
-    ResponseEntity<ListDto<SimpleMzArticleDto>> articleList() {
-        return new ResponseEntity<>(mzArticleService.listMzArticle(), HttpStatus.OK);
+    ResponseEntity<ListDto<SimpleMzArticleDto>> articleList(@RequestParam(value = "title", required = false) String title) {
+        return new ResponseEntity<>(mzArticleService.listMzArticle(title), HttpStatus.OK);
     }
 
     @Operation(summary = "내 게시글 조회", description = "내가 쓴 게시글을 조회하는 API 입니다.")

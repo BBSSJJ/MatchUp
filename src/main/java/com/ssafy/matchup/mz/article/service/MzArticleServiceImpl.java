@@ -107,8 +107,9 @@ public class MzArticleServiceImpl implements MzArticleService {
 
     @Transactional
     @Override
-    public ListDto<SimpleMzArticleDto> listMzArticle() {
-        List<SimpleMzArticleDto> articles = mzArticleRepository.findAllMzArticles().stream()
+    public ListDto<SimpleMzArticleDto> listMzArticle(String title) {
+        if (title == null) title = "";
+        List<SimpleMzArticleDto> articles = mzArticleRepository.findMzArticlesByTitleContaining(title).stream()
                 .map(SimpleMzArticleDto::new).collect(toList());
         return new ListDto<>(articles);
     }
