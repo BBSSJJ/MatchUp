@@ -11,10 +11,10 @@ const columns = [
 ];
 
 const columns2 = [
-    {name: "글 번호", uid: "id"},
+    {name: "#", uid: "id"},
     {name: "제목", uid:  "title"},
     {name: "작성자", uid: "author"},
-    {name: "작성 일자", uid: "createdAt", sortable: true},
+    {name: "작성일", uid: "createdAt", sortable: true},
     {name: "조회수", uid: "views", sortable: true},
 ]
 

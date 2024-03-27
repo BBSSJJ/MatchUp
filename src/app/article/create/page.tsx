@@ -73,7 +73,7 @@ export default function CreateArticle() {
 
   const postContentToServer = async () => {
     try {
-      const response = await fetch('/api/mz/articles', {
+      const response = await fetch('http://70.12.247.47:9000/api/mz/articles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

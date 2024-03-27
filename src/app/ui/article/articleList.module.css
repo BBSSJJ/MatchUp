@@ -1,0 +1,162 @@
+*:focus {
+outline: none;
+}
+
+.article {
+display: flex;
+border: solid 1px white;
+width: 90%;
+margin: 0 auto;
+background-color: #161A1E;
+}
+
+.articleListContent {
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+margin-left: 3%;
+}
+
+.articleListTitle {
+font-size: 200%;
+}
+
+.articleListAuthor {
+font-size: 100%;
+margin-bottom: -3%;
+}
+
+.vote {
+display: flex;
+justify-content: space-between;
+padding: 3%;
+width: 400px;
+}
+
+.voteLeft {
+background-color: #1e5fea;
+font-size: 100%;
+font-weight: bold;
+height: 200%;
+border-radius: 20px 0 0 20px;
+display: flex;
+align-items: center;
+padding-left: 5%;
+}
+
+.voteRight {
+background-color: #ff1641;
+font-size: 100%;
+font-weight: bold;
+height: 200%;
+border-radius: 0 20px 20px 0;
+display: flex;
+flex-direction: row-reverse;
+align-items: center;
+padding-right: 5%;
+}
+
+.articleContainer {
+width: 80%;
+border: solid 1px white;
+border-radius: 5px;
+margin: 15px auto;
+padding: 5%;
+}
+
+.articleTitle {
+font-size: 300%;
+margin-bottom: 5%;
+}
+
+.articleInfo {
+display: flex;
+justify-content: space-between;
+font-size: 130%;
+margin-bottom: 1%;
+}
+
+.articleContent {
+margin-top: 5%;
+font-size: 200%;
+line-height: 120%;
+white-space: pre-wrap;
+}
+
+.articleVoteButtons {
+width: 50%;
+margin: 5% auto;
+display: flex;
+justify-content: space-evenly;
+}
+
+.leftButton {
+background-color: #f4d838;
+border-radius: 20px;
+font-size: 120%;
+width: 150px;
+height: 50px;
+font-weight: bold;
+}
+
+.rightButton {
+background-color: #24b9c1;
+border-radius: 20px;
+font-size: 120%;
+width: 150px;
+height: 50px;
+font-weight: bold;
+}
+
+.articleVote {
+display: flex;
+justify-content: space-between;
+width: 80%;
+margin: 0 auto;
+}
+
+.articleVoteLeft {
+background-color: #f4d838;
+font-size: 180%;
+color: black;
+font-weight: bold;
+height: 30px;
+border-radius: 10px 0 0 10px;
+display: flex;
+align-items: center;
+}
+
+.articleVoteRight {
+background-color: #24b9c1;
+font-size: 180%;
+color: black;
+font-weight: bold;
+height: 30px;
+border-radius: 0 10px 10px 0;
+display: flex;
+flex-direction: row-reverse;
+align-items: center;
+}
+
+.articleVoteLeftTiny {
+background-color: #f4d838;
+font-size: 100%;
+color: black;
+font-weight: bold;
+height: 10px;
+border-radius: 10px 0 0 10px;
+display: flex;
+align-items: center;
+}
+
+.articleVoteRightTiny {
+background-color: #24b9c1;
+font-size: 100%;
+color: black;
+font-weight: bold;
+height: 10px;
+border-radius: 0 10px 10px 0;
+display: flex;
+flex-direction: row-reverse;
+align-items: center;
+}
