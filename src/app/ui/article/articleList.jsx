@@ -28,7 +28,7 @@ import { useRouter } from "next/navigation";
 
 const INITIAL_VISIBLE_COLUMNS = ["id", "title", "author", "views", "createdAt"];
 export default function ArticleList() {
-  // 현재는 더미 데이터를 사용하고 있지만, 나중에는 
+  // 현재는 더미 데이터
 
   const router = useRouter();
   const [filterValue, setFilterValue] = React.useState("");
@@ -95,12 +95,11 @@ export default function ArticleList() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            {/* <p className="text-bold text-tiny capitalize text-default-500">text</p> */}
-            
+            {/* 투표현황 */}
             <div className="articleVote">
               {/* width를 실제 데이터와 연동 */}
-              <div className="articleVoteLeft text-tiny" style={{ width: "25%" }}><span>25%</span></div>
-              <div className="articleVoteRight" style={{ width: "75%" }}><span>75%</span></div>
+              <div className="articleVoteLeftTiny text-tiny" style={{ width: "25%", height: "10px" }}><span>25%</span></div>
+              <div className="articleVoteRightTiny text-tiny" style={{ width: "75%", height: "10px" }}><span>75%</span></div>
             </div>
           </div>
         );
@@ -108,7 +107,6 @@ export default function ArticleList() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-500">{user.team}</p>
           </div>
         );
       // case "status":

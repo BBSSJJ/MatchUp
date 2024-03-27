@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER_API_URL = "https://matchup.site"
+const SERVER_API_URL = process.env.SERVER_URL
 
 // api axios instance
 export const app = axios.create({

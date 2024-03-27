@@ -4,6 +4,8 @@ import {Input} from "@nextui-org/react";
 import { useState } from 'react';
 import styles from './riot-login.module.css';
 
+const SERVER_URL = process.env.SERVER_URL
+
 // sns_type, sns_id, riot_id를 담아 POST요청
 export default function RiotLoginForm({ snsType, snsId } :{
     snsType :string;
@@ -13,7 +15,10 @@ export default function RiotLoginForm({ snsType, snsId } :{
     const handleSignIn = async () => {
         try {
             console.log(riotId)
-            const response = await fetch("http://70.12.247.47:9000/api/users/regist", {
+            if(isNaN(parseInt(snsId, 10))) {
+                return
+            }
+            const response = await fetch(`${SERVER_URL}/api/users/regist`, {
                 method:  'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,7 +29,7 @@ export default function RiotLoginForm({ snsType, snsId } :{
 
             if(response.ok) {
                 console.log("회원가입 요청에 대한 응답 : ", response)
-                window.location.href = 'http://70.12.246.67:3000/lobby'
+                window.location.href = `${SERVER_URL}/lobby`
                 
             } else {
                 console.log('회원가입 실패')

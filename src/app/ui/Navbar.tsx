@@ -67,6 +67,7 @@ export default function NavigationBar() {
               </Link>
             </NavbarItem>
           </PopoverTrigger>
+          {/* 추천 버튼을 누르면 먼저 뜨는 모달창 */}
           <PopoverContent className="w-[240px]">
             {(titleProps) => (
               <div className="px-1 py-2 w-full">
@@ -74,10 +75,9 @@ export default function NavigationBar() {
                   추천에 참고할 정보를 추가로 입력해주세요
                 </p>
                 <div className="mt-2 flex flex-col gap-2 w-full">
-                  <Input defaultValue="100%" label="Width" size="sm" variant="bordered" />
-                  <Input defaultValue="300px" label="Max. width" size="sm" variant="bordered" />
-                  <Input defaultValue="24px" label="Height" size="sm" variant="bordered" />
-                  <Input defaultValue="30px" label="Max. height" size="sm" variant="bordered" />
+                  <Input defaultValue="100%" label="내 라인" size="sm" variant="bordered" />
+                  <Input defaultValue="300px" label="상대방 라인" size="sm" variant="bordered" />
+                  <Input defaultValue="24px" label="마이크 사용 여부" size="sm" variant="bordered" />
                 </div>
               </div>
             )}
@@ -113,6 +113,7 @@ export default function NavigationBar() {
         {
           isLoggedIn ?
           <>
+            {/* 로그인 상태일 때 보이는 유저 프로필 */}
             <User
               name="Username"
               description="Lv.712"
