@@ -167,7 +167,7 @@ export const demoLobbyChats = [
     loses: 74,
     kill: 2.1,
     death: 3.4,
-    assist: 13.8,
+    assist: 3.8,
     memo: "부캐 듀오 구합니다."
   },
   {
