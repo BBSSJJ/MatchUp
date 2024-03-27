@@ -22,6 +22,9 @@ public class JwtTokenUtil {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
+    @Value("${url.domain}")
+    private String domainUrl;
+
     @Value("${jwt.period.access-token}")
     private long periodAccessToken;
 
@@ -87,9 +90,10 @@ public class JwtTokenUtil {
     public void writeAccessToken(ServerHttpResponse response, String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-//                .path("http://70.12.246.67:3000")
-//                .httpOnly(true)
-//                .secure(true)
+                .domain(domainUrl)
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
                 .maxAge(periodAccessToken)
                 .build();
         response.addCookie(cookie);
@@ -98,9 +102,10 @@ public class JwtTokenUtil {
     public void writeRefreshToken(ServerHttpResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .path("/")
-//                .path("http://70.12.246.67:3000")
-//                .httpOnly(true)
-//                .secure(true)
+                .domain(domainUrl)
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
                 .maxAge(periodRefreshToken)
                 .build();
 
