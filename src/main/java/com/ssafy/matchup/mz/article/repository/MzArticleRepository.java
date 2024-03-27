@@ -40,6 +40,13 @@ public interface MzArticleRepository extends JpaRepository<MzArticle, Long> {
             "JOIN FETCH m.author a " +
             "JOIN FETCH a.riotAccount r " +
             "JOIN FETCH r.summonerProfile " +
+            "WHERE m.title LIKE CONCAT('%', :title, '%')")
+    List<MzArticle> findMzArticlesByTitleContaining(String title);
+
+    @Query("SELECT m FROM mz_article m " +
+            "JOIN FETCH m.author a " +
+            "JOIN FETCH a.riotAccount r " +
+            "JOIN FETCH r.summonerProfile " +
             "WHERE m.author.id = :authorId")
     List<MzArticle> findMzArticlesByAuthorId(Long authorId);
 }
