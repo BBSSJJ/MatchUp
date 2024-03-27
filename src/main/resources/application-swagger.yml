@@ -4,6 +4,7 @@ springdoc:
   api-docs:
     groups:
       enabled: true
+    path: /api/statistics/swagger.json
   swagger-ui:
     operations-sorter: alpha # alpha(알파벳 오름차순), method(HTTP메소드순)
     tags-sorter: alpha # 태그 정렬 기준
