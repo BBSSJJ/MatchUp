@@ -25,6 +25,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${ip.server.web}")
     String webServer;
 
+    @Value("${url.domain}")
+    String domainUrl;
+
     private final UserRepository userRepository;
 
     @Override
@@ -42,7 +45,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (optionalUser.isEmpty()) {
 //            response.setHeader("Sns-Type", String.valueOf(snsType));
 //            response.setHeader("Sns-Id", snsId);
-            response.sendRedirect("http://" + webServer + ":3000/login/riot-login/" + snsType + "/" + snsId);
+            response.sendRedirect("http://" + domainUrl + "/login/riot-login/" + snsType + "/" + snsId);
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
         else {
@@ -57,7 +60,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //            response.getWriter().write(String.valueOf(entity.getBody()));
 //            response.setStatus(HttpStatus.OK.value());
 //            log.info("response header : {} {}", response.getHeaders("id"), response.getHeaders("role"));
-            response.sendRedirect("http://" + webServer + ":3000/login/" + snsType + "/" + snsId);
+            response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId);
         }
     }
 }
