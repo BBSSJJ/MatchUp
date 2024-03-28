@@ -16,8 +16,8 @@ public class CookieUtil {
     @Value("${url.domain}")
     private String domainUrl;
 
-    @Value("${jwt.period.refresh-token}")
-    private int periodRefreshToken;
+    @Value("${cookie.period.refresh-token}")
+    private int periodRefreshTokenCookie;
 
     public ResponseCookie createUserCookie(UserDto user) throws JsonProcessingException {
 
@@ -27,14 +27,13 @@ public class CookieUtil {
                 .secure(true)
                 .path("/")
                 .sameSite("None")
-                .maxAge(periodRefreshToken)
+                .maxAge(periodRefreshTokenCookie)
                 .domain(domainUrl)
                 .build();
     }
 
-    public ResponseCookie removeUserCookie() throws JsonProcessingException {
+    public ResponseCookie removeUserCookie() {
 
-        ObjectMapper objectMapper = new ObjectMapper();
         return ResponseCookie.from("user", "")
                 .secure(true)
                 .path("/")
