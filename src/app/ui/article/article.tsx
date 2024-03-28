@@ -6,10 +6,9 @@ import { Button, Textarea } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { comments2 } from './dummyData';
-import { updateArticle, deleteArticle, getComments, addComment, updateComment, deleteComment, empathize } from "@/utils/api"
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import { useState } from 'react';
-import { getArticle } from '@/app/article/[id]/page';
+import { getArticle } from './article-wrapper';
 
 interface ArticleProps {
   title?: string;
