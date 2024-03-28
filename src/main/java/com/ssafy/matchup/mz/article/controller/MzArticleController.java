@@ -53,7 +53,6 @@ public class MzArticleController {
     @Operation(summary = "게시글 등록", description = "게시글을 등록하는 API입니다.")
     @PostMapping
     ResponseEntity<Void> mzArticleRegist(HttpServletRequest request, @RequestBody WriteMzArticleRequestDto writeMzArticleRequestDto) {
-        // TODO : thumbnail 가져오기, url 만드는 로직 필요
         mzArticleService.addMzArticle(jwtTokenUtil.getUserId(request), writeMzArticleRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
