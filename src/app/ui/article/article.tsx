@@ -157,7 +157,7 @@ const ArticlePage = ({id} :{id :number}) => {
 
     if (response.ok) {
       // 이벤트 성공시에 알아서 업데이트 된 데이터베이스 상태 반영
-      mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
+      // mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
       mutate(`${SERVER_API_URL}/api/mz/articles/${id}`)
       // const newData = await getArticle(id)
       // setVoteCount(
