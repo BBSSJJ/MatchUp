@@ -64,4 +64,16 @@ public class ChatController {
         return new ResponseEntity<>(new MessageDataDto("deleted"), HttpStatus.OK);
     }
 
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<?> showChatRoomWithUser(HttpServletRequest request, @PathVariable Long userId) {
+
+        ChatRoomDto chatRoomDto = chatService.findRoom(jwtTokenUtil.getUserId(request), userId);
+
+        if(chatRoomDto == null) {
+            return new ResponseEntity<>(new MessageDataDto("not exist chatroom"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(chatRoomDto, HttpStatus.OK);
+    }
+
 }

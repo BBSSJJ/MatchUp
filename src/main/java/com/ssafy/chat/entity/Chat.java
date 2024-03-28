@@ -19,5 +19,6 @@ public class Chat {
     private String iconUrl;
     private String content;
     private LocalDateTime timestamp;
+    private boolean isRead;
 
 }

@@ -9,5 +9,6 @@ public class ChatRoomDto {
 
     private String roomId;
     private ArrayList<Long> participants;
+    private Long cnt;
 
 }
