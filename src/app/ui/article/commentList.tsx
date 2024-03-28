@@ -4,6 +4,7 @@ import { Reply } from '@/app/ui/article/article'
 import { Button, Textarea } from '@nextui-org/react';
 import styles from './commentList.module.css'
 import { SERVER_API_URL } from '@/utils/instance-axios';
+import useSWR, { mutate } from 'swr';
 
 interface Writer {
   userId?: number;
@@ -22,6 +23,7 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
   const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
   const [replyContent, setReplyContent] = useState("")
 
+  const { data , error } = useSWR(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`)
   const utcDate = new Date(comment.createdAt)
   utcDate.setHours(utcDate.getHours() + 8)
   const createdAtKST = utcDate.toISOString().replace("T", " ").slice(0, -5)
@@ -42,7 +44,7 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
 
     if (response.ok) {
       setReplyContent("")
-
+      mutate(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`)
 
     }
   }
