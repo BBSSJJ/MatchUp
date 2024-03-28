@@ -20,7 +20,7 @@ public class Sympathy {
     @Enumerated(EnumType.STRING)
     private SympathyType sympathyType;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

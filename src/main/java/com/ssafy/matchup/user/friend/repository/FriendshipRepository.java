@@ -13,7 +13,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query(value = "SELECT fs.friend FROM com.ssafy.matchup.user.friend.entity.Friendship fs " +
             "JOIN FETCH fs.friend.riotAccount ra " +
-            "LEFT JOIN FETCH fs.friend.lbti l " +
             "WHERE fs.myself.id = ?1")
     List<User> findAllByMyId(Long myId);
 

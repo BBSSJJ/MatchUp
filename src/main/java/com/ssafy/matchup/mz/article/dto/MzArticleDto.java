@@ -31,7 +31,6 @@ public class MzArticleDto {
         this.content = mzArticle.getContent();
         this.leftSympathyTitle = mzArticle.getLeftSympathyTitle();
         this.rightSympathyTitle = mzArticle.getRightSympathyTitle();
-        this.thumbnailUrl = mzArticle.getThumbnailUrl();
         this.views = mzArticle.getViews();
         this.author = new UserDto(mzArticle.getAuthor());
         this.createdAt = mzArticle.getCreatedAt();

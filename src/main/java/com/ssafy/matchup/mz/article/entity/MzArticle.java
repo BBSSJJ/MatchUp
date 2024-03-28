@@ -34,9 +34,6 @@ public class MzArticle extends BaseTimeEntity {
     @Column(name = "right_sympathy_title")
     private String rightSympathyTitle;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
-
     @Column(name = "views")
     private Long views = 0L;
 
@@ -61,16 +58,14 @@ public class MzArticle extends BaseTimeEntity {
         this.content = content;
         this.leftSympathyTitle = leftSympathyTitle;
         this.rightSympathyTitle = rightSympathyTitle;
-        this.thumbnailUrl = thumbnailUrl;
         this.author = author;
     }
 
     @Builder
-    public void updateMzArticle(String title, String content, String leftSympathyTitle, String rightSympathyTitle, String thumbnailUrl) {
+    public void updateMzArticle(String title, String content, String leftSympathyTitle, String rightSympathyTitle) {
         this.title = title;
         this.content = content;
         this.leftSympathyTitle = leftSympathyTitle;
         this.rightSympathyTitle = rightSympathyTitle;
-        this.thumbnailUrl = thumbnailUrl;
     }
 }

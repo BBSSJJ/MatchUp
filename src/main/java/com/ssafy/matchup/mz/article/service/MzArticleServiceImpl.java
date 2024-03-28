@@ -94,14 +94,11 @@ public class MzArticleServiceImpl implements MzArticleService {
     @Override
     public void updateMzArticle(Long articleId, Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto) {
         MzArticle mzArticle = mzArticleRepository.getReferenceById(articleId);
-        // TODO : 썸네일 변경 로직 작성
-        String thumbnailUrl = mzArticle.getThumbnailUrl();
         if (!articleId.equals(mzArticle.getAuthor().getId())) throw new SecurityException();
         mzArticle.updateMzArticle(writeMzArticleRequestDto.getTitle(),
                 writeMzArticleRequestDto.getContent(),
                 writeMzArticleRequestDto.getLeftSympathyTitle(),
-                writeMzArticleRequestDto.getRightSympathyTitle(),
-                thumbnailUrl
+                writeMzArticleRequestDto.getRightSympathyTitle()
         );
     }
 
