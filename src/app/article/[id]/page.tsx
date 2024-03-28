@@ -9,6 +9,7 @@ import { AxiosResponse, AxiosError } from 'axios';
 import { ParsedUrlQuery } from 'querystring';
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import ArticlePage from '@/app/ui/article/article';
+import ArticleWrapper from '@/app/ui/article/article-wrapper';
 
 // 동적 라우팅 게시글 페이지
 interface ArticlePageProps {
@@ -30,36 +31,36 @@ interface Article {
 
 
 // 게시글 가져오기
-export async function getArticle(id :number) {
-  try {
-    const response = await fetch(`${SERVER_API_URL}/api/mz/articles/${id}`)
+// export async function getArticle(id :number) {
+//   try {
+//     const response = await fetch(`${SERVER_API_URL}/api/mz/articles/${id}`)
 
-    if (!response.ok) {
-      throw new Error('게시글 정보 가져오기 실패')
-    }
-    console.log(response)
-    return response.json()
-  } catch(error) {
-    console.error(error)
-    throw error
-  }
-}
+//     if (!response.ok) {
+//       throw new Error('게시글 정보 가져오기 실패')
+//     }
+//     console.log(response)
+//     return response.json()
+//   } catch(error) {
+//     console.error(error)
+//     throw error
+//   }
+// }
 
 // 댓글 가져오기
-async function getComments(id :number) {
-  try {
-    const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
+// async function getComments(id :number) {
+//   try {
+//     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
 
-    if (!response.ok) {
-      throw new Error('댓글 정보 가져오기 실패')
-    }
+//     if (!response.ok) {
+//       throw new Error('댓글 정보 가져오기 실패')
+//     }
 
-    return response.json()
-  } catch(error) {
-    console.error(error)
-    throw error
-  }
-}
+//     return response.json()
+//   } catch(error) {
+//     console.error(error)
+//     throw error
+//   }
+// }
 
 
 // 개별 게시글 상세 내용을 보여주는 컴포넌트
@@ -69,11 +70,10 @@ export default async function Page({
   params: { id: number };
 }) {
 
-  const fetchedArticle = await getArticle(id)
-  const fetchedComments = await getComments(id)
   return(
     <div>
-      <ArticlePage article={fetchedArticle} comments={fetchedComments} id={id} />
+      <ArticleWrapper id={id} />
     </div>
   )
 }
+
