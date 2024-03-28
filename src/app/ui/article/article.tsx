@@ -112,14 +112,14 @@ const ArticlePage = ({id} :{id :number}) => {
   // 데이터 가져오기
   const {data: article, error: articleError, isLoading: articleLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/articles/${id}`,
-    articleFetcher,
-    { refreshInterval: 1000 }
+    articleFetcher, 
+    // { refreshInterval: 1000 }
   )
 
   const { data: comments, error: commentsError, isLoading: commentsLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/comments/articles/${id}`,
     articleFetcher,
-    { refreshInterval: 500 }
+    // { refreshInterval: 300 }
   )
 
   const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
@@ -178,11 +178,10 @@ const ArticlePage = ({id} :{id :number}) => {
       })
     })
 
-    setCommentContent("")
     if (response.ok) {
+      setCommentContent("") // 댓글입력창 지우기
       const newComments = await getComments(id)
       console.log(newComments)
-      // setReplies(newComments)
 
     }
   }
@@ -207,7 +206,7 @@ const ArticlePage = ({id} :{id :number}) => {
       >
         뒤로가기
       </Button>
-      <div className="articleContainer tilt-in-fwd-tr">
+      <div className="articleContainer">
         <div>
           <h1 className="articleTitle">{article?.title}</h1>
           <div className="articleInfo">
@@ -270,6 +269,7 @@ const ArticlePage = ({id} :{id :number}) => {
             color='secondary'
             label="write a comment"
             placeholder="Enter your description"
+            value={commentContent}
             onValueChange={(value:string):void => { setCommentContent(value)}}
           />
           <Button
@@ -280,10 +280,11 @@ const ArticlePage = ({id} :{id :number}) => {
             댓글쓰기
           </Button>
         </div>
-       
-        {comments?.list && comments?.list.length > 0 && comments?.list.map((comment: Reply)=> (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+        <div className='w-[80%]'>
+          {comments?.list && comments?.list.length > 0 && comments?.list.map((comment: Reply)=> (
+            <Comment key={comment.id} comment={comment} articleId={id} parentId={comment.id} />
+          ))}
+        </div>
       </div>
     </div> 
   )
