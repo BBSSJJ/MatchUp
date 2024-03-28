@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         User user = userRepository.getReferenceById(userId);
         MzArticle mzArticle = mzArticleRepository.getReferenceById(articleId);
         Comment parentComment = null;
-        if (registCommentRequestDto.getParentCommentId() != null)
+        if (registCommentRequestDto.getParentCommentId() != -1)
             parentComment = commentRepository.getReferenceById(registCommentRequestDto.getParentCommentId());
         Comment comment = Comment.builder()
                 .content(registCommentRequestDto.getContent())
