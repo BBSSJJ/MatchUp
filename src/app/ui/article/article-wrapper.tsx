@@ -40,7 +40,7 @@ export default async function ArticleWrapper({id}:{id:number}) {
     const fetchedComments = await getComments(id)
     return (
         <div>
-            <ArticlePage article={fetchedArticle} comments={fetchedComments} id={id} />
+            <ArticlePage id={id} />
         </div>
     )
 }
