@@ -100,6 +100,8 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
   const router = useRouter()
   const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article.leftSympathies.length || 0, right: article.leftSympathies.length || 0 })
   const [replies, setReplies] = useState<CommentList>(comments)
+  const [commentContent, setCommentContent] = useState("")
+
   // 투표기능 
   const totalVotes = (voteCount.left === 0 || voteCount.right === 0) ? 1 : voteCount.left + voteCount.right;
   let leftVotesPercentage
@@ -118,6 +120,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
     rightVotesPercentage = (voteCount.right / totalVotes) * 100;
   }
 
+  // 투표 버튼 클릭 이벤트
   const handleVote = async (lor :string) => {
     const response = await fetch(`${SERVER_API_URL}/api/mz/sympathies/${id}`, {
       method: 'PATCH',
@@ -135,7 +138,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
     }
   }
 
-  // 일단은 게시글 최상위 댓글만 
+  // 댓글 작성하기 
   const handleReply = async (parentId :number) => {
     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`, {
       method: 'POST',
@@ -143,7 +146,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        content: "",
+        content: commentContent,
         parentCommentId: parentId,
       })
     })
@@ -176,11 +179,11 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
           {/* <p className="articleContent">{article.content}</p> */}
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
           <div className="articleVoteButtons">
-            <Button className="leftButton" variant="shadow" onClick={() => handleVote("left")}>
+            <Button className="leftButton" variant="shadow" onClick={() => handleVote("LEFT")}>
               {article.leftSympathyTitle}
             </Button>
 
-            <Button className="rightButton" variant="shadow" onClick={() => handleVote("right")}>
+            <Button className="rightButton" variant="shadow" onClick={() => handleVote("RIGHT")}>
               {article.rightSympathyTitle}
             </Button>
           </div>
@@ -225,6 +228,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
             color='secondary'
             label="write a comment"
             placeholder="Enter your description"
+            onValueChange={(value:string):void => { setCommentContent(value)}}
           />
           <Button
             color='secondary'
