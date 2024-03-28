@@ -25,6 +25,7 @@ public class CommentController {
     @Operation(summary = "댓글 등록", description = "댓글을 등록하는 API입니다.")
     @PostMapping("/articles/{article-id}")
     ResponseEntity<Void> commentRegist(HttpServletRequest request, @PathVariable("article-id") Long articleId, @RequestBody RegistCommentRequestDto registCommentRequestDto) {
+        log.info("add comment request : " + registCommentRequestDto.toString());
         commentService.addComment(articleId, jwtTokenUtil.getUserId(request), registCommentRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

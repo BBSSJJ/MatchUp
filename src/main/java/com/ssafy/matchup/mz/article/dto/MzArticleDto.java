@@ -16,7 +16,6 @@ public class MzArticleDto {
     private String content;
     private String leftSympathyTitle;
     private String rightSympathyTitle;
-    private String thumbnailUrl;
     private Long views;
     private UserDto author;
     private List<SympathyDto> leftSympathies;
