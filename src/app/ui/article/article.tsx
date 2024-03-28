@@ -100,7 +100,7 @@ const articleFetcher = async (url:string) => {
   }
   return response.json(); // JSON 형식으로 변환하여 반환
 };
-const commentFetcher = getComments
+// const commentFetcher = getComments
 
 // 개별 게시글 상세 내용을 보여주는 컴포넌트 - props: 2번 게시글, 2번 게시글의 댓글 모음
 
@@ -157,10 +157,10 @@ const ArticlePage = ({id} :{id :number}) => {
     if (response.ok) {
       // 이벤트 성공시에 알아서 업데이트 된 데이터베이스 상태 반영
       mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
-      const newData = await getArticle(id)
-      setVoteCount(
-        { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
-      ) 
+      // const newData = await getArticle(id)
+      // setVoteCount(
+      //   { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
+      // ) 
     }
   }
 
