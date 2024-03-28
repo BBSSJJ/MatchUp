@@ -14,8 +14,6 @@ interface Writer {
 }
 
 
-
-
 const Comment = ({ comment } : { comment :Reply}) => {
   return (
     <div className="comment">
