@@ -10,6 +10,7 @@ import { SearchIcon } from "./SearchIcon";
 import { motion } from "framer-motion"
 import { atom, useAtom } from 'jotai'
 import { isLoggedInAtom } from '@/store/authAtom'
+import { SERVER_API_URL } from "@/utils/instance-axios";
 
 export default function NavigationBar() {
   // react hook 사용
@@ -20,8 +21,14 @@ export default function NavigationBar() {
   // 로그인 상태 확인
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
-  const handleLogout = () => {
-    setIsLoggedIn(false)
+  // 로그아웃 버튼 클릭
+  const handleLogout = async () => {
+    const response = await fetch(`${SERVER_API_URL}/api/users/logout`)
+    
+    if(response.ok) {
+      setIsLoggedIn(false)
+      console.log("로그아웃 완료")
+    }
   }
 
   const handleClick = () => {

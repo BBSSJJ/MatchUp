@@ -153,7 +153,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
           </div>
           <hr />
           <p className='mt-3 text-right'>{article.createdAt}</p>
-          <p className="articleContent">{article.content}</p>
+          {/* <p className="articleContent">{article.content}</p> */}
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
           <div className="articleVoteButtons">
             <Button className="leftButton" variant="shadow" onClick={() => handleVote("left")}>

@@ -3,6 +3,9 @@
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
+import { atom, useAtom } from 'jotai'
+import { isLoggedInAtom } from '@/store/authAtom'
+import { atomWithStorage } from 'jotai/utils';
 
 const SERVER_URL = SERVER_API_URL
 
@@ -13,9 +16,11 @@ const HiddenLogin = ( ) => {
     const snsId = tokens[3]
     const snsType = tokens[2]
     const router = useRouter()
+    const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+
     const handleSignIn = async () => {
         try {
-            console.log("이미 가입한 유저", snsId)
+            // console.log("이미 가입한 유저", snsId)
             if(isNaN(parseInt(snsId, 10))) {
                 return
             }
@@ -27,12 +32,14 @@ const HiddenLogin = ( ) => {
                 credentials: 'include', 
                 body: JSON.stringify({ snsType, snsId }),
             })
-            console.log("로그인 요청 보냄")
+            // console.log("로그인 요청 보냄")
 
             if(response.ok) {
-                // console.log("id:~~ ", snsId)
-                console.log("로그인 요청에 대한 응답 : ", response)
-                // redirect 주소
+                console.log("로그인 성공")
+                // console.log("로그인 요청에 대한 응답 : ", response)
+                // 로그인 상태 세션 스토리지에 저장
+                setIsLoggedIn(true)
+                // redirect
                 router.push('/lobby')
                 // window.location.href = 'http://70.12.246.67:3000/lobby'
                 
