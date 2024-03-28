@@ -45,7 +45,7 @@ public class ChatController {
 
         try {
             chatService.createChatRoom(jwtTokenUtil.getUserId(request), chatRoomDto);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(new MessageDataDto(e.getMessage()), HttpStatus.OK);
         }
 
@@ -69,7 +69,7 @@ public class ChatController {
 
         ChatRoomDto chatRoomDto = chatService.findRoom(jwtTokenUtil.getUserId(request), userId);
 
-        if(chatRoomDto == null) {
+        if (chatRoomDto == null) {
             return new ResponseEntity<>(new MessageDataDto("not exist chatroom"), HttpStatus.OK);
         }
 

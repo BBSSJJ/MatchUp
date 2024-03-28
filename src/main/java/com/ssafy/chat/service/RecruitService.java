@@ -4,6 +4,7 @@ import com.ssafy.chat.dto.RecruitDto;
 import com.ssafy.chat.entity.Recruit;
 import com.ssafy.chat.mapper.RecruitMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecruitService {
 
     private final MongoTemplate mongoTemplate;
@@ -30,7 +32,7 @@ public class RecruitService {
         Recruit recruit = new Recruit();
         recruit.setValues(recruitDto);
 
-        mongoTemplate.save(recruit);
+        recruitDto.setObjectId(mongoTemplate.save(recruit).getObjectId().toString());
 
         kafkaTemplate.send("recruit", recruitDto);
     }
