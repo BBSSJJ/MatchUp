@@ -53,7 +53,7 @@ export default function ArticleList() {
   const { data: articles, error, isLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/articles`, 
     fetcher,
-    { refreshInterval: 1000 }
+    // { refreshInterval: 500 }
   )
 
   // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
@@ -117,13 +117,16 @@ export default function ArticleList() {
     switch (columnKey) {
       case "title": // 제목 칼럼에서 보여줄 내용
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col h-[45px]">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             {/* 투표현황 */}
             <div className="articleVote">
               {/* width를 실제 데이터와 연동 */}
-              <div className="articleVoteLeftTiny text-tiny" style={{ width: "25%", height: "10px" }}><span>25%</span></div>
-              <div className="articleVoteRightTiny text-tiny" style={{ width: "75%", height: "10px" }}><span>75%</span></div>
+              <div className="articleVoteLeftTiny text-tiny" style={{ width: `${article.leftSympathyCount === article.rightSympathyCount ? '50%' : `${(article.leftSympathyCount / (article.leftSympathyCount + article.rightSympathyCount)) * 100}%`}`, height: "15px" }}><span>{article.leftSympathyCount}</span></div>
+              <div className="articleVoteRightTiny text-tiny" style={{ width: `${article.leftSympathyCount === article.rightSympathyCount ? '50%' : `${(article.rightSympathyCount / (article.leftSympathyCount + article.rightSympathyCount)) * 100}%`}`, height: "15px" }}><span>{article.rightSympathyCount}</span></div>
+
+              {/* <div className="articleVoteLeftTiny text-tiny" style={{ width: `${article.leftSympathyCount}%`, height: "15px" }}><span>{article.leftSympathyCount}</span></div>
+              <div className="articleVoteRightTiny text-tiny" style={{ width: `${article.rightSympathyCount}%`, height: "15px" }}><span>{article.rightSympathyCount}</span></div> */}
             </div>
           </div>
         );
