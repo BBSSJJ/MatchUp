@@ -1,5 +1,6 @@
 package com.ssafy.matchup.global.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.matchup.global.dto.MessageDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
@@ -66,6 +67,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     protected ResponseEntity<MessageDto> handleDuplicateKeyException(Exception e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    //user 정보 json parsing 실패
+    @ExceptionHandler(JsonProcessingException.class)
+    protected ResponseEntity<MessageDto> handleJsonProcessingException(Exception e) {
+        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
 }
