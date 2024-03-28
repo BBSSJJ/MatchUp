@@ -13,6 +13,7 @@ export default function MatchupChats({ roomId }: {roomId: number}) {
 
   useEffect(() => {
     getMessages()
+    getRooms()
 
     const stomp = new Client({
       brokerURL: "wss://matchup.site/api/ws",
