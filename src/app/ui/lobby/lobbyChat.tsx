@@ -1,15 +1,27 @@
 'use client'
 
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Image, Textarea, button } from "@nextui-org/react"
+import { 
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, 
+  User, Image, Textarea, Button, ButtonGroup, Listbox, ListboxItem,
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, 
+  useDisclosure, Input
+} from "@nextui-org/react"
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { ListboxWrapper } from "./ListboxWrapper";
 
 export default function LobbyChat() {
   const [client, setClient] = useState<Client | null>(null)
   const [messages, setMessages] = useState<any[]>([])
+  const [myPosition, setMyPosition] = useState(new Set([""]))
+  const [searchingPosition, setSearchingPosition] = useState(new Set([""]))
+  const [memo, setMemo] = useState('')
+  var {isOpen, onOpen, onOpenChange} = useDisclosure()
 
   useEffect(() => {
+    getRecruits()
+
     const stomp = new Client({
       brokerURL: "wss://matchup.site/api/ws",
     })
@@ -18,22 +30,26 @@ export default function LobbyChat() {
     stomp.activate()
 
     stomp.onConnect = () => {
-      console.log('connected')
-      stomp.subscribe('/topic/recruit', (message) => {
-        // const parsedMessage = JSON.parse(message.body)
-        console.log(message.body)
-        // setMessages((prev: any) => [...prev, parsedMessage])
+      stomp.subscribe('/topic/recruit', () => {
+        getRecruits()
       })
     }
 
+  }, [])
+
+  function getRecruits() {
     axios({
       method: 'get',
       url: 'https://matchup.site/api/recruits'
     })
       .then((response) => {
-        setMessages(response.data.list)
+        setMessages(response.data.list.reverse())
       })
-  }, [])
+  }
+
+  // if (messages.length === 0) {
+  //   getRecruits()
+  // }
 
   const columns = [
     {name: "소환사", uid: "summoner"},
@@ -52,29 +68,40 @@ export default function LobbyChat() {
         return (
           <User
             avatarProps={{src: chat.iconUrl}}
-            description={chat.name.split(' ')[1]}
-            name={chat.name.split(' ')[0]}
+            description={`#${chat.name.split('#')[1]}`}
+            name={chat.name.split('#')[0]}
           />
         )
       case "myPosition":
         return (
-          <Image 
-            width={30}
-            alt="positionIcon"
-            src={`/positionIcons/${chat.line}.png`}
-          />
+          <div className="pl-4">
+            <Image 
+              width={30}
+              alt="positionIcon"
+              src={`/positionIcons/${chat.line}.png`}
+            />
+          </div>
         )
       case "tier":
         return (
-          <p className="text-lg">{chat.tier}</p>
+          <div className="flex justify-around">
+            <Image
+              width={30}
+              alt="tierIcon"
+              src={`/Emblems/${chat.tier.slice(0, -1)}.png`}
+            />
+            <p className="text-lg">{chat.tier}</p>
+          </div>
         )
       case "searchingPosition":
         return (
-          <Image 
-            width={30}
-            alt="positionIcon"
-            src={`/positionIcons/${chat.wishLine}.png`}
-          />
+          <div className="pl-6">
+            <Image 
+              width={30}
+              alt="positionIcon"
+              src={`/positionIcons/${chat.wishLine}.png`}
+            />
+          </div>
         )
       case "winningRate":
         return (
@@ -117,9 +144,10 @@ export default function LobbyChat() {
         )
       case "delete":
         return (
-          <button>
-            삭제
-          </button>
+          <ButtonGroup size="sm">
+            <Button color="warning" isDisabled className="text-sm text-white">수정</Button>
+            <Button color="danger" className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
+          </ButtonGroup>
         )
     }
   }
@@ -130,21 +158,24 @@ export default function LobbyChat() {
         destination: '/app/recruit',
         body: JSON.stringify({
           method: 'create',
-          userId: 1,
-          name: 'check #KR1',
-          iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/1614.png',
-          tier: 'P1',
-          line: 'top',
-          wishLine: 'jungle',
+          userId: 123456, // userId?
+          name: '피아노의자#KR1', // username?
+          iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/1614.png', // iconUrl?
+          tier: 'S1', // tier?
+          line: selectedMyPosition,
+          wishLine: selectedSearchingPosition,
           gameType: 'solo rank',
-          content: '부캐 듀오 구합니다.',
-          win: 64,
-          lose: 74,
-          kill: 2.1,
-          death: 3.4,
-          assist: 13.8,
+          content: memo,
+          win: 64, //최근 20판 승리?
+          lose: 74, //최근 20판 패배?
+          kill: 2.1, //최근 20판 킬?
+          death: 3.4, //최근 20판 데스?
+          assist: 13.8, //최근 20판 어시스트?
         })
       })
+      setMyPosition(new Set(['']))
+      setSearchingPosition(new Set(['']))
+      setMemo('')
     }
   }
 
@@ -160,11 +191,155 @@ export default function LobbyChat() {
     }
   }
 
+  const selectedMyPosition = useMemo(
+    () => Array.from(myPosition).join(", "),
+    [myPosition]
+  )
 
+  const selectedSearchingPosition = useMemo(
+    () => Array.from(searchingPosition).join(", "),
+    [searchingPosition]
+  )
 
   return (
     <div>
-      <button>Send</button>
+      <Button onPress={onOpen}>작성하기</Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">정보 입력</ModalHeader>
+              <ModalBody>
+                <div className="flex gap-2">
+                  <ListboxWrapper>
+                    <p className="text-small text-default-600 text-center">주 포지션</p>
+                    <br />
+                    <Listbox 
+                      aria-label="myPosition"
+                      variant="flat"
+                      selectionMode="single"
+                      selectedKeys={myPosition}
+                      onSelectionChange={(keys: any) => setMyPosition(keys)}
+                    >
+                      <ListboxItem 
+                        key="top" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="top"
+                            src={`/positionIcons/top.png`}
+                          />
+                        }>탑</ListboxItem>
+                      <ListboxItem 
+                        key="jungle" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="jungle"
+                            src={`/positionIcons/jungle.png`}
+                          />
+                        }>정글</ListboxItem>
+                      <ListboxItem 
+                        key="mid" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="mid"
+                            src={`/positionIcons/mid.png`}
+                          />
+                        }>미드</ListboxItem>
+                      <ListboxItem 
+                        key="bottom" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="bottom"
+                            src={`/positionIcons/bottom.png`}
+                          />
+                        }>원딜</ListboxItem>
+                      <ListboxItem 
+                        key="support" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="support"
+                            src={`/positionIcons/support.png`}
+                          />
+                        }>서포터</ListboxItem>
+                    </Listbox>
+                  </ListboxWrapper>
+                  <ListboxWrapper>
+                    <p className="text-small text-default-600 text-center">찾는 포지션</p>
+                    <br />
+                    <Listbox 
+                      aria-label="searchingPosition"
+                      variant="flat"
+                      selectionMode="single"
+                      selectedKeys={searchingPosition}
+                      onSelectionChange={(keys: any) => setSearchingPosition(keys)}
+                    >
+                      <ListboxItem 
+                        key="top" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="top"
+                            src={`/positionIcons/top.png`}
+                          />
+                        }>탑</ListboxItem>
+                      <ListboxItem 
+                        key="jungle" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="jungle"
+                            src={`/positionIcons/jungle.png`}
+                          />
+                        }>정글</ListboxItem>
+                      <ListboxItem 
+                        key="mid" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="mid"
+                            src={`/positionIcons/mid.png`}
+                          />
+                        }>미드</ListboxItem>
+                      <ListboxItem 
+                        key="bottom" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="bottom"
+                            src={`/positionIcons/bottom.png`}
+                          />
+                        }>원딜</ListboxItem>
+                      <ListboxItem 
+                        key="support" 
+                        startContent={
+                          <Image 
+                            width={20}
+                            alt="support"
+                            src={`/positionIcons/support.png`}
+                          />
+                        }>서포터</ListboxItem>
+                    </Listbox>
+                  </ListboxWrapper>
+                </div>
+                <Input label="메모" placeholder="메모를 적어주세요." onValueChange={setMemo}/>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="flat" className="text-white" onPress={onClose}>
+                  닫기
+                </Button>
+                <Button color="primary" onPress={sendMessage} onClick={onClose}>
+                  작성하기
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       {messages ? (
         <div>
           <Table aria-label="Chat Table">
@@ -175,7 +350,7 @@ export default function LobbyChat() {
                 </TableColumn>
               )}
             </TableHeader>
-            <TableBody items={messages}>
+            <TableBody items={messages} emptyContent={"작성된 글이 없습니다."}>
               {(chat) => (
                 <TableRow key={chat.objectId} >
                   {(columnKey) => <TableCell>{renderCell(chat, columnKey)}</TableCell>}
