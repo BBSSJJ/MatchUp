@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
 import { atom, useAtom } from 'jotai'
-import { isLoggedInAtom } from '@/store/authAtom'
+import { isLoggedInAtom, userInfo } from '@/store/authAtom'
 import { atomWithStorage } from 'jotai/utils';
 
 const SERVER_URL = SERVER_API_URL
@@ -16,6 +16,7 @@ const HiddenLogin = ( ) => {
     const snsType = tokens[2]
     const router = useRouter()
     const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+    const [user, setUser] = useAtom(userInfo)
 
     const handleSignIn = async () => {
         try {
@@ -38,8 +39,8 @@ const HiddenLogin = ( ) => {
                 // console.log("로그인 요청에 대한 응답 : ", response)
                 // 쿠키의 유저 정보 저장
                 const userCookie = decodeURIComponent(document.cookie);
-                console.log(userCookie)
-
+                // console.log(userCookie)
+                setUser(JSON.parse(userCookie));
                 // 로그인 상태 로컬 스토리지에 저장
                 setIsLoggedIn(true)
                 // redirect
