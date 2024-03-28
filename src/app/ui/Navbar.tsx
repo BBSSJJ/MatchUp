@@ -1,8 +1,6 @@
 "use client"
-
 import React, { useState, MouseEvent } from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Input, User, Select, SelectItem, Badge, Button, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
-import { AcmeLogo } from "./AcmeLogo";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./Navbar.module.css"
@@ -48,10 +46,11 @@ export default function NavigationBar() {
   return (
     <Navbar isBordered className={styles.nav}>
       <NavbarBrand>
-        <Image 
+        <img
+          className="w-[40px] h-[40px]"
           src="logo.png"
-          width="40px"
-          height="40px"
+          // width="40px"
+          // height="40px"
         />
         <Link href="/lobby" className="font-bold text-inherit">MatchUP</Link>
       </NavbarBrand>

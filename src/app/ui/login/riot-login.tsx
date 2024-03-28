@@ -30,6 +30,8 @@ export default function RiotLoginForm({ snsType, snsId } :{
 
             if(response.ok) {
                 console.log("회원가입 요청에 대한 응답 : ", response)
+                const userCookie = decodeURIComponent(document.cookie);
+                console.log(userCookie)
                 window.location.href = `${SERVER_URL}/lobby`
                 
             } else {

@@ -1,5 +1,4 @@
 "use client"
-
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
@@ -37,7 +36,11 @@ const HiddenLogin = ( ) => {
             if(response.ok) {
                 console.log("로그인 성공")
                 // console.log("로그인 요청에 대한 응답 : ", response)
-                // 로그인 상태 세션 스토리지에 저장
+                // 쿠키의 유저 정보 저장
+                const userCookie = decodeURIComponent(document.cookie);
+                console.log(userCookie)
+
+                // 로그인 상태 로컬 스토리지에 저장
                 setIsLoggedIn(true)
                 // redirect
                 router.push('/lobby')
