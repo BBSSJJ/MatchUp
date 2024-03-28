@@ -5,7 +5,7 @@ import { RIOT_API_KEY } from "../../ui/summoner-info";
 import Champion from "../../ui/champion";
 
 export const metadata = {
-  title: "Home",
+  title: "Today free Champs",
 };
 
 const API_FOR_CHAMPION = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations";

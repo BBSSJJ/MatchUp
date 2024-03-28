@@ -88,15 +88,19 @@ export default function CreateArticle() {
           leftSympathyTitle: left,
           rightSympathyTitle: right,
         }),
-      });
-      console.log(JSON.stringify({
-        title: articleTitle, 
-        content: editorContent,
-        leftSympathyTitle: left,
-        rightSympathyTitle: right,
-      }));
+      })
+
+      // console.log(JSON.stringify({
+      //   title: articleTitle, 
+      //   content: editorContent,
+      //   leftSympathyTitle: left,
+      //   rightSympathyTitle: right,
+      // }));
       // const data = await response;
-      console.log("서버로부터의 응답", response.status);
+
+      // console.log("서버로부터의 응답", response.status)
+      // 글 작성에 성공하면 게시글 페이지로
+      router.push("/article")
     } catch (error) {
       console.log("작성한 글 내용", editorContent);
       console.error('Error posting content to server:', error);
@@ -145,11 +149,7 @@ export default function CreateArticle() {
           // width="450px"
           onValueChange={(value: string): void => { setArticleTitle(value) }}
         />
-        <Button 
-          onClick={postContentToServer}
-        >
-          작성하기
-        </Button>
+        
       </div>
       <Editor
         apiKey='1gn4r9v0aqj7ukaoide2t623xjf6t226fbqtwcmwk153pm2v'
@@ -245,7 +245,14 @@ export default function CreateArticle() {
         onEditorChange={handleEditorChange}
       />
       <div className={styles.vote}>
-        <p className='font-bold my-6'>투표 생성</p>
+        <div className='flex justify-between items-center'>
+          <p className='font-bold my-6'>투표 생성</p>
+          <Button 
+            onClick={postContentToServer}
+          >
+            작성하기
+          </Button>
+        </div>
         <div className='flex gap-[50px] justify-center'>
           <Input
             type="email"

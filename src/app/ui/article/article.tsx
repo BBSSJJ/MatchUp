@@ -1,4 +1,5 @@
 "use client"
+import useSWR from 'swr';
 import type { InferGetServerSidePropsType, GetServerSideProps, NextPage } from 'next'
 import '@/app/ui/article/article.css'
 import Comment from "./commentList";
@@ -89,18 +90,40 @@ export interface Reply {
 }
 
 export interface CommentList {
-  list: Reply[];
+  list?: Reply[];
 }
 
-
+const articleFetcher = async (url:string) => {
+  const response = await fetch(url); // 서버로부터 데이터 가져오기
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return response.json(); // JSON 형식으로 변환하여 반환
+};
+const commentFetcher = getComments
 
 // 개별 게시글 상세 내용을 보여주는 컴포넌트 - props: 2번 게시글, 2번 게시글의 댓글 모음
 
-const ArticlePage = ({article, comments, id} :{article:Article, comments: CommentList, id :number}) => {
+const ArticlePage = ({id} :{id :number}) => {
   const router = useRouter()
-  const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article.leftSympathies.length || 0, right: article.leftSympathies.length || 0 })
-  const [replies, setReplies] = useState<CommentList>(comments)
+  // const [replies, setReplies] = useState<CommentList>(null)
   const [commentContent, setCommentContent] = useState("")
+
+  // 데이터 가져오기
+  const {data: article, error: articleError, isLoading: articleLoading } = useSWR(
+    `${SERVER_API_URL}/api/mz/articles/${id}`,
+    articleFetcher,
+    { refreshInterval: 1000 }
+  )
+
+  const { data: comments, error: commentsError, isLoading: commentsLoading } = useSWR(
+    `${SERVER_API_URL}/api/mz/comments/articles/${id}`,
+    articleFetcher,
+    { refreshInterval: 500 }
+  )
+
+  const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
+
 
   // 투표기능 
   const totalVotes = (voteCount.left === 0 || voteCount.right === 0) ? 1 : voteCount.left + voteCount.right;
@@ -159,7 +182,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
     if (response.ok) {
       const newComments = await getComments(id)
       console.log(newComments)
-      setReplies(newComments)
+      // setReplies(newComments)
 
     }
   }
@@ -186,22 +209,22 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
       </Button>
       <div className="articleContainer tilt-in-fwd-tr">
         <div>
-          <h1 className="articleTitle">{article.title}</h1>
+          <h1 className="articleTitle">{article?.title}</h1>
           <div className="articleInfo">
-            <p>{article.author!.riotAccount?.summonerProfile?.name}</p>
-            <p>조회수 : {article.views}</p>
+            <p>{article?.author!.riotAccount?.summonerProfile?.name}</p>
+            <p>조회수 : {article?.views}</p>
           </div>
           <hr />
-          <p className='mt-3 text-right'>{article.createdAt}</p>
+          <p className='mt-3 text-right'>{article?.createdAt}</p>
           {/* <p className="articleContent">{article.content}</p> */}
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div dangerouslySetInnerHTML={{ __html: article?.content }} />
           <div className="articleVoteButtons">
             <Button className="leftButton" variant="shadow" onClick={() => handleVote("LEFT")}>
-              {article.leftSympathyTitle}
+              {article?.leftSympathyTitle}
             </Button>
 
             <Button className="rightButton" variant="shadow" onClick={() => handleVote("RIGHT")}>
-              {article.rightSympathyTitle}
+              {article?.rightSympathyTitle}
             </Button>
           </div>
           {/* 투표현황 */}
@@ -258,7 +281,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
           </Button>
         </div>
        
-        {replies.list && replies.list.length > 0 && replies.list.map((comment)=> (
+        {comments?.list && comments?.list.length > 0 && comments?.list.map((comment: Reply)=> (
           <Comment key={comment.id} comment={comment} />
         ))}
       </div>
