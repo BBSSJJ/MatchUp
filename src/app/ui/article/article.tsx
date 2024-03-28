@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { comments2 } from './dummyData';
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import { useState } from 'react';
-import { getArticle } from './article-wrapper';
+import { getArticle, getComments } from './article-wrapper';
 
 interface ArticleProps {
   title?: string;
@@ -99,6 +99,7 @@ export interface CommentList {
 const ArticlePage = ({article, comments, id} :{article:Article, comments: CommentList, id :number}) => {
   const router = useRouter()
   const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article.leftSympathies.length || 0, right: article.leftSympathies.length || 0 })
+  const [replies, setReplies] = useState<CommentList>(comments)
   // 투표기능 
   const totalVotes = (voteCount.left === 0 || voteCount.right === 0) ? 1 : voteCount.left + voteCount.right;
   let leftVotesPercentage
@@ -119,7 +120,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
 
   const handleVote = async (lor :string) => {
     const response = await fetch(`${SERVER_API_URL}/api/mz/sympathies/${id}`, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -131,6 +132,25 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
       setVoteCount(
         { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
       ) 
+    }
+  }
+
+  // 일단은 게시글 최상위 댓글만 
+  const handleReply = async (parentId :number) => {
+    const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        content: "",
+        parentCommentId: parentId,
+      })
+    })
+
+    if (response.ok) {
+      const newComments = await getComments(id)
+      setReplies(newComments)
     }
   }
 
@@ -209,6 +229,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
           <Button
             color='secondary'
             size='sm'
+            onClick={() => handleReply(-1)}
           >
             댓글쓰기
           </Button>
