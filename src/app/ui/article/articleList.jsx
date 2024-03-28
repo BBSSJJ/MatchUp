@@ -50,7 +50,11 @@ export default function ArticleList() {
   const [page, setPage] = React.useState(1);
  
   // 데이터 가져오기
-  const { data: articles, error, isLoading } = useSWR(`${SERVER_API_URL}/api/mz/articles`, fetcher)
+  const { data: articles, error, isLoading } = useSWR(
+    `${SERVER_API_URL}/api/mz/articles`, 
+    fetcher,
+    { refreshInterval: 3000 }
+  )
 
   // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
   
