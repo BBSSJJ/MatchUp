@@ -29,6 +29,12 @@ public class JwtTokenUtil {
     @Value("${jwt.period.refresh-token}")
     private long periodRefreshToken;
 
+    @Value("${cookie.period.access-token}")
+    private long periodAccessTokenCookie;
+
+    @Value("${cookie.period.refresh-token}")
+    private long periodRefreshTokenCookie;
+
     public Claims generateClaims(String id, String role) {
         Claims claims = Jwts.claims().setId(id);
         claims.put("role", role);
@@ -92,7 +98,7 @@ public class JwtTokenUtil {
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(periodAccessToken)
+                .maxAge(periodAccessTokenCookie)
                 .build();
         response.addCookie(cookie);
     }
@@ -104,7 +110,7 @@ public class JwtTokenUtil {
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(periodRefreshToken)
+                .maxAge(periodRefreshTokenCookie)
                 .build();
 
         response.addCookie(cookie);
