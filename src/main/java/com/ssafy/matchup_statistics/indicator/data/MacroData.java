@@ -34,15 +34,15 @@ public class MacroData {
             });
             matchDetailResponseDto.getInfo().teams.forEach(t -> {
                 if (t.teamId == laneInfo.getMyTeamId()) {
-                    myTeamGetObjectives += t.objectives.baron.kills;
-                    myTeamGetObjectives += t.objectives.dragon.kills;
-                    myTeamGetObjectives += t.objectives.horde.kills;
-                    myTeamGetObjectives += t.objectives.riftHerald.kills;
+                    if (t.objectives.baron != null) myTeamGetObjectives += t.objectives.baron.kills;
+                    if (t.objectives.dragon != null) myTeamGetObjectives += t.objectives.dragon.kills;
+                    if (t.objectives.horde != null) myTeamGetObjectives += t.objectives.horde.kills;
+                    if (t.objectives.riftHerald != null) myTeamGetObjectives += t.objectives.riftHerald.kills;
                 } else {
-                    oppositeTeamGetObjectives += t.objectives.baron.kills;
-                    oppositeTeamGetObjectives += t.objectives.dragon.kills;
-                    oppositeTeamGetObjectives += t.objectives.horde.kills;
-                    oppositeTeamGetObjectives += t.objectives.riftHerald.kills;
+                    if (t.objectives.baron != null) oppositeTeamGetObjectives += t.objectives.baron.kills;
+                    if (t.objectives.dragon != null) oppositeTeamGetObjectives += t.objectives.dragon.kills;
+                    if (t.objectives.horde != null) oppositeTeamGetObjectives += t.objectives.horde.kills;
+                    if (t.objectives.riftHerald != null) oppositeTeamGetObjectives += t.objectives.riftHerald.kills;
                 }
             });
         }

@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 public class Indicator {
     @Id
-    private ObjectId id;
     private String summonerId;
     private List<MatchIndicator> matchIndicators;
     private MatchIndicatorStatistics matchIndicatorStatistics;
