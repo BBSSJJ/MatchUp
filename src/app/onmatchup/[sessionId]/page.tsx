@@ -6,6 +6,7 @@ import { useState, useRef } from "react"
 import Image from "next/image"
 import MatchupChats from "@/app/ui/onmatchup/matchupChats"
 import Link from "next/link"
+import UserVideoComponent from './UserVideoComponent';
 
 const APPLICATION_SERVER_URL = 'https://matchup.site/openvidu/'
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
@@ -113,15 +114,16 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       {openvidu.session ? (
         <div className="flex justify-between">
           {openvidu.publisher ? (
-            <div>
-              <p>{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p>
+            <div className="p-0">
+              {/* <p>{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p>
               <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
                 style={{opacity: 0.5}}
-              />
+              /> */}
+              <UserVideoComponent streamManager={openvidu.publisher} />
             </div>
           ) : null}
           <div>
@@ -129,15 +131,17 @@ export default function Page({ params }: { params: { sessionId: string }}) {
             <Link href={'/onmatchup'} onClick={leaveSession}>나가기</Link>
           </div>
           {openvidu.subscribers.map((sub: any, index: number) => (
-            <div key={index}>
-              <p>{JSON.parse(sub.stream.connection.data).clientData}</p>
+            <div key={sub.id}>
+              {/* <p>{JSON.parse(sub.stream.connection.data).clientData}</p>
               <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
                 style={{opacity: 0.5}}
-              />
+              /> */}
+              <span>{sub.id}</span>
+              <UserVideoComponent streamManager={sub} />
             </div>
           ))}
         </div>
