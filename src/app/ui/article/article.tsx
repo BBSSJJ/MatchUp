@@ -93,6 +93,7 @@ export interface CommentList {
   list?: Reply[];
 }
 
+// fetcher 정의
 const articleFetcher = async (url:string) => {
   const response = await fetch(url); // 서버로부터 데이터 가져오기
   if (!response.ok) {
@@ -123,25 +124,25 @@ const ArticlePage = ({id} :{id :number}) => {
   )
 
   // 실제 득표수를 실시간으로 보여주기 위한 상태
-  const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
+  // const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
 
 
   // 투표기능 
-  const totalVotes = (voteCount.left === 0 || voteCount.right === 0) ? 1 : voteCount.left + voteCount.right;
+  const totalVotes = (article?.leftSympathies.length === 0 || article?.rightSympathies.length === 0) ? 1 : article?.rightSympathies.length + article?.rightSympathies.length;
   let leftVotesPercentage
   let rightVotesPercentage
-  if (voteCount.left === 0 && voteCount.right === 0) {
+  if (article?.leftSympathies.length === 0 && article?.rightSympathies.length === 0) {
     leftVotesPercentage = 50;
     rightVotesPercentage = 50;
-  } else if (voteCount.left === 0) {
+  } else if (article?.leftSympathies.length === 0) {
     leftVotesPercentage = 0
     rightVotesPercentage = 100;
-  } else if (voteCount.right === 0) {
+  } else if (article?.rightSympathies.length === 0) {
     leftVotesPercentage = 100
     rightVotesPercentage = 0;
   } else {
-    leftVotesPercentage = (voteCount.left / totalVotes) * 100;
-    rightVotesPercentage = (voteCount.right / totalVotes) * 100;
+    leftVotesPercentage = (article?.leftSympathies.length / totalVotes) * 100;
+    rightVotesPercentage = (article?.rightSympathies.length / totalVotes) * 100;
   }
 
   // 투표 버튼 클릭 이벤트
@@ -157,6 +158,7 @@ const ArticlePage = ({id} :{id :number}) => {
     if (response.ok) {
       // 이벤트 성공시에 알아서 업데이트 된 데이터베이스 상태 반영
       mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
+      mutate(`${SERVER_API_URL}/api/mz/articles/${id}`)
       // const newData = await getArticle(id)
       // setVoteCount(
       //   { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
@@ -240,7 +242,7 @@ const ArticlePage = ({id} :{id :number}) => {
               exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.leftSympathies.length} */}
-              {voteCount.left}
+              {article?.leftSympathies.length}
             </motion.div>
             <motion.div 
               className="articleVoteRight" 
@@ -251,7 +253,7 @@ const ArticlePage = ({id} :{id :number}) => {
               exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.rightSympathies.length} */}
-              {voteCount.right}
+              {article?.rightSympathies.length}
             </motion.div>
             {/* <div className="articleVoteLeft" style={{ width: `${leftSympathyCount}%` }}></div>
             <div className="articleVoteRight" style={{ width: `${rightSympathyCount}%` }}></div> */}
