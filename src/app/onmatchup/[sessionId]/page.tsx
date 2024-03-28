@@ -22,6 +22,8 @@ export default function Page({ params }: { params: { sessionId: string }}) {
 
   const [ovSession, setOvSession] = useState<Session | undefined>(undefined)
 
+  const roomId = 123456789
+
   async function getSession(sessionId: string) {
     const response = await axios.get(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId, {
       headers: headers,
@@ -114,40 +116,43 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       {openvidu.session ? (
         <div className="flex justify-between">
           {openvidu.publisher ? (
-            <div className="p-0">
-              {/* <p>{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p>
+            <div>
+              <p>{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p>
               <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
                 style={{opacity: 0.5}}
-              /> */}
-              <UserVideoComponent streamManager={openvidu.publisher} />
+              />
+              <div className="p-0 w-0">
+                <UserVideoComponent streamManager={openvidu.publisher} />
+              </div>
             </div>
           ) : null}
-          <div>
-            <MatchupChats />
+          <div className="w-screen">
+            <MatchupChats roomId={roomId} />
             <Link href={'/onmatchup'} onClick={leaveSession}>나가기</Link>
           </div>
           {openvidu.subscribers.map((sub: any, index: number) => (
             <div key={sub.id}>
-              {/* <p>{JSON.parse(sub.stream.connection.data).clientData}</p>
+              <p>{JSON.parse(sub.stream.connection.data).clientData}</p>
               <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
                 style={{opacity: 0.5}}
-              /> */}
-              <span>{sub.id}</span>
-              <UserVideoComponent streamManager={sub} />
+              />
+              <div className="p-0 w-0">
+                <UserVideoComponent streamManager={sub} />
+              </div>
             </div>
           ))}
         </div>
       ) : (
           <div>
-            <MatchupChats />
+            <MatchupChats roomId={roomId} />
             <button onClick={joinSession}>시작하기</button>
           </div>
       )}
