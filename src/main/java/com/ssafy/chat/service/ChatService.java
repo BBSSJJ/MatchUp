@@ -39,8 +39,8 @@ public class ChatService {
 
         Query query = new Query(Criteria.where("participants").in(userId));
         List<ChatRoomDto> chatRoomDtoList = ChatMapper.instance.convertListChatRoomDto(mongoTemplate.find(query, ChatRoom.class));
-        if(chatRoomDtoList != null) {
-            for(ChatRoomDto chatRoomDto : chatRoomDtoList) {
+        if (chatRoomDtoList != null) {
+            for (ChatRoomDto chatRoomDto : chatRoomDtoList) {
                 query = new Query(Criteria.where("roomId").is(chatRoomDto.getRoomId())
                         .andOperator(
                                 Criteria.where("userId").ne(userId),
@@ -63,7 +63,7 @@ public class ChatService {
         Update update = new Update();
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
-        
+
         return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
     }
 
@@ -93,7 +93,7 @@ public class ChatService {
 
         Query query = new Query(Criteria.where("participants").all(userId, otherId));
         ChatRoom chatRoom = mongoTemplate.findOne(query, ChatRoom.class);
-        if(chatRoom == null) {
+        if (chatRoom == null) {
             log.error("chatRoom is null!");
         }
 
