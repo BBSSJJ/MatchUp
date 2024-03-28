@@ -53,7 +53,7 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
       <div className='flex justify-between'>
         <div className='flex flex-col w-[70%]'>
           <p className={styles.commentContent}>{comment.content}</p>
-          <p className={styles.commentWriter}>작성자: {comment.writer.riotAccount.summonerProfile.name}</p>
+          <p className={styles.commentWriter}>{comment.writer.riotAccount.summonerProfile.name}</p>
           <p className={styles.commentCreatedAt}>작성일시: {createdAtKST}</p>
           <div className='flex'>
             <Textarea 
