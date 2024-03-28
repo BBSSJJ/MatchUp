@@ -37,7 +37,8 @@ export default function RiotLoginForm({ snsType, snsId } :{
                 console.log("회원가입 요청에 대한 응답 : ", response)
                 const userCookie = decodeURIComponent(document.cookie);
                 console.log(userCookie)
-                setUser(JSON.parse(userCookie));
+                const jsonString = userCookie.substring(5);
+                setUser(JSON.parse(jsonString));
                 // 회원가입 성공 시 로그인
                 setIsLoggedIn(true)
                 window.location.href = `${SERVER_URL}/lobby`
