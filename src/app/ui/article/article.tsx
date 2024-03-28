@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { comments2 } from './dummyData';
 import { SERVER_API_URL } from '@/utils/instance-axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getArticle, getComments } from './article-wrapper';
 
 interface ArticleProps {
@@ -140,6 +140,10 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
 
   // 댓글 작성하기 
   const handleReply = async (parentId :number) => {
+
+    if(!commentContent.trim()){
+      alert("내용을 입력하세요!")
+    }
     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`, {
       method: 'POST',
       headers: {
@@ -151,11 +155,24 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
       })
     })
 
+    setCommentContent("")
     if (response.ok) {
       const newComments = await getComments(id)
+      console.log(newComments)
       setReplies(newComments)
+
     }
   }
+
+  // const fetchData = async () => {
+  //   const newComments = await getComments(id)     
+  //   setReplies(newComments)
+  //   console.log("업데이트 된 댓글", replies)
+  // }
+
+  // useEffect(() => {
+  //   fetchData()
+  // }, [])
 
   return (
     <div>
@@ -197,7 +214,8 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
               transition={{ duration: 0.55}}
               exit={{ width: "0%", opacity: 0 }}
             >
-              {article.leftSympathies.length}
+              {/* {article.leftSympathies.length} */}
+              {voteCount.left}
             </motion.div>
             <motion.div 
               className="articleVoteRight" 
@@ -207,7 +225,8 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
               transition={{ duration: 0.55}}
               exit={{ width: "0%", opacity: 0 }}
             >
-              {article.rightSympathies.length}
+              {/* {article.rightSympathies.length} */}
+              {voteCount.right}
             </motion.div>
             {/* <div className="articleVoteLeft" style={{ width: `${leftSympathyCount}%` }}></div>
             <div className="articleVoteRight" style={{ width: `${rightSympathyCount}%` }}></div> */}
@@ -239,7 +258,7 @@ const ArticlePage = ({article, comments, id} :{article:Article, comments: Commen
           </Button>
         </div>
        
-        {comments.list && comments.list.length > 0 && comments.list.map((comment)=> (
+        {replies.list && replies.list.length > 0 && replies.list.map((comment)=> (
           <Comment key={comment.id} comment={comment} />
         ))}
       </div>
