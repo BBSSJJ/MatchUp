@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity(name = "friendship")
 @Getter
@@ -14,6 +16,10 @@ public class Friendship {
     @GeneratedValue
     @Column(name = "friendship_id")
     private Long id;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private FriendStatus friendStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "my_id")

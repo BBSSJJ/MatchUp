@@ -41,8 +41,8 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
     private RiotAccount riotAccount;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
-    private Lbti lbti;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+//    private Lbti lbti;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myself", orphanRemoval = true)
     private List<Friendship> friends = new ArrayList<>();
