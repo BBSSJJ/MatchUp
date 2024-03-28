@@ -42,7 +42,8 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
 
     if (response.ok) {
       setReplyContent("")
-      
+
+
     }
   }
 
@@ -77,7 +78,7 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
       {comment.childrenComments && comment.childrenComments.length > 0 && (
         <div className={styles.childrenComments}>
           {comment.childrenComments.map((childComment) => (
-            <Comment key={childComment.id} comment={childComment} articleId={comment.id} parentId={childComment.id}/>
+            <Comment key={childComment.id} comment={childComment} articleId={articleId} parentId={childComment.id}/>
           ))}
         </div>
       )}
