@@ -3,7 +3,6 @@ const nextConfig = {
   images: {
     domains: [
       'ddragon.leagueoflegends.com',
-      'i.namu.wiki',
     ]
   },
   output: "standalone"
