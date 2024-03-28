@@ -1,4 +1,6 @@
 from models.check import checkfunc
+from check import checkfunc as two
+
 from fastapi import FastAPI
 
 matchup = FastAPI()
@@ -11,4 +13,4 @@ async def recommendation_1(user_pk: int):
 
 @matchup.get("/api/recommend/2/{user_pk}")
 async def recommendation_2(user_pk: int):
-    return {"users": [6, 7, 8, 9, 10, user_pk]}
+    return {"users": [6, 7, 8, 9, 10, two(user_pk)]}
