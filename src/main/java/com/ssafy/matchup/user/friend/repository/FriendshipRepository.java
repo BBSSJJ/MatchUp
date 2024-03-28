@@ -1,5 +1,6 @@
 package com.ssafy.matchup.user.friend.repository;
 
+import com.ssafy.matchup.user.friend.entity.FriendStatus;
 import com.ssafy.matchup.user.friend.entity.Friendship;
 import com.ssafy.matchup.user.main.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,14 +12,15 @@ import java.util.List;
 @Repository
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-    @Query(value = "SELECT fs.friend FROM com.ssafy.matchup.user.friend.entity.Friendship fs " +
+    @Query("SELECT fs.friend FROM com.ssafy.matchup.user.friend.entity.Friendship fs " +
             "JOIN FETCH fs.friend.riotAccount ra " +
-            "WHERE fs.myself.id = ?1")
-    List<User> findAllByMyId(Long myId);
+            "JOIN FETCH ra.summonerProfile " +
+            "WHERE fs.myself.id = :id AND fs.friendStatus = :friendStatus")
+    List<User> findFriendByMyself_IdAndFriendStatus(Long id, FriendStatus friendStatus);
 
     @Query(value = "SELECT fs FROM com.ssafy.matchup.user.friend.entity.Friendship fs " +
-            "WHERE fs.myself.id = ?1 " +
-            "AND fs.friend.id = ?2")
-    Friendship findByMyIdAndFriendId(Long myId, Long FriendId);
+            "WHERE fs.myself.id = :myId " +
+            "AND fs.friend.id = :friendId")
+    Friendship findByMyIdAndFriendId(Long myId, Long friendId);
 
 }
