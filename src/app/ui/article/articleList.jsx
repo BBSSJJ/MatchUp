@@ -53,7 +53,7 @@ export default function ArticleList() {
   const { data: articles, error, isLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/articles`, 
     fetcher,
-    { refreshInterval: 3000 }
+    { refreshInterval: 1000 }
   )
 
   // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
