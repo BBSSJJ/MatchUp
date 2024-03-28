@@ -280,6 +280,7 @@ const ArticlePage = ({id} :{id :number}) => {
             댓글쓰기
           </Button>
         </div>
+        {/* 댓글목록 */}
         <div className='w-[80%]'>
           {comments?.list && comments?.list.length > 0 && comments?.list.map((comment: Reply)=> (
             <Comment key={comment.id} comment={comment} articleId={id} parentId={comment.id} />
