@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/ui/match-info.jsx", "src/app/openvidutest/page.jsx", "src/app/openvidu/page.jsx", "src/app/ui/SearchIcon.jsx", "src/app/ui/article/dummyData.js", "src/app/ui/article/articleList.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/ui/match-info.jsx", "src/app/openvidutest/page.jsx", "src/app/openvidu/page.jsx", "src/app/ui/SearchIcon.jsx", "src/app/ui/article/dummyData.js", "src/app/ui/article/articleList.jsx", "src/app/onmatchup/[sessionId]/OvVideo.js"],
   "exclude": ["node_modules"],
 }
