@@ -4,6 +4,8 @@ import {Input} from "@nextui-org/react";
 import { useState } from 'react';
 import styles from './riot-login.module.css';
 import { SERVER_API_URL } from "@/utils/instance-axios"
+import { useAtom } from 'jotai';
+import { isLoggedInAtom, userInfo } from '@/store/authAtom';
 
 const SERVER_URL = SERVER_API_URL
 
@@ -13,6 +15,9 @@ export default function RiotLoginForm({ snsType, snsId } :{
     snsId :string;
 }) {
     const [riotId, setRiotId] = useState("");
+    const [user, setUser] = useAtom(userInfo)
+    const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+
     const handleSignIn = async () => {
         try {
             console.log(riotId)
@@ -32,6 +37,9 @@ export default function RiotLoginForm({ snsType, snsId } :{
                 console.log("회원가입 요청에 대한 응답 : ", response)
                 const userCookie = decodeURIComponent(document.cookie);
                 console.log(userCookie)
+                setUser(JSON.parse(userCookie));
+                // 회원가입 성공 시 로그인
+                setIsLoggedIn(true)
                 window.location.href = `${SERVER_URL}/lobby`
                 
             } else {
