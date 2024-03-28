@@ -85,6 +85,14 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        - id: user-server-friends
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/friends/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
         - id: chat-server-chats
           uri: http://${CHAT_SERVER}:9003
           predicates:
@@ -109,7 +117,7 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
-        - id: bigdata-server-recruits
+        - id: bigdata-server-recommend
           uri: http://${BIGDATA_SERVER}:9005
           predicates:
             - Path=/api/recommend/**
@@ -118,21 +126,21 @@ spring:
         #            - JwtTokenFilter
 
         # for swagger server
-        - id : user-server-swagger
+        - id: user-server-swagger
           uri: http://${USER_SERVER}:9002
           predicates:
             - Path=/api/user/swagger.json
           filters:
             - LogFilter
 
-        - id : chat-server-swagger
+        - id: chat-server-swagger
           uri: http://${CHAT_SERVER}:9003
           predicates:
             - Path=/api/chat/swagger.json
           filters:
             - LogFilter
 
-        - id : statistics-server-swagger
+        - id: statistics-server-swagger
           uri: http://${STATISTICS_SERVER}:9004
           predicates:
             - Path=/api/statistics/swagger.json
@@ -141,8 +149,8 @@ spring:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   period:
-    access-token: 86400000 # 1일
-    refresh-token: 2419200000 #4주
+    access-token: 86400 # 1일
+    refresh-token: 2419200 #4주
 
 
 url:
