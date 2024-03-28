@@ -47,7 +47,7 @@ public class SummonerTotalRestService implements SummonerTotalService{
                 summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
                 leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
                 matchIds,
-                indicator.getId().toString());
+                indicator.getSummonerId().toString());
         mongoTemplateAdaptor.saveSummoner(summoner);
         log.debug("소환사 1명 저장 소요시간 : {}", (System.currentTimeMillis() - start) / 1000);
     }
@@ -73,7 +73,7 @@ public class SummonerTotalRestService implements SummonerTotalService{
                 Indicator indicator = indicatorBuilder.build(matchIds, summonerInfo.getId(), summonerInfo.getPuuid());
                 log.info("통계지표 생성 완료됨");
                 mongoTemplateAdaptor.saveIndicator(indicator);
-                log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getId());
+                log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
 
                 // 소환사 정보 생성 및 저장하기
                 Summoner summoner = new Summoner(
@@ -82,7 +82,7 @@ public class SummonerTotalRestService implements SummonerTotalService{
                         summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
                         leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
                         matchIds,
-                        indicator.getId().toString());
+                        indicator.getSummonerId().toString());
                 mongoTemplateAdaptor.saveSummoner(summoner);
 
                 log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
