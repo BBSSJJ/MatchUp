@@ -5,35 +5,54 @@ import '@/app/ui/onmatchup/matchupChats.css'
 import { ScrollShadow } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import axios from "axios"
-import SockJS from "sockjs-client"
 import { Client } from "@stomp/stompjs"
 
-export default function MatchupChats() {
+export default function MatchupChats({ roomId }: {roomId: number}) {
+  const [client, setClient] = useState<Client | null>(null)
+  const [messages, setMessages] = useState<any[]>([])
 
   useEffect(() => {
-    const sock = new SockJS("https://matchup.site/api/ws")
-    const client  = new Client({
-      // webSocketFactory() {
-      //   sock
-      // },
-      brokerURL: "wss://matchup.site/api/ws",
-      // debug: (str) => {
-      //   console.log(str)
-      // },
-      onConnect(frame) {
-        console.log('connected: ' + frame)
+    getMessages()
 
-        client.subscribe('/topic/65f9542382dd2c780b44d292', (message) => {
-          console.log(message)
-        })
-      },
+    const stomp = new Client({
+      brokerURL: "wss://matchup.site/api/ws",
     })
-    // client.activate()
+    setClient(stomp)
+
+    stomp.activate()
+
+    stomp.onConnect = () => {
+      stomp.subscribe(`/topic/${roomId}`, () => {
+        // getMessages()
+      })
+    }
   }, [])
+
+  function getMessages() {
+    axios({
+      method: 'get',
+      url: `https://matchup.site/api/chats/rooms/${roomId}`
+    })
+      .then((response) => {
+        setMessages(response.data.list)
+      })
+  }
+
+  function getRooms() {
+    axios({
+      method: 'get',
+      url: `https://matchup.site/api/chats/rooms`
+    })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
   
-  const me = "배성준"
+  const me = "me"
   const user = 1
-  const roomId = '65f9542382dd2c780b44d292'
 
   const [chats, setChats] = useState([{sender: '', content: ''}])
 
