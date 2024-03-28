@@ -109,6 +109,14 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        - id: bigdata-server-recruits
+          uri: http://${BIGDATA_SERVER}:9005
+          predicates:
+            - Path=/api/recommend/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
         # for swagger server
         - id : user-server-swagger
           uri: http://${USER_SERVER}:9002
