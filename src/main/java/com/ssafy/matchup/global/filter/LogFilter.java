@@ -20,7 +20,7 @@ public class LogFilter extends AbstractGatewayFilterFactory<LogFilter.Config> {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
-            log.info("PRE filter / request uri : {}", request.getURI());
+            log.info("PRE filter / request uri : {} {}", request.getMethod(), request.getURI());
 
             return chain.filter(exchange);
         };
