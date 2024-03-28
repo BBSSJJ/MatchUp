@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity(name = "friendship")
 @Getter
@@ -30,8 +28,14 @@ public class Friendship {
     private User friend;
 
     @Builder
-    public Friendship(User myself, User friend) {
+    public Friendship(User myself, User friend, FriendStatus friendStatus) {
         this.myself = myself;
         this.friend = friend;
+        this.friendStatus = friendStatus;
+    }
+
+    @Builder
+    public void updateFriendStatus(FriendStatus friendStatus) {
+        this.friendStatus = friendStatus;
     }
 }
