@@ -1,5 +1,5 @@
 "use client"
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import type { InferGetServerSidePropsType, GetServerSideProps, NextPage } from 'next'
 import '@/app/ui/article/article.css'
 import Comment from "./commentList";
@@ -122,6 +122,7 @@ const ArticlePage = ({id} :{id :number}) => {
     // { refreshInterval: 300 }
   )
 
+  // 실제 득표수를 실시간으로 보여주기 위한 상태
   const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
 
 
@@ -154,6 +155,8 @@ const ArticlePage = ({id} :{id :number}) => {
     })
 
     if (response.ok) {
+      // 이벤트 성공시에 알아서 업데이트 된 데이터베이스 상태 반영
+      mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
       const newData = await getArticle(id)
       setVoteCount(
         { right: newData.rightSympathies.length , left: newData.leftSympathies.length }
@@ -180,9 +183,9 @@ const ArticlePage = ({id} :{id :number}) => {
 
     if (response.ok) {
       setCommentContent("") // 댓글입력창 지우기
-      const newComments = await getComments(id)
-      console.log(newComments)
-
+      // const newComments = await getComments(id)
+      // console.log(newComments)
+      mutate(`${SERVER_API_URL}/api/mz/comments/articles/${id}`)
     }
   }
 
