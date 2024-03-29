@@ -5,10 +5,12 @@ import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalCont
 import ChatRoom from "./chat/chatRoom";
 import DirectMessage from "./chat/chat";
 import { useAtom } from "jotai";
+import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
 
 const SideBar: React.FC = () => {
+	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 	const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 
@@ -34,7 +36,7 @@ const SideBar: React.FC = () => {
 				<Button className="w-[10px] h-[15px] min-w-0" color="warning">2</Button>
 				<Button className="w-[10px] h-[15px] min-w-0" color="warning">3</Button>
 				<div className="flex flex-col gap-4 items-center">
-					<Friends />
+					{isLoggedIn && <Friends />}
 					<Card className="max-w-[340px]">
 						<CardHeader className="justify-between">
 							<div className="flex gap-5">
