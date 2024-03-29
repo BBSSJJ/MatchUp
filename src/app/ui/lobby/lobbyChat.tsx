@@ -94,7 +94,7 @@ export default function LobbyChat() {
               alt="tierIcon"
               src={`/Emblems/${chat.tier.slice(0, -1)}.png`}
             />
-            <p className="text-lg">{chat.tier}</p>
+            <p className="text-lg">{chat.tier !== 'nundefined' ? chat.tier : "UR"}</p>
           </div>
         )
       case "searchingPosition":

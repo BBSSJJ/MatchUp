@@ -7,8 +7,25 @@ import styles from "./Navbar.module.css"
 import { SearchIcon } from "./SearchIcon";
 import { motion } from "framer-motion"
 import { atom, useAtom } from 'jotai'
-import { isLoggedInAtom } from '@/store/authAtom'
+import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { SERVER_API_URL } from "@/utils/instance-axios";
+
+interface User {
+  userId: number;
+  role: string;
+  riotAccount: {
+    id: string;
+    summonerProfile: {
+      name: string;
+      tag: string;
+      iconUrl: string;
+      level: number;
+    };
+    tier: string;
+    leagueRank: string;
+    leaguePoint: number;
+  };
+}
 
 export default function NavigationBar() {
   // react hook 사용
@@ -18,15 +35,20 @@ export default function NavigationBar() {
   
   // 로그인 상태 확인
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
-
+  const [user, setUser] = useAtom<any>(userInfoAtom)
   // 로그아웃 버튼 클릭
   const handleLogout = async () => {
     const response = await fetch(`${SERVER_API_URL}/api/users/logout`)
     
     if(response.ok) {
       setIsLoggedIn(false)
+      // setUser(null)
       console.log("로그아웃 완료")
     }
+  }
+
+  const handleLogin = () => {
+    router.push('/login');
   }
 
   const handleClick = () => {
@@ -36,23 +58,24 @@ export default function NavigationBar() {
     event.preventDefault();
     router.push(`/summoner/${keyword}`)
   }
+
   const handleClear = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.target.value = "";
   }
-  const handleLogin = () => {
-    router.push('/login');
-  }
 
+ 
   return (
     <Navbar isBordered className={styles.nav}>
-      <NavbarBrand>
-        <img
-          className="w-[40px] h-[40px]"
-          src="logo.png"
-          // width="40px"
-          // height="40px"
-        />
-        <Link href="/lobby" className="font-bold text-inherit">MatchUP</Link>
+      <NavbarBrand className="mr-4">
+        <Link href="/lobby" className="font-bold text-inherit">
+          <div className="flex items-center">
+            <Image
+              className="w-[40px] h-[40px]"
+              src="/logo.png"
+            />
+            <span>MatchUP</span>
+          </div>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="start">
         <NavbarItem>
@@ -68,9 +91,9 @@ export default function NavigationBar() {
         <Popover placement="bottom" offset={10}>
           <PopoverTrigger>
             <NavbarItem>
-              <Link href="/recommendation" className={path === '/recommendation' ? styles.active : ""}>
+              <a>
                 Match
-              </Link>
+              </a>
             </NavbarItem>
           </PopoverTrigger>
           {/* 추천 버튼을 누르면 먼저 뜨는 모달창 */}
@@ -84,6 +107,28 @@ export default function NavigationBar() {
                   <Input defaultValue="100%" label="내 라인" size="sm" variant="bordered" />
                   <Input defaultValue="300px" label="상대방 라인" size="sm" variant="bordered" />
                   <Input defaultValue="24px" label="마이크 사용 여부" size="sm" variant="bordered" />
+                  <Select label="내 라인">
+                    <SelectItem key="top" value="top" 
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/top.png`}/>
+                      }>탑</SelectItem>
+                    <SelectItem key="jungle" value="jungle"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/jungle.png`}/>
+                      }>정글</SelectItem>
+                    <SelectItem key="mid" value="mid"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/mid.png`}/>
+                      }>미드</SelectItem>
+                    <SelectItem key="bottom" value="bottom"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/bottom.png`}/>
+                      }>원딜</SelectItem>
+                    <SelectItem key="support" value="support"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
+                      }>서포터</SelectItem>
+                  </Select>
                 </div>
               </div>
             )}
@@ -121,7 +166,7 @@ export default function NavigationBar() {
           <>
             {/* 로그인 상태일 때 보이는 유저 프로필 */}
             <User
-              name="Username"
+              name={user.riotAccount.summonerProfile.name}
               description="Lv.712"
               avatarProps={{
                 src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"
