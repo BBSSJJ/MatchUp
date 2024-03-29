@@ -10,7 +10,7 @@ import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { ListboxWrapper } from "./ListboxWrapper";
-import { isLoggedInAtom, userInfo } from "@/store/authAtom";
+import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
 import { useAtom } from "jotai";
 
 export default function LobbyChat() {
@@ -20,7 +20,7 @@ export default function LobbyChat() {
   const [searchingPosition, setSearchingPosition] = useState(new Set([""]))
   const [memo, setMemo] = useState('')
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
-  const [user, setUser] = useAtom<any>(userInfo)
+  const [user, setUser] = useAtom<any>(userInfoAtom)
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
   useEffect(() => {
