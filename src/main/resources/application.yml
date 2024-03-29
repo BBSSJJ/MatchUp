@@ -117,6 +117,14 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        - id: statistics-server
+          uri: http://${STATISTICS_SERVER}:9004
+          predicates:
+            - Path=/api/summoners/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
         - id: bigdata-server-recommend
           uri: http://${BIGDATA_SERVER}:9005
           predicates:
