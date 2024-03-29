@@ -7,7 +7,7 @@ import styles from "./Navbar.module.css"
 import { SearchIcon } from "./SearchIcon";
 import { motion } from "framer-motion"
 import { atom, useAtom } from 'jotai'
-import { isLoggedInAtom } from '@/store/authAtom'
+import { isLoggedInAtom, userInfo } from '@/store/authAtom'
 import { SERVER_API_URL } from "@/utils/instance-axios";
 
 export default function NavigationBar() {
@@ -18,6 +18,7 @@ export default function NavigationBar() {
   
   // 로그인 상태 확인
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+  const [user, setUser] = useAtom(userInfo)
 
   // 로그아웃 버튼 클릭
   const handleLogout = async () => {
@@ -25,8 +26,13 @@ export default function NavigationBar() {
     
     if(response.ok) {
       setIsLoggedIn(false)
+      setUser(null)
       console.log("로그아웃 완료")
     }
+  }
+
+  const handleLogin = () => {
+    router.push('/login');
   }
 
   const handleClick = () => {
@@ -36,23 +42,24 @@ export default function NavigationBar() {
     event.preventDefault();
     router.push(`/summoner/${keyword}`)
   }
+
   const handleClear = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.target.value = "";
   }
-  const handleLogin = () => {
-    router.push('/login');
-  }
 
+ 
   return (
     <Navbar isBordered className={styles.nav}>
-      <NavbarBrand>
-        <img
-          className="w-[40px] h-[40px]"
-          src="logo.png"
-          // width="40px"
-          // height="40px"
-        />
-        <Link href="/lobby" className="font-bold text-inherit">MatchUP</Link>
+      <NavbarBrand className="mr-4">
+        <Link href="/lobby" className="font-bold text-inherit">
+          <div className="flex items-center">
+            <Image
+              className="w-[40px] h-[40px]"
+              src="/logo.png"
+            />
+            <span>MatchUP</span>
+          </div>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="start">
         <NavbarItem>
@@ -121,7 +128,7 @@ export default function NavigationBar() {
           <>
             {/* 로그인 상태일 때 보이는 유저 프로필 */}
             <User
-              name="Username"
+              name={user}
               description="Lv.712"
               avatarProps={{
                 src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"

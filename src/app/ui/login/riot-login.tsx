@@ -38,6 +38,7 @@ export default function RiotLoginForm({ snsType, snsId } :{
                 const userCookie = decodeURIComponent(document.cookie);
                 console.log(userCookie)
                 const jsonString = userCookie.substring(5);
+                // 로그인 한 유저 정보를 로컬 스토리지에 저장
                 setUser(JSON.parse(jsonString));
                 // 회원가입 성공 시 로그인
                 setIsLoggedIn(true)
