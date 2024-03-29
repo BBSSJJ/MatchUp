@@ -11,13 +11,13 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "@nextui-org/avatar": "^2.0.24",
-    "@nextui-org/react": "^2.2.9",
+    "@nextui-org/react": "^2.2.10",
     "@stomp/stompjs": "^7.0.0",
     "@tinymce/tinymce-react": "^4.3.2",
     "@types/sockjs-client": "^1.5.4",
     "antd": "^5.15.0",
     "axios": "^1.6.8",
-    "framer-motion": "^11.0.20",
+    "framer-motion": "^11.0.23",
     "jotai": "^2.7.1",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
@@ -25,6 +25,7 @@
     "openvidu-browser": "^2.29.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.6",
     "sockjs-client": "^1.6.1",
     "swiper": "^11.0.7",
     "swr": "^2.2.5"

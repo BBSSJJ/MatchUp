@@ -1,25 +1,25 @@
 .kakaoButton {
-    width: 300px;
-    height: 50px;
+    width: 350px;
+    height: 80px;
     background-size: cover;
     border-radius: 12px;
-    background-image: url('kakao_login_large_wide.png');
+    background-image: url('kakao_login.png');
     margin-bottom: 5px;
 }
 
 .naverButton {
-    width: 250px;
-    height: 70px;
-    background-size: contain;
+    width: 350px;
+    height: 80px;
+    background-size: cover;
     border-radius: 12px;
     margin-bottom: 5px;
     background-image: url('naver_login.png');
 }
 
 .googleButton {
-    width: 215px;
-    height: 50px;
-    background-size: contain;
+    width: 350px;
+    height: 80px;
+    background-size: cover;
     border-radius: 10px;
     margin-bottom: 5px;
     background-image: url('google_login.png');

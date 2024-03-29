@@ -63,7 +63,6 @@ export default function NavigationBar() {
     event.target.value = "";
   }
 
- 
   return (
     <Navbar isBordered className={styles.nav}>
       <NavbarBrand className="mr-4">
@@ -143,13 +142,15 @@ export default function NavigationBar() {
           isLoggedIn ?
           <>
             {/* 로그인 상태일 때 보이는 유저 프로필 */}
-            <User
-              name={user.riotAccount.summonerProfile.name}
-              description="Lv.712"
-              avatarProps={{
-                src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"
-              }}
-            />
+            <Link href={`/user/${user.userId}`}>
+              <User
+                name={user.riotAccount.summonerProfile.name.replace('+', ' ')}
+                description={`Lv.${user.riotAccount.summonerProfile.level}`}
+                avatarProps={{
+                  src: `${user.riotAccount.summonerProfile.iconUrl}`
+                }}
+              />
+            </Link>
             <Button 
               onClick={handleLogout}
             >
@@ -159,10 +160,9 @@ export default function NavigationBar() {
           : <Button
             onClick={handleLogin}
           >
-          Log In
+          Sign In / Log In
           </Button>
-        }
-        
+        } 
       </NavbarContent>
     </Navbar>
   );
