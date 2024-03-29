@@ -91,9 +91,9 @@ export default function NavigationBar() {
         <Popover placement="bottom" offset={10}>
           <PopoverTrigger>
             <NavbarItem>
-              <Link href="/recommendation" className={path === '/recommendation' ? styles.active : ""}>
+              <a>
                 Match
-              </Link>
+              </a>
             </NavbarItem>
           </PopoverTrigger>
           {/* 추천 버튼을 누르면 먼저 뜨는 모달창 */}
@@ -107,6 +107,28 @@ export default function NavigationBar() {
                   <Input defaultValue="100%" label="내 라인" size="sm" variant="bordered" />
                   <Input defaultValue="300px" label="상대방 라인" size="sm" variant="bordered" />
                   <Input defaultValue="24px" label="마이크 사용 여부" size="sm" variant="bordered" />
+                  <Select label="내 라인">
+                    <SelectItem key="top" value="top" 
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/top.png`}/>
+                      }>탑</SelectItem>
+                    <SelectItem key="jungle" value="jungle"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/jungle.png`}/>
+                      }>정글</SelectItem>
+                    <SelectItem key="mid" value="mid"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/mid.png`}/>
+                      }>미드</SelectItem>
+                    <SelectItem key="bottom" value="bottom"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/bottom.png`}/>
+                      }>원딜</SelectItem>
+                    <SelectItem key="support" value="support"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
+                      }>서포터</SelectItem>
+                  </Select>
                 </div>
               </div>
             )}
