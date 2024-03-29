@@ -3,6 +3,7 @@
 import React,  { useState, MouseEvent } from 'react';
 import styles from './login-button.module.css';
 import { SERVER_API_URL } from "@/utils/instance-axios"
+import { button, Image } from '@nextui-org/react';
 
 const SERVER_URL = SERVER_API_URL
 
@@ -26,13 +27,15 @@ const LoginButton = ({ snsType } : {snsType :string} ) => {
 
     const buttonClassName = snsTypeClassMap[snsType]
 
-
     return (
-        <div className={buttonClassName} onClick={onClick}>
-            <a href="#" >
+        <button className={buttonClassName} onClick={onClick}>
+            <Image src="" alt="" />
+        </button>
+        // <div className={buttonClassName} onClick={onClick}>
+        //     <a href="#" >
                 
-            </a>
-        </div>
+        //     </a>
+        // </div>
     )
 }
 
