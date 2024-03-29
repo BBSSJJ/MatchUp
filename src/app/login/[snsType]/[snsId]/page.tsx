@@ -41,8 +41,8 @@ const HiddenLogin = ( ) => {
                 const userCookie = decodeURIComponent(document.cookie);
                 // console.log(userCookie)
                 const jsonString = userCookie.substring(5);
-                console.log(jsonString)
                 setUser(JSON.parse(jsonString));
+                console.log(jsonString)
                 // 로그인 상태 로컬 스토리지에 저장
                 setIsLoggedIn(true)
                 // redirect

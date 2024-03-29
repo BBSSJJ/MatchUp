@@ -9,3 +9,12 @@
 .title {
     font-size: large;
 }
+
+.chatRoom {
+    width: 100px;
+    height: 100px;
+}
+
+.hide {
+    display: none;
+}
