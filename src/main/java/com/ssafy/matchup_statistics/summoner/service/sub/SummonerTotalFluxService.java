@@ -20,6 +20,7 @@ import reactor.util.function.Tuple2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -148,7 +149,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
         });
 
         try {
-            latch.await();
+            latch.await(500_000, TimeUnit.MILLISECONDS);
             return ret;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
