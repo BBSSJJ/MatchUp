@@ -43,7 +43,7 @@ export default function Friends() {
     }
 
     return (
-        friends.list.map((friend :Friend) => {
+        friends?.list?.map((friend :Friend) => {
             <Card key={friend.userId} className="max-w-[340px]">
                 <CardHeader className="justify-between">
                     <div className="flex gap-5">
