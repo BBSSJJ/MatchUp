@@ -57,7 +57,7 @@ public class UserController {
                 .body(null);
     }
 
-    @GetMapping("/dump/{page}")
+    @PostMapping("/dump/{page}")
     ResponseEntity<Void> userDumpRegist(@PathVariable("page") int page, @RequestBody RegistDumpUserRequestDto registDumpUserRequestDto){
 
         userService.registDumpUser(page, registDumpUserRequestDto);
