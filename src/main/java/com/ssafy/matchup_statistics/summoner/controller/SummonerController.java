@@ -2,6 +2,7 @@ package com.ssafy.matchup_statistics.summoner.controller;
 
 import com.ssafy.matchup_statistics.global.dto.response.MessageDto;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.service.SummonerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -135,12 +136,12 @@ public class SummonerController {
     @Operation(summary = "리그로 사용자 목록 조회 후 각각의 정보 전달(User Dump용)", description = "리그 티어에 해당하는 페이지의 모든 정보를 전송하는 API 입니다.") // 해당 API가 어떤 역할을 하는지 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "유저 정보 전송완료(리스트로 205개 반환)", // 응답코드 200일때 응답 설명
-                    content = @Content(schema = @Schema(implementation = SummonerLeagueInfoResponseDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
+                    content = @Content(schema = @Schema(implementation = SummonerLeagueAccountInfoResponseDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
             @ApiResponse(responseCode = "400", description = "잘못된 요청", // 응답코드 400일때 응답 설명
                     content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
-    @PostMapping("/leagues/league-entries/{page}")
-    public ResponseEntity<List<SummonerLeagueInfoResponseDto>> postSummonerLeagueInfoByLeagueEntry(
+    @PostMapping("/leagues/accounts/league-entries/{page}")
+    public ResponseEntity<List<SummonerLeagueAccountInfoResponseDto>> postSummonerLeagueInfoByLeagueEntry(
             @PathVariable(value = "page") @Valid @NonNull Integer page,
             @RequestBody @Valid LeagueEntryRequestDto dto) {
         return ResponseEntity.ok(summonerService.getSummonerLeagueInfo(page, dto));

@@ -1,6 +1,7 @@
 package com.ssafy.matchup_statistics.summoner.service;
 
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalService;
@@ -50,7 +51,7 @@ public class SummonerService {
         return summonerTotalRestService.saveLeagueEntry(pages, dto);
     }
 
-    public List<SummonerLeagueInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
+    public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
         return summonerLeagueInfoService.getSummonerLeagueInfo(page, dto);
     }
 }
