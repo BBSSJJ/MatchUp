@@ -1,0 +1,29 @@
+server:
+  servlet:
+    context-path: /api
+  port: 9007
+
+logging:
+  level:
+    com.ssafy: DEBUG
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${MATCHUP_FCM_DB}:3314
+      database: matchup
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:/config/application.properties
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+
+fcm:
+  key-path: ${ACCOUNT_KEY_PATH}

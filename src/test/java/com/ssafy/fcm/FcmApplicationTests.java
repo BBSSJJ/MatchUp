@@ -1,13 +1,13 @@
-package com.ssafy.matchup_alarm;
+package com.ssafy.fcm;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MatchupAlarmApplicationTests {
+class FcmApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
