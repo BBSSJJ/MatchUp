@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, MouseEvent } from "react";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Input, User, Select, SelectItem, Badge, Button, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { Switch, Navbar, NavbarBrand, NavbarContent, NavbarItem, Image, Input, User, Select, SelectItem, Badge, Button, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./Navbar.module.css"
@@ -63,6 +63,10 @@ export default function NavigationBar() {
     event.target.value = "";
   }
 
+  const [myLine, setMyLine] = useState<string>('')
+  const [searchingLine, setSearchingLine] = useState<string>('')
+  const [useMic, setUseMic] = useState<boolean>(true)
+ 
   return (
     <Navbar isBordered className={styles.nav}>
       <NavbarBrand className="mr-4">
@@ -90,23 +94,25 @@ export default function NavigationBar() {
         <Popover placement="bottom" offset={10}>
           <PopoverTrigger>
             <NavbarItem>
-              <a>
+              <a className={path === '/recommendation' ? styles.active : ""}>
                 Match
               </a>
             </NavbarItem>
           </PopoverTrigger>
           {/* 추천 버튼을 누르면 먼저 뜨는 모달창 */}
-          <PopoverContent className="w-[240px]">
+          <PopoverContent className="w-[250px]">
             {(titleProps) => (
               <div className="px-1 py-2 w-full">
                 <p className="text-small font-bold text-foreground" {...titleProps}>
-                  추천에 참고할 정보를 추가로 입력해주세요
+                  추천에 참고할 정보를 입력해주세요
                 </p>
+                <br />
                 <div className="mt-2 flex flex-col gap-2 w-full">
-                  <Input defaultValue="100%" label="내 라인" size="sm" variant="bordered" />
-                  <Input defaultValue="300px" label="상대방 라인" size="sm" variant="bordered" />
-                  <Input defaultValue="24px" label="마이크 사용 여부" size="sm" variant="bordered" />
-                  <Select label="내 라인">
+                  <div className="flex">
+                    <p className="ml-2 mr-10 text-base">마이크</p>
+                    <Switch defaultSelected onChange={() => setUseMic(!useMic)} />
+                  </div>
+                  <Select label="내 라인" size="sm" onChange={(e) => setMyLine(e.target.value)}>
                     <SelectItem key="top" value="top" 
                       startContent={
                         <Image width={20} alt="top" src={`/positionIcons/top.png`}/>
@@ -128,6 +134,34 @@ export default function NavigationBar() {
                         <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
                       }>서포터</SelectItem>
                   </Select>
+                  <Select label="상대 라인" size="sm" onChange={(e) => setSearchingLine(e.target.value)}>
+                    <SelectItem key="top" value="top" 
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/top.png`}/>
+                      }>탑</SelectItem>
+                    <SelectItem key="jungle" value="jungle"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/jungle.png`}/>
+                      }>정글</SelectItem>
+                    <SelectItem key="mid" value="mid"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/mid.png`}/>
+                      }>미드</SelectItem>
+                    <SelectItem key="bottom" value="bottom"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/bottom.png`}/>
+                      }>원딜</SelectItem>
+                    <SelectItem key="support" value="support"
+                      startContent={
+                        <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
+                      }>서포터</SelectItem>
+                  </Select>
+                  <br />
+                  <Link href="/recommendation">
+                    <Button color="primary" className="text-base font-bold w-full">
+                      매칭하기!
+                    </Button>
+                  </Link>
                 </div>
               </div>
             )}
