@@ -133,6 +133,13 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        - id: alarm-server-clients
+          uri: http://${ALARM_SERVER}:9007
+          predicates:
+            - Path=/api/alarm/**
+          filters:
+            - LogFilter
+
         # for swagger server
         - id: user-server-swagger
           uri: http://${USER_SERVER}:9002
