@@ -2,12 +2,18 @@ package com.ssafy.matchup_statistics.summoner.service.sub;
 
 import com.ssafy.matchup_statistics.global.api.flux.RiotWebClientFactory;
 import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
+import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +44,13 @@ public class SummonerLeagueInfoService {
         return new SummonerLeagueInfoResponseDto(summonerInfoDto, leagueInfoDto);
     }
 
-    public List<SummonerLeagueInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
-        List<SummonerLeagueInfoResponseDto> ret = new ArrayList<>();
+    public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
+        List<SummonerLeagueAccountInfoResponseDto> ret = new ArrayList<>();
         List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
         leagueInfoResponseByTier.forEach(l -> {
             SummonerInfoResponseDto summonerInfoResponseDto = riotWebClientFactory.getSummonerInfoResponseDtoBySummonerName(l.getSummonerName()).block();
-            ret.add(new SummonerLeagueInfoResponseDto(summonerInfoResponseDto, l));
+            AccountResponseDto accountInfo = riotWebClientFactory.getAccountInfo(summonerInfoResponseDto.getPuuid()).block();
+            ret.add(new SummonerLeagueAccountInfoResponseDto(summonerInfoResponseDto, l, accountInfo));
         });
         return ret;
     }
