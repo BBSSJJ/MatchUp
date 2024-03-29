@@ -231,7 +231,7 @@ export default function LobbyChat() {
 
   return (
     <div>
-      <Button onPress={() => {isLoggedIn ? onOpen : window.alert("로그인이 필요합니다.")}}>작성하기</Button>
+      <Button onPress={() => {isLoggedIn ? onOpen() : window.alert("로그인이 필요합니다.")}}>작성하기</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (
