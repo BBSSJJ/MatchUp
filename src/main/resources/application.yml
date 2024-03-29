@@ -154,6 +154,13 @@ spring:
             - Path=/api/statistics/swagger.json
           filters:
             - LogFilter
+
+        - id: alarm-server-swagger
+          uri: http://${ALARM_SERVER}:9007
+          predicates:
+            - Path=/api/alarm/swagger.json
+          filters:
+            - LogFilter
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   period:
