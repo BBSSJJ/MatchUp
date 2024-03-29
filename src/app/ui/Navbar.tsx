@@ -166,7 +166,7 @@ export default function NavigationBar() {
             {/* 로그인 상태일 때 보이는 유저 프로필 */}
             <Link href={`/user/${user.userId}`}>
               <User
-                name={user.riotAccount.summonerProfile.name.replace('+', ' ')}
+                name={user.riotAccount.summonerProfile.name.replaceAll('+', ' ')}
                 description={`Lv.${user.riotAccount.summonerProfile.level}`}
                 avatarProps={{
                   src: `${user.riotAccount.summonerProfile.iconUrl}`
