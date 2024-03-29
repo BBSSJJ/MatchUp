@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class SummonerLeagueInfoResponseDto {
     private SummonerInfoDto summonerInfoDto;
     private LeagueInfoDto leagueInfoDto;
-
+    private AccountResponseDto accountResponseDto;
 }
