@@ -149,7 +149,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
         });
 
         try {
-            latch.await(10_000, TimeUnit.MILLISECONDS);
+            latch.await(500_000, TimeUnit.MILLISECONDS);
             return ret;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
