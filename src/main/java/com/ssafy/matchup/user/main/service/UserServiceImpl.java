@@ -1,33 +1,52 @@
 package com.ssafy.matchup.user.main.service;
 
 import com.ssafy.matchup.user.main.api.StatisticsServerApi;
+import com.ssafy.matchup.user.main.api.dto.LeagueInfoDto;
+import com.ssafy.matchup.user.main.api.dto.SummonerInfoDto;
+import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
+import com.ssafy.matchup.user.main.api.flux.WebClientFactory;
 import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
+import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
 import com.ssafy.matchup.user.main.entity.User;
+import com.ssafy.matchup.user.main.entity.type.AuthorityType;
+import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
 import com.ssafy.matchup.user.main.service.sub.InitUserService;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
+import com.ssafy.matchup.user.riotaccount.entity.SummonerProfile;
 import com.ssafy.matchup.user.riotaccount.respository.RiotAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
+
+    @Value("${ddragon.version}")
+    String ddragonVersion;
+
     private final UserRepository userRepository;
     private final RiotAccountRepository riotAccountRepository;
     private final StatisticsServerApi statisticsServerApi;
     private final InitUserService initUserService;
+    private final WebClientFactory webClientFactory;
 
+    @Transactional
     @Override
     public UserDto addUser(RegistUserRequestDto registUserRequestDto) {
         String summonerName = registUserRequestDto.getRiotId();
@@ -60,6 +79,7 @@ public class UserServiceImpl implements UserService {
         return new UserDto(newUser);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
         Optional<User> userOptional = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
@@ -67,5 +87,55 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isEmpty()) throw new EntityNotFoundException();
 
         return new UserDto(userOptional.get());
+    }
+
+    @Transactional
+    @Override
+    public void registDumpUser(int page, RegistDumpUserRequestDto registDumpUserRequestDto) {
+        List<SummonerLeagueInfoResponseDto> dtoList = webClientFactory.getDumpRiotAccount(page, registDumpUserRequestDto);
+
+        List<String> idList = new ArrayList<>();
+
+        for (SummonerLeagueInfoResponseDto dto : dtoList) {
+
+            LeagueInfoDto leagueInfoDto = dto.getLeagueInfoDto();
+            SummonerInfoDto summonerInfoDto = dto.getSummonerInfoDto();
+            AccountResponseDto accountResponseDto = dto.getAccountResponseDto();
+
+            User user = User.builder()
+                    .snsType(SnsType.NAVER)
+                    .snsId(RandomStringUtils.random(30, true, true))
+                    .role(AuthorityType.ROLE_USER)
+                    .build();
+            userRepository.save(user);
+
+            SummonerProfile summonerProfile = SummonerProfile.builder()
+                    .name(accountResponseDto.getGameName())
+                    .tag(accountResponseDto.getTagLine())
+                    .iconUrl("https://ddragon.leagueoflegends.com/cdn/" + ddragonVersion
+                            + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
+                    .level(summonerInfoDto.getSummonerLevel()).build();
+
+            RiotAccount riotAccount = RiotAccount.builder()
+                    .id(summonerInfoDto.getId())
+                    .revisionDate(summonerInfoDto.getRevisionDate())
+                    .summonerProfile(summonerProfile)
+                    .tier(leagueInfoDto.getTier())
+                    .leagueRank(leagueInfoDto.getRank())
+                    .leaguePoint(leagueInfoDto.getLeaguePoints())
+                    .build();
+
+            idList.add(summonerInfoDto.getId());
+
+            riotAccountRepository.save(riotAccount);
+
+            User newUser = userRepository.getReferenceById(user.getId());
+            RiotAccount newRiotAccount = riotAccountRepository.getReferenceById(riotAccount.getId());
+
+            newRiotAccount.updateUser(newUser);
+            newUser.updateRiotAccount(newRiotAccount);
+        }
+
+        log.info("inserted id in tier {} {} : {}", registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());
     }
 }
