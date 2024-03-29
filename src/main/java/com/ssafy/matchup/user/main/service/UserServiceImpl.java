@@ -136,6 +136,6 @@ public class UserServiceImpl implements UserService {
             newUser.updateRiotAccount(newRiotAccount);
         }
 
-        log.info("inserted id in tier {} {} : {}", registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());
+        log.info("page {} / tier {} {} : {}", page, registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());
     }
 }
