@@ -134,6 +134,11 @@ public class UserServiceImpl implements UserService {
 
             newRiotAccount.updateUser(newUser);
             newUser.updateRiotAccount(newRiotAccount);
+
+
+            webClientFactory.sendSummonerName(summonerInfoDto.getName(), summonerProfile.getTag())
+                    .subscribe(m -> log.info("message : {} ", m));
+            
         }
 
         log.info("page {} / tier {} {} : {}", page, registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());
