@@ -7,8 +7,25 @@ import styles from "./Navbar.module.css"
 import { SearchIcon } from "./SearchIcon";
 import { motion } from "framer-motion"
 import { atom, useAtom } from 'jotai'
-import { isLoggedInAtom, userInfo } from '@/store/authAtom'
+import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { SERVER_API_URL } from "@/utils/instance-axios";
+
+interface User {
+  userId: number;
+  role: string;
+  riotAccount: {
+    id: string;
+    summonerProfile: {
+      name: string;
+      tag: string;
+      iconUrl: string;
+      level: number;
+    };
+    tier: string;
+    leagueRank: string;
+    leaguePoint: number;
+  };
+}
 
 export default function NavigationBar() {
   // react hook 사용
@@ -18,15 +35,14 @@ export default function NavigationBar() {
   
   // 로그인 상태 확인
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
-  const [user, setUser] = useAtom(userInfo)
-
+  const [user, setUser] = useAtom<any>(userInfoAtom)
   // 로그아웃 버튼 클릭
   const handleLogout = async () => {
     const response = await fetch(`${SERVER_API_URL}/api/users/logout`)
     
     if(response.ok) {
       setIsLoggedIn(false)
-      setUser(null)
+      // setUser(null)
       console.log("로그아웃 완료")
     }
   }
@@ -128,7 +144,7 @@ export default function NavigationBar() {
           <>
             {/* 로그인 상태일 때 보이는 유저 프로필 */}
             <User
-              name={user}
+              name={user.riotAccount.summonerProfile.name}
               description="Lv.712"
               avatarProps={{
                 src: "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png"
