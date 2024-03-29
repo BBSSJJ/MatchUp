@@ -34,7 +34,7 @@ const friendFetcher = async (url:string) => {
 export default function Friends() {
     // 친구 데이터 가져오기
     const {data: friends, error: friendError, isLoading: friendLoading } = useSWR(
-        `${SERVER_API_URL}/api/friends?FRIEND`,
+        `${SERVER_API_URL}/api/friends?friendStatus=FRIEND`,
         friendFetcher, 
     )
 
