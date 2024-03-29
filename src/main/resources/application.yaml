@@ -22,6 +22,10 @@ spring:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
 
+profiles:
+  include: swagger
+
+
 jwt:
   secret-key: ${JWT_SECRET_KEY}
 
