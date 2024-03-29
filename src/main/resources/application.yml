@@ -12,10 +12,11 @@ spring:
     import:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
-
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   profiles:
     include: swagger
 
 logging:
   level:
-    root: info
+    root: debug
