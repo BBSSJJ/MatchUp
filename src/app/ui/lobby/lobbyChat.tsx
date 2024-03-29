@@ -10,6 +10,8 @@ import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { ListboxWrapper } from "./ListboxWrapper";
+import { isLoggedInAtom, userInfo } from "@/store/authAtom";
+import { useAtom } from "jotai";
 
 export default function LobbyChat() {
   const [client, setClient] = useState<Client | null>(null)
@@ -18,6 +20,8 @@ export default function LobbyChat() {
   const [searchingPosition, setSearchingPosition] = useState(new Set([""]))
   const [memo, setMemo] = useState('')
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
+  const [user, setUser] = useAtom<any>(userInfo)
+  const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
   useEffect(() => {
     getRecruits()
@@ -152,16 +156,40 @@ export default function LobbyChat() {
     }
   }
 
+  const demoUserInfo = {
+    "userId":6,
+    "role":"ROLE_USER",
+    "riotAccount":{
+      "id":"azZhIpYEutVjtlT7il9eUX1Gjv_UcgLeukxNSiBtpafNHA",
+      "summonerProfile":{
+        "name":"피아노의자",
+        "tag":"KR1",
+        "iconUrl":"https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/5.png",
+        "level":9
+      },
+      "tier":"no+league+data",
+      "leagueRank":"no+league+data",
+      "leaguePoint":0
+    }
+  }
+
+  const rankToNumber: any = {
+    'I': '1',
+    'II': '2',
+    'III': '3',
+    'IV': '4'
+  }
+
   function sendMessage() {
     if (client && client.connected) {
       client.publish({
         destination: '/app/recruit',
         body: JSON.stringify({
           method: 'create',
-          userId: 123456, // userId?
-          name: '피아노의자#KR1', // username?
-          iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/1614.png', // iconUrl?
-          tier: 'S1', // tier?
+          userId: user.userId,
+          name: user.riotAccount.summonerProfile.name + '#' + user.riotAccount.summonerProfile.tag,
+          iconUrl: user.riotAccount.summonerProfile.iconUrl,
+          tier: user.riotAccount.tier.slice(0, 1) + rankToNumber[user.riotAccount.leagueRank],
           line: selectedMyPosition,
           wishLine: selectedSearchingPosition,
           gameType: 'solo rank',
@@ -203,7 +231,7 @@ export default function LobbyChat() {
 
   return (
     <div>
-      <Button onPress={onOpen}>작성하기</Button>
+      <Button onPress={() => {isLoggedIn ? onOpen : window.alert("로그인이 필요합니다.")}}>작성하기</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (
