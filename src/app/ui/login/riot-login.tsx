@@ -5,7 +5,7 @@ import { useState } from 'react';
 import styles from './riot-login.module.css';
 import { SERVER_API_URL } from "@/utils/instance-axios"
 import { useAtom } from 'jotai';
-import { isLoggedInAtom, userInfo } from '@/store/authAtom';
+import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom';
 
 const SERVER_URL = SERVER_API_URL
 
@@ -15,8 +15,8 @@ export default function RiotLoginForm({ snsType, snsId } :{
     snsId :string;
 }) {
     const [riotId, setRiotId] = useState("");
-    const [user, setUser] = useAtom(userInfo)
     const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+    const [user, setUser] = useAtom(userInfoAtom)
 
     const handleSignIn = async () => {
         try {
@@ -38,6 +38,7 @@ export default function RiotLoginForm({ snsType, snsId } :{
                 const userCookie = decodeURIComponent(document.cookie);
                 console.log(userCookie)
                 const jsonString = userCookie.substring(5);
+                // 로그인 한 유저 정보를 로컬 스토리지에 저장
                 setUser(JSON.parse(jsonString));
                 // 회원가입 성공 시 로그인
                 setIsLoggedIn(true)
