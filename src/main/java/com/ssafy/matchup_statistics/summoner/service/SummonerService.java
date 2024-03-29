@@ -3,14 +3,12 @@ package com.ssafy.matchup_statistics.summoner.service;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
-import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalFluxService;
-import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalRestService;
 import com.ssafy.matchup_statistics.summoner.service.sub.SummonerTotalService;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +48,9 @@ public class SummonerService {
 
     public int saveAllSummonerLeagueIndicatorMatchesRest(Integer pages, LeagueEntryRequestDto dto) {
         return summonerTotalRestService.saveLeagueEntry(pages, dto);
+    }
+
+    public List<SummonerLeagueInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
+        return summonerLeagueInfoService.getSummonerLeagueInfo(page, dto);
     }
 }
