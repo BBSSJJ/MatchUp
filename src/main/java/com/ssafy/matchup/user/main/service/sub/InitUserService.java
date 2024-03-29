@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class InitUserService {
 
     @Value("${ddragon.version}")
-    String ddragonVersion = "";
+    String ddragonVersion;
 
     private final UserRepository userRepository;
     private final RiotAccountRepository riotAccountRepository;

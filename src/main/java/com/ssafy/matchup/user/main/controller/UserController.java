@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.matchup.global.util.CookieUtil;
 import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
+import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
 import com.ssafy.matchup.user.main.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, String.valueOf(cookieUtil.removeUserCookie()))
                 .body(null);
+    }
+
+    @GetMapping("/dump/{page}")
+    ResponseEntity<Void> userDumpRegist(@PathVariable("page") int page, @RequestBody RegistDumpUserRequestDto registDumpUserRequestDto){
+
+        userService.registDumpUser(page, registDumpUserRequestDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }
