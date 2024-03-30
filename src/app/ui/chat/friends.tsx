@@ -71,7 +71,7 @@ const IsChatRoom = async (userId: number) => {
         // 있으면 roomId 반환
         if (Object.keys(response).length !== 0 && response.constructor === Object) {
             const data = await response.json()
-            return data.roomId ; // string
+            return data.roomId ; // string 
         }
         // 없으면 false 반환
         return false
