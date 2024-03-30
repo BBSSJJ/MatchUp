@@ -4,8 +4,9 @@ import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalCont
 import { useAtom } from "jotai";
 import { isRoomOpenAtom } from '@/store/chatAtom'
 import DirectMessage from "./chat";
+import ChatModal from "./chatModal";
 
-// 채팅목록에서 보이는 개별 채팅방
+// 채팅목록에서 보이는 개별 채팅방 - 여기서 DM누르면 모달창이 뜸
 export default function ChatRoom() {
     const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -13,7 +14,7 @@ export default function ChatRoom() {
    
 
     return (
-        <div>
+        <div className="z-20000">
             <Card className="max-w-[340px]">
                 <CardHeader className="justify-between">
                     <div className="flex gap-5">
@@ -34,32 +35,7 @@ export default function ChatRoom() {
                     DM
                     </Button>
                     {/* 개별 채팅방 모달  */}
-					<Modal
-						isOpen={isOpen}
-						onOpenChange={onOpenChange}
-						scrollBehavior={scrollBehavior}
-					>
-						<ModalContent>
-						{(onClose) => (
-							<>
-							<ModalHeader className="flex flex-col gap-1">
-                                Chat
-							</ModalHeader>
-							<ModalBody>
-								<DirectMessage />
-							</ModalBody>
-							<ModalFooter>
-								<Button color="danger" variant="light" onPress={onClose}>
-								Close
-								</Button>
-								<Button color="primary" onPress={onClose}>
-								Action
-								</Button>
-							</ModalFooter>
-							</>
-						)}
-						</ModalContent>
-      				</Modal>
+					<ChatModal isOpen={isOpen} onOpenChange={onOpenChange}/>
                 </CardHeader>
             </Card>
         </div>
