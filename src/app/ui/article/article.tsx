@@ -113,14 +113,29 @@ const ArticlePage = ({id} :{id :number}) => {
   // 데이터 가져오기
   const {data: article, error: articleError, isLoading: articleLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/articles/${id}`,
-    articleFetcher, 
+    articleFetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        if (error.status === 401) return
+  
+      }, 
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
     // { refreshInterval: 1000 }
   )
 
   const { data: comments, error: commentsError, isLoading: commentsLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/comments/articles/${id}`,
     articleFetcher,
-    // { refreshInterval: 300 }
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        if (error.status === 401) return
+  
+      }, 
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
   )
 
   // 실제 득표수를 실시간으로 보여주기 위한 상태
@@ -128,22 +143,34 @@ const ArticlePage = ({id} :{id :number}) => {
 
 
   // 투표기능 
-  const totalVotes = (article?.leftSympathies.length === 0 || article?.rightSympathies.length === 0) ? 1 : article?.rightSympathies.length + article?.rightSympathies.length;
-  let leftVotesPercentage
-  let rightVotesPercentage
-  if (article?.leftSympathies.length === 0 && article?.rightSympathies.length === 0) {
+const totalVotes = (article?.leftSympathies.length || 0) + (article?.rightSympathies.length || 0);
+let leftVotesPercentage;
+let rightVotesPercentage;
+
+if (totalVotes === 0) {
     leftVotesPercentage = 50;
     rightVotesPercentage = 50;
-  } else if (article?.leftSympathies.length === 0) {
-    leftVotesPercentage = 0
-    rightVotesPercentage = 100;
-  } else if (article?.rightSympathies.length === 0) {
-    leftVotesPercentage = 100
-    rightVotesPercentage = 0;
-  } else {
+} else {
     leftVotesPercentage = (article?.leftSympathies.length / totalVotes) * 100;
     rightVotesPercentage = (article?.rightSympathies.length / totalVotes) * 100;
-  }
+}
+
+  // const totalVotes = (article?.leftSympathies.length === 0 || article?.rightSympathies.length === 0) ? 1 : article?.rightSympathies.length + article?.rightSympathies.length;
+  // let leftVotesPercentage
+  // let rightVotesPercentage
+  // if (article?.leftSympathies.length === 0 && article?.rightSympathies.length === 0) {
+  //   leftVotesPercentage = 50;
+  //   rightVotesPercentage = 50;
+  // } else if (article?.leftSympathies.length === 0) {
+  //   leftVotesPercentage = 0
+  //   rightVotesPercentage = 100;
+  // } else if (article?.rightSympathies.length === 0) {
+  //   leftVotesPercentage = 100
+  //   rightVotesPercentage = 0;
+  // } else {
+  //   leftVotesPercentage = (article?.leftSympathies.length / totalVotes) * 100;
+  //   rightVotesPercentage = (article?.rightSympathies.length / totalVotes) * 100;
+  // }
 
   // 투표 버튼 클릭 이벤트
   const handleVote = async (lor :string) => {
@@ -238,8 +265,8 @@ const ArticlePage = ({id} :{id :number}) => {
               style={{ width: `${leftVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
               animate={{ width: `${leftVotesPercentage}%`, opacity: 1 }}
-              transition={{ duration: 0.55}}
-              exit={{ width: "0%", opacity: 0 }}
+              transition={{ duration: 1}}
+              // exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.leftSympathies.length} */}
               {article?.leftSympathies.length}
@@ -249,8 +276,8 @@ const ArticlePage = ({id} :{id :number}) => {
               style={{ width: `${rightVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
               animate={{ width: `${rightVotesPercentage}%`, opacity: 1 }}
-              transition={{ duration: 0.55}}
-              exit={{ width: "0%", opacity: 0 }}
+              transition={{ duration: 1}}
+              // exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.rightSympathies.length} */}
               {article?.rightSympathies.length}
