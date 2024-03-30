@@ -10,6 +10,7 @@ import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR from "swr";
+import  User from './Navbar'
 
 interface Chat {
     roomId: string;
@@ -33,7 +34,7 @@ const SideBar: React.FC = () => {
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
-	const userInfo = useAtomValue(userInfoAtom) // read-only-atom
+	const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
 	
 	const handleToggle = (category :string) => {
 		if (category === 'f') {
@@ -101,7 +102,7 @@ const SideBar: React.FC = () => {
 					<div>
 						{chatRooms?.list?.map((chat :Chat) => {
 							return (
-								<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} />
+								<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} you={chat.participants.filter(member => member !== userInfo.userId)}/>
 							)
 						})
 						}
