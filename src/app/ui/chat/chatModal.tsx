@@ -29,7 +29,7 @@ export default function ChatModal ({isOpen, onOpenChange} :{
                 Chat
             </ModalHeader>
             <ModalBody>
-                <DirectMessage roomId={roomId} />
+                <DirectMessage roomId={"3"} />
             </ModalBody>
             <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

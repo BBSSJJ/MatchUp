@@ -4,10 +4,28 @@ import styles from "./Sidebar.module.css";
 import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, ModalProps} from "@nextui-org/react";
 import ChatRoom from "./chat/chatRoom";
 import DirectMessage from "./chat/chat";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
+import { SERVER_API_URL } from "@/utils/instance-axios";
+import useSWR from "swr";
+
+interface Chat {
+    roomId: string;
+    participants: number[]; 
+    cnt: number; 
+}
+
+
+const chatFetcher = async (url:string) => {
+    const response = await fetch(url); // 서버로부터 데이터 가져오기
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json(); // JSON 형식으로 변환하여 반환
+};
+
 
 const SideBar: React.FC = () => {
 	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
@@ -15,6 +33,8 @@ const SideBar: React.FC = () => {
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
+	const userInfo = useAtomValue(userInfoAtom) // read-only-atom
+	
 	const handleToggle = (category :string) => {
 		if (category === 'f') {
 			setChatOrFreiend(true)
@@ -22,6 +42,25 @@ const SideBar: React.FC = () => {
 			setChatOrFreiend(false)
 		}
 	}
+
+	// 채팅목록 가져오가
+	const {data: chatRooms, error: chatRoomError, isLoading: chatRoomLoading } = useSWR(
+        `${SERVER_API_URL}/api/chats/rooms`,
+        chatFetcher,
+        {
+            onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+              if (error.status === 401) return
+        
+            }, 
+            revalidateOnFocus: false,
+            revalidateOnMount: true,
+        },
+    )
+
+	if (chatRoomLoading) {
+		return <h1>Loading...</h1>
+	}
+
 	return (
 		<div style={{
 			position: 'fixed', 
@@ -60,10 +99,12 @@ const SideBar: React.FC = () => {
 					{/* <Button className={styles.chatButton} color="primary" variant="solid" onPress={onOpen}>Chats</Button> */}
 					{/* 채팅목록 */}
 					<div>
-						<ChatRoom />
-						<ChatRoom />
-						<ChatRoom />
-						<ChatRoom />
+						{chatRooms?.list?.map((chat :Chat) => {
+							return (
+								<ChatRoom chatId={chat.roomId} badge={chat.cnt} />
+							)
+						})
+						}
 					</div>
 				</div>
 			</div>
