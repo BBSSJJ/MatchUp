@@ -60,9 +60,11 @@ public class UserServiceImpl implements UserService {
         if (summonerLeagueInfoResponseDto == null) throw new UsernameNotFoundException(summonerName);
 
         //라이엇 아이디 사용중인지 검사
-        Optional<RiotAccount> riotAccountOptional =
-                riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
-        if (riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
+        riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag)
+                .orElseThrow(() -> new DuplicateKeyException(summonerName));
+
+        //TODO : Statistics Server에 전적 분석 요청
+        webClientFactory.sendSummonerName(name, tag).subscribe( m-> log.info(""));
 
         //저장
         //TODO : 최적화 필요
@@ -82,11 +84,18 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
-        Optional<User> userOptional = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
-                loginUserRequestDto.getSnsId());
-        if (userOptional.isEmpty()) throw new EntityNotFoundException();
+        User user = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
+                loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
 
-        return new UserDto(userOptional.get());
+        // TODO : 유저 업데이트, 닉네임 변경사항 알 수 있도록 response dto 변경요청
+        SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
+                statisticsServerApi.getRiotAccountInfo(user.getRiotAccount().getSummonerProfile().getName(),
+                    user.getRiotAccount().getSummonerProfile().getTag());
+        if (summonerLeagueInfoResponseDto == null) throw new EntityNotFoundException();
+
+
+
+        return new UserDto(user);
     }
 
     @Transactional
@@ -136,9 +145,10 @@ public class UserServiceImpl implements UserService {
             newUser.updateRiotAccount(newRiotAccount);
 
 
+//            webClientFactory.sendSummonerName(summonerInfoDto.getName(), summonerProfile.getTag())
+//                    .subscribe(m -> log.info("message : {} ", m));
             webClientFactory.sendSummonerName(summonerInfoDto.getName(), summonerProfile.getTag())
-                    .subscribe(m -> log.info("message : {} ", m));
-            
+                    .block();
         }
 
         log.info("page {} / tier {} {} : {}", page, registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());

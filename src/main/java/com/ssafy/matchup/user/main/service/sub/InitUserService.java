@@ -67,4 +67,25 @@ public class InitUserService {
         return riotAccount;
     }
 
+    @Transactional
+    public void updateRiotAccount(User user, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto){
+//        SummonerInfoDto summonerInfoDto = summonerLeagueInfoResponseDto.getSummonerInfoDto();
+//        SummonerProfile summonerProfile = SummonerProfile.builder()
+//                .name(name)
+//                .tag(tag)
+//                .iconUrl("https://ddragon.leagueoflegends.com/cdn/" + ddragonVersion
+//                        + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
+//                .level(summonerInfoDto.getSummonerLevel()).build();
+//
+//
+//        RiotAccount riotAccount = RiotAccount.builder()
+//                .id(summonerInfoDto.getId())
+//                .revisionDate(summonerInfoDto.getRevisionDate())
+//                .summonerProfile(summonerProfile)
+//                .tier(leagueInfoDto.getTier())
+//                .leagueRank(leagueInfoDto.getRank())
+//                .leaguePoint(leagueInfoDto.getLeaguePoints())
+//                .build();
+    }
+
 }
