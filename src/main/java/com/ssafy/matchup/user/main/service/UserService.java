@@ -12,5 +12,7 @@ public interface UserService {
 
     UserDto findUser(LoginUserRequestDto loginUserRequestDto);
 
+    UserDto getUser(Long userId);
+
     void registDumpUser(int page, RegistDumpUserRequestDto registDumpUserRequestDto);
 }
