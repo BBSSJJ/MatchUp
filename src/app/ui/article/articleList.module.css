@@ -1,6 +1,6 @@
-*:focus {
+/* *:focus {
 outline: none;
-}
+} */
 
 .article {
 display: flex;

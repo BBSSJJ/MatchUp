@@ -50,7 +50,7 @@ const SideBar: React.FC = () => {
 					<Button className="w-[10px] h-[15px] min-w-0" color="warning">sent</Button>
 					<Button className="w-[10px] h-[15px] min-w-0" color="warning">requested</Button>
 
-					<div className="flex flex-col gap-4 items-center">
+					<div className="flex flex-col gap-4 items-center z-20000">
 						<p>회원가입하고 나와 맞는 듀오를 찾아보세요</p>
 						<Friends />
 					</div>
