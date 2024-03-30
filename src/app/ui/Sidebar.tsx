@@ -101,7 +101,7 @@ const SideBar: React.FC = () => {
 					<div>
 						{chatRooms?.list?.map((chat :Chat) => {
 							return (
-								<ChatRoom chatId={chat.roomId} badge={chat.cnt} />
+								<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} />
 							)
 						})
 						}
