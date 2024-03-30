@@ -110,7 +110,7 @@ export default function Friends() {
     // 버튼 클릭시 수행 : void
     const handleChat = async (userId :number) => {
         await openChatRoom(userId)
-        onOpen  
+        onOpen()
     }
 
     // 해당 유저와의 채팅방이 있다면 그 방의 번호를 roomId로 설정, 없다면 생성하고 생성된 방 번호를 roomId로 설정
@@ -118,7 +118,7 @@ export default function Friends() {
         try {
             let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
             
-            if(typeof roomId === "string") { // 있다면 roomId 설정
+            if(!isNaN(roomId)) { // 방번호가 숫자라면 roomId 설정
                 setRoomId(roomId)
             } else { // 없다면 생성 
                 await createChatRoom(userId, userInfo.userId)
