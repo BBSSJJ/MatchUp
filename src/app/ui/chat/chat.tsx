@@ -47,8 +47,10 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 reconnectDelay: 5000,
             });
     
+            setStompClient(stomp);
+
             try {
-                stomp.activate(); // 활성화
+                stompClient?.activate(); // 활성화
                 console.log('STOMP connected');
                 // 메시지 수신 핸들러 등록
                 stomp.onConnect = () => {
@@ -57,9 +59,6 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                         setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                     });
                 };
-
-                setStompClient(stomp);
-
             } catch (error) {
                 console.error('Failed to activate STOMP:', error);
             }
@@ -67,13 +66,12 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             connectStomp() // 함수 호출
             
 
-
         // 컴포넌트 언마운트 시 연결 종료
-        return () => {
-            if (stompClient) {
-                stompClient.deactivate();
-            }
-        };
+        // return () => {
+        //     if (stompClient) {
+        //         stompClient.deactivate();
+        //     }
+        // };
     }}, []);
 
     const sendMessage = () => {
@@ -127,7 +125,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             <button 
                 className='w-[20%] h-[100%]'  
                 style={{ backgroundColor: 'red' }}
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
             >
                 보내기
             </button>
