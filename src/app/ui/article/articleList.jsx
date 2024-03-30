@@ -53,6 +53,14 @@ export default function ArticleList() {
   const { data: articles, error, isLoading } = useSWR(
     `${SERVER_API_URL}/api/mz/articles`, 
     fetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        if (error.status === 401) return
+  
+      }, 
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
     // { refreshInterval: 500 }
   )
 
