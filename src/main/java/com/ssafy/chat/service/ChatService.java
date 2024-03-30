@@ -2,6 +2,7 @@ package com.ssafy.chat.service;
 
 import com.ssafy.chat.dto.ChatDto;
 import com.ssafy.chat.dto.ChatRoomDto;
+import com.ssafy.chat.dto.FcmDto;
 import com.ssafy.chat.entity.Chat;
 import com.ssafy.chat.entity.ChatRoom;
 import com.ssafy.chat.mapper.ChatMapper;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +26,20 @@ import java.util.List;
 public class ChatService {
 
     private final MongoTemplate mongoTemplate;
-    private final KafkaTemplate<String, Chat> kafkaTemplate;
+    private final KafkaTemplate<String, Chat> kafkaChatTemplate;
+    private final KafkaTemplate<String, FcmDto> kafkaFcmTemplate;
 
-    public void sendChat(String id, ChatDto chatDto) throws Exception {
+    public void sendChat(String roomId, ChatDto chatDto) throws Exception {
 
-        Chat chat = new Chat(id, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now(), false);
+        Chat chat = new Chat(roomId, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now(), false);
         mongoTemplate.save(chat);
 
         // Produce message to Kafka topic
-        kafkaTemplate.send("chat", chat);
+        kafkaChatTemplate.send("chat", chat);
+
+        Long receiverId = findReceiverId(roomId, chat.getUserId());
+        FcmDto fcmDto = new FcmDto(chatDto.getName(), receiverId, "CHAT", chatDto.getContent());
+        kafkaFcmTemplate.send("alarm", fcmDto);
     }
 
     public List<ChatRoomDto> findRooms(Long userId) {
@@ -41,11 +48,7 @@ public class ChatService {
         List<ChatRoomDto> chatRoomDtoList = ChatMapper.instance.convertListChatRoomDto(mongoTemplate.find(query, ChatRoom.class));
         if (chatRoomDtoList != null) {
             for (ChatRoomDto chatRoomDto : chatRoomDtoList) {
-                query = new Query(Criteria.where("roomId").is(chatRoomDto.getRoomId())
-                        .andOperator(
-                                Criteria.where("userId").ne(userId),
-                                Criteria.where("isRead").is(false)
-                        ));
+                query = notReadQuery(chatRoomDto.getRoomId(), userId);
                 chatRoomDto.setCnt(mongoTemplate.count(query, Chat.class));
             }
         }
@@ -54,11 +57,7 @@ public class ChatService {
 
     public List<ChatDto> findChattings(Long userId, String roomId) {
 
-        Query query = new Query(Criteria.where("roomId").is(roomId)
-                .andOperator(
-                        Criteria.where("userId").ne(userId),
-                        Criteria.where("isRead").is(false)
-                ));
+        Query query = notReadQuery(roomId, userId);
 
         Update update = new Update();
         update.set("isRead", true);
@@ -93,10 +92,32 @@ public class ChatService {
 
         Query query = new Query(Criteria.where("participants").all(userId, otherId));
         ChatRoom chatRoom = mongoTemplate.findOne(query, ChatRoom.class);
-        if (chatRoom == null) {
-            log.error("chatRoom is null!");
+        if (chatRoom != null) {
+            ChatRoomDto chatRoomDto = ChatMapper.instance.convertChatRoomDto(chatRoom);
+            query = notReadQuery(chatRoom.getObjectId().toString(), userId);
+            chatRoomDto.setCnt(mongoTemplate.count(query, Chat.class));
+            return chatRoomDto;
         }
 
-        return ChatMapper.instance.convertChatRoomDto(mongoTemplate.findOne(query, ChatRoom.class));
+        return null;
+    }
+
+    public Long findReceiverId(String roomId, Long userId) {
+
+        ObjectId objectId = new ObjectId(roomId);
+        ChatRoom chatRoom = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(objectId)),ChatRoom.class);
+
+        for(Long id : Objects.requireNonNull(chatRoom).getParticipants()) {
+            if(!id.equals(userId)) return id;
+        }
+        return -1L;
+    }
+
+    public Query notReadQuery(String roomId, Long userId) {
+        return new Query(Criteria.where("roomId").is(roomId)
+                .andOperator(
+                        Criteria.where("userId").ne(userId),
+                        Criteria.where("isRead").is(false)
+                ));
     }
 }
