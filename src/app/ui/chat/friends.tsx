@@ -118,7 +118,7 @@ export default function Friends() {
         try {
             let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
             
-            if(!isNaN(roomId)) { // 방번호가 숫자라면 roomId 설정
+            if(typeof roomId === 'string') { // 방번호가 boolean이 아니고 string이라면 roomId 설정
                 setRoomId(roomId)
             } else { // 없다면 생성 
                 await createChatRoom(userId, userInfo.userId)
