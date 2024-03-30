@@ -3,22 +3,43 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import type { DraggableData, DraggableEvent } from 'react-draggable';
 import Draggable from 'react-draggable';
-import { Button, Modal } from 'antd';
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import styles from "./chat.module.css"
+import { Button, Image } from '@nextui-org/react';
 import { useAtom } from 'jotai';
 import { userInfoAtom } from '@/store/authAtom';
 
+interface ChatMessage {
+    userId: number;
+    name: string;
+    iconUrl: string;
+    content: string;
+    timestamp: string; // Assuming LocalDateTime is a string format
+}
 // 개별 채팅방
 export default function DirectMessage({roomId} : {roomId :string}) {
     const [stompClient, setStompClient] = useState<Client | null>(null);
-    const [messages, setMessages] = useState<string[]>([]); // 기존 메시지
+    const [messages, setMessages] = useState<ChatMessage[]>([]); // 기존 메시지
     const [inputMessage, setInputMessage] = useState(""); // 입력 메시지
     const WEBSOCKET_URL = "wss://matchup.site/api/ws";
     const [userInfo, setUserInfo] = useAtom<any>(userInfoAtom)
-
+    
+    const fetchPreviousMessages = async () => {
+        try {
+            const response = await fetch(`${SERVER_API_URL}/api/chat/rooms/${roomId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch previous messages');
+            }
+            const data = await response.json();
+            setMessages(data.list); // 이전 메시지 업데이트 - 배열임
+        } catch (error) {
+            console.error('Error fetching previous messages:', error);
+        }
+    };
 
     useEffect(() => {
+        fetchPreviousMessages() // 기존 메시지 가져와서 보여주기
+
         // STOMP 클라이언트 생성
         const connectStomp = async () => {
             const stomp = new Client({
@@ -32,7 +53,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 // 메시지 수신 핸들러 등록
                 stomp.onConnect = () => {
                     stomp.subscribe(`/topic/${roomId}`, (message) => {
-                        const receivedMessage = message.body;
+                        const receivedMessage = JSON.parse(message.body)
                         setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                     });
                 };
@@ -56,37 +77,44 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     }}, []);
 
     const sendMessage = () => {
-        if (!stompClient) return;
+        // if (!stompClient) return;
+        if (stompClient && stompClient.connected) {
+            if(!inputMessage.trim()) {
+                alert('메시지를 입력하세요')
+                return
+            }
 
-        if(!inputMessage.trim()) {
-            alert('메시지를 입력하세요')
-            return
+            const messageObject = {
+                userId: userInfo.userId,
+                name: userInfo.name,
+                iconUrl: userInfo.iconUrl,
+                content: inputMessage,
+                timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
+              };
+
+            // 입력한 메시지를 서버로 전송
+            // {}에 어떤 내용이 들어가야하는지?
+            stompClient.publish({
+                destination: `/app/chat/${roomId}`, 
+                body: JSON.stringify(messageObject),
+            });
+            
+             // 메시지 입력 필드 초기화
+            setInputMessage("");
         }
-
-        const messageObject = {
-            userId: userInfo.userId,
-            name: userInfo.name,
-            iconUrl: userInfo.iconUrl,
-            content: inputMessage,
-            timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
-          };
-
-        // 입력한 메시지를 서버로 전송
-        // {}에 어떤 내용이 들어가야하는지?
-        stompClient.publish({
-            destination: `/app/chat/${roomId}`, 
-            body: JSON.stringify(messageObject),
-        });
-
-        // 메시지 입력 필드 초기화
-        setInputMessage("");
     };
 
     return (
         <div className={styles.chatModal}>
            <div className='h-[92%]'>
+            message 표시
             {messages.map((message, index) => (
-                <div key={index}>{message}</div>
+                <div key={index}>
+                    <Image src={message.iconUrl} />
+                    <span>{message.name}</span>
+                    <p>{message.content}</p>
+                    <p>{message.timestamp}</p>
+                </div>
             ))}
            </div>
            <div className='flex h-[8%]'>
