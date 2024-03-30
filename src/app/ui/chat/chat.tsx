@@ -31,48 +31,50 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 throw new Error('Failed to fetch previous messages');
             }
             const data = await response.json();
-            setMessages(data.list); // 이전 메시지 업데이트 - 배열임
+            return data
         } catch (error) {
             console.error('Error fetching previous messages:', error);
         }
     };
 
+    // STOMP 클라이언트 생성
+    const connectStomp = async () => {
+        const stomp = new Client({
+            brokerURL: WEBSOCKET_URL,
+            reconnectDelay: 5000,
+        });
+
+        setStompClient(stomp);
+
+        try {
+            stompClient?.activate(); // 활성화
+            console.log('STOMP connected');
+            // 메시지 수신 핸들러 등록
+            stomp.onConnect = () => {
+                stomp.subscribe(`/topic/${roomId}`, (message) => {
+                    const receivedMessage = JSON.parse(message.body)
+                    setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+                });
+            };
+        } catch (error) {
+            console.error('Failed to activate STOMP:', error);
+        }
+    }
+
+
     useEffect(() => {
+
         fetchPreviousMessages() // 기존 메시지 가져와서 보여주기
-
-        // STOMP 클라이언트 생성
-        const connectStomp = async () => {
-            const stomp = new Client({
-                brokerURL: WEBSOCKET_URL,
-                reconnectDelay: 5000,
-            });
-    
-            setStompClient(stomp);
-
-            try {
-                stompClient?.activate(); // 활성화
-                console.log('STOMP connected');
-                // 메시지 수신 핸들러 등록
-                stomp.onConnect = () => {
-                    stomp.subscribe(`/topic/${roomId}`, (message) => {
-                        const receivedMessage = JSON.parse(message.body)
-                        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-                    });
-                };
-            } catch (error) {
-                console.error('Failed to activate STOMP:', error);
-            }
-
-            connectStomp() // 함수 호출
+        connectStomp() // 함수 호출
             
 
         // 컴포넌트 언마운트 시 연결 종료
-        // return () => {
-        //     if (stompClient) {
-        //         stompClient.deactivate();
-        //     }
-        // };
-    }}, []);
+        return () => {
+            if (stompClient) {
+                stompClient.deactivate();
+            }
+        };
+    }, []);
 
     const sendMessage = () => {
         // if (!stompClient) return;
