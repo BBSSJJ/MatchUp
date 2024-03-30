@@ -50,6 +50,11 @@ public class UserController {
                 .body(user);
     }
 
+    @GetMapping("/{user-id}")
+    ResponseEntity<UserDto> userInfo(@PathVariable("user-id") Long userId) {
+        return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
+    }
+
     @GetMapping("/logout")
     ResponseEntity<Void> userLogout() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
@@ -58,11 +63,11 @@ public class UserController {
     }
 
     @PostMapping("/dump/{page}")
-    ResponseEntity<Void> userDumpRegist(@PathVariable("page") int page, @RequestBody RegistDumpUserRequestDto registDumpUserRequestDto){
+    ResponseEntity<Void> userDumpRegist(@PathVariable("page") int page, @RequestBody RegistDumpUserRequestDto registDumpUserRequestDto) {
 
         userService.registDumpUser(page, registDumpUserRequestDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
 }
