@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new DuplicateKeyException(summonerName));
 
         //TODO : Statistics Server에 전적 분석 요청
-        webClientFactory.sendSummonerName(name, tag).subscribe( m-> log.info(""));
+        webClientFactory.sendSummonerName(name, tag).subscribe(m -> log.info(""));
 
         //저장
         //TODO : 최적화 필요
@@ -90,12 +89,17 @@ public class UserServiceImpl implements UserService {
         // TODO : 유저 업데이트, 닉네임 변경사항 알 수 있도록 response dto 변경요청
         SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
                 statisticsServerApi.getRiotAccountInfo(user.getRiotAccount().getSummonerProfile().getName(),
-                    user.getRiotAccount().getSummonerProfile().getTag());
+                        user.getRiotAccount().getSummonerProfile().getTag());
         if (summonerLeagueInfoResponseDto == null) throw new EntityNotFoundException();
 
 
-
         return new UserDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDto getUser(Long userId) {
+        return new UserDto(userRepository.getReferenceById(userId));
     }
 
     @Transactional
