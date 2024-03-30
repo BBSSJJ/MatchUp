@@ -26,6 +26,8 @@ import {capitalize} from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import useSWR from 'swr';
 import { SERVER_API_URL } from "@/utils/instance-axios";
+import styles from './articleList.module.css'
+import './article.css'
 
 const fetcher = async (url) => {
   const response = await fetch(url); // 서버로부터 데이터 가져오기
@@ -128,7 +130,7 @@ export default function ArticleList() {
           <div className="flex flex-col h-[45px]">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             {/* 투표현황 */}
-            <div className="articleVote">
+            <div className={styles.articleVote}>
               {/* width를 실제 데이터와 연동 */}
               <div className="articleVoteLeftTiny text-tiny" style={{ width: `${article.leftSympathyCount === article.rightSympathyCount ? '50%' : `${(article.leftSympathyCount / (article.leftSympathyCount + article.rightSympathyCount)) * 100}%`}`, height: "15px" }}><span>{article.leftSympathyCount}</span></div>
               <div className="articleVoteRightTiny text-tiny" style={{ width: `${article.leftSympathyCount === article.rightSympathyCount ? '50%' : `${(article.rightSympathyCount / (article.leftSympathyCount + article.rightSympathyCount)) * 100}%`}`, height: "15px" }}><span>{article.rightSympathyCount}</span></div>
