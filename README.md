@@ -45,10 +45,14 @@
 1. 덤프파일 복사
 
    ```
-
+   docker cp {파일경로} matchup_statistics_db:/
    ```
 
 2. 복사파일로 복구
+
+   ```
+   mongorestore --db matchup_statistics_db {파일경로}
+   ```
 
 ## 다이아 완료
 
@@ -155,41 +159,44 @@
 
 ### 플레티넘 2
 
+2199 완료(3398605ms)
+
 ### 플레티넘 3
 
+3401 완료(3640902ms)
+
 ### 플레티넘 4
+
+4446 오류(노트북 꺼짐)
+DB dump 완료
 
 ## 골드
 
 ### 골드 1
 
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
+1205 완료(3581025ms)
 
 ### 골드 2
 
+1651 오류(no summoner name error)
+
 ### 골드 3
 
+2856 완료(3469582ms)
+
 ### 골드 4
+
+4058 완료(3527433ms)
 
 ## 실버
 
 ### 실버 1
 
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
+1205 완료(3572322ms)
 
 ### 실버 2
+
+2453 완료(3383949ms)
 
 ### 실버 3
 
