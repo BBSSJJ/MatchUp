@@ -39,6 +39,11 @@ export default function ChatModal ({isOpen, onOpenChange} :{
                         method: 'DELETE',
                         headers: {
                         'Content-Type': 'application/json'
+
+
+
+
+                        
                         },
                     })
                     onClose()

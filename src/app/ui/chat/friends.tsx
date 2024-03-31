@@ -83,15 +83,15 @@ const IsChatRoom = async (userId: number) => {
 
 
 // 친구목록
-export default function Friends() {
+export default function Friends({mode} :{mode :string}) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [shouldFetch, setShouldFetch] = useState(true)
     const [roomId, setRoomId] = useAtom(roomIdAtom)
     const [userInfo, setUserInfo] = useAtom<any>(userInfoAtom)
 
-    // 친구 데이터 가져오기
+    // 친구 데이터 가져오기(F/S/R)
     const {data: friends, error: friendError, isLoading: friendLoading } = useSWR(
-        `${SERVER_API_URL}/api/friends?friendStatus=FRIEND`,
+        `${SERVER_API_URL}/api/friends?friendStatus=${mode}`,
         friendFetcher,
         {
             onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
@@ -151,8 +151,9 @@ export default function Friends() {
 
     return (
         <>
-        
-        {friends?.list?.map((friend :Friend) => {
+        {friends?.list?.length === 0 ? (
+            <p>No Friends yet</p>
+        ) : (friends?.list?.map((friend :Friend) => {
             return (
                 <Card key={friend.userId} className="max-w-[340px]">
                     <CardHeader className="justify-between">
@@ -186,7 +187,7 @@ export default function Friends() {
                     </CardHeader>
                 </Card>
             )
-            })} 
+            }))} 
         </>
     )
 }
