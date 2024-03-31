@@ -99,7 +99,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
-						{userInfo.userId !== userId && (
+						{userInfo.userId !== Number(userId) && (
 							<Button 
 								className="text-tiny text-white bg-black/20" 
 								variant="flat" 
@@ -134,7 +134,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<p>승률 :  %</p>
 					<p>티어 : {user.riotAccount.tier}</p>
 					<p>최근 사용한 챔피언</p>
-					<div>
+					<div className="flex">
 					{recentChampions.map((champion, index) => {
 						return (
 							<Image 
@@ -152,8 +152,8 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						{positions.map((pos, index) => {
 							return (
 								<div key={index} className="flex">
-									<Image src={pos}/>
-									<span></span>
+									<Image src={pos} width="10px" height="10px"/>
+									<p className={styles.bar}><span className="w-[20%]"></span></p>
 								</div>
 							)
 						})
