@@ -20,5 +20,5 @@
 }
 
 .chats {
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
