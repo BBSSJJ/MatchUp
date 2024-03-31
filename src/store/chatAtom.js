@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils';
 
 export const isRoomOpenAtom = atom(false)
-export const roomIdAtom = atom("id")
+export const roomIdAtom = atomWithStorage("")
