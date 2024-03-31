@@ -1,3 +1,4 @@
+"use client"
 import {Card, CardFooter, Image, Button, Badge} from "@nextui-org/react";
 import styles from "./user-info.module.css"
 import { useAtom } from "jotai";
