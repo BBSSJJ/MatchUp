@@ -86,7 +86,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 stompClient.deactivate();
             }
         };
-    }, [roomId]);
+    }, []);
 
     const sendMessage = () => {
         // if (!stompClient) return;

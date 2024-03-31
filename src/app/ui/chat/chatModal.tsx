@@ -16,7 +16,6 @@ export default function ChatModal ({isOpen, onOpenChange} :{
     const [roomId, setRoomId] = useAtom<any>(roomIdAtom)
 
     
-
     return (
     <Modal
         className="z-30000"
