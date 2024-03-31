@@ -9,6 +9,9 @@ import { Button, Image } from '@nextui-org/react';
 import { useAtom } from 'jotai';
 import { userInfoAtom } from '@/store/authAtom';
 
+interface ChatMessages {
+    list : ChatMessage[]
+}
 interface ChatMessage {
     userId: number;
     name: string;
@@ -19,7 +22,7 @@ interface ChatMessage {
 // 개별 채팅방
 export default function DirectMessage({roomId} : {roomId :string}) {
     const [stompClient, setStompClient] = useState<Client | null>(null);
-    const [messages, setMessages] = useState<ChatMessage[]>([]); // 기존 메시지
+    const [messages, setMessages] = useState<ChatMessages>({"list":[]}); // 기존 메시지
     const [inputMessage, setInputMessage] = useState(""); // 입력 메시지
     const WEBSOCKET_URL = "wss://matchup.site/api/ws";
     const [userInfo, setUserInfo] = useAtom<any>(userInfoAtom)
@@ -31,13 +34,14 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 throw new Error('Failed to fetch previous messages');
             }
             const data = await response.json();
-            return data
+            setMessages(data)
+
         } catch (error) {
             console.error('Error fetching previous messages:', error);
         }
     };
 
-    // STOMP 클라이언트 생성
+    // 1. STOMP 클라이언트 생성
     const connectStomp = async () => {
         const stomp = new Client({
             brokerURL: WEBSOCKET_URL,
@@ -52,7 +56,11 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             stomp.onConnect = () => {
                 stomp.subscribe(`/topic/${roomId}`, (message) => {
                     const receivedMessage = JSON.parse(message.body)
-                    setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+                    console.log("receivedMessage:", receivedMessage)
+                    setMessages((prevMessages) => ({
+                        ...prevMessages,
+                        list: [...prevMessages.list, receivedMessage],
+                      }));
                 });
             };
 
@@ -93,6 +101,8 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
             };
 
+            console.log("messageObject:", messageObject)
+
             // 입력한 메시지를 서버로 전송
             // {}에 어떤 내용이 들어가야하는지?
             stompClient.publish({
@@ -109,7 +119,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
         <div className={styles.chatModal}>
            <div className='h-[92%]'>
             message 표시
-            {messages.map((message, index) => (
+            {messages.list.map((message, index) => (
                 <div key={index}>
                     <Image src={message.iconUrl} />
                     <span>{message.name}</span>
