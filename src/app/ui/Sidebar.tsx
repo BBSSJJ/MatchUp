@@ -34,8 +34,11 @@ const SideBar: React.FC = () => {
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
+	const [friendMode, setFriendMode] = useState('F')
 	const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
 	
+
+	// 친구, 채팅 토글
 	const handleToggle = (category :string) => {
 		if (category === 'f') {
 			setChatOrFreiend(true)
@@ -43,6 +46,11 @@ const SideBar: React.FC = () => {
 			setChatOrFreiend(false)
 			mutate(`${SERVER_API_URL}/api/chats/rooms`)
 		}
+	}
+
+	// 친구 버튼 토글(기존친구/내가요청보낸/나에게요청한)
+	const handleFriendToggle = (category :string) => {
+		setFriendMode(category)
 	}
 
 	// 채팅목록 가져오기
@@ -88,14 +96,13 @@ const SideBar: React.FC = () => {
 			<Button className="w-[50px] h-[30px] min-w-0" color="warning" onPress={()=> handleToggle('c')}>채팅</Button>
 			{/* 친구목록 */}
 			<div className={chatOrFreiend ? "" : styles.hide}>
-				<span className={styles.title}>Friends</span>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning">friends</Button>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning">sent</Button>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning">requested</Button>
+				<p className={styles.title}>Friends</p>
+				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('FRIEND')}>friends</Button>
+				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('SENT')}>sent</Button>
+				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('RECEIVED')}>requested</Button>
 
 				<div className="flex flex-col gap-4 items-center z-20000">
-					<p>회원가입하고 나와 맞는 듀오를 찾아보세요</p>
-					<Friends />
+					<Friends mode={friendMode}/>
 				</div>
 			</div>
 			{/* 채팅목록창 */}
