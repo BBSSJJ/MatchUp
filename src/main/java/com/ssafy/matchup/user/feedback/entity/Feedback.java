@@ -2,13 +2,13 @@ package com.ssafy.matchup.user.feedback.entity;
 
 import com.ssafy.matchup.user.main.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "feedback")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,9 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedbacked_user_id")
-    private User feedBackedUser;
+    private User feedbackedUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedbacking_user_id")
-    private User feedBackingUser;
+    private User feedbackingUser;
 }
