@@ -22,13 +22,12 @@
     grid-area: a;
     margin: 10px;
 }
+
 .item2 {
     grid-area: b;
     margin: 10px;
     
 }
-
-
 
 .item3 {
     grid-area: c;
@@ -46,11 +45,16 @@
     box-shadow: 0 0 5px 1px rgba(54, 196, 190, 0.35); /* 파란색 네온 효과 */
 }
 
-
 .keywords {
     background-color: #384654;
 }
 
 .bar {
+    display: flex;
+    justify-content: flex-start;
     background-color: #d3cbb8;
+}
+
+.barContent {
+    background-color: #35ccbc;
 }

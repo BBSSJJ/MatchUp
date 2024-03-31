@@ -53,8 +53,8 @@ body {
 
 .main-content {
   flex-grow: 1;
-  width: calc(100% - 280px);
+  width: calc(100% - 320px);
   height: 100%; 
-  margin-right: 280px;
+  margin-right: 320px;
 }
 
