@@ -26,7 +26,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     
     const fetchPreviousMessages = async () => {
         try {
-            const response = await fetch(`${SERVER_API_URL}/api/chat/rooms/${roomId}`);
+            const response = await fetch(`${SERVER_API_URL}/api/chats/rooms/${roomId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch previous messages');
             }
@@ -44,10 +44,9 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             reconnectDelay: 5000,
         });
 
-        setStompClient(stomp);
 
         try {
-            stompClient?.activate(); // 활성화
+            stomp.activate(); // 활성화
             console.log('STOMP connected');
             // 메시지 수신 핸들러 등록
             stomp.onConnect = () => {
@@ -56,6 +55,9 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                 });
             };
+
+            setStompClient(stomp);
+
         } catch (error) {
             console.error('Failed to activate STOMP:', error);
         }
@@ -66,7 +68,6 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 
         fetchPreviousMessages() // 기존 메시지 가져와서 보여주기
         connectStomp() // 함수 호출
-            
 
         // 컴포넌트 언마운트 시 연결 종료
         return () => {
@@ -74,7 +75,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 stompClient.deactivate();
             }
         };
-    }, []);
+    }, [roomId]);
 
     const sendMessage = () => {
         // if (!stompClient) return;
@@ -90,7 +91,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 iconUrl: userInfo.iconUrl,
                 content: inputMessage,
                 timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
-              };
+            };
 
             // 입력한 메시지를 서버로 전송
             // {}에 어떤 내용이 들어가야하는지?
