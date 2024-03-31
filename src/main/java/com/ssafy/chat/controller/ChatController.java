@@ -44,6 +44,7 @@ public class ChatController {
     public ResponseEntity<?> createChatRoom(HttpServletRequest request, @RequestBody ChatRoomDto chatRoomDto) {
 
         try {
+            log.error("input ChatRoomDto : {}", chatRoomDto.toString());
             chatService.createChatRoom(jwtTokenUtil.getUserId(request), chatRoomDto);
         } catch (Exception e) {
             return new ResponseEntity<>(new MessageDataDto(e.getMessage()), HttpStatus.OK);

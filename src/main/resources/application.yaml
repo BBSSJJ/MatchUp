@@ -10,7 +10,6 @@ logging:
 spring:
   data:
     mongodb:
-      #      uri: mongodb://${DB_ID}:${DB_PASSWORD}@${MONGO_CHAT}:27017/admin
       uri: mongodb://${MATCHUP_CHAT_DB}:3310
       database: matchup
   kafka:

@@ -1,5 +1,6 @@
 package com.ssafy.chat.service;
 
+import com.mongodb.client.MongoClient;
 import com.ssafy.chat.dto.ChatDto;
 import com.ssafy.chat.dto.ChatRoomDto;
 import com.ssafy.chat.dto.FcmDto;
@@ -51,6 +52,7 @@ public class ChatService {
 
         if (chatRoomDtoList != null) {
             for (ChatRoomDto chatRoomDto : chatRoomDtoList) {
+                log.error("- roomId : {}", chatRoomDto.getRoomId());
                 query = notReadQuery(chatRoomDto.getRoomId(), userId);
                 chatRoomDto.setCnt(mongoTemplate.count(query, Chat.class));
             }
@@ -66,13 +68,14 @@ public class ChatService {
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
 
-        query = new Query(Criteria.where(roomId).is(roomId));
+        query = new Query(Criteria.where(roomId).is(new ObjectId(roomId)));
         return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
     }
 
     public void createChatRoom(Long userId, ChatRoomDto chatRoomDto) throws Exception {
 
         if (!chatRoomDto.getParticipants().contains(userId)) {
+            log.error("ILLEGAL REQUEST!!!!!!");
             throw new Exception("illegal request");
         }
 
