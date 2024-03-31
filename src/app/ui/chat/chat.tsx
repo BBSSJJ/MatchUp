@@ -128,14 +128,16 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 				<div className={styles.messages}>
 					{/* message 표시 */}
 					{messages.list.map((message, index) => (
-						<div key={index}  className={`${styles.messageContainer} ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
-							<Image src={message.iconUrl} width="20px" height="20px" />
-							<span className='text-tiny'>{message.name}</span>
-							<p className={`${styles.messageBubble} text-small`}>{message.content}</p>
+						<div key={index}  className={`${styles.messageContainer}`}>
+							<div className='flex'>
+								<Image src={message.iconUrl} width="20px" height="20px" />
+								<span className='text-tiny'>{message.name}</span>
+							</div>
+							<p className={`${styles.messageBubble} text-small ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>{message.content}</p>
 							<p className='text-tiny'>{message.timestamp}</p>
 						</div>
 					))}
-					</div>
+				</div>
 					
 				</div>
 				<div className={styles.input}>

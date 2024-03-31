@@ -10,6 +10,7 @@ import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR, { mutate } from "swr";
+
 import  User from './Navbar'
 
 interface Chat {
@@ -78,22 +79,22 @@ const SideBar: React.FC = () => {
 			right: 0, 
 			top: '4rem',
 			bottom: 0, 
-			width: '280px',
+			width: '320px',
 			height: "100vh",
 			color: 'white',
 			backgroundColor: '#161A1E', 
 			overflowY: 'auto',
 			padding: '20px', 
 			zIndex: 1000,
-			boxShadow: '0 0 0.5px 0.15px #36c4be',
+			boxShadow: '0 0 0.75px 0.15px #35ccbc',
 		}}>
 			{!isLoggedIn && <p>먼저 로그인하고 서비스를 이용하세요</p>}
 			{/* 로그인 하면 보이는 기능 */}
 			{isLoggedIn && 
 			<div>
 			{/* 토글버튼 */}
-			<Button className="w-[50px] h-[30px] min-w-0" color="warning" onPress={()=> handleToggle('f')}>친구</Button>
-			<Button className="w-[50px] h-[30px] min-w-0" color="warning" onPress={()=> handleToggle('c')}>채팅</Button>
+			<Button className="h-[30px] min-w-0 mx-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>친구</Button>
+			<Button className="h-[30px] min-w-0" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>채팅</Button>
 			{/* 친구목록 */}
 			<div className={chatOrFreiend ? "" : styles.hide}>
 				<p className={styles.title}>Friends</p>
