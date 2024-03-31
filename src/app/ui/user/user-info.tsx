@@ -1,5 +1,9 @@
 import {Card, CardFooter, Image, Button, Badge} from "@nextui-org/react";
 import styles from "./user-info.module.css"
+import { useAtom } from "jotai";
+import { isLoggedInAtom } from "@/store/authAtom";
+import { SERVER_API_URL } from "@/utils/instance-axios";
+import { error } from "console";
 
 
 export interface UserData {
@@ -10,12 +14,41 @@ export interface UserData {
 
 interface UserProfileProps {
 	data: UserData;
+	userId: string;
 }
 
-export default function UserProfile({ data } :UserProfileProps) {
+export default function UserProfile({ data, userId } :UserProfileProps) {
 	const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
 	// const userdata = data ?? { tier: 'Default', win: 0, lose: 0 };
 	const victory_rate = typeof data.win === 'number' && typeof data.lose === 'number' ? data.win / (data.win + data.lose) : ""
+	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+
+	// 친구 요청
+	const handlefollow = async () => {
+		if (!isLoggedIn) {
+			alert("먼저 로그인해주세요")
+			return
+		} else {
+			try {
+				const response = await fetch(`${SERVER_API_URL}/api/friends/${userId}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				})
+				
+				if(!response.ok) {
+					throw error("친구요청 실패")
+				}
+				return response.json()
+			} catch(error) {
+				console.error(error)
+			}
+		}
+	}
+	
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.item1}>
@@ -33,7 +66,14 @@ export default function UserProfile({ data } :UserProfileProps) {
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">User Id</p>
-						<Button className="text-tiny text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm">
+						<Button 
+							className="text-tiny text-white bg-black/20" 
+							variant="flat" 
+							color="default" 
+							radius="lg" 
+							size="sm"
+							onPress={handlefollow}
+						>
 							친구요청
 						</Button>
 					</CardFooter>
