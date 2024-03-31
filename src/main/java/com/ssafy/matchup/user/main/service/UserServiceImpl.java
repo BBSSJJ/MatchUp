@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -59,8 +60,8 @@ public class UserServiceImpl implements UserService {
         if (summonerLeagueInfoResponseDto == null) throw new UsernameNotFoundException(summonerName);
 
         //라이엇 아이디 사용중인지 검사
-        riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag)
-                .orElseThrow(() -> new DuplicateKeyException(summonerName));
+        Optional<RiotAccount> riotAccountOptional =  riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
+        if(riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
 
         //TODO : Statistics Server에 전적 분석 요청
         webClientFactory.sendSummonerName(name, tag).subscribe(m -> log.info(""));
@@ -87,10 +88,10 @@ public class UserServiceImpl implements UserService {
                 loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
 
         // TODO : 유저 업데이트, 닉네임 변경사항 알 수 있도록 response dto 변경요청
-        SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
-                statisticsServerApi.getRiotAccountInfo(user.getRiotAccount().getSummonerProfile().getName(),
-                        user.getRiotAccount().getSummonerProfile().getTag());
-        if (summonerLeagueInfoResponseDto == null) throw new EntityNotFoundException();
+//        SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
+//                statisticsServerApi.getRiotAccountInfo(user.getRiotAccount().getSummonerProfile().getName(),
+//                        user.getRiotAccount().getSummonerProfile().getTag());
+//        if (summonerLeagueInfoResponseDto == null) throw new EntityNotFoundException();
 
 
         return new UserDto(user);
