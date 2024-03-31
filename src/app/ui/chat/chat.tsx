@@ -123,19 +123,22 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     };
 
     return (
-        <div className={styles.chatModal}>
-           <div className={styles.messages}>
-            {/* message 표시 */}
-            {messages.list.map((message, index) => (
-                <div key={index}  className={`${styles.messageContainer} ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
-                    <Image src={message.iconUrl} width="20px" height="20px" />
-                    <span className='text-tiny'>{message.name}</span>
-                    <p className={`${styles.messageBubble} text-small`}>{message.content}</p>
-                    <p className='text-tiny'>{message.timestamp}</p>
-                </div>
-            ))}
-            </div>
-            <div className={styles.input}>
+		<div>
+			<div className={styles.chatModal}>
+				<div className={styles.messages}>
+					{/* message 표시 */}
+					{messages.list.map((message, index) => (
+						<div key={index}  className={`${styles.messageContainer} ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
+							<Image src={message.iconUrl} width="20px" height="20px" />
+							<span className='text-tiny'>{message.name}</span>
+							<p className={`${styles.messageBubble} text-small`}>{message.content}</p>
+							<p className='text-tiny'>{message.timestamp}</p>
+						</div>
+					))}
+					</div>
+					
+				</div>
+				<div className={styles.input}>
 				<input
 					type="text"
 					value={inputMessage}
@@ -153,8 +156,9 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 				>
 					보내기
 				</button>
-            </div>
-        </div>
+			</div>
+		</div>
+        
     )
 }
 

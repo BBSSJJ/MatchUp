@@ -40,23 +40,24 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    border-radius: 5px;
     margin-bottom: 10px;
-  }
+}
   
-  .messageBubble {
+.messageBubble {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 5px;
-  }
-  
-  /* 자기 자신의 메시지 스타일 */
-  .myMessage {
-    background-color: #f0f0f0; /* 예시 배경색 */
+}
+
+/* 자기 자신의 메시지 스타일 */
+.myMessage {
+    background-color: #40d6db; /* 예시 배경색 */
     align-self: flex-end;
-  }
+}
   
-  /* 상대방의 메시지 스타일 */
-  .otherMessage {
-    background-color: #e0e0e0; /* 예시 배경색 */
+/* 상대방의 메시지 스타일 */
+.otherMessage {
+    background-color: #d6b86c; /* 예시 배경색 */
     align-self: flex-start;
-  }
+}
