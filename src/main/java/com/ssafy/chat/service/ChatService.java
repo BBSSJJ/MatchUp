@@ -62,13 +62,14 @@ public class ChatService {
 
     public List<ChatDto> findChattings(Long userId, String roomId) {
 
+        log.error("채팅 내역 불러오기 ----------------------------");
         Query query = notReadQuery(roomId, userId);
 
         Update update = new Update();
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
 
-        query = new Query(Criteria.where(roomId).is(new ObjectId(roomId)));
+        query = new Query(Criteria.where(roomId).is(roomId));
         return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
     }
 
