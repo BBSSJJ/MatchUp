@@ -74,10 +74,10 @@ const IsChatRoom = async (userId: number) => {
             return data.roomId ; // string 
         }
         // 없으면 false 반환
-        return false
+        return 
     } catch (error) {
         console.error('Error checking chat room:', error);
-        return false; // 에러 발생 시에도 false 반환
+        return  // 에러 발생 시에도 false 반환
     }
 };
 
