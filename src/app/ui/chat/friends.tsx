@@ -67,14 +67,13 @@ const IsChatRoom = async (userId: number) => {
                 'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
             },
         });
-        console.log("상대와의 채팅방 목록:", response)
-        // 있으면 roomId 반환
-        if (Object.keys(response).length !== 0 && response.constructor === Object) {
-            const data = await response.json()
-            return data.roomId ; // string 
-        }
-        // 없으면 false 반환
-        return 
+        console.log("상대와의 채팅방 목록:", response.json())
+        
+        // if (Object.keys(response).length !== 0 && response.constructor === Object) {
+        //     const data = await response.json()
+        //     return data.roomId ; // string 
+        // }
+        return response.json()
     } catch (error) {
         console.error('Error checking chat room:', error);
         return  // 에러 발생 시에도 false 반환
@@ -119,12 +118,13 @@ export default function Friends() {
             let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
             console.log("기존의 roomID :", roomId)
 
-            if(typeof roomId === 'string') { // 방번호가 boolean이 아니고 string이라면 roomId 설정
+            if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
                 setRoomId(roomId)
             } else { // 없다면 생성 
                 // await createChatRoom(userId, userInfo.userId)
                 // const roomId = await IsChatRoom(userId)
-                setRoomId(roomId)
+                console.log('아직 채팅방 없음')
+                // setRoomId(roomId)
             }
         } catch (error) {
             console.error(error)
