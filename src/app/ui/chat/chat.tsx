@@ -57,9 +57,10 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             // 메시지 수신 핸들러 등록
             stomp.onConnect = () => {
                 stomp.subscribe(`/topic/${roomId}`, (message) => {
-                    const receivedMessage = JSON.parse(message.body);
-                    console.log("receivedMessage:", receivedMessage);
+                    const receivedMessage = JSON.parse(message.body)
+                    console.log("receivedMessage:", receivedMessage)
                     setMessages((prevMessages) => ({
+                        ...prevMessages,
                         list: [...prevMessages.list, receivedMessage],
                     }));
                 });
@@ -101,7 +102,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 content: inputMessage,
                 timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
             };
-            console.log("userInfo atom: ", userInfo)
+            console.log("userInfo atom: " ,userInfo)
             console.log("messageObject:", messageObject)
 
             // 입력한 메시지를 서버로 전송
