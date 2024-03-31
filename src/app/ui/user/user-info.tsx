@@ -13,14 +13,13 @@ export interface UserData {
 } 
 
 interface UserProfileProps {
-	data: UserData;
 	userId: string;
 }
 
-export default function UserProfile({ data, userId } :UserProfileProps) {
+export default function UserProfile({ userId } :UserProfileProps) {
 	const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
 	// const userdata = data ?? { tier: 'Default', win: 0, lose: 0 };
-	const victory_rate = typeof data.win === 'number' && typeof data.lose === 'number' ? data.win / (data.win + data.lose) : ""
+	// const victory_rate = typeof data.win === 'number' && typeof data.lose === 'number' ? data.win / (data.win + data.lose) : ""
 	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
 	// 친구 요청
@@ -95,8 +94,8 @@ export default function UserProfile({ data, userId } :UserProfileProps) {
 			<div className={styles.item3}>
 				<div className="h-[250px] w-[600px]">
 					<p>전적 정보</p>
-					<p>{data.win} / {data.lose}</p>
-					<p>승률 45{ victory_rate }%</p>
+					{/* <p>{data.win} / {data.lose}</p> */}
+					{/* <p>승률 45{ victory_rate }%</p> */}
 					<p>티어 : master</p>
 					<p>최근 사용한 챔피언</p>
 					<p>선호 포지션</p>
