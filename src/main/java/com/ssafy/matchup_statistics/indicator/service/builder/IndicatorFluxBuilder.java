@@ -39,7 +39,7 @@ public class IndicatorFluxBuilder {
             log.debug("매치 id({}) 분석 시작", matchId);
 
             // 매치정보는 별도로 저장
-            matchSaveService.save(matchDetailResponseDtoByMatchId);
+//            matchSaveService.save(matchDetailResponseDtoByMatchId);
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {
