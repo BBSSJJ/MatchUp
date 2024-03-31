@@ -51,7 +51,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                     <div className="flex gap-5">
                     <Avatar isBordered radius="full" size="md" src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png" />
                     <div className="flex flex-col gap-1 items-start justify-center">
-                        <h4>{user.riotAccount.summonerProfile.name}</h4>
+                        <h4>{user.userId}</h4>
                         <h4 className="text-[7px]">{chatId}</h4>
                         <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4>
                         <h5 className="text-tiny tracking-tight text-default-400">가장 최근 메시지</h5>
