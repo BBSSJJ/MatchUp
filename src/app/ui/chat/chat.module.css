@@ -7,3 +7,13 @@
     right: 10px; */
     /* z-index: 2000; */
 }
+
+.input {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+}
+
+.messages {
+    overflow-y: scroll;
+}

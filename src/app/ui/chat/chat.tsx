@@ -124,7 +124,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 
     return (
         <div className={styles.chatModal}>
-           <div className='h-[92%]'>
+           <div className={styles.messages}>
             message 표시
             {messages.list.map((message, index) => (
                 <div key={index}>
@@ -134,29 +134,26 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                     <p>{message.timestamp}</p>
                 </div>
             ))}
-           </div>
-            <div className='flex h-[8%]'>
-           
-			<input
-				className='w-[80%] h-[100%]'
-				type="text"
-				value={inputMessage}
-				onChange={(e) => setInputMessage(e.target.value)}
-				onKeyDown={(e) => {
-					if (e.key === 'Enter') {
-						sendMessage();
-					}
-				}}
-			/>
-			<button 
-				className='w-[20%] h-[100%]'  
-				style={{ backgroundColor: 'red' }}
-				onClick={() => sendMessage()}
-			>
-				보내기
-			</button>
-			
-           </div>
+            </div>
+            <div className={styles.input}>
+				<input
+					type="text"
+					value={inputMessage}
+					onChange={(e) => setInputMessage(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							sendMessage();
+						}
+					}}
+				/>
+				<button 
+					className='w-[20%] h-[100%]'  
+					style={{ backgroundColor: 'red' }}
+					onClick={() => sendMessage()}
+				>
+					보내기
+				</button>
+            </div>
         </div>
     )
 }
