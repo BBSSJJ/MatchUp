@@ -37,13 +37,13 @@ export default async function UserPage({
   params: { id :string, };
 }) {
 	
-	const userData2 = await GetTier(encryptedSummonerId)
-	console.log(userData2, 'Userdata');
+	// const userData2 = await GetTier(encryptedSummonerId)
+	// console.log(userData2, 'Userdata');
 
 	return (
 		<div className={styles.container}>
 			<h3>User Page :{id}</h3>
-			<UserProfile data= {userData2 as UserData} userId={id}/>
+			<UserProfile userId={id}/>
 		</div>
 	)
 }

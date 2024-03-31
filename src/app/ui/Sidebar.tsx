@@ -34,7 +34,7 @@ const SideBar: React.FC = () => {
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
-	const [friendMode, setFriendMode] = useState('F')
+	const [friendMode, setFriendMode] = useState('FRIEND')
 	const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
 	
 
