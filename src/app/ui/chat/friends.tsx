@@ -69,7 +69,7 @@ const IsChatRoom = async (userId: number) => {
         });
         const resData = await response.json()
         console.log("상대와의 채팅방 목록:", resData)
-        
+        return resData
         // if (Object.keys(response).length !== 0 && response.constructor === Object) {
         //     const data = await response.json()
         //     return data.roomId ; // string 
@@ -123,10 +123,11 @@ export default function Friends() {
             if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
                 setRoomId(roomId)
             } else { // 없다면 생성 
-                // await createChatRoom(userId, userInfo.userId)
-                // const roomId = await IsChatRoom(userId)
                 console.log('아직 채팅방 없음')
-                // setRoomId(roomId)
+                await createChatRoom(userId, userInfo.userId)
+                const roomId = await IsChatRoom(userId)
+                setRoomId(roomId)
+                console.log("채팅방 생성 :", roomId)
             }
         } catch (error) {
             console.error(error)
