@@ -66,7 +66,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                     }));
                 });
             };
-			
+
             setStompClient(stomp);
 
         } catch (error) {
@@ -125,12 +125,12 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     return (
         <div className={styles.chatModal}>
            <div className={styles.messages}>
-            message 표시
+            {/* message 표시 */}
             {messages.list.map((message, index) => (
-                <div key={index}>
+                <div key={index}  className={`${styles.messageContainer} ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
                     <Image src={message.iconUrl} width="20px" height="20px" />
                     <span className='text-tiny'>{message.name}</span>
-                    <p>{message.content}</p>
+                    <p className={`${styles.messageBubble} text-small`}>{message.content}</p>
                     <p className='text-tiny'>{message.timestamp}</p>
                 </div>
             ))}
