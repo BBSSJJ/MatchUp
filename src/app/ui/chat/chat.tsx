@@ -38,6 +38,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 
             console.log("fetched messages :", messages)
 
+            return data
         } catch (error) {
             console.error('Error fetching previous messages:', error);
         }
@@ -85,7 +86,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 stompClient.deactivate();
             }
         };
-    }, []);
+    }, [roomId]);
 
     const sendMessage = () => {
         // if (!stompClient) return;
@@ -97,8 +98,8 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 
             const messageObject = {
                 userId: userInfo.userId,
-                name: userInfo,
-                iconUrl: userInfo.iconUrl,
+                name: userInfo.riotAccount.summonerProfile.name.replaceAll('+', ' '),
+                iconUrl: userInfo.riotAccount.summonerProfile.iconUrl,
                 content: inputMessage,
                 timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
             };
