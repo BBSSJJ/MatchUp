@@ -88,6 +88,10 @@ export default function DirectMessage({roomId} : {roomId :string}) {
         };
     }, []);
 
+	useEffect(() => {
+		console.log('Messages 상태가 업데이트됨:', messages);
+	  }, [messages]);
+
     const sendMessage = () => {
         // if (!stompClient) return;
         if (stompClient && stompClient.connected) {
