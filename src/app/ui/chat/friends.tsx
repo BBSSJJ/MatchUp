@@ -86,7 +86,7 @@ const IsChatRoom = async (userId: number) => {
 export default function Friends() {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [shouldFetch, setShouldFetch] = useState(true)
-    const [roomId, setRoomId] = useAtom<string>(roomIdAtom)
+    const [roomId, setRoomId] = useAtom(roomIdAtom)
     const [userInfo, setUserInfo] = useAtom<any>(userInfoAtom)
 
     // 친구 데이터 가져오기
