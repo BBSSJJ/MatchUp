@@ -99,7 +99,7 @@ const SideBar: React.FC = () => {
 				<div className={chatOrFreiend ? styles.hide : "" }>
 					{/* <Button className={styles.chatButton} color="primary" variant="solid" onPress={onOpen}>Chats</Button> */}
 					{/* 채팅목록 */}
-					<div>
+					<div className={styles.chats}>
 						{chatRooms?.list?.map((chat :Chat) => {
 							return (
 								<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} you={chat.participants.filter(member => member !== userInfo.userId)}/>
