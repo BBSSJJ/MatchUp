@@ -67,7 +67,8 @@ const IsChatRoom = async (userId: number) => {
                 'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
             },
         });
-        console.log("상대와의 채팅방 목록:", response.json())
+        const resData = await response.json()
+        console.log("상대와의 채팅방 목록:", resData)
         
         // if (Object.keys(response).length !== 0 && response.constructor === Object) {
         //     const data = await response.json()
