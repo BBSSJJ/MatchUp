@@ -4,7 +4,8 @@ import styles from "./user-info.module.css"
 import { useAtom } from "jotai";
 import { isLoggedInAtom } from "@/store/authAtom";
 import { SERVER_API_URL } from "@/utils/instance-axios";
-import { error } from "console";
+import error from "next/error";
+
 
 
 export interface UserData {
@@ -39,7 +40,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				})
 				
 				if(!response.ok) {
-					throw error("친구요청 실패")
+					console.error('친구요청 실패')
 				}
 				return response.json()
 			} catch(error) {
