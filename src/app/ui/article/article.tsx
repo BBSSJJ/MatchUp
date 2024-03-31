@@ -6,7 +6,6 @@ import Comment from "./commentList";
 import { Button, Textarea } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { comments2 } from './dummyData';
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import { useEffect, useState } from 'react';
 import { getArticle, getComments } from './article-wrapper';

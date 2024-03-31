@@ -36,6 +36,8 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             const data = await response.json();
             setMessages(data)
 
+            console.log("fetched messages :", messages)
+
         } catch (error) {
             console.error('Error fetching previous messages:', error);
         }
@@ -95,8 +97,8 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 
             const messageObject = {
                 userId: userInfo.userId,
-                name: userInfo.name,
-                iconUrl: userInfo.iconUrl,
+                name: userInfo.riotAccount.summonerProfile.name,
+                iconUrl: userInfo.riotAccount.summonerProfile.iconUrl,
                 content: inputMessage,
                 timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
             };
