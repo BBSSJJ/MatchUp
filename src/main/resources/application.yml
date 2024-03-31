@@ -36,7 +36,7 @@ spring:
               - PATCH
               - OPTIONS
 
-
+      ####################  User Server ####################
       routes:
         - id: user-server-oauth2-login
           uri: http://${USER_SERVER}:9002
@@ -93,6 +93,15 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        - id: user-server-feedback
+          uri: http://${USER_SERVER}:9002
+          predicates:
+            - Path=/api/feedback/**
+          filters:
+            - LogFilter
+        #            - JwtTokenFilter
+
+        ####################  Chat Server ####################
         - id: chat-server-chats
           uri: http://${CHAT_SERVER}:9003
           predicates:
@@ -117,6 +126,7 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        ####################  Statistics Server ####################
         - id: statistics-server
           uri: http://${STATISTICS_SERVER}:9004
           predicates:
@@ -125,6 +135,7 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
+        ####################  BigData Server ####################
         - id: bigdata-server-recommend
           uri: http://${BIGDATA_SERVER}:9005
           predicates:
@@ -133,7 +144,8 @@ spring:
             - LogFilter
         #            - JwtTokenFilter
 
-        # for swagger server
+
+        ####################  Swagger Server ####################
         - id: user-server-swagger
           uri: http://${USER_SERVER}:9002
           predicates:
