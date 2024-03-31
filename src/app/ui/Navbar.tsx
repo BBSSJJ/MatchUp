@@ -29,9 +29,10 @@ interface User {
 
 export default function NavigationBar() {
   // react hook 사용
-  const path = usePathname();
-  const [keyword, setKeyword] = useState("");
-  const router = useRouter();
+  const path = usePathname()
+  const [keyword, setKeyword] = useState("")
+  const [tagline, setTagline] = useState("")
+  const router = useRouter()
   
   // 로그인 상태 확인
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
@@ -72,7 +73,7 @@ export default function NavigationBar() {
               className="w-[40px] h-[40px]"
               src="/logo.png"
             />
-            <span>MatchUP</span>
+            <span className="text-bold text-2xl">MatchUP</span>
           </div>
         </Link>
       </NavbarBrand>
@@ -111,31 +112,43 @@ export default function NavigationBar() {
             )}
           </PopoverContent>
         </Popover>
-        <NavbarItem>
-          <form action="submit" className={styles.form} onSubmit={(e) => handleSubmit(e)}>
-            <Input
-              isClearable
-              isDisabled
-              value={keyword}
-              onClear={() => setKeyword("")}
-              placeholder="enter player name"
-              variant="bordered"
-              className={styles.input}
-              startContent={
-                <SearchIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-              }
-              onValueChange={(value: string): void => { setKeyword(value) }}
-            />
-            <Button 
-              type="button"
-              isDisabled
-              onClick={handleClick} 
-              className={styles.button}
-            >
-              search
-            </Button>
-          </form>
-        </NavbarItem>
+        <div>
+          <NavbarItem>
+            <form action="submit" className={styles.form} onSubmit={(e) => handleSubmit(e)}>
+              <Input
+                isClearable
+                // isDisabled
+                value={keyword}
+                onClear={() => setKeyword("")}
+                placeholder="enter player name"
+                variant="faded"
+                className={`${styles.input} w-[80px] mr-2`}
+                startContent={
+                  <SearchIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                }
+                onValueChange={(value: string): void => { setKeyword(value) }}
+              />
+              <Input 
+                isClearable
+                value={tagline}
+                isRequired
+                onClear={() => setTagline("")}
+                placeholder="#KR1"
+                variant="flat"
+                className="w-[100px] color-[#35ccbc]"
+                onValueChange={(value :string): void => { setTagline(value) }}
+              />
+              <Button 
+                type="button"
+                // isDisabled
+                onClick={handleClick} 
+                className={styles.button}
+              >
+                search
+              </Button>
+            </form>
+          </NavbarItem>
+        </div>
       </NavbarContent>
       <NavbarContent as="div" className="items-center" justify="end">
         {
@@ -158,12 +171,14 @@ export default function NavigationBar() {
             </Button>
           </>  
           : <Button
-            onClick={handleLogin}
+              color="danger"
+              onClick={handleLogin}
           >
           Sign In / Log In
           </Button>
         } 
       </NavbarContent>
+      
     </Navbar>
   );
 }

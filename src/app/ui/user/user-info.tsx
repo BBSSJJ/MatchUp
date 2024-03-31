@@ -1,10 +1,12 @@
 "use client"
-import {Card, CardFooter, Image, Button, Badge} from "@nextui-org/react";
+import {Card, CardFooter, Image, Button, Badge, useDisclosure} from "@nextui-org/react";
 import styles from "./user-info.module.css"
 import { useAtom, useAtomValue } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR from "swr";
+import ChatModal from "@/app/ui/chat/chatModal";
+import { roomIdAtom } from "@/store/chatAtom";
 
 
 export interface UserData {
@@ -16,6 +18,47 @@ export interface UserData {
 interface UserProfileProps {
 	userId: string;
 }
+// 채팅방 생성
+const createChatRoom = async (userId :number, myId :number) => {
+    try {
+        const response = await fetch(`${SERVER_API_URL}/api/chats/rooms`,
+        {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
+            },
+            body: JSON.stringify({ participants : [`${userId}`, `${myId}`] }),
+        })
+
+        if(!response.ok) {
+            throw new Error('cannot create')
+        }
+
+        return response.json() // "created"
+    } catch (error) {
+        console.error(error)
+        return null
+    }
+}
+
+// 채팅방이 있는지 확인
+const IsChatRoom = async (userId: number) => {
+    try {
+        // 이미 해당 유저와의 채팅방이 있는지 확인,
+        const response = await fetch(`${SERVER_API_URL}/api/chats/users/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
+            },
+        });
+        const resData = await response.json()
+        console.log("상대와의 채팅방 목록:", resData)
+        return resData
+    } catch (error) {
+        console.error('Error checking chat room:', error);
+        return  
+    }
+};
 
 // 유저 정보 가져오기
 const userFetcher = async (url:string) => {
@@ -29,9 +72,12 @@ const userFetcher = async (url:string) => {
 // 프로필 페이지
 export default function UserProfile({ userId } :UserProfileProps) {
 	const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
+	const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
 	// const userdata = data ?? { tier: 'Default', win: 0, lose: 0 };
 	// const victory_rate = typeof data.win === 'number' && typeof data.lose === 'number' ? data.win / (data.win + data.lose) : ""
 	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+	const [roomId, setRoomId] = useAtom(roomIdAtom)
 	const userInfo = useAtomValue<any>(userInfoAtom)
 	
 	// 유저 데이터 가져오기
@@ -49,6 +95,26 @@ export default function UserProfile({ userId } :UserProfileProps) {
         },
     )
 
+	const openChatRoom = async (userId :number) => {
+        try {
+            let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
+            console.log("기존의 roomID :", roomId)
+
+            if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
+                console.log("이 채팅방 열기 : ",roomId)
+                setRoomId(roomId.roomId)
+            } else { // 없다면 생성 
+                console.log('아직 채팅방 없음')
+                await createChatRoom(userId, userInfo.userId)
+                const createdRoom = await IsChatRoom(userId)
+                const roomId = createdRoom.roomId
+                setRoomId(roomId)
+                console.log("채팅방 생성 :", roomId)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
 	// 친구 요청
 	const handlefollow = async () => {
@@ -77,7 +143,13 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	}
 
 	const recentChampions = ['Irelia', 'Ahri', 'Zeri']
-	const positions = ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', './positionIcons/support.png', '/positionIcons/top.png' ]
+	const positions = ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', '/positionIcons/support.png', '/positionIcons/top.png' ]
+	
+	const handleChat = async (userId :number) => {
+        await openChatRoom(userId)
+        onOpen()
+    }
+	
 	if (userLoading) {
 		return <h1>loading...</h1>
 	}
@@ -100,19 +172,29 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
 						{userInfo.userId !== Number(userId) && (
-							<Button 
+							<div>
+								<Button 
 								className="text-tiny text-white bg-black/20" 
 								variant="flat" 
 								color="default" 
 								radius="lg" 
 								size="sm"
 								onPress={handlefollow}
-							>
-								친구요청
-							</Button>
+								>
+									친구요청
+								</Button>
+								<Button
+									variant={"bordered"}
+									onPress={() => handleChat(Number(userId))}
+								>
+									DM
+								</Button>
+							</div>
 						)}
 					</CardFooter>
 				</Card>
+				{/* DM누르면 뜨는 모달 */}
+				<ChatModal isOpen={isOpen} onOpenChange={onOpenChange}/>
 			</Badge>
 				
 			</div>
@@ -129,7 +211,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 			</div>
 			<div className={styles.item3}>
 				<div className="h-[250px] w-[600px]">
-					<p>전적 정보</p>
+					<p className="text-bold">전적 정보</p>
 					{/* <p>{data.win} / {data.lose}</p> */}
 					<p>승률 :  %</p>
 					<p>티어 : {user.riotAccount.tier}</p>
@@ -152,8 +234,8 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						{positions.map((pos, index) => {
 							return (
 								<div key={index} className="flex">
-									<Image src={pos} width="10px" height="10px"/>
-									<p className={styles.bar}><span className="w-[20%]"></span></p>
+									<Image src={pos} width="20px" height="20px"/>
+									<p className={styles.bar}><span className={styles.barContent}></span></p>
 								</div>
 							)
 						})
