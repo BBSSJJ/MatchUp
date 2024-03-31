@@ -18,3 +18,7 @@
 .hide {
     display: none;
 }
+
+.chats {
+    overflow-y: scroll;
+}
