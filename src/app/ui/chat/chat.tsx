@@ -66,7 +66,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                     }));
                 });
             };
-
+			
             setStompClient(stomp);
 
         } catch (error) {
