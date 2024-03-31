@@ -32,7 +32,7 @@ public class ChatService {
     public void sendChat(String roomId, ChatDto chatDto) throws Exception {
 
         Chat chat = new Chat(roomId, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now(), false);
-        mongoTemplate.save(chat);
+        log.error("몽고DB 세이브 : {}", mongoTemplate.save(chat));
 
         // Produce message to Kafka topic
         kafkaChatTemplate.send("chat", chat);
@@ -44,8 +44,11 @@ public class ChatService {
 
     public List<ChatRoomDto> findRooms(Long userId) {
 
+        log.error("채팅방 목록 불러오기 userId : {}", userId);
         Query query = new Query(Criteria.where("participants").in(userId));
         List<ChatRoomDto> chatRoomDtoList = ChatMapper.instance.convertListChatRoomDto(mongoTemplate.find(query, ChatRoom.class));
+        log.error("불러온 채팅방 개수 : {}", chatRoomDtoList.size());
+
         if (chatRoomDtoList != null) {
             for (ChatRoomDto chatRoomDto : chatRoomDtoList) {
                 query = notReadQuery(chatRoomDto.getRoomId(), userId);
@@ -63,6 +66,7 @@ public class ChatService {
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
 
+        query = new Query(Criteria.where(roomId).is(roomId));
         return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
     }
 
