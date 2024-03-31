@@ -74,7 +74,7 @@ const IsChatRoom = async (userId: number) => {
         //     const data = await response.json()
         //     return data.roomId ; // string 
         // }
-        return response.json()
+        // return response.json()
     } catch (error) {
         console.error('Error checking chat room:', error);
         return  // 에러 발생 시에도 false 반환
@@ -104,10 +104,10 @@ export default function Friends({mode} :{mode :string}) {
         },
     )
 
-
     const reloadFriends = async () => {
         mutate(`${SERVER_API_URL}/api/friends?friendStatus=FRIEND`)
     }
+
     // 버튼 클릭시 수행 : void
     const handleChat = async (userId :number) => {
         await openChatRoom(userId)
@@ -140,13 +140,13 @@ export default function Friends({mode} :{mode :string}) {
         // setShouldFetch(false)
         return (
             <>
-                <Button onPress={reloadFriends}>새로고침</Button>
-                <p>failed to load data</p>
+                <Button onPress={reloadFriends} size='sm' variant='ghost'>새로고침</Button>
+                <p className='mt-4'>failed to load data</p>
             </>
         );
     }
     if (friendLoading) {
-        return <h1>Loading...</h1>
+        return <h1 className='text-bold'>Loading...</h1>
     }
 
     return (
