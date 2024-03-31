@@ -42,7 +42,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
         // { refreshInterval: 1000 }
       )
     
-      console.log("user data : ", user)
+    //   console.log("user data : ", user)
     
 
     return (

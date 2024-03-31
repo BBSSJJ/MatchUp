@@ -56,6 +56,7 @@ const SideBar: React.FC = () => {
             }, 
             revalidateOnFocus: false,
             revalidateOnMount: true,
+			revalidateIfStale: true,
         },
     )
 
