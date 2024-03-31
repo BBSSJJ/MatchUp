@@ -125,7 +125,8 @@ export default function Friends() {
             } else { // 없다면 생성 
                 console.log('아직 채팅방 없음')
                 await createChatRoom(userId, userInfo.userId)
-                const roomId = await IsChatRoom(userId)
+                const createdRoom = await IsChatRoom(userId)
+                const roomId = createdRoom.roomId
                 setRoomId(roomId)
                 console.log("채팅방 생성 :", roomId)
             }
