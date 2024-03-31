@@ -200,94 +200,51 @@ DB dump 완료
 
 ### 실버 3
 
+3605 완료(3429508ms)
+
 ### 실버 4
+
+4321 오류( 503 Service Unavailable from GET)
 
 ## 브론즈
 
 ### 브론즈 1
 
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
+1206 완료(3528601m)
 
 ### 브론즈 2
 
+2404 완료(3531313ms)
+
 ### 브론즈 3
 
+3072 오류(404 Not Found from GET https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/10031917_DEL
+)
+
 ### 브론즈 4
+
+4277 완료(3681450ms)
 
 ## 아이언
 
 ### 아이언 1
 
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
+1021 오류(네트워크 변경)
 
 ### 아이언 2
 
+2218 완료(3468181ms)
+
 ### 아이언 3
+
+3418 완료(3563492ms)
 
 ### 아이언 4
 
+4619 완료(3310361ms)
+
 ## 챌린저
-
-### 챌린저 1
-
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
-
-### 챌린저 2
-
-### 챌린저 3
-
-### 챌린저 4
 
 ## 그랜드마스터
 
-### 그랜드마스터 1
-
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
-
-### 그랜드마스터 2
-
-### 그랜드마스터 3
-
-### 그랜드마스터 4
-
 ## 마스터
-
-### 마스터 1
-
-1. page 1
-2. page 2
-3. page 3
-4. page 4
-5. page 5
-6. page 6
-7. DB Dump
-
-### 마스터 2
-
-### 마스터 3
-
-### 마스터 4
