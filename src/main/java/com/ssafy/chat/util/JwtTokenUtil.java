@@ -32,8 +32,6 @@ public class JwtTokenUtil {
                 .build()
                 .parseClaimsJws(accessToken)
                 .getBody();
-
-        log.info("user id from access token : {}", Long.parseLong(claims.getId()));
         return Long.parseLong(claims.getId());
     }
 }

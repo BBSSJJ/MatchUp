@@ -68,9 +68,15 @@ public class ChatService {
         Update update = new Update();
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
+        log.error("안읽은 메세지 읽음 처리-------------------------");
 
-        query = new Query(Criteria.where(roomId).is(roomId));
-        return ChatMapper.instance.convertListChatDto(mongoTemplate.find(query, Chat.class));
+        query = new Query(Criteria.where("roomId").is(roomId));
+        List<Chat> chats = mongoTemplate.find(query, Chat.class);
+        for(Chat chat : chats) {
+            log.error("- sender : {}",chat.getName());
+            log.error("- content: {}",chat.getContent());
+        }
+        return ChatMapper.instance.convertListChatDto(chats);
     }
 
     public void createChatRoom(Long userId, ChatRoomDto chatRoomDto) throws Exception {
