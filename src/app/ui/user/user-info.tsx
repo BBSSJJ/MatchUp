@@ -151,7 +151,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						<p>선호 포지션</p>
 						{positions.map((pos, index) => {
 							return (
-								<div className="flex">
+								<div key={index} className="flex">
 									<Image src={pos}/>
 									<span></span>
 								</div>
