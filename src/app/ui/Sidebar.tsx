@@ -45,7 +45,7 @@ const SideBar: React.FC = () => {
 		}
 	}
 
-	// 채팅목록 가져오가
+	// 채팅목록 가져오기
 	const {data: chatRooms, error: chatRoomError, isLoading: chatRoomLoading } = useSWR(
         `${SERVER_API_URL}/api/chats/rooms`,
         chatFetcher,

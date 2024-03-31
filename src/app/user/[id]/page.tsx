@@ -12,7 +12,6 @@ async function GetTier(encryptedSummonerId :string) {
             headers : { "X-Riot-Token": RIOT_API_KEY }
         });
 		
-		
 		// Check if response is successful
 		if (!response.ok) {
 			throw new Error('Failed to fetch data');
@@ -32,7 +31,6 @@ async function GetTier(encryptedSummonerId :string) {
 		}
 }
 
-
 export default async function UserPage({
   params: { id },
 }: {
@@ -45,7 +43,7 @@ export default async function UserPage({
 	return (
 		<div className={styles.container}>
 			<h3>User Page :{id}</h3>
-			<UserProfile data= {userData2 as UserData}/>
+			<UserProfile data= {userData2 as UserData} userId={id}/>
 		</div>
 	)
 }
