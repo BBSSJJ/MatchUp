@@ -131,20 +131,27 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 </div>
             ))}
            </div>
-           <div className='flex h-[8%]'>
-           <input
-                className='w-[80%] h-[100%]'
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-            />
-            <button 
-                className='w-[20%] h-[100%]'  
-                style={{ backgroundColor: 'red' }}
-                onClick={() => sendMessage()}
-            >
-                보내기
-            </button>
+            <div className='flex h-[8%]'>
+           
+			<input
+				className='w-[80%] h-[100%]'
+				type="text"
+				value={inputMessage}
+				onChange={(e) => setInputMessage(e.target.value)}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter') {
+						sendMessage();
+					}
+				}}
+			/>
+			<button 
+				className='w-[20%] h-[100%]'  
+				style={{ backgroundColor: 'red' }}
+				onClick={() => sendMessage()}
+			>
+				보내기
+			</button>
+			
            </div>
         </div>
     )
