@@ -83,7 +83,19 @@ public class MatchIndicator {
             isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
             isWin = macroData.getMyData().isWin();
-            pingCount = macroData.getMyData().getAllInPings();
+            pingCount += macroData.getMyData().allInPings;
+            pingCount += macroData.getMyData().assistMePings;
+            pingCount += macroData.getMyData().basicPings;
+            pingCount += macroData.getMyData().commandPings;
+            pingCount += macroData.getMyData().dangerPings;
+            pingCount += macroData.getMyData().enemyMissingPings;
+            pingCount += macroData.getMyData().enemyVisionPings;
+            pingCount += macroData.getMyData().getBackPings;
+            pingCount += macroData.getMyData().holdPings;
+            pingCount += macroData.getMyData().needVisionPings;
+            pingCount += macroData.getMyData().onMyWayPings;
+            pingCount += macroData.getMyData().pushPings;
+            pingCount += macroData.getMyData().visionClearedPings;
             timeInfo = macroData.getTimeInfo();
             this.champion = macroData.getMyData().getChampionName();
         }

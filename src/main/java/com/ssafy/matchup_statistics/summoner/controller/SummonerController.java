@@ -1,5 +1,6 @@
 package com.ssafy.matchup_statistics.summoner.controller;
 
+import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MessageDto;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
@@ -125,11 +126,18 @@ public class SummonerController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청", // 응답코드 400일때 응답 설명
                     content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
-    @PostMapping("/leagues/indicators/matches/league-entries/{pages}/flux")
+    @PostMapping("/leagues/indicators/matches/league-entries/flux")
     public ResponseEntity<MessageDto> postSummonerInfoByLeagueEntryFlux(
-            @PathVariable(value = "pages") @Valid @NonNull Integer pages,
             @RequestBody @Valid LeagueEntryRequestDto dto) {
-        int createCount = summonerService.saveAllSummonerLeagueIndicatorMatchesFlux(pages, dto);
+        int createCount = summonerService.saveAllSummonerLeagueIndicatorMatchesFlux(dto);
+        return ResponseEntity.ok(new MessageDto(createCount + "개 정보 생성 및 저장완료"));
+    }
+
+    @Operation(summary = "상위티어 리그정보, 통계지표, 매치정보 생성", description = "마스터, 그랜드마스터, 챌린저 리그 저장 API") // 해당 API가 어떤 역할을 하는지 설명
+    @PostMapping("/leagues/high-tiers/{tier}/indicators/matches/league-entries/flux")
+    public ResponseEntity<MessageDto> postSummonerInfoByChallengerLeagueEntryFlux(
+            @PathVariable String tier) {
+        int createCount = summonerService.saveHighTierSummonerLeagueIndicatorMatchesFlux(tier);
         return ResponseEntity.ok(new MessageDto(createCount + "개 정보 생성 및 저장완료"));
     }
 
@@ -146,4 +154,5 @@ public class SummonerController {
             @RequestBody @Valid LeagueEntryRequestDto dto) {
         return ResponseEntity.ok(summonerService.getSummonerLeagueInfo(page, dto));
     }
+
 }
