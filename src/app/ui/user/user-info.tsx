@@ -77,7 +77,10 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	}
 
 	const recentChampions = ['Irelia', 'Ahri', 'Zeri']
-	
+	const positions = ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', './positionIcons/support.png', '/positionIcons/top.png' ]
+	if (userLoading) {
+		return <h1>loading...</h1>
+	}
 
 	return (
 		<div className={styles.container}>
@@ -143,7 +146,19 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						)
 					})}
 					</div>
-					<p>선호 포지션</p>
+					
+					<div className="flex flex-col">
+						<p>선호 포지션</p>
+						{positions.map((pos, index) => {
+							return (
+								<div className="flex">
+									<Image src={pos}/>
+									<span></span>
+								</div>
+							)
+						})
+					}
+					</div>
 					
 				</div>
 			</div>
