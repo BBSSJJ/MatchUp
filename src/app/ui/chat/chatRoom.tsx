@@ -41,10 +41,24 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
           revalidateOnFocus: false,
           revalidateOnMount: true,
         }
-        // { refreshInterval: 1000 }
+      )
+
+    // 채팅 내용 가져오기
+    const {data: chat , error: chatError, isLoading: chatLoading } = useSWR(
+        `${SERVER_API_URL}/api/chats/rooms/${chatId}`,
+        youFetcher,
+        {
+          onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+            if (error.status === 401) return
+      
+          }, 
+          revalidateOnFocus: false,
+          revalidateOnMount: true,
+        }
       )
     
-    console.log("partner data : ", partner)
+    // console.log("partner data : ", partner)
+    console.log("chat data:", chat)
     if (partnerLoading) {
         return <h1>loading...</h1>
     }
@@ -58,17 +72,17 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                     <div className="flex flex-col gap-1 items-start justify-center">
                         <h4>{partner.riotAccount.summonerProfile.name}</h4>
                         <h4 className="text-[7px]">{chatId}</h4>
-                        <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4>
-                        <h5 className="text-tiny tracking-tight text-default-400">가장 최근 메시지</h5>
+                        {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
+                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list.at(-1).content}</h5>
                     </div>
                     </div>
                     <Button
-                    className={"bg-transparent text-foreground border-default-200"}
-                    color="primary"
-                    radius="full"
-                    size="sm"
-                    variant={"bordered"}
-                    onPress={handleChat}
+                        className={"bg-transparent text-foreground border-default-200"}
+                        color="primary"
+                        radius="full"
+                        size="sm"
+                        variant={"bordered"}
+                        onPress={handleChat}
                     >
                     DM
                     </Button>
