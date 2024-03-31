@@ -47,7 +47,7 @@ export default function ChatModal ({isOpen, onOpenChange} :{
                 채팅방 나가기
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                Action
+                Close
                 </Button>
             </ModalFooter>
             </>
