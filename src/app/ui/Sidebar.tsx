@@ -9,7 +9,7 @@ import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
 import { SERVER_API_URL } from "@/utils/instance-axios";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import  User from './Navbar'
 
 interface Chat {
@@ -41,6 +41,7 @@ const SideBar: React.FC = () => {
 			setChatOrFreiend(true)
 		} else {
 			setChatOrFreiend(false)
+			mutate(`${SERVER_API_URL}/api/chats/rooms`)
 		}
 	}
 
