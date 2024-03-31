@@ -111,7 +111,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             console.log("messageObject:", messageObject)
 
             // 입력한 메시지를 서버로 전송
-            // {}에 어떤 내용이 들어가야하는지?
+           
             stompClient.publish({
                 destination: `/app/chat/${roomId}`, 
                 body: JSON.stringify(messageObject),
@@ -128,10 +128,10 @@ export default function DirectMessage({roomId} : {roomId :string}) {
             message 표시
             {messages.list.map((message, index) => (
                 <div key={index}>
-                    <Image src={message.iconUrl} />
-                    <span>{message.name}</span>
+                    <Image src={message.iconUrl} width="20px" height="20px" />
+                    <span className='text-tiny'>{message.name}</span>
                     <p>{message.content}</p>
-                    <p>{message.timestamp}</p>
+                    <p className='text-tiny'>{message.timestamp}</p>
                 </div>
             ))}
             </div>
