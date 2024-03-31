@@ -2,6 +2,7 @@ package com.ssafy.matchup_statistics.summoner.service.sub;
 
 import com.ssafy.matchup_statistics.account.entity.Account;
 import com.ssafy.matchup_statistics.global.api.flux.RiotWebClientFactory;
+import com.ssafy.matchup_statistics.global.dto.HighTierResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.*;
 import com.ssafy.matchup_statistics.global.util.MongoTemplateAdaptor;
 import com.ssafy.matchup_statistics.global.util.mapper.LeagueMapper;
@@ -33,47 +34,50 @@ public class SummonerTotalFluxService implements SummonerTotalService {
     private final LeagueMapper leagueMapper;
     private final SummonerMapper summonerMapper;
 
-    public int saveLeagueEntry(Integer pages, LeagueEntryRequestDto dto) {
+    public int saveLeagueEntry(LeagueEntryRequestDto dto) {
 
         long totalStart = System.currentTimeMillis();
         int total = 0;
 
         // 리그 엔트리 돌면서 모든정보 저장
-        for (int i = 1; i <pages + 1; i++) {
 
-            List<LeagueInfoResponseDto> leagueInfoResponseDtos = getLeagueEntry(pages, dto).collectList().block();
-            total += leagueInfoResponseDtos.size();
-            log.info("league info count(해당 리그 엔트리 소환사) : {}명", total);
-
-            leagueInfoResponseDtos.forEach(leagueInfo -> {
-                long start = System.currentTimeMillis();
-
-                SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(leagueInfo).block();
-                AccountResponseDto accountResponseDto = getAccountResponseDto(summonerInfoResponseDto).block();
-                Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
-
-                CountDownLatch latch = new CountDownLatch(20);
-                List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses = getMatchResponses(latch, matches);
-                Indicator indicator = indicatorBuilder.build(matchResponses, summonerInfoResponseDto.getId(), summonerInfoResponseDto.getPuuid());
-
-                // 통계지표 생성 완료 후 저장
-                mongoTemplateAdaptor.saveIndicator(indicator);
-                log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
-
-                // 소환사 정보 생성 및 저장하기
-                Summoner summoner = new Summoner(
-                        summonerInfoResponseDto.getId(),
-                        new Account(accountResponseDto),
-                        summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfoResponseDto),
-                        leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
-                        matches.collectList().block(),
-                        indicator.getSummonerId().toString());
-                mongoTemplateAdaptor.saveSummoner(summoner);
-
-                log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
-
-            });
+        List<LeagueInfoResponseDto> leagueInfoResponseDtos = new ArrayList<>();
+        for (int page = 1; page <= 6; page++) {
+            List<LeagueInfoResponseDto> leagues = getLeagueEntry(page, dto).collectList().block();
+            leagues.forEach(l -> leagueInfoResponseDtos.add(l));
         }
+        total += leagueInfoResponseDtos.size();
+        log.info("league info count(해당 리그 엔트리 소환사) : {}명", total);
+
+        leagueInfoResponseDtos.forEach(leagueInfo -> {
+            long start = System.currentTimeMillis();
+
+            SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(leagueInfo).block();
+            AccountResponseDto accountResponseDto = getAccountResponseDto(summonerInfoResponseDto).block();
+            Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
+
+            CountDownLatch latch = new CountDownLatch(20);
+            List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses = getMatchResponses(latch, matches);
+            Indicator indicator = indicatorBuilder.build(matchResponses, summonerInfoResponseDto.getId(), summonerInfoResponseDto.getPuuid());
+
+            // 통계지표 생성 완료 후 저장
+            mongoTemplateAdaptor.saveIndicator(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
+
+            // 소환사 정보 생성 및 저장하기
+            Summoner summoner = new Summoner(
+                    summonerInfoResponseDto.getId(),
+                    new Account(accountResponseDto),
+                    summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfoResponseDto),
+                    leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
+                    matches.collectList().block(),
+                    indicator.getSummonerId().toString());
+            mongoTemplateAdaptor.saveSummoner(summoner);
+
+            log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
+
+        });
+
         log.info("created all summoner(전체 소환사 생성완료), 총 소요시간 : {}ms", (System.currentTimeMillis() - totalStart));
         return total;
     }
@@ -81,7 +85,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
     public void save(String gameName, String tagLine) {
 
         long start = System.currentTimeMillis();
-        AccountResponseDto accountResponseDto = getAccountResponseDto(gameName,tagLine).block();
+        AccountResponseDto accountResponseDto = getAccountResponseDto(gameName, tagLine).block();
         SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(accountResponseDto).block();
         LeagueInfoResponseDto leagueInfoResponseDto = getLeagueEntry(summonerInfoResponseDto).blockFirst();
         Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
@@ -108,6 +112,50 @@ public class SummonerTotalFluxService implements SummonerTotalService {
 
     }
 
+    @Override
+    public int saveLeagueEntry(String tier) {
+        List<LeagueInfoResponseDto> highTierLeagueEntry = getHighTierLeagueEntry(tier);
+        long totalStart = System.currentTimeMillis();
+        int total = 0;
+
+        highTierLeagueEntry.forEach(leagueInfo -> {
+            long start = System.currentTimeMillis();
+
+            SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(leagueInfo).block();
+            AccountResponseDto accountResponseDto = getAccountResponseDto(summonerInfoResponseDto).block();
+            Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
+
+            CountDownLatch latch = new CountDownLatch(20);
+            List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses = getMatchResponses(latch, matches);
+            Indicator indicator = indicatorBuilder.build(matchResponses, summonerInfoResponseDto.getId(), summonerInfoResponseDto.getPuuid());
+
+            // 통계지표 생성 완료 후 저장
+            mongoTemplateAdaptor.saveIndicator(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
+
+            // 소환사 정보 생성 및 저장하기
+            Summoner summoner = new Summoner(
+                    summonerInfoResponseDto.getId(),
+                    new Account(accountResponseDto),
+                    summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfoResponseDto),
+                    leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
+                    matches.collectList().block(),
+                    indicator.getSummonerId().toString());
+            mongoTemplateAdaptor.saveSummoner(summoner);
+
+            log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
+
+        });
+
+        log.info("created all summoner(전체 소환사 생성완료), 총 소요시간 : {}ms", (System.currentTimeMillis() - totalStart));
+        return total;
+    }
+
+    public List<LeagueInfoResponseDto> getHighTierLeagueEntry(String highTier) {
+        Mono<HighTierResponseDto> highTierResponseByTier = riotWebClientFactory.getHighTierResponseByTier(highTier);
+        HighTierResponseDto highTierResponseDto = highTierResponseByTier.block();
+        return highTierResponseDto.getEntries();
+    }
 
     public Flux<LeagueInfoResponseDto> getLeagueEntry(Integer pages, LeagueEntryRequestDto dto) {
         return riotWebClientFactory.getLeagueInfoResponseByTier(pages, dto);
@@ -126,7 +174,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
     }
 
     public Mono<SummonerInfoResponseDto> getSummonerInfo(LeagueInfoResponseDto dto) {
-        return riotWebClientFactory.getSummonerInfoResponseDtoBySummonerName(dto.getSummonerName());
+        return riotWebClientFactory.getSummonerInfoResponseDtoBySummonerId(dto.getSummonerId());
     }
 
     public Mono<SummonerInfoResponseDto> getSummonerInfo(AccountResponseDto accountResponseDto) {
@@ -149,7 +197,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
         });
 
         try {
-            latch.await(500_000, TimeUnit.MILLISECONDS);
+            latch.await(10_000, TimeUnit.MILLISECONDS);
             return ret;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

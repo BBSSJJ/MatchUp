@@ -1,6 +1,9 @@
 package com.ssafy.matchup_statistics.global.api.flux;
 
+import com.ssafy.matchup_statistics.global.dto.HighTierResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.*;
+import com.ssafy.matchup_statistics.global.exception.RiotApiError;
+import com.ssafy.matchup_statistics.global.exception.RiotApiException;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,39 @@ public class RiotWebClientFactory {
                 .uri(uri)
                 .retrieve()
                 .bodyToFlux(LeagueInfoResponseDto.class);
+    }
+
+    public Mono<HighTierResponseDto> getHighTierResponseByTier(String highTier) {
+        String tierPath;
+        switch (highTier) {
+            case "CHALLENGER": {
+                tierPath = "challengerleagues";
+                break;
+            }
+            case "GRANDMASTER": {
+                tierPath = "grandmasterleagues";
+                break;
+            }
+            case "MASTER": {
+                tierPath = "masterleagues";
+                break;
+            }
+            default:
+                throw new RiotApiException(RiotApiError.NO_LEAGUE_ENTRY_ERROR);
+        }
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://kr.api.riotgames.com/lol/league/v4/")
+                .path(tierPath)
+                .path("/by-queue/RANKED_SOLO_5x5")
+                .encode()
+                .build()
+                .toUri();
+
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(HighTierResponseDto.class);
     }
 
     public Flux<LeagueInfoResponseDto> getLeagueInfoResponseBySummonerId(String id) {
@@ -73,6 +109,20 @@ public class RiotWebClientFactory {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/")
                 .path(summonerName)
+                .encode()
+                .build()
+                .toUri();
+
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(SummonerInfoResponseDto.class);
+    }
+
+    public Mono<SummonerInfoResponseDto> getSummonerInfoResponseDtoBySummonerId(String summonerId) {
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://kr.api.riotgames.com/lol/summoner/v4/summoners/")
+                .path(summonerId)
                 .encode()
                 .build()
                 .toUri();
@@ -154,5 +204,4 @@ public class RiotWebClientFactory {
                 .retrieve()
                 .bodyToMono(MatchTimelineResponseDto.class);
     }
-
 }
