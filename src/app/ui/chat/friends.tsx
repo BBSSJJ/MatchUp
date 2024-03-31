@@ -121,7 +121,8 @@ export default function Friends() {
             console.log("기존의 roomID :", roomId)
 
             if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
-                setRoomId(roomId)
+                console.log("이 채팅방 열기 : ",roomId)
+                setRoomId(roomId.roomId)
             } else { // 없다면 생성 
                 console.log('아직 채팅방 없음')
                 await createChatRoom(userId, userInfo.userId)
