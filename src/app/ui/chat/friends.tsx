@@ -99,6 +99,7 @@ export default function Friends() {
             }, 
             revalidateOnFocus: false,
             revalidateOnMount: true,
+            revalidateIfStale: true,
         },
     )
 
