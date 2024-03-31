@@ -58,7 +58,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
       )
     
     // console.log("partner data : ", partner)
-    console.log("chat data:", chat)
+    // console.log("chat data:", chat)
     if (partnerLoading) {
         return <h1>loading...</h1>
     }
