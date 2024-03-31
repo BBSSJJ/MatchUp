@@ -39,8 +39,8 @@ public class SummonerService {
         summonerTotalFluxService.save(gameName, tagLine);
     }
 
-    public int saveAllSummonerLeagueIndicatorMatchesFlux(Integer pages, LeagueEntryRequestDto dto) {
-        return summonerTotalFluxService.saveLeagueEntry(pages, dto);
+    public int saveAllSummonerLeagueIndicatorMatchesFlux(LeagueEntryRequestDto dto) {
+        return summonerTotalFluxService.saveLeagueEntry(dto);
     }
 
     public void saveSummonerLeagueIndicatorMatchesRest(String gameName, String tagLine) {
@@ -48,10 +48,14 @@ public class SummonerService {
     }
 
     public int saveAllSummonerLeagueIndicatorMatchesRest(Integer pages, LeagueEntryRequestDto dto) {
-        return summonerTotalRestService.saveLeagueEntry(pages, dto);
+        return summonerTotalRestService.saveLeagueEntry(dto);
     }
 
     public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
         return summonerLeagueInfoService.getSummonerLeagueInfo(page, dto);
+    }
+
+    public int saveHighTierSummonerLeagueIndicatorMatchesFlux(String tier) {
+        return summonerTotalFluxService.saveLeagueEntry(tier);
     }
 }

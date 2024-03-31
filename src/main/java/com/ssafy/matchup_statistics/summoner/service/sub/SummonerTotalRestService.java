@@ -1,8 +1,8 @@
 package com.ssafy.matchup_statistics.summoner.service.sub;
 
-import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.account.entity.Account;
 import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
+import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.global.util.MongoTemplateAdaptor;
@@ -21,7 +21,7 @@ import java.util.List;
 @Component("summonerTotalRestService")
 @Slf4j
 @RequiredArgsConstructor
-public class SummonerTotalRestService implements SummonerTotalService{
+public class SummonerTotalRestService implements SummonerTotalService {
 
     private final RiotRestApiAdaptor riotRestApiAdaptor;
     private final MongoTemplateAdaptor mongoTemplateAdaptor;
@@ -52,45 +52,48 @@ public class SummonerTotalRestService implements SummonerTotalService{
         log.debug("소환사 1명 저장 소요시간 : {}", (System.currentTimeMillis() - start) / 1000);
     }
 
-    public int saveLeagueEntry(Integer pages, LeagueEntryRequestDto dto) {
+    @Override
+    public int saveLeagueEntry(String tier) {
+        return 0;
+    }
+
+    public int saveLeagueEntry(LeagueEntryRequestDto dto) {
 
         long totalStart = System.currentTimeMillis();
 
         // 리그 엔트리 돌면서 모든정보 저장
-        for (int i = 1; i <pages + 1; i++) {
-            List<LeagueInfoResponseDto> leagueInfoResponses = riotRestApiAdaptor.getLeagueInfoResponseByTier(i, dto);
-            log.info("league info count(해당 리그 엔트리 소환사) : {}명", leagueInfoResponses.size());
-            leagueInfoResponses.forEach(leagueInfo -> {
-                long start = System.currentTimeMillis();
+        List<LeagueInfoResponseDto> leagueInfoResponses = riotRestApiAdaptor.getLeagueInfoResponseByTier(1, dto);
+        log.info("league info count(해당 리그 엔트리 소환사) : {}명", leagueInfoResponses.size());
+        leagueInfoResponses.forEach(leagueInfo -> {
+            long start = System.currentTimeMillis();
 
-                SummonerInfoResponseDto summonerInfo = riotRestApiAdaptor.getSummonerInfoBySummonerName(leagueInfo.getSummonerName());
-                AccountResponseDto accountInfo = riotRestApiAdaptor.getAccountInfo(summonerInfo.getPuuid());
-                List<String> matchIds = riotRestApiAdaptor.getMatchIdsByPuuid(accountInfo.getPuuid());
+            SummonerInfoResponseDto summonerInfo = riotRestApiAdaptor.getSummonerInfoBySummonerName(leagueInfo.getSummonerName());
+            AccountResponseDto accountInfo = riotRestApiAdaptor.getAccountInfo(summonerInfo.getPuuid());
+            List<String> matchIds = riotRestApiAdaptor.getMatchIdsByPuuid(accountInfo.getPuuid());
 
-                log.debug("매치 개수 : {}개", matchIds.size());
+            log.debug("매치 개수 : {}개", matchIds.size());
 
-                // 통계 정보 생성 및 저장하기(내부에서 매치정보 저장)
-                Indicator indicator = indicatorBuilder.build(matchIds, summonerInfo.getId(), summonerInfo.getPuuid());
-                log.info("통계지표 생성 완료됨");
-                mongoTemplateAdaptor.saveIndicator(indicator);
-                log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
+            // 통계 정보 생성 및 저장하기(내부에서 매치정보 저장)
+            Indicator indicator = indicatorBuilder.build(matchIds, summonerInfo.getId(), summonerInfo.getPuuid());
+            log.info("통계지표 생성 완료됨");
+            mongoTemplateAdaptor.saveIndicator(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
 
-                // 소환사 정보 생성 및 저장하기
-                Summoner summoner = new Summoner(
-                        summonerInfo.getId(),
-                        new Account(accountInfo),
-                        summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
-                        leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
-                        matchIds,
-                        indicator.getSummonerId().toString());
-                mongoTemplateAdaptor.saveSummoner(summoner);
+            // 소환사 정보 생성 및 저장하기
+            Summoner summoner = new Summoner(
+                    summonerInfo.getId(),
+                    new Account(accountInfo),
+                    summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
+                    leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
+                    matchIds,
+                    indicator.getSummonerId().toString());
+            mongoTemplateAdaptor.saveSummoner(summoner);
 
-                log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
-            });
-        }
+            log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
+        });
 
         log.info("전체 소환사 생성완료[소요시간 : {}ms]", (System.currentTimeMillis()) - totalStart);
 
-        return pages;
+        return 205;
     }
 }
