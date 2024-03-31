@@ -22,7 +22,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
     const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
-    const [roomId, setRoomId] = useAtom<string>(roomIdAtom)
+    const [roomId, setRoomId] = useAtom(roomIdAtom)
 
     const handleChat = () => {
         setRoomId(chatId)
@@ -45,7 +45,9 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
       )
     
     console.log("partner data : ", partner)
-    
+    if (partnerLoading) {
+        return <h1>loading...</h1>
+    }
 
     return (
         <div className="z-20000">
