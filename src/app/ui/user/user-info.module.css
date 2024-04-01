@@ -26,6 +26,8 @@
 .item2 {
     grid-area: b;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
     
 }
 

@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
     "@nextui-org/avatar": "^2.0.24",
     "@nextui-org/react": "^2.2.10",
     "@stomp/stompjs": "^7.0.0",

@@ -143,7 +143,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 							</div>
 							<div>
 								<p className={`${styles.messageBubble} text-small ${message?.userId === userInfo.userId ? styles.myMessageP : styles.otherMessageP}`}>{message?.content}</p>
-								<p className='text-tiny'>{message?.timestamp?.slice(-4,).replace('T', ' ')}</p>
+								<p className='text-tiny'>{message?.timestamp?.slice(-4).replace('T', ' ')}</p>
 							</div>	
 						</div>
 					))}
