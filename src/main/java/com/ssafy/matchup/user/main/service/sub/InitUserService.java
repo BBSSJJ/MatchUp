@@ -4,6 +4,7 @@ import com.ssafy.matchup.user.main.api.dto.LeagueInfoDto;
 import com.ssafy.matchup.user.main.api.dto.SummonerInfoDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
@@ -27,10 +28,12 @@ public class InitUserService {
 
     @Transactional
     public User initUser(RegistUserRequestDto registUserRequestDto) {
+        Setting setting = Setting.builder().useMike(false).build();
         User user = User.builder()
                 .snsType(registUserRequestDto.getSnsType())
                 .snsId(registUserRequestDto.getSnsId())
                 .role(AuthorityType.ROLE_USER)
+                .setting(setting)
                 .build();
         userRepository.save(user);
         return user;
@@ -68,7 +71,7 @@ public class InitUserService {
     }
 
     @Transactional
-    public void updateRiotAccount(User user, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto){
+    public void updateRiotAccount(User user, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto) {
 //        SummonerInfoDto summonerInfoDto = summonerLeagueInfoResponseDto.getSummonerInfoDto();
 //        SummonerProfile summonerProfile = SummonerProfile.builder()
 //                .name(name)
