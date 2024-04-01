@@ -1,5 +1,5 @@
 "use client"
-import {Card, CardFooter, Image, Button, Badge, useDisclosure} from "@nextui-org/react";
+import {Card, CardFooter, Image, Button, Badge, useDisclosure, Switch} from "@nextui-org/react";
 import styles from "./user-info.module.css"
 import { useAtom, useAtomValue } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
@@ -7,6 +7,11 @@ import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR from "swr";
 import ChatModal from "@/app/ui/chat/chatModal";
 import { roomIdAtom } from "@/store/chatAtom";
+
+import { SiLeagueoflegends } from "react-icons/si";
+import { PiMicrophoneFill } from "react-icons/pi";
+import { PiMicrophoneSlashFill } from "react-icons/pi";
+import { useEffect, useState } from "react";
 
 
 export interface UserData {
@@ -79,9 +84,27 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 	const [roomId, setRoomId] = useAtom(roomIdAtom)
 	const userInfo = useAtomValue<any>(userInfoAtom)
+	const [onOff, setOnOff] = useState(false)
 	
+	useEffect(() => {
+		const fetchMicStatus = async () => {
+            try {
+                const response = await fetch(`${SERVER_API_URL}/api/users/${userId}/mic`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch mic status');
+                }
+                const data = await response.json();
+                setOnOff(data.useMike); 
+            } catch (error) {
+                console.error('Error fetching mic status:', error);
+            }
+        };
+        fetchMicStatus()
+	}, [])
+
+
 	// 유저 데이터 가져오기
-	const {data: user, error: userError, isLoading: userLoading } = useSWR(
+	const {data: user,  error: userError, isLoading: userLoading } = useSWR(
         `${SERVER_API_URL}/api/users/${userId}`,
         userFetcher,
         {
@@ -142,6 +165,8 @@ export default function UserProfile({ userId } :UserProfileProps) {
 		}
 	}
 
+
+	// fetch 데이터로 대체할 부분 
 	const recentChampions = ['Irelia', 'Ahri', 'Zeri']
 	const positions = ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', '/positionIcons/support.png', '/positionIcons/top.png' ]
 	
@@ -149,6 +174,12 @@ export default function UserProfile({ userId } :UserProfileProps) {
         await openChatRoom(userId)
         onOpen()
     }
+
+	// 마이크 사용여부 토글 
+	// const handleSwitch = async (event :React.ChangeEvent<HTMLInputElement>) => {
+	// 	const useMIC = event.target.checked 
+
+	// }
 	
 	if (userLoading) {
 		return <h1>loading...</h1>
@@ -157,14 +188,14 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.item1}>
-			<Badge content={user.riotAccount.summonerProfile.level} color="primary" className="w-[50px] h-[30px]" >
+			<Badge content={user.riotAccount.summonerProfile.level} color="primary" variant="shadow" className="w-[50px] h-[30px]" >
 				<Card
 					isFooterBlurred
 					radius="lg"
 					className="border-none h-[250px] w-[250px]"
 				>
 					<Image
-						alt="Woman listing to music"
+						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
 						src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Viego.png"
 						
@@ -172,19 +203,22 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
 						{userInfo.userId !== Number(userId) && (
-							<div>
+							<div className="flex">
 								<Button 
-								className="text-tiny text-white bg-black/20" 
-								variant="flat" 
-								color="default" 
-								radius="lg" 
-								size="sm"
-								onPress={handlefollow}
+									className="text-tiny text-white bg-black/20" 
+									variant="flat" 
+									color="default" 
+									radius="lg" 
+									size="sm"
+									onPress={handlefollow}
 								>
 									친구요청
 								</Button>
 								<Button
-									variant={"bordered"}
+									variant="flat" 
+									color="default" 
+									radius="lg"  
+									size="sm"
 									onPress={() => handleChat(Number(userId))}
 								>
 									DM
@@ -200,6 +234,24 @@ export default function UserProfile({ userId } :UserProfileProps) {
 			</div>
 			
 			<div className={styles.item2}>
+				<SiLeagueoflegends />
+				{/* 마이크 사용여부 토글 */}
+				<Switch
+					// defaultSelected
+					isSelected={onOff}
+					onChange={(event) => setOnOff(event.target.checked)}
+					size="lg"
+					color="secondary"
+					thumbIcon={({ isSelected, className }) =>
+						isSelected ? (
+							<PiMicrophoneFill />
+						) : (
+							<PiMicrophoneSlashFill />
+						)
+					}
+					>
+					Microphone
+				</Switch>
 				{
 					keywords.map((keyword :string, index :number) => {
 						return (
