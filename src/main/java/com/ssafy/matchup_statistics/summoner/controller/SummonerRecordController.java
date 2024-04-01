@@ -50,7 +50,9 @@ public class SummonerRecordController {
             @PathVariable(value = "tagLine") String tagLine) {
 
         return ResponseEntity.ok(summonerService.getSummonerRecordInfo(gameName, tagLine));
-    }    @Operation(summary = "소환사 전적정보 생성/갱신(User PK)", description = "사용자의 id(pk)로 전적정보를 갱신하는 API 입니다.")
+    }
+
+    @Operation(summary = "소환사 전적정보 생성/갱신(User PK)", description = "사용자의 id(pk)로 전적정보를 갱신하는 API 입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "전적정보 갱신 완료",
                     content = @Content(schema = @Schema(implementation = MessageDto.class))),
