@@ -3,7 +3,6 @@ package com.ssafy.matchup.user.main.entity;
 import com.ssafy.matchup.mz.article.entity.MzArticle;
 import com.ssafy.matchup.user.feedback.entity.Feedback;
 import com.ssafy.matchup.user.friend.entity.Friendship;
-import com.ssafy.matchup.user.lbti.entity.Lbti;
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
@@ -55,5 +54,9 @@ public class User {
 
     public void updateRiotAccount(RiotAccount riotAccount) {
         this.riotAccount = riotAccount;
+    }
+
+    public void updateSetting(Setting setting) {
+        this.setting = setting;
     }
 }

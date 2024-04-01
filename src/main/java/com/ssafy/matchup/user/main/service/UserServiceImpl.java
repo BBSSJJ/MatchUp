@@ -10,6 +10,7 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
@@ -60,8 +61,8 @@ public class UserServiceImpl implements UserService {
         if (summonerLeagueInfoResponseDto == null) throw new UsernameNotFoundException(summonerName);
 
         //라이엇 아이디 사용중인지 검사
-        Optional<RiotAccount> riotAccountOptional =  riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
-        if(riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
+        Optional<RiotAccount> riotAccountOptional = riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
+        if (riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
 
         //TODO : Statistics Server에 전적 분석 요청
         webClientFactory.sendSummonerName(name, tag).subscribe(m -> log.info(""));
@@ -101,6 +102,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Long userId) {
         return new UserDto(userRepository.getReferenceById(userId));
+    }
+
+    @Override
+    public Setting getSetting(Long userId) {
+        User user = userRepository.findSettingById(userId).orElseThrow(EntityNotFoundException::new);
+        return user.getSetting();
+    }
+
+    @Transactional
+    @Override
+    public void updateSetting(Long userId, Setting setting) {
+        User user = userRepository.findSettingById(userId).orElseThrow(EntityNotFoundException::new);
+        user.updateSetting(setting);
     }
 
     @Transactional
