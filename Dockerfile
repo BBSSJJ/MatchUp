@@ -6,6 +6,7 @@ WORKDIR /app
 
 # 애플리케이션의 빌드 결과물 복사
 COPY ./build/libs/statistics-server.jar /app/
+COPY .env /app/
 
 # 애플리케이션 실행
 CMD ["java", "-jar", "statistics-server.jar"]
