@@ -12,6 +12,14 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import { SiLeagueoflegends } from "react-icons/si";
 import { useEffect, useState } from "react";
 
+interface PlayerStats {
+	rank: string;
+	tier: string;
+	winRate: number;
+	latestChampion: string;
+	top3Champions: string[];
+	mostLane: string;
+}
 
 export interface UserData {
 	tier?: string;
@@ -83,8 +91,9 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 	const [roomId, setRoomId] = useAtom(roomIdAtom)
 	const userInfo = useAtomValue<any>(userInfoAtom)
-	const [onOff, setOnOff] = useState(false)
+	const [onOff, setOnOff] = useState(false) // 마이크 사용여부
 	const [trigger,setTrigger] = useState(false)
+	const [isFriend, setIsFriend] = useState(false) // 친구여부
 	
 	// 마이크 세팅 가져오기
 	const {data: mic,  error: micError, isLoading: micLoading } = useSWR(
@@ -101,6 +110,36 @@ export default function UserProfile({ userId } :UserProfileProps) {
 		},
 	)
 
+	// 전적 정보 가져오기 
+	const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
+		`${SERVER_API_URL}/api/statistics/summoners/records/users/${userId}`,
+		userFetcher,
+		{
+			onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+			if (error.status === 401) return
+			}, 
+			revalidateOnFocus: false,
+			revalidateOnMount: true,
+			revalidateIfStale: true,
+		},
+	)
+
+	// 친구목록
+	const {data: friends, error: friendError, isLoading: friendLoading } = useSWR(
+		`${SERVER_API_URL}/api/friends?friendStatus=FRIEND`,
+		userFetcher,
+		{
+			onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+			  if (error.status === 401) return
+		
+			}, 
+			revalidateOnFocus: false,
+			revalidateOnMount: true,
+			revalidateIfStale: true,
+		},
+	)
+
+	// 최초 렌더링 시 로직
 	useEffect(() => {
 		// 마이크 상태 정보 가져오기
 		const fetchMicStatus = async () => {
@@ -122,7 +161,15 @@ export default function UserProfile({ userId } :UserProfileProps) {
                 console.error('Error fetching mic status:', error);
             }
         };
-        fetchMicStatus()
+		// 기존 친구인지 확인
+		const isFriend = () => {
+			const friendsList = friends?.list?.map((user :any) => user.userId)
+			return friendsList.includes(userId)
+		}
+		
+        fetchMicStatus() // 마이크 사용여부 가져오기
+		setIsFriend(isFriend)
+
 	}, [])
 
 	// 마이크 토글시마다 요청 보내기 
@@ -140,12 +187,14 @@ export default function UserProfile({ userId } :UserProfileProps) {
                 if (!response.ok) {
                     throw new Error('Failed to patch mic status');
                 }
-                const data = await response.json();
-                setOnOff(data.useMike); 
+                // const data = await response.json();
+				return response.json()
+                // setOnOff(data.useMike); 
             } catch (error) {
                 console.error('Error patching mic status:', error);
             }
         };
+		fetchMicStatus()
 	}, [onOff])
 
 
@@ -212,9 +261,6 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	}
 
 
-	// fetch 데이터로 대체할 부분 
-	const recentChampions = ['Irelia', 'Ahri', 'Zeri']
-	const positions = ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', '/positionIcons/support.png', '/positionIcons/top.png' ]
 	
 	const handleChat = async (userId :number) => {
         await openChatRoom(userId)
@@ -227,10 +273,23 @@ export default function UserProfile({ userId } :UserProfileProps) {
 
 	// }
 	
-	if (userLoading || micLoading) {
+	if (userLoading || micLoading || recordsLoading) {
 		return <h1>loading...</h1>
 	}
 
+
+	// fetch 데이터로 대체할 부분 
+
+
+	const positions = {
+		'MIDDLE': '',
+		'TOP': '',
+		'BOTTOM': '',
+		'JUNGLE': '', 
+		'SUPPORTER': '',
+		'ALL': ''
+	}
+	// ['/positionIcons/all.png','/positionIcons/bottom.png', '/positionIcons/jungle.png', '/positionIcons/mid.png', '/positionIcons/support.png', '/positionIcons/top.png' ]
 	
 
 	return (
@@ -245,14 +304,16 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<Image
 						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
-						src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Viego.png"
+						src={`https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records.latestChampion}.png`}
 						
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
 						{userInfo.userId !== Number(userId) && (
 							<div className="flex">
-								<Button 
+								{/* 친구가 아닌 경우에만 보여주기 */}
+								{!isFriend && (
+									<Button 
 									className="text-tiny text-white bg-black/20" 
 									variant="flat" 
 									color="default" 
@@ -262,6 +323,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 								>
 									친구요청
 								</Button>
+								)}
 								<Button
 									variant="flat" 
 									color="default" 
@@ -282,7 +344,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 			</div>
 			
 			<div className={styles.item2}>
-				<SiLeagueoflegends />
+				{/* <SiLeagueoflegends /> */}
 				{/* 마이크 사용여부 토글 */}
 				<Switch
 					// defaultSelected
@@ -292,10 +354,9 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					color="secondary"
 					thumbIcon={({ isSelected, className }) =>
 						isSelected ? (
-							// <PiMicrophoneFill />
-							<MicIcon />
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -2 24 24" width="28" fill="currentColor"><path d="M9 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm0-2a5 5 0 0 1 5 5v6a5 5 0 0 1-10 0V5a5 5 0 0 1 5-5zM0 11.03a1 1 0 1 1 2 0A6.97 6.97 0 0 0 8.97 18h.06A6.97 6.97 0 0 0 16 11.03a1 1 0 1 1 2 0A8.97 8.97 0 0 1 9.03 20h-.06A8.97 8.97 0 0 1 0 11.03z"></path></svg>
 						) : (
-							<MicOffIcon />
+							null
 						)
 					}
 					>
@@ -314,11 +375,12 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				<div className="h-[250px] w-[600px]">
 					<p className="text-bold">전적 정보</p>
 					{/* <p>{data.win} / {data.lose}</p> */}
-					<p>승률 :  %</p>
-					<p>티어 : {user.riotAccount.tier}</p>
+					<p>승률 : {records.winRate}%</p>
+					<p>Tier : {user.riotAccount.tier}</p>
+					<p>Rank : {records.rank}</p>
 					<p>최근 사용한 챔피언</p>
 					<div className="flex">
-					{recentChampions.map((champion, index) => {
+					{records.top3Champions.map((champion :string, index :number) => {
 						return (
 							<Image 
 								key={index}
@@ -331,18 +393,12 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					</div>
 					
 					<div className="flex flex-col">
-						<p>선호 포지션</p>
-						{positions.map((pos, index) => {
-							return (
-								<div key={index} className="flex">
-									<Image src={pos} width="20px" height="20px"/>
-									<p className={styles.bar}><span className={styles.barContent}></span></p>
-								</div>
-							)
-						})
-					}
+						<p>Main Position : {records.mostLane}</p>
+							{/* <div className="flex">
+								<Image src={pos} width="20px" height="20px"/>
+								<p className={styles.bar}><span className={styles.barContent}></span></p>
+							</div> */}
 					</div>
-					
 				</div>
 			</div>
 		</div>
