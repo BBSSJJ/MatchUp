@@ -19,6 +19,7 @@
     "axios": "^1.6.8",
     "framer-motion": "^11.0.23",
     "jotai": "^2.7.1",
+    "js-cookie": "^3.0.5",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
     "next-ui": "^0.9.0",
@@ -26,12 +27,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
-    "react-lottie": "^1.2.4",
     "sockjs-client": "^1.6.1",
     "swiper": "^11.0.7",
     "swr": "^2.2.5"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
