@@ -1,12 +1,13 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import useSWR, { mutate } from 'swr';
-import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, ModalProps} from "@nextui-org/react";
-import { useAtom } from "jotai";
+import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, ModalProps} from "@nextui-org/react";
+import { useAtom, useAtomValue } from "jotai";
 import { isRoomOpenAtom, roomIdAtom } from '@/store/chatAtom'
 import DirectMessage from "./chat";
 import ChatModal from "./chatModal";
 import { SERVER_API_URL } from "@/utils/instance-axios";
+import { userInfoAtom } from "@/store/authAtom";
 
 const youFetcher =async (url:string) => {
     const response = await fetch(url); // 서버로부터 데이터 가져오기
@@ -23,7 +24,8 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
     const [roomId, setRoomId] = useAtom(roomIdAtom)
-
+    const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
+    
     const handleChat = () => {
         setRoomId(chatId)
         onOpen()
@@ -41,9 +43,22 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
           revalidateOnFocus: false,
           revalidateOnMount: true,
         }
-      )
+    )
 
-    // 채팅 내용 가져오기
+    // 이 채팅방의 안 읽은 채팅 개수 가져오기
+    const {data: unreadChat , error: unreadChatError, isLoading: unreadChatLoading } = useSWR(
+        `${SERVER_API_URL}/api/chats/users/${you}`,
+        youFetcher,
+        {
+          onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+            if (error.status === 401) return
+          }, 
+          revalidateOnFocus: false,
+          revalidateOnMount: true,
+        }
+    )
+
+      // 채팅 내용 가져오기
     const {data: chat , error: chatError, isLoading: chatLoading } = useSWR(
         `${SERVER_API_URL}/api/chats/rooms/${chatId}`,
         youFetcher,
@@ -55,7 +70,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
           revalidateOnFocus: false,
           revalidateOnMount: true,
         }
-      )
+    )
     
     // console.log("partner data : ", partner)
     // console.log("chat data:", chat)
@@ -67,17 +82,21 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
         return <h1>chat is loading...</h1>
     }
 
+    if (unreadChatLoading) {
+        return <h1>data is loading...</h1>
+    }
+
     return (
         <div className="z-20000">
             <Card className="max-w-[340px]">
                 <CardHeader className="justify-between">
                     <div className="flex gap-5">
-                    <Avatar isBordered radius="full" size="md" src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png" />
+                    <Avatar isBordered radius="full" size="sm" src={partner?.riotAccount.summonerProfile.iconUrl} />
                     <div className="flex flex-col gap-1 items-start justify-center">
-                        <h4>{partner?.riotAccount.summonerProfile.name}</h4>
-                        <h4 className="text-[7px]">{chatId}</h4>
+                        <h4 className="text-sm">{partner?.riotAccount.summonerProfile.name}</h4>
+                        {/* <h4 className="text-[7px]">{chatId}</h4> */}
                         {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
-                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list?.at(-1)?.content}</h5>
+                        <h5 className="text-tiny tracking-tight text-default-400">{chat?.list?.at(-1)?.userId === userInfo.userId ? null : <Chip color="success">{unreadChat?.cnt}</Chip>}{chat.list?.at(-1)?.content}</h5>
                     </div>
                     </div>
                     <Button
@@ -88,7 +107,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                         variant={"bordered"}
                         onPress={handleChat}
                     >
-                    DM
+                        DM
                     </Button>
                     {/* 개별 채팅방 모달  */}
 					<ChatModal isOpen={isOpen} onOpenChange={onOpenChange}/>
