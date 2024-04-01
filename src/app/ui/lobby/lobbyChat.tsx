@@ -156,22 +156,22 @@ export default function LobbyChat() {
     }
   }
 
-  const demoUserInfo = {
-    "userId":6,
-    "role":"ROLE_USER",
-    "riotAccount":{
-      "id":"azZhIpYEutVjtlT7il9eUX1Gjv_UcgLeukxNSiBtpafNHA",
-      "summonerProfile":{
-        "name":"피아노의자",
-        "tag":"KR1",
-        "iconUrl":"https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/5.png",
-        "level":9
-      },
-      "tier":"no+league+data",
-      "leagueRank":"no+league+data",
-      "leaguePoint":0
-    }
-  }
+  // const demoUserInfo = {
+  //   "userId":6,
+  //   "role":"ROLE_USER",
+  //   "riotAccount":{
+  //     "id":"azZhIpYEutVjtlT7il9eUX1Gjv_UcgLeukxNSiBtpafNHA",
+  //     "summonerProfile":{
+  //       "name":"피아노의자",
+  //       "tag":"KR1",
+  //       "iconUrl":"https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/5.png",
+  //       "level":9
+  //     },
+  //     "tier":"no+league+data",
+  //     "leagueRank":"no+league+data",
+  //     "leaguePoint":0
+  //   }
+  // }
 
   const rankToNumber: any = {
     'I': '1',

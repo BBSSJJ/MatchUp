@@ -1,8 +1,6 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
-import type { DraggableData, DraggableEvent } from 'react-draggable';
-import Draggable from 'react-draggable';
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import styles from "./chat.module.css"
 import { Button, Image } from '@nextui-org/react';
