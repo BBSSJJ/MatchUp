@@ -1,5 +1,6 @@
 package com.ssafy.matchup_statistics.summoner.dto.util;
 
+import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicatorStatistics;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
@@ -31,9 +32,11 @@ class CalculatorTest {
         MatchIndicatorStatistics.Metadata metadata = MatchIndicatorStatistics.Metadata.builder().championCount(championCount).build();
         MatchIndicatorStatistics matchIndicatorStatistics =
                 new MatchIndicatorStatistics(new LaneIndicatorStatistics(), new MacroIndicatorStatistics(), metadata);
-
+        Indicator indicator = Indicator.builder()
+                .matchIndicatorStatistics(matchIndicatorStatistics)
+                .build();
         // when
-        SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(null, null, null, matchIndicatorStatistics);
+        SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(null, null, null, indicator);
         String[] top3 = summonerRecordInfoResponseDto.getRecord().getTop3Champions();
 
         // then
@@ -55,9 +58,13 @@ class CalculatorTest {
         MatchIndicatorStatistics.Metadata metadata = MatchIndicatorStatistics.Metadata.builder().teamPositionCount(teamPositionCount).build();
         MatchIndicatorStatistics matchIndicatorStatistics =
                 new MatchIndicatorStatistics(new LaneIndicatorStatistics(), new MacroIndicatorStatistics(), metadata);
+        Indicator indicator = Indicator.builder()
+                .matchIndicatorStatistics(matchIndicatorStatistics)
+                .build();
+
 
         // when
-        SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(null, null, null, matchIndicatorStatistics);
+        SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(null, null, null, indicator);
         String mostLane = summonerRecordInfoResponseDto.getRecord().getMostLane();
 
         // then

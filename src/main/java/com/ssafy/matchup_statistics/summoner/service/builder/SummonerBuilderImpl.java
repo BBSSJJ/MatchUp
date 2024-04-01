@@ -110,14 +110,12 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         // 매치 받아오기
         Pair<List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>>, List<String>> matches = getMatches(summonerDatas.getMiddle().getPuuid());
 
-        // 통계정보 생성 및 저장하기
+        // 통계정보 생성하기
         Indicator indicator = indicatorFluxBuilder.build(matches.getLeft(), summonerDatas.getMiddle().getId(), summonerDatas.getMiddle().getPuuid());
-        mongoTemplate.save(indicator);
         log.info("지표 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), indicator.getId());
 
-        // 소환사정보 생성 및 저장하기
+        // 소환사정보 생성하기
         Summoner summoner = build(summonerDatas, matches);
-        mongoTemplate.save(summoner);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
 
         // 전적정보 반환

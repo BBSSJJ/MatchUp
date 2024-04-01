@@ -12,7 +12,6 @@ import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.global.api.rest.MatchRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
-import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -42,10 +42,10 @@ class MatchTopIndicatorBuilderTest {
     RiotRestApiAdaptor riotRestApiAdaptor;
 
     @Mock
-    MatchDaoImpl matchDaoImpl;
+    MongoTemplate mongoTemplate;
 
     @InjectMocks
-    IndicatorBuilder target = new IndicatorBuilder(riotRestApiAdaptor, matchDaoImpl);
+    IndicatorBuilder target = new IndicatorBuilder(riotRestApiAdaptor, mongoTemplate);
 
     @Autowired
     @Qualifier("hide_on_bush_detail")
@@ -71,7 +71,7 @@ class MatchTopIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotRestApiAdaptor, matchDaoImpl);
+        target = new IndicatorBuilder(riotRestApiAdaptor, mongoTemplate);
 
         // 본인 아이디 : 5
         // 상대 아이디 : 6
