@@ -4,7 +4,7 @@ springdoc:
   api-docs:
     path: /api/alarm/swagger.json
     groups:
-    enabled: true
+      enabled: true
   swagger-ui:
     operations-sorter: alpha # alpha(알파벳 오름차순), method(HTTP메소드순)
     tags-sorter: alpha # 태그 정렬 기준
