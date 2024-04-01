@@ -2,6 +2,9 @@ package com.ssafy.matchup_statistics.summoner.service.sub.record;
 
 import com.ssafy.matchup_statistics.global.dao.UserDao;
 import com.ssafy.matchup_statistics.global.dto.jpa.UserRiotAccountDto;
+import com.ssafy.matchup_statistics.global.exception.RiotApiException;
+import com.ssafy.matchup_statistics.global.exception.RiotDataError;
+import com.ssafy.matchup_statistics.global.exception.RiotDataException;
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.match.entity.Match;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
@@ -25,12 +28,22 @@ public class SummonerRecordServiceImpl implements SummonerRecordService {
 
     @Override
     public SummonerRecordInfoResponseDto getSummonerRecordInfo(String gameName, String tagLine) {
-        Summoner summonerInDB = summonerDao.getSummonerInDB(gameName, tagLine);
-        Indicator indicatorInDB = summonerDao.getIndicatorInDB(summonerInDB.getId());
-        List<Match> matches = summonerInDB.getMatchIds().stream().map(summonerDao::getMatchInDB).toList();
-        SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(summonerInDB, indicatorInDB, matches);
-        log.info("SummonerRecordInfo create : {}", summonerRecordInfoResponseDto);
-        return summonerRecordInfoResponseDto;
+
+        try{
+            Summoner summonerInDB = summonerDao.getSummonerInDB(gameName, tagLine);
+            Indicator indicatorInDB = summonerDao.getIndicatorInDB(summonerInDB.getId());
+            List<Match> matches = summonerInDB.getMatchIds().stream().map(summonerDao::getMatchInDB).toList();
+            SummonerRecordInfoResponseDto summonerRecordInfoResponseDto = new SummonerRecordInfoResponseDto(summonerInDB, indicatorInDB, matches);
+            log.info("SummonerRecordInfo create : {}", summonerRecordInfoResponseDto);
+            return summonerRecordInfoResponseDto;
+
+            // DB에 없을 경우 라이엇에서 찾아오기
+        } catch (RiotDataException e) {
+            log.debug("error : {}", e.getRiotDataError());
+            if (e.getRiotDataError().equals(RiotDataError.NOT_IN_STATISTICS_DATABASE)){
+                return summonerBuilder.buildRecord(gameName, tagLine);
+            } else throw new RiotDataException(e.getRiotDataError());
+        }
     }
 
     @Override
