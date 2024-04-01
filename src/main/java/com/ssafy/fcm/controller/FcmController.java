@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Alarm Controller", description = "클라이언트 토큰을 등록하기 위한 API 입니다.") // 문서의 해당 컨트롤러(탭)을 구분하는 태그 생성
 @RestController
-@RequestMapping("/alarm")
+@RequestMapping("/api/alarm")
 @RequiredArgsConstructor
 @Slf4j
 public class FcmController {
