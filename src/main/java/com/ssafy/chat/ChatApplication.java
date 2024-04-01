@@ -18,15 +18,6 @@ public class ChatApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
     }
 
-    @Value("${MATCHUP_CHAT_DB}")
-    private String matchupChatDb;
-
-    @PostConstruct
-    public void postConstruct() {
-        log.info("Using MATCHUP_CHAT_DB: {}", matchupChatDb);
-    }
-
-
     public static void main(String[] args) {
         SpringApplication.run(ChatApplication.class, args);
     }
