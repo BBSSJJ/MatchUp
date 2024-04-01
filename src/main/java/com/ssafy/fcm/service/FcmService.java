@@ -28,7 +28,7 @@ public class FcmService {
     @KafkaListener(topics = "alarm", containerFactory = "kafkaListenerContainerFactory") // 추가: 컨테이너 팩토리를 지정합니다.
     public void listenFcm(FcmDto fcmDto) throws FirebaseMessagingException {
 
-        log.error("- sender : {}", fcmDto.getSender());
+        log.error("- sender : {}", fcmDto.getName());
         log.error("- receiver : {}", fcmDto.getReceiverId());
         log.error("- type : {}", fcmDto.getType());
         log.error("- content : {}", fcmDto.getContent());
@@ -37,7 +37,8 @@ public class FcmService {
         log.error("- Token : {}", registrationToken);
 
         Message message = Message.builder()
-                .putData("sender", fcmDto.getSender())
+                .putData("name", fcmDto.getName())
+                .putData("iconUrl", fcmDto.getIconUrl())
                 .putData("type", fcmDto.getType())
                 .putData("content", fcmDto.getContent())
                 .setToken(registrationToken)
