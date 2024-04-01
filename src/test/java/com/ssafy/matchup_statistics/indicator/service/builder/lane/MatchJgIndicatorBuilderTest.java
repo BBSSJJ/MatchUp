@@ -12,7 +12,7 @@ import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.JgIndicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
-import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
+import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +44,7 @@ class MatchJgIndicatorBuilderTest {
     RiotRestApiAdaptor riotApiAdaptor;
 
     @Mock
-    MatchSaveService matchSaveService;
+    MatchDaoImpl matchDaoImpl;
 
     @InjectMocks
     IndicatorBuilder target;
@@ -70,7 +70,7 @@ class MatchJgIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotApiAdaptor, matchSaveService);
+        target = new IndicatorBuilder(riotApiAdaptor, matchDaoImpl);
 
         // 본인 아이디 : 6
         // 상대 아이디 : 2

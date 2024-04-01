@@ -7,8 +7,10 @@ import com.ssafy.matchup_statistics.indicator.data.Before_15_Data;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.LaneAssist;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Getter
 public class JgIndicator extends LaneIndicator {
     private LaneAssist laneAssist;

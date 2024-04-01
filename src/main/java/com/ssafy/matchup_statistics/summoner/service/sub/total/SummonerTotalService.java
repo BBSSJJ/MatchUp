@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.summoner.service.sub;
+package com.ssafy.matchup_statistics.summoner.service.sub.total;
 
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 
