@@ -1,34 +1,42 @@
 .chatModal {
     position: relative;
     width: 100%;
-    /* height: 400px; */
+    height: 400px;
     background-color: #35353d;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    /* height: 100%; */
     /* position: absolute;
     right: 10px; */
     /* z-index: 2000; */
 }
 
 .input {
-    display: fixed;
-    /* position: absolute; */
+    display: flex;
     align-items: center;
     padding: 10px;
+    position: fixed;
     bottom: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
 
 .input input {
     flex-grow: 1; /* 입력창이 가능한 최대 너비를 가지도록 설정 */
     margin-right: 10px;
+    height: 100%;
 }
 
 .input button {
     width: 20%;
     height: 100%;
-    background-color: red;
+    background-color: #e1eaf5;
+    cursor: pointer;
+    outline: none;
+    border: none;
 }
 
 .messages {
@@ -52,12 +60,18 @@
 
 /* 자기 자신의 메시지 스타일 */
 .myMessage {
-    background-color: #40d6db; /* 예시 배경색 */
     align-self: flex-end;
 }
-  
+
+.myMessage p {
+    background-color: #40d6db; 
+}
+
 /* 상대방의 메시지 스타일 */
 .otherMessage {
-    background-color: #d6b86c; /* 예시 배경색 */
     align-self: flex-start;
+}
+
+.otherMessage p {
+    background-color: #d6b86c;
 }
