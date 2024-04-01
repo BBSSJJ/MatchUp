@@ -10,4 +10,5 @@ public interface SummonerBuilder {
 
     Summoner build(String summonerId);
 
+    void buildAsync(String gameName, String tagLine);
 }

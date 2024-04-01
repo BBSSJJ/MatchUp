@@ -35,7 +35,6 @@ logging:
   level:
     root: debug
 
-
 # IP 주소
 ip:
   db-repl:

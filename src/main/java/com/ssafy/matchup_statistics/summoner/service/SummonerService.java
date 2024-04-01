@@ -95,11 +95,11 @@ public class SummonerService {
         summonerRecordService.saveSummonerRecordInfo(gameName, tagLine);
     }
 
-    public SummonerInfoResponseDto registSummoner(String gameName, String tagLine) {
+    public SummonerLeagueAccountInfoResponseDto registSummoner(String gameName, String tagLine) {
         return summonerUserService.registSummoner(gameName, tagLine);
     }
 
-    public SummonerInfoResponseDto loginSummoner(String summonerId) {
-        return summonerUserService.loginSummoner(summonerId);
+    public SummonerLeagueAccountInfoResponseDto loginSummoner(Long userId) {
+        return summonerUserService.loginSummoner(userId);
     }
 }
