@@ -23,7 +23,7 @@ export default function Page() {
       url: `${SERVER_API_URL}/api/chats/rooms`
     })
     .then((response: any) => {
-      setMyRooms(response.data)
+      setMyRooms(response.data.list)
     })
   }
 
