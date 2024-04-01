@@ -1,6 +1,7 @@
 package com.ssafy.matchup_statistics.global.config;
 
 import com.ssafy.matchup_statistics.global.dto.response.MessageDto;
+import com.ssafy.matchup_statistics.global.exception.RiotApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +19,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<MessageDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    // [404]최근 게임 없을때 오류
+    @ExceptionHandler(RiotApiException.class)
+    protected ResponseEntity<MessageDto> handleNoRentGameException(RiotApiException e) {
+        return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     // [500]서버 오류

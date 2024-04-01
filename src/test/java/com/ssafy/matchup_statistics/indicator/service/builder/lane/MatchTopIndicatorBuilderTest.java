@@ -12,7 +12,7 @@ import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.global.api.rest.MatchRestApi;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
-import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
+import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,10 +42,10 @@ class MatchTopIndicatorBuilderTest {
     RiotRestApiAdaptor riotRestApiAdaptor;
 
     @Mock
-    MatchSaveService matchSaveService;
+    MatchDaoImpl matchDaoImpl;
 
     @InjectMocks
-    IndicatorBuilder target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
+    IndicatorBuilder target = new IndicatorBuilder(riotRestApiAdaptor, matchDaoImpl);
 
     @Autowired
     @Qualifier("hide_on_bush_detail")
@@ -71,7 +71,7 @@ class MatchTopIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotRestApiAdaptor, matchSaveService);
+        target = new IndicatorBuilder(riotRestApiAdaptor, matchDaoImpl);
 
         // 본인 아이디 : 5
         // 상대 아이디 : 6
