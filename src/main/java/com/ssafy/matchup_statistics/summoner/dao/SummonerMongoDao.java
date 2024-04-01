@@ -2,6 +2,8 @@ package com.ssafy.matchup_statistics.summoner.dao;
 
 import com.ssafy.matchup_statistics.global.exception.RiotApiError;
 import com.ssafy.matchup_statistics.global.exception.RiotApiException;
+import com.ssafy.matchup_statistics.global.exception.RiotDataError;
+import com.ssafy.matchup_statistics.global.exception.RiotDataException;
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.match.entity.Match;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
@@ -29,7 +31,7 @@ public class SummonerMongoDao implements SummonerDao {
 
         Summoner summoners = mongoTemplate.findOne(query, Summoner.class, "summoners");
 
-        if (summoners == null) throw new RiotApiException(RiotApiError.NOT_IN_STATISTICS_DATABASE);
+        if (summoners == null) throw new RiotDataException(RiotDataError.NOT_IN_STATISTICS_DATABASE);
         else log.info("summoner founded : {}", summoners.getId());
 
         return summoners;
@@ -42,7 +44,7 @@ public class SummonerMongoDao implements SummonerDao {
 
         Indicator indicators = mongoTemplate.findOne(query, Indicator.class, "indicators");
 
-        if (indicators == null) throw new RiotApiException(RiotApiError.NOT_IN_STATISTICS_DATABASE);
+        if (indicators == null) throw new RiotDataException(RiotDataError.NOT_IN_STATISTICS_DATABASE);
         else log.info("indicator founded : {}", indicators.getId());
 
         return indicators;
@@ -55,7 +57,7 @@ public class SummonerMongoDao implements SummonerDao {
 
         Match matches = mongoTemplate.findOne(query, Match.class, "matches");
 
-        if (matches == null) throw new RiotApiException(RiotApiError.NOT_IN_STATISTICS_DATABASE);
+        if (matches == null) throw new RiotDataException(RiotDataError.NOT_IN_STATISTICS_DATABASE);
         else log.info("match founded : {}", matches.getId());
 
         return matches;
