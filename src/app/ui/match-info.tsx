@@ -42,7 +42,7 @@ interface Info {
     gameDuration: number;
 }
 
-
+// api 요청을 보내서(summoner id, tagline) 받을 응답
 interface ResponseData {
     metadata: Metadata;
     info: Info;

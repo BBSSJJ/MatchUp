@@ -161,12 +161,15 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 							}
 						}}
 					/>
-					<button 
+					<Button
+                        radius='full'
+                        variant='ghost'
+                        size='sm'
 						className='w-[20%] h-[100%]'  
 						onClick={() => sendMessage()}
 					>
 						보내기
-					</button>
+					</Button>
 				</div>
 		</div>
     )
