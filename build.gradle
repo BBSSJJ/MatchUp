@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
@@ -34,7 +35,6 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 
 }
 
