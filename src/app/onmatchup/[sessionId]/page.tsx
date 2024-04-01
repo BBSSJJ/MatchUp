@@ -7,9 +7,13 @@ import Image from "next/image"
 import MatchupChats from "@/app/ui/onmatchup/matchupChats"
 import Link from "next/link"
 import UserVideoComponent from './UserVideoComponent';
+import { Button } from "@nextui-org/react"
 
 const APPLICATION_SERVER_URL = 'https://matchup.site/openvidu/'
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
+var OVScreen: OpenVidu
+var screen: Session
+var screensharing: boolean = false
 
 export default function Page({ params }: { params: { sessionId: string }}) {
   const [openvidu, setOpenvidu] = useState<any>({
@@ -17,12 +21,8 @@ export default function Page({ params }: { params: { sessionId: string }}) {
     publisher: undefined,
     subscribers: [],
   });
-
   const [username, setUsername] = useState('Participant' + Math.floor(Math.random() * 100))
-
   const [ovSession, setOvSession] = useState<Session | undefined>(undefined)
-
-  const roomId = 123456789
 
   async function getSession(sessionId: string) {
     const response = await axios.get(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId, {
@@ -46,10 +46,10 @@ export default function Page({ params }: { params: { sessionId: string }}) {
 
   async function joinSession() {
     const OV = new OpenVidu()
-    const OVScreen = new OpenVidu()
+    OVScreen = new OpenVidu()
 
     const session = OV.initSession()
-    const screen = OVScreen.initSession()
+    screen = OVScreen.initSession()
 
     session.on("streamCreated", (event) => {
       const subscriber = session.subscribe(event.stream, undefined);
@@ -85,6 +85,7 @@ export default function Page({ params }: { params: { sessionId: string }}) {
 
     session.connect(token, { clientData: username })
       .then(async () => {
+        console.log('111')
         const publisher = await OV.initPublisherAsync(undefined, {
           audioSource: undefined, // The source of audio. If undefined default microphone
           videoSource: undefined, // The source of video. If undefined default webcam
@@ -107,6 +108,47 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       .catch((error) => {
         console.log('There was an error connecting to the session:', error.code, error.message);
       });
+    
+    // const tokenScreen = await getToken()
+
+    // screen.connect(tokenScreen, { clientData: username })
+    //   .then(() => {
+    //     console.log("Session screen connected");
+    //   })
+    //   .catch((error) => {
+    //     console.log('There was an error connecting to the session for screen share:', error.code, error.message)
+    //   })
+
+  }
+    
+  function publishScreenShare() {
+    getToken().then((tokenScreen) => {
+      console.log('222')
+      screen.connect(tokenScreen, { clientData: username })
+    })
+    // --- 9.1) To create a publisherScreen set the property 'videoSource' to 'screen'
+    var publisherScreen = OVScreen.initPublisher("container-screens", { videoSource: "screen" });
+  
+    // --- 9.2) Publish the screen share stream only after the user grants permission to the browser
+    publisherScreen.once('accessAllowed', (event) => {
+      screensharing = true;
+      // If the user closes the shared window or stops sharing it, unpublish the stream
+      publisherScreen.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+        console.log('User pressed the "Stop sharing" button');
+        screen.unpublish(publisherScreen);
+        screensharing = false;
+      });
+      screen.publish(publisherScreen);
+    });
+  
+    publisherScreen.on('videoElementCreated', function (event) {
+      // appendUserData(event.element, screen.connection);
+      event.element['muted'] = true;
+    });
+  
+    publisherScreen.once('accessDenied', (event) => {
+      console.error('Screen Share: Access Denied');
+    });
   }
 
   function leaveSession () {
@@ -142,8 +184,9 @@ export default function Page({ params }: { params: { sessionId: string }}) {
             </div>
           ) : null}
           <div className="w-screen">
-            <MatchupChats roomId={roomId} />
+            <MatchupChats roomId={params.sessionId} />
             <Link href={'/onmatchup'} onClick={leaveSession}>나가기</Link>
+            <Button onPress={publishScreenShare}>Screen Share</Button>
           </div>
           {openvidu.subscribers.map((sub: any, index: number) => (
             <div key={sub.id}>
@@ -163,7 +206,7 @@ export default function Page({ params }: { params: { sessionId: string }}) {
         </div>
       ) : (
           <div>
-            <MatchupChats roomId={roomId} />
+            <MatchupChats roomId={params.sessionId} />
             <button onClick={joinSession}>시작하기</button>
           </div>
       )}

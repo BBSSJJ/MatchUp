@@ -4,14 +4,14 @@ import { OpenVidu } from "openvidu-browser";
 const URL = "https://matchup.site/openvidu/api"
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
 
-export async function createSession() {
+export async function createSession(sessionId: string) {
   const response = await axios({
     method: 'post',
     url: `${URL}/sessions`,
     headers,
-    // data: {
-    //   customSessionId: sessionId
-    // }
+    data: {
+      customSessionId: sessionId
+    }
   })
   return response.data
 }
