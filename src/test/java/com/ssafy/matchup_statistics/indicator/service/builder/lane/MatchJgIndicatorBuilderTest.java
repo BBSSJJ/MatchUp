@@ -12,7 +12,6 @@ import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.JgIndicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
-import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -44,7 +44,7 @@ class MatchJgIndicatorBuilderTest {
     RiotRestApiAdaptor riotApiAdaptor;
 
     @Mock
-    MatchDaoImpl matchDaoImpl;
+    MongoTemplate mongoTemplate;
 
     @InjectMocks
     IndicatorBuilder target;
@@ -70,7 +70,7 @@ class MatchJgIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotApiAdaptor, matchDaoImpl);
+        target = new IndicatorBuilder(riotApiAdaptor, mongoTemplate);
 
         // 본인 아이디 : 6
         // 상대 아이디 : 2
