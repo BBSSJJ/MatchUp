@@ -94,9 +94,11 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 		// console.log('Messages 상태가 업데이트됨:', messages);
 	}, [messages]);
 
+	
+
 	const scrollToBottom = () => {
 		if (messagesEndRef.current) {
-			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+			messagesEndRef.current.scrollIntoView({ behavior: 'instant' });
 		}
     };
 
@@ -139,37 +141,36 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 						<div key={index}  className={`${styles.messageContainer}`}>
 							<div className={`flex ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
 								<Image src={message.iconUrl} width="20px" height="20px" />
-								<span className='text-tiny'>{message.name}</span>
+								<span className='text-tiny mx-2'>{message.name}</span>
 							</div>
 							<div>
-								<p className='text-tiny'>{message.timestamp}</p>
-								<p className={`${styles.messageBubble} text-small ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>{message.content}</p>
+								<p className={`${styles.messageBubble} text-small ${message.userId === userInfo.userId ? styles.myMessageP : styles.otherMessageP}`}>{message.content}</p>
+								<p className='text-tiny'>{message.timestamp.slice(-4,).replace('T', ' ')}</p>
 							</div>	
 						</div>
 					))}
 					<div ref={messagesEndRef} />
-				</div>
-					
-				</div>
-				<div className={styles.input}>
-				<input
-					type="text"
-					value={inputMessage}
-					onChange={(e) => setInputMessage(e.target.value)}
-					onKeyDown={(e) => {
-						if (e.key === 'Enter') {
-							sendMessage();
-						}
-					}}
-				/>
-				<button 
-					className='w-[20%] h-[100%]'  
-					style={{ backgroundColor: 'red' }}
-					onClick={() => sendMessage()}
-				>
-					보내기
-				</button>
+				</div>	
 			</div>
+				<div className={styles.input}>
+					<input
+						type="text"
+						value={inputMessage}
+						onChange={(e) => setInputMessage(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								sendMessage();
+							}
+						}}
+					/>
+					<button 
+						className='w-[20%] h-[100%]'  
+						style={{ backgroundColor: 'red' }}
+						onClick={() => sendMessage()}
+					>
+						보내기
+					</button>
+				</div>
 		</div>
         
     )
