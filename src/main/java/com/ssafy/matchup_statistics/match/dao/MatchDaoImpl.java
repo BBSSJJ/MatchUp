@@ -1,19 +1,18 @@
-package com.ssafy.matchup_statistics.match.service.sub;
+package com.ssafy.matchup_statistics.match.dao;
 
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.global.util.MongoTemplateAdaptor;
 import com.ssafy.matchup_statistics.match.entity.Match;
-import com.ssafy.matchup_statistics.match.entity.MatchDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MatchSaveService {
+public class MatchDaoImpl {
 
-    private final MongoTemplateAdaptor mongoTemplateAdaptor;
+    private final MongoTemplate mongoTemplate;
     public void save(MatchDetailResponseDto matchDetailResponseDto) {
-        mongoTemplateAdaptor.saveMatch(new Match(
+        mongoTemplate.save(new Match(
                 matchDetailResponseDto.getMetadata().getMatchId(),
                 matchDetailResponseDto));
     }

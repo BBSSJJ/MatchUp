@@ -4,7 +4,7 @@ import com.ssafy.matchup_statistics.indicator.entity.match.beginning.LaneIndicat
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.LaneIndicatorStatistics;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicatorStatistics;
-import lombok.Getter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -13,6 +13,9 @@ import java.util.List;
 
 @Getter
 @Slf4j
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MatchIndicatorStatistics {
 
     private LaneIndicatorStatistics laneIndicatorAvg;
@@ -29,6 +32,10 @@ public class MatchIndicatorStatistics {
         this.metadata = new Metadata(matchIndicators);
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Metadata {
         private int totalCount;
         private LinkedHashMap<String, Integer> teamPositionCount = new LinkedHashMap<>();

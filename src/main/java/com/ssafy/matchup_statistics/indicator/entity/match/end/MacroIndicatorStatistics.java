@@ -2,11 +2,13 @@ package com.ssafy.matchup_statistics.indicator.entity.match.end;
 
 import com.ssafy.matchup_statistics.indicator.entity.match.end.base.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @Slf4j
 public class MacroIndicatorStatistics {
     private SplitPoint splitPoint;

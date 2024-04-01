@@ -1,6 +1,5 @@
 package com.ssafy.matchup_statistics.indicator.service.builder;
 
-import com.ssafy.matchup_statistics.global.api.flux.RiotWebClientFactory;
 import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
@@ -10,18 +9,14 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.TimeInfo;
-import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
+import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 @Component
 @Slf4j
@@ -29,7 +24,7 @@ import java.util.concurrent.CountDownLatch;
 public class IndicatorBuilder {
 
     private final RiotRestApiAdaptor riotRestApiAdaptor;
-    private final MatchSaveService matchSaveService;
+    private final MatchDaoImpl matchDaoImpl;
 
     public Indicator build(List<String> matchIds, String summonerId, String puuid) {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
@@ -43,7 +38,7 @@ public class IndicatorBuilder {
             MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId(matchId);
 
             // 매치정보는 별도로 저장
-            matchSaveService.save(matchDetailResponseDtoByMatchId);
+            matchDaoImpl.save(matchDetailResponseDtoByMatchId);
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {
