@@ -245,6 +245,14 @@ DB dump 완료
 
 ## 챌린저
 
+300 완료(350034ms)
+
 ## 그랜드마스터
 
+588 오류
+"message": "404 Not Found from GET https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/DRHWxBpw4IuICrql6k72lNlWiwzqi1kyF9yV28mc_UM_ahJm2CaD3Zy1j511YVmp-iOpbcm8l4yvkg"
+아마 회원탈퇴한듯
+
 ## 마스터
+
+1629 오류(너무많아서 취소함)
