@@ -77,7 +77,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                         <h4>{partner?.riotAccount.summonerProfile.name}</h4>
                         <h4 className="text-[7px]">{chatId}</h4>
                         {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
-                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list?.at(-1).content}</h5>
+                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list?.at(-1)?.content}</h5>
                     </div>
                     </div>
                     <Button
