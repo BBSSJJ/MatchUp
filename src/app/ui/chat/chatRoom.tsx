@@ -96,7 +96,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                         <h4 className="text-sm">{partner?.riotAccount.summonerProfile.name}</h4>
                         {/* <h4 className="text-[7px]">{chatId}</h4> */}
                         {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
-                        <h5 className="text-tiny tracking-tight text-default-400">{chat?.list?.at(-1)?.userId === userInfo.userId ? null : <Chip color="success">{unreadChat?.cnt}</Chip>}{chat.list?.at(-1)?.content}</h5>
+                        <h5 className="text-tiny tracking-tight text-default-400">{(chat?.list?.at(-1)?.userId !== userInfo.userId) && unreadChat.cnt > 0 ? <Chip color="success">{unreadChat?.cnt}</Chip> : null}{chat.list?.at(-1)?.content}</h5>
                     </div>
                     </div>
                     <Button
