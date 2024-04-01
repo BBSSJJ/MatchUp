@@ -25,9 +25,9 @@ public class MatchIndicatorStatistics {
     public MatchIndicatorStatistics(List<MatchIndicator> matchIndicators) {
         List<LaneIndicator> laneIndicators = matchIndicators.stream().map(MatchIndicator::getLaneIndicator).toList();
         List<MacroIndicator> macroIndicators = matchIndicators.stream().map(MatchIndicator::getMacroIndicator).toList();
-        log.debug("라인통계 평균 생성시작");
+        log.debug("{}개 라인통계 평균 생성시작", laneIndicators);
         if (!laneIndicators.isEmpty()) this.laneIndicatorAvg = new LaneIndicatorStatistics(laneIndicators);
-        log.debug("운영통계 평균 생성시작");
+        log.debug("{}개 운영통계 평균 생성시작", macroIndicators);
         if (!macroIndicators.isEmpty()) this.macroIndicatorAvg = new MacroIndicatorStatistics(macroIndicators);
         this.metadata = new Metadata(matchIndicators);
     }
