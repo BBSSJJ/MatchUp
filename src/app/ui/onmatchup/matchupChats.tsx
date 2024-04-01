@@ -70,7 +70,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
       })}
       <Input 
         onValueChange={setContent} value={content} placeholder='내용을 입력해주세요' 
-        onKeyDown={((event) => {
+        onKeyDown={((event: any) => {
           if (event.key == 'Enter') {
             sendMessage()
           }
