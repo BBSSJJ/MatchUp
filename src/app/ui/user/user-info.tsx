@@ -195,7 +195,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
             }
         };
 		fetchMicStatus()
-	}, [onOff])
+	}, [])
 
 
 	// 유저 데이터 가져오기
