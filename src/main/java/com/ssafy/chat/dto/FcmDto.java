@@ -7,7 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class FcmDto {
 
-    private String sender;
+    private String name;
+    private String iconUrl;
     private Long receiverId;
     private String type;
     private String content;

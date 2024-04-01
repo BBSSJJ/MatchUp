@@ -33,13 +33,13 @@ public class ChatService {
     public void sendChat(String roomId, ChatDto chatDto) throws Exception {
 
         Chat chat = new Chat(roomId, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now(), false);
-        log.error("몽고DB 세이브 : {}", mongoTemplate.save(chat));
+        mongoTemplate.save(chat);
 
         // Produce message to Kafka topic
         kafkaChatTemplate.send("chat", chat);
 
         Long receiverId = findReceiverId(roomId, chat.getUserId());
-        FcmDto fcmDto = new FcmDto(chatDto.getName(), receiverId, "CHAT", chatDto.getContent());
+        FcmDto fcmDto = new FcmDto(chatDto.getName(), chatDto.getIconUrl(), receiverId, "CHAT", chatDto.getContent());
         kafkaFcmTemplate.send("alarm", fcmDto);
     }
 
