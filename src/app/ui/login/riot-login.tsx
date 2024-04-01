@@ -6,6 +6,7 @@ import styles from './riot-login.module.css';
 import { SERVER_API_URL } from "@/utils/instance-axios"
 import { useAtom } from 'jotai';
 import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom';
+import Cookies from 'js-cookie'
 
 const SERVER_URL = SERVER_API_URL
 
@@ -33,17 +34,21 @@ export default function RiotLoginForm({ snsType, snsId } :{
                 body: JSON.stringify({ riotId, snsType, snsId }),
             })
 
+            // 회원가입 성공 시 로그인
             if(response.ok) {
                 console.log("회원가입 요청에 대한 응답 : ", response)
-                const userCookie = decodeURIComponent(document.cookie);
-                console.log(userCookie)
-                const jsonString = userCookie.substring(5);
+                const userCookie = Cookies.get('user')
+                // const userCookie = decodeURIComponent(document.cookie);
+                // console.log(userCookie)
+                // const jsonString = userCookie.substring(5);
                 // 로그인 한 유저 정보를 로컬 스토리지에 저장
-                setUser(JSON.parse(jsonString));
-                // 회원가입 성공 시 로그인
-                setIsLoggedIn(true)
-                window.location.href = `${SERVER_URL}/lobby`
-                
+                if (userCookie) {
+                    setUser(JSON.parse(userCookie))
+                    setIsLoggedIn(true)
+                    window.location.href = `${SERVER_URL}/lobby`
+                } else {
+                    console.log("no user cookie")
+                }
             } else {
                 console.log('회원가입 실패')
             }
