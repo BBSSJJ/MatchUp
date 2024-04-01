@@ -20,6 +20,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -62,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    ResponseEntity<Void> userLogout() throws JsonProcessingException {
+    ResponseEntity<Void> userLogout() {
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, String.valueOf(cookieUtil.removeUserCookie()))
                 .body(null);
@@ -79,6 +81,11 @@ public class UserController {
     ResponseEntity<Void> settingUpdate(HttpServletRequest request, @RequestBody Setting setting) {
         userService.updateSetting(jwtTokenUtil.getUserId(request), setting);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{user-id}/tier-list")
+    ResponseEntity<List<String>> userInTierList(@PathVariable("user-id") Long userId) {
+        return new ResponseEntity<>(userService.getUsersInTier(userId), HttpStatus.OK);
     }
 
     @PostMapping("/dump/{page}")

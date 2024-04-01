@@ -16,6 +16,7 @@ import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
 import com.ssafy.matchup.user.main.service.sub.InitUserService;
+import com.ssafy.matchup.user.main.service.sub.UserTierCheckService;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
 import com.ssafy.matchup.user.riotaccount.entity.SummonerProfile;
 import com.ssafy.matchup.user.riotaccount.respository.RiotAccountRepository;
@@ -23,6 +24,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private final RiotAccountRepository riotAccountRepository;
     private final StatisticsServerApi statisticsServerApi;
     private final InitUserService initUserService;
+    private final UserTierCheckService userTierCheckService;
     private final WebClientFactory webClientFactory;
 
     @Transactional
@@ -115,6 +118,24 @@ public class UserServiceImpl implements UserService {
     public void updateSetting(Long userId, Setting setting) {
         User user = userRepository.findSettingById(userId).orElseThrow(EntityNotFoundException::new);
         user.updateSetting(setting);
+    }
+
+    @Override
+    public List<String> getUsersInTier(Long userId) {
+        User user = userRepository.findUserById(userId).orElseThrow(EntityNotFoundException::new);
+
+        Boolean useMike = user.getSetting().getUseMike();
+        String tier = user.getRiotAccount().getTier();
+        String leagueRank = user.getRiotAccount().getLeagueRank();
+
+        List<Pair<String, String>> tierLeagueRankList = userTierCheckService.getTierList(tier, leagueRank);
+
+        if ("no league data".equals(tier) || "MASTER".equals(tier) || "GRANDMASTER".equals(tier) || "CHALLENGER".equals(tier))
+            return null;
+
+        return userRepository.findByTierAndLeagueRankAndUseMike(tierLeagueRankList, useMike).stream()
+                .filter(u -> !u.getRiotAccount().getId().equals(user.getRiotAccount().getId()))
+                .map(u -> u.getRiotAccount().getId()).toList();
     }
 
     @Transactional
