@@ -1,6 +1,4 @@
 server:
-  servlet:
-    context-path: /api
   port: 9003
 
 logging:
@@ -22,6 +20,8 @@ spring:
     import:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
+  profiles:
+    include: swagger
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
