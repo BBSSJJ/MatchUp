@@ -77,7 +77,7 @@ const IsChatRoom = async (userId: number) => {
         // return response.json()
     } catch (error) {
         console.error('Error checking chat room:', error);
-        return  // 에러 발생 시에도 false 반환
+        return  
     }
 };
 
@@ -112,6 +112,46 @@ export default function Friends({mode} :{mode :string}) {
     const handleChat = async (userId :number) => {
         await openChatRoom(userId)
         onOpen()
+    }
+
+    const handleAccept = async (friendId :number) => {
+        try {
+            const response= await fetch(`${SERVER_API_URL}/api/friends/${friendId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
+                },
+            })
+
+            if(!response.ok) {
+                throw new Error('cannot create')
+            }
+
+            return response.json()
+        } catch (error) {
+            console.error(error)
+        }
+    } 
+
+    // 친구 삭제 또는 친구 요청 삭제
+    const handleDelete = async (friendId :number) => {
+        try {
+            const response = await fetch(`${SERVER_API_URL}/api/friends/${friendId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json', // JSON 형식으로 데이터를 보낼 것임을 명시
+                },
+            })
+            if (!response.ok) {
+                console.error('친구 삭제 실패')
+            }
+            mutate(`${SERVER_API_URL}/api/friends`)
+            return response.json()
+
+        } catch(error) {
+            console.error('Error checking chat room:', error);            
+        }
+
     }
 
     // 해당 유저와의 채팅방이 있다면 그 방의 번호를 roomId로 설정, 없다면 생성하고 생성된 방 번호를 roomId로 설정
@@ -152,27 +192,38 @@ export default function Friends({mode} :{mode :string}) {
     return (
         <>
         {friends?.list?.length === 0 ? (
-            <p>No Friends yet</p>
+            <p className='m-3'>No Friends yet</p>
         ) : (friends?.list?.map((friend :Friend) => {
             return (
                 <Card key={friend.userId} className="max-w-[340px]">
                     <CardHeader className="justify-between">
                         <div className="flex gap-5">
-                            <Avatar isBordered radius="full" size="md" src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png" />
+                            <Avatar isBordered radius="full" size="sm" src={`${friend.riotAccount.summonerProfile.iconUrl}`} />
                             <div className="flex flex-col gap-1 items-start justify-center">
                                 <h4 className="text-small font-semibold leading-none text-default-600">{friend.riotAccount.summonerProfile.name}</h4>
                                 {/* <h5 className="text-small tracking-tight text-default-400">@zoeylang</h5> */}
                             </div>
                         </div>
-                        <Button
-                        className={"bg-transparent text-foreground border-default-200"}
-                        color="primary"
-                        radius="full"
-                        size="sm"
-                        variant={"bordered"}
-                        >
-                            match up
-                        </Button>
+                            {/* 삭제 버튼 */}
+                            <Button
+                                onPress={() => handleDelete(friend.userId)}
+                                className='fixed top-0 right-0 m-4'
+                                isIconOnly 
+                                color="danger"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 24 24" width="28" fill="currentColor"><path d="M7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
+                            </Button>
+                        {mode === 'DUO' && (
+                            <Button
+                            className={"bg-transparent text-foreground border-default-200"}
+                            color="primary"
+                            radius="full"
+                            size="sm"
+                            variant={"bordered"}
+                            >
+                                Match Up
+                            </Button>
+                        )}
                         <Button
                         className={"bg-transparent text-foreground border-default-200"}
                         color="primary"
@@ -183,6 +234,18 @@ export default function Friends({mode} :{mode :string}) {
                         >
                             DM
                         </Button>
+                        {mode === 'RECEIVED' && (
+                            <Button
+                                className={"bg-transparent text-foreground border-default-200"}
+                                color="primary"
+                                radius="full"
+                                size="sm"
+                                variant={"bordered"}
+                                onPress={() => handleAccept(friend.userId)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -7 24 24" width="28" fill="currentColor"><path d="M5.486 9.73a.997.997 0 0 1-.707-.292L.537 5.195A1 1 0 1 1 1.95 3.78l3.535 3.535L11.85.952a1 1 0 0 1 1.415 1.414L6.193 9.438a.997.997 0 0 1-.707.292z"></path></svg>
+                            </Button>
+                        )}
                         <ChatModal isOpen={isOpen} onOpenChange={onOpenChange}/>
                     </CardHeader>
                 </Card>

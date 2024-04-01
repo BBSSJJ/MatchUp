@@ -372,7 +372,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				}
 			</div>
 			<div className={styles.item3}>
-				<div className="h-[250px] w-[600px]">
+				<div className="h-[250px] w-[650px]">
 					<p className="text-bold">전적 정보</p>
 					{/* <p>{data.win} / {data.lose}</p> */}
 					<p>승률 : {records.winRate}%</p>
