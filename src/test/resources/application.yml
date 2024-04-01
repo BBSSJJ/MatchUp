@@ -13,4 +13,7 @@ spring:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
 
+  mongodb:
+    embedded:
+      version: 3.5.5
 #default_round_up: 100000

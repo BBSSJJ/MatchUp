@@ -15,16 +15,17 @@ import java.util.List;
 
 @Document(collection = "indicators")
 @Getter
+@NoArgsConstructor
 @Slf4j
 public class Indicator {
     @Id
-    private String summonerId;
+    private String id;
     private List<MatchIndicator> matchIndicators;
     private MatchIndicatorStatistics matchIndicatorStatistics;
 
     public Indicator(String summonerId,
                      List<MatchIndicator> matchIndicators) {
-        this.summonerId = summonerId;
+        this.id = summonerId;
         this.matchIndicators = matchIndicators;
         this.matchIndicatorStatistics = new MatchIndicatorStatistics(matchIndicators);
     }

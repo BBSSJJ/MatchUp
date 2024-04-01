@@ -1,19 +1,19 @@
-package com.ssafy.matchup_statistics.summoner.service.sub;
+package com.ssafy.matchup_statistics.summoner.service.sub.total;
 
 import com.ssafy.matchup_statistics.account.entity.Account;
 import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
-import com.ssafy.matchup_statistics.global.util.MongoTemplateAdaptor;
-import com.ssafy.matchup_statistics.global.util.mapper.LeagueMapper;
-import com.ssafy.matchup_statistics.global.util.mapper.SummonerMapper;
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
+import com.ssafy.matchup_statistics.league.entity.League;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
+import com.ssafy.matchup_statistics.summoner.entity.SummonerDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,10 +24,8 @@ import java.util.List;
 public class SummonerTotalRestService implements SummonerTotalService {
 
     private final RiotRestApiAdaptor riotRestApiAdaptor;
-    private final MongoTemplateAdaptor mongoTemplateAdaptor;
+    private final MongoTemplate mongoTemplate;
     private final IndicatorBuilder indicatorBuilder;
-    private final LeagueMapper leagueMapper;
-    private final SummonerMapper summonerMapper;
 
     public void save(String gameName, String tagLine) {
         long start = System.currentTimeMillis();
@@ -38,17 +36,17 @@ public class SummonerTotalRestService implements SummonerTotalService {
 
         // 통계 정보 생성 및 저장하기(내부에서 매치정보 저장)
         Indicator indicator = indicatorBuilder.build(matchIds, summonerInfo.getId(), summonerInfo.getPuuid());
-        mongoTemplateAdaptor.saveIndicator(indicator);
+        mongoTemplate.save(indicator);
 
         // 소환사 정보 생성 및 저장하기
         Summoner summoner = new Summoner(
                 summonerInfo.getId(),
                 new Account(accountInfo),
-                summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
-                leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
+                new SummonerDetail(summonerInfo),
+                new League(leagueInfo),
                 matchIds,
-                indicator.getSummonerId().toString());
-        mongoTemplateAdaptor.saveSummoner(summoner);
+                true);
+        mongoTemplate.save(summoner);
         log.debug("소환사 1명 저장 소요시간 : {}", (System.currentTimeMillis() - start) / 1000);
     }
 
@@ -76,18 +74,18 @@ public class SummonerTotalRestService implements SummonerTotalService {
             // 통계 정보 생성 및 저장하기(내부에서 매치정보 저장)
             Indicator indicator = indicatorBuilder.build(matchIds, summonerInfo.getId(), summonerInfo.getPuuid());
             log.info("통계지표 생성 완료됨");
-            mongoTemplateAdaptor.saveIndicator(indicator);
-            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getSummonerId());
+            mongoTemplate.save(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getId());
 
             // 소환사 정보 생성 및 저장하기
             Summoner summoner = new Summoner(
                     summonerInfo.getId(),
                     new Account(accountInfo),
-                    summonerMapper.summonerInfoResponseDtoToSummonerDetail(summonerInfo),
-                    leagueMapper.leagueInfoResponseDtoToLeague(leagueInfo),
+                    new SummonerDetail(summonerInfo),
+                    new League(leagueInfo),
                     matchIds,
-                    indicator.getSummonerId().toString());
-            mongoTemplateAdaptor.saveSummoner(summoner);
+                    true);
+            mongoTemplate.save(summoner);
 
             log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
         });

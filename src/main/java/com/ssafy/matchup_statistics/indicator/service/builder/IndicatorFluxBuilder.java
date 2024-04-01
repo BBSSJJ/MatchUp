@@ -8,7 +8,7 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.TimeInfo;
-import com.ssafy.matchup_statistics.match.service.sub.MatchSaveService;
+import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IndicatorFluxBuilder {
 
-    private final MatchSaveService matchSaveService;
+    private final MatchDaoImpl matchDaoImpl;
 
     public Indicator build(List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses, String summonerId, String puuid) {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
@@ -39,7 +39,7 @@ public class IndicatorFluxBuilder {
             log.debug("매치 id({}) 분석 시작", matchId);
 
             // 매치정보는 별도로 저장
-//            matchSaveService.save(matchDetailResponseDtoByMatchId);
+            matchDaoImpl.save(matchDetailResponseDtoByMatchId);
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {
