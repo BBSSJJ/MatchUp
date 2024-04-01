@@ -9,7 +9,7 @@ import ChatModal from "./chatModal";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import { userInfoAtom } from "@/store/authAtom";
 
-const youFetcher =async (url:string) => {
+export const youFetcher =async (url:string) => {
     const response = await fetch(url); // 서버로부터 데이터 가져오기
     if (!response.ok) {
         throw new Error('Failed to fetch data');
@@ -87,7 +87,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
     }
 
     return (
-        <div className="z-20000">
+        <div className="z-20000 my-1">
             <Card className="max-w-[340px]">
                 <CardHeader className="justify-between">
                     <div className="flex gap-5">
