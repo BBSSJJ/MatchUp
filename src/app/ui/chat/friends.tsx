@@ -145,7 +145,7 @@ export default function Friends({mode} :{mode :string}) {
             if (!response.ok) {
                 console.error('친구 삭제 실패')
             }
-            mutate(`${SERVER_API_URL}/api/friends`)
+            mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
             return response.json()
 
         } catch(error) {
@@ -207,9 +207,10 @@ export default function Friends({mode} :{mode :string}) {
                             {/* 삭제 버튼 */}
                             <Button
                                 onPress={() => handleDelete(friend.userId)}
-                                className='m-4 ml-auto'
+                                className='m-4 ml-auto w-[10px] h-[10px]'
                                 isIconOnly 
                                 color="danger"
+                                
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 24 24" width="28" fill="currentColor"><path d="M7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
                             </Button>
