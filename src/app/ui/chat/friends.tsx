@@ -207,7 +207,7 @@ export default function Friends({mode} :{mode :string}) {
                             {/* 삭제 버튼 */}
                             <Button
                                 onPress={() => handleDelete(friend.userId)}
-                                className='fixed top-0 right-0 m-4'
+                                className='m-4 ml-auto'
                                 isIconOnly 
                                 color="danger"
                             >
@@ -224,16 +224,17 @@ export default function Friends({mode} :{mode :string}) {
                                 Match Up
                             </Button>
                         )}
-                        <Button
-                        className={"bg-transparent text-foreground border-default-200"}
-                        color="primary"
-                        radius="full"
-                        size="sm"
-                        variant={"bordered"}
-                        onPress={() => handleChat(friend.userId)}
-                        >
-                            DM
-                        </Button>
+                            <Button
+                            className={"bg-transparent text-foreground border-default-200"}
+                            color="primary"
+                            radius="full"
+                            size="sm"
+                            variant={"bordered"}
+                            onPress={() => handleChat(friend.userId)}
+                            >
+                                DM
+                            </Button>
+                        {/* 수락 버튼 */}
                         {mode === 'RECEIVED' && (
                             <Button
                                 className={"bg-transparent text-foreground border-default-200"}
