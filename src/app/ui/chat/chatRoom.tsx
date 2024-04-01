@@ -60,7 +60,11 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
     // console.log("partner data : ", partner)
     // console.log("chat data:", chat)
     if (partnerLoading) {
-        return <h1>loading...</h1>
+        return <h1>chat list is loading...</h1>
+    }
+
+    if (chatLoading) {
+        return <h1>chat is loading...</h1>
     }
 
     return (
@@ -70,10 +74,10 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                     <div className="flex gap-5">
                     <Avatar isBordered radius="full" size="md" src="https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Leblanc.png" />
                     <div className="flex flex-col gap-1 items-start justify-center">
-                        <h4>{partner.riotAccount.summonerProfile.name}</h4>
+                        <h4>{partner?.riotAccount.summonerProfile.name}</h4>
                         <h4 className="text-[7px]">{chatId}</h4>
                         {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
-                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list.at(-1).content}</h5>
+                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list?.at(-1).content}</h5>
                     </div>
                     </div>
                     <Button
