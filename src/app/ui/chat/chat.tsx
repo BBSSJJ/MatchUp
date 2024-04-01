@@ -131,7 +131,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     };
 
     return (
-		<div className={styles.container}>
+		<div>
 			<div className={styles.chatModal}>
 				<div className={styles.messages}>
 					{/* message 표시 */}
@@ -143,7 +143,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 							</div>
 							<div className={`${styles.messageBubble} text-small ${message?.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
 								<p className={`${styles.messageBubble} text-small ${message?.userId === userInfo.userId ? styles.myMessageP : styles.otherMessageP}`}>{message?.content}</p>
-								<p className='text-tiny'>{message?.timestamp?.slice(0,-4).replace('T', ' ')}</p>
+								<p className='text-tiny text-gray-500'>{message?.timestamp?.slice(0,-4).replace('T', ' ')}</p>
 							</div>	
 						</div>
 					))}
