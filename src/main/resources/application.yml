@@ -130,7 +130,7 @@ spring:
         - id: statistics-server
           uri: http://${STATISTICS_SERVER}:9004
           predicates:
-            - Path=/api/summoners/**
+            - Path=/api/statistics/**
           filters:
             - LogFilter
         #            - JwtTokenFilter
