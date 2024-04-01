@@ -79,14 +79,14 @@ const SideBar: React.FC = () => {
 					{/* 토글버튼 */}
 					<div className="my-3">
 						<Button className="h-[30px] min-w-0 mx-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>Duo</Button>
-						<Button className="h-[30px] min-w-0 #219DEA" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>Chat</Button>
+						<Button className="h-[30px] min-w-0" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>Chat</Button>
 					</div>
 					{/* 친구목록 */}
 					<div className={chatOrFreiend ? "" : styles.hide}>
 						<p className={styles.title}>Friends</p>
-						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('FRIEND')}>duo</Button>
-						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('SENT')}>sent</Button>
-						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('RECEIVED')}>requested</Button>
+						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]"  onPress={() => handleFriendToggle('FRIEND')}>duo</Button>
+						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]"  onPress={() => handleFriendToggle('SENT')}>sent</Button>
+						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]"  onPress={() => handleFriendToggle('RECEIVED')}>requested</Button>
 
 						<div className="flex flex-col gap-4 items-center z-20000">
 							<Friends mode={friendMode}/>

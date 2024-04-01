@@ -7,10 +7,9 @@ import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR from "swr";
 import ChatModal from "@/app/ui/chat/chatModal";
 import { roomIdAtom } from "@/store/chatAtom";
-
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 import { SiLeagueoflegends } from "react-icons/si";
-import { PiMicrophoneFill } from "react-icons/pi";
-import { PiMicrophoneSlashFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 
 
@@ -85,11 +84,35 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	const [roomId, setRoomId] = useAtom(roomIdAtom)
 	const userInfo = useAtomValue<any>(userInfoAtom)
 	const [onOff, setOnOff] = useState(false)
+	const [trigger,setTrigger] = useState(false)
 	
+	// 마이크 세팅 가져오기
+	const {data: mic,  error: micError, isLoading: micLoading } = useSWR(
+		`${SERVER_API_URL}/api/users/settings`,
+		userFetcher,
+		{
+			onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+			if (error.status === 401) return
+		
+			}, 
+			revalidateOnFocus: false,
+			revalidateOnMount: true,
+			revalidateIfStale: true,
+		},
+	)
+
 	useEffect(() => {
+		// 마이크 상태 정보 가져오기
 		const fetchMicStatus = async () => {
             try {
-                const response = await fetch(`${SERVER_API_URL}/api/users/${userId}/mic`);
+                const response = await fetch(`${SERVER_API_URL}/api/users/settings`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				}
+				);
                 if (!response.ok) {
                     throw new Error('Failed to fetch mic status');
                 }
@@ -101,6 +124,29 @@ export default function UserProfile({ userId } :UserProfileProps) {
         };
         fetchMicStatus()
 	}, [])
+
+	// 마이크 토글시마다 요청 보내기 
+	useEffect(() => {
+		const fetchMicStatus = async () => {
+            try {
+                const response = await fetch(`${SERVER_API_URL}/api/users/settings`,
+				{
+					method: 'PATCH',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				}
+				);
+                if (!response.ok) {
+                    throw new Error('Failed to patch mic status');
+                }
+                const data = await response.json();
+                setOnOff(data.useMike); 
+            } catch (error) {
+                console.error('Error patching mic status:', error);
+            }
+        };
+	}, [onOff])
 
 
 	// 유저 데이터 가져오기
@@ -181,9 +227,11 @@ export default function UserProfile({ userId } :UserProfileProps) {
 
 	// }
 	
-	if (userLoading) {
+	if (userLoading || micLoading) {
 		return <h1>loading...</h1>
 	}
+
+	
 
 	return (
 		<div className={styles.container}>
@@ -244,9 +292,10 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					color="secondary"
 					thumbIcon={({ isSelected, className }) =>
 						isSelected ? (
-							<PiMicrophoneFill />
+							// <PiMicrophoneFill />
+							<MicIcon />
 						) : (
-							<PiMicrophoneSlashFill />
+							<MicOffIcon />
 						)
 					}
 					>
