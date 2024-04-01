@@ -4,11 +4,13 @@ import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.Aggres
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.BasicWeight;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.LaneAssist;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @Slf4j
 public class LaneIndicatorStatistics {
 

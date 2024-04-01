@@ -2,9 +2,6 @@ package com.ssafy.matchup_statistics.summoner.service.sub;
 
 import com.ssafy.matchup_statistics.global.api.flux.RiotWebClientFactory;
 import com.ssafy.matchup_statistics.global.dto.response.*;
-import com.ssafy.matchup_statistics.global.util.MongoTemplateAdaptor;
-import com.ssafy.matchup_statistics.global.util.mapper.LeagueMapper;
-import com.ssafy.matchup_statistics.global.util.mapper.SummonerMapper;
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorFluxBuilder;
@@ -12,11 +9,13 @@ import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.league.type.Division;
 import com.ssafy.matchup_statistics.league.type.Queue;
 import com.ssafy.matchup_statistics.league.type.Tier;
+import com.ssafy.matchup_statistics.summoner.service.sub.total.SummonerTotalFluxService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 
@@ -34,15 +33,11 @@ class SummonerTotalFluxServiceTest {
     @Autowired
     RiotWebClientFactory riotWebClientFactory;
     @Autowired
-    MongoTemplateAdaptor mongoTemplateAdaptor;
+    MongoTemplate mongoTemplate;
     @Autowired
     IndicatorBuilder indicatorBuilder;
     @Autowired
     IndicatorFluxBuilder indicatorFluxBuilder;
-    @Autowired
-    LeagueMapper leagueMapper;
-    @Autowired
-    SummonerMapper summonerMapper;
 
     @Test
     @DisplayName("리그 엔트리 잘 받아오는지 테스트")
@@ -126,7 +121,7 @@ class SummonerTotalFluxServiceTest {
                 .anySatisfy(s -> s.getPuuid().equals(puuid));
         log.info("match Detail id : {}", matchResponses.get(0).getT1().getInfo().getGameId());
         log.info("match timeline id : {}", matchResponses.get(0).getT2().getInfo().getGameId());
-        assertThat(indicator.getSummonerId())
+        assertThat(indicator.getId())
                 .isEqualTo(summonerInfoResponseDto.getId());
         log.info("finished : {}", System.currentTimeMillis() - start);
     }

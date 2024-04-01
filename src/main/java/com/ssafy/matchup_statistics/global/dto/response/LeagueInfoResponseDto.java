@@ -1,8 +1,8 @@
 package com.ssafy.matchup_statistics.global.dto.response;
 
+import com.ssafy.matchup_statistics.league.entity.League;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashMap;
 
@@ -22,6 +22,22 @@ public class LeagueInfoResponseDto {
     private boolean inactive;
     private boolean freshBlood;
     private boolean hotStreak;
+
+    public LeagueInfoResponseDto(League league) {
+        this.leagueId = league.getLeagueId();
+        this.queueType = league.getQueueType();
+        this.tier = league.getTier();
+        this.rank = league.getRank();
+        this.summonerId = league.getSummonerId();
+        this.summonerName = league.getSummonerName();
+        this.leaguePoints = league.getLeaguePoints();
+        this.wins = league.getWins();
+        this.losses = league.getLosses();
+        this.veteran = league.isVeteran();
+        this.inactive = league.isInactive();
+        this.freshBlood = league.isFreshBlood();
+        this.hotStreak = league.isHotStreak();
+    }
 
     public LeagueInfoResponseDto(LinkedHashMap<String, Object> response) {
         this.leagueId = (String) response.get("leagueId");

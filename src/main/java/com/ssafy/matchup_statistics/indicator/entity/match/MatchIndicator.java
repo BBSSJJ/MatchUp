@@ -8,10 +8,14 @@ import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MatchIndicator {
     private String matchId;
     private Metadata metadata;
@@ -61,11 +65,12 @@ public class MatchIndicator {
         this.matchId = matchId;
         this.metadata = new Metadata(timeInfo, isFinishedBeforeFifteen);
         this.laneIndicator = new TopIndicator();
-        this.macroIndicator = new MacroIndicator();
+        this.macroIndicator = new MacroIndicator(100_000);
     }
 
     @Getter
     @Builder
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Metadata {
         private LaneInfo laneInfo;
@@ -83,7 +88,19 @@ public class MatchIndicator {
             isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;
             isWin = macroData.getMyData().isWin();
-            pingCount = macroData.getMyData().getAllInPings();
+            pingCount += macroData.getMyData().allInPings;
+            pingCount += macroData.getMyData().assistMePings;
+            pingCount += macroData.getMyData().basicPings;
+            pingCount += macroData.getMyData().commandPings;
+            pingCount += macroData.getMyData().dangerPings;
+            pingCount += macroData.getMyData().enemyMissingPings;
+            pingCount += macroData.getMyData().enemyVisionPings;
+            pingCount += macroData.getMyData().getBackPings;
+            pingCount += macroData.getMyData().holdPings;
+            pingCount += macroData.getMyData().needVisionPings;
+            pingCount += macroData.getMyData().onMyWayPings;
+            pingCount += macroData.getMyData().pushPings;
+            pingCount += macroData.getMyData().visionClearedPings;
             timeInfo = macroData.getTimeInfo();
             this.champion = macroData.getMyData().getChampionName();
         }

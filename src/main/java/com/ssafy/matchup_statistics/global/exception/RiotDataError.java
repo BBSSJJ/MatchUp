@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum RiotDataError {
     ILLEGAL_LANE_NUMBER_ERROR("잘못된 라인 번호입니다."),
     ILLEGAL_TEAM_POSITION_ERROR("잘못된 포지션입니다."),
-    IMPOSSIBLE_TO_CHANGE_LANE_ERROR("해당 라인으로 변경이 불가능합니다.");
+    IMPOSSIBLE_TO_CHANGE_LANE_ERROR("해당 라인으로 변경이 불가능합니다."),
+    NOT_IN_DATABASE("DB에 없는 유저입니다.");
     private final String message;
 }
