@@ -1,6 +1,4 @@
 server:
-  servlet:
-    context-path: /api
   port: 9007
 
 logging:
@@ -8,6 +6,8 @@ logging:
     com.ssafy: DEBUG
 
 spring:
+  profiles:
+    include: swagger
   data:
     mongodb:
       uri: mongodb://${MATCHUP_FCM_DB}:3314
@@ -21,8 +21,7 @@ spring:
     import:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
-  profiles:
-    include: swagger
+
 
 
 jwt:
