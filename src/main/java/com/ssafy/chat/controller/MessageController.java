@@ -33,6 +33,7 @@ public class MessageController {
         chatService.sendChat(roomId, chatDto);
     }
 
+    @MessageMapping("/recruit")
     public void sendRecuit(RecruitDto recruitDto) throws Exception {
 
         String method = recruitDto.getMethod();
