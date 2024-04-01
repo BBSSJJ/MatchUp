@@ -21,9 +21,8 @@ spring:
     import:
       - optional:file:.env[.properties]
       - optional:file:/config/application.properties
-
-profiles:
-  include: swagger
+  profiles:
+    include: swagger
 
 
 jwt:
