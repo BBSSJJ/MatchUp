@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -77,6 +78,27 @@ public class SummonerBuilderImpl implements SummonerBuilder {
 
         // 소환사정보 반환
         return summoner;
+    }
+
+    @Override
+    @Async
+    public void buildAsync(String gameName, String tagLine) {
+
+        // 소환사 정보 받아오기
+        Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> summonerDatas = getSummonerDatas(gameName, tagLine);
+
+        // 매치 받아오기
+        Pair<List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>>, List<String>> matches = getMatches(summonerDatas.getMiddle().getPuuid());
+
+        // 통계정보 생성 및 저장하기
+        Indicator indicator = indicatorFluxBuilder.build(matches.getLeft(), summonerDatas.getMiddle().getId(), summonerDatas.getMiddle().getPuuid());
+        mongoTemplate.save(indicator);
+
+        // 소환사정보 생성 및 저장하기
+        Summoner summoner = build(summonerDatas, matches);
+        mongoTemplate.save(summoner);
+        log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
+
     }
 
     @Override

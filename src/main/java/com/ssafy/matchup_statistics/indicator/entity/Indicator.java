@@ -27,6 +27,12 @@ public class Indicator {
                      List<MatchIndicator> matchIndicators) {
         this.id = summonerId;
         this.matchIndicators = matchIndicators;
+        log.debug("생성된 매치정보 : {}", matchIndicators);
+        this.matchIndicatorStatistics = new MatchIndicatorStatistics(matchIndicators);
+    }
+
+    public void renew(Indicator matchIdsToRenew) {
+        matchIndicators.addAll(matchIdsToRenew.getMatchIndicators());
         this.matchIndicatorStatistics = new MatchIndicatorStatistics(matchIndicators);
     }
 }

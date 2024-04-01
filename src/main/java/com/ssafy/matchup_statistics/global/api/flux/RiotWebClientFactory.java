@@ -105,6 +105,24 @@ public class RiotWebClientFactory {
                 .flatMapIterable(list -> list);
     }
 
+    public Flux<String> getMatchesResponseDtoByPuuid(String puuid, int start, int count) {
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/")
+                .path(puuid + "/ids")
+                .queryParam("start", start)
+                .queryParam("count", count)
+                .queryParam("type", "ranked")
+                .encode()
+                .build()
+                .toUri();
+
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(List.class)
+                .flatMapIterable(list -> list);
+    }
+
     public Mono<SummonerInfoResponseDto> getSummonerInfoResponseDtoBySummonerName(String summonerName) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/")
