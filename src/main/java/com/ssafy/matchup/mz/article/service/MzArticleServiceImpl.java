@@ -53,12 +53,10 @@ public class MzArticleServiceImpl implements MzArticleService {
     @Override
     public void addMzArticle(Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto) {
         User author = userRepository.getReferenceById(userId);
-        String thumbnailUrl = null;
         MzArticle mzArticle = new MzArticle(writeMzArticleRequestDto.getTitle(),
                 writeMzArticleRequestDto.getContent(),
                 writeMzArticleRequestDto.getLeftSympathyTitle(),
                 writeMzArticleRequestDto.getRightSympathyTitle(),
-                thumbnailUrl,
                 author
         );
         mzArticleRepository.save(mzArticle);

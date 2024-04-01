@@ -53,7 +53,7 @@ public class MzArticle extends BaseTimeEntity {
 
     @Builder
     public MzArticle(String title, String content, String leftSympathyTitle, String rightSympathyTitle,
-                     String thumbnailUrl, User author) {
+                     User author) {
         this.title = title;
         this.content = content;
         this.leftSympathyTitle = leftSympathyTitle;
