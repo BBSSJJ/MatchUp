@@ -1,9 +1,16 @@
 package com.ssafy.chat.controller;
 
 import com.ssafy.chat.dto.ChatDto;
+import com.ssafy.chat.dto.ChatRoomDto;
 import com.ssafy.chat.dto.RecruitDto;
 import com.ssafy.chat.service.ChatService;
 import com.ssafy.chat.service.RecruitService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -26,7 +33,6 @@ public class MessageController {
         chatService.sendChat(roomId, chatDto);
     }
 
-    @MessageMapping("/recruit")
     public void sendRecuit(RecruitDto recruitDto) throws Exception {
 
         String method = recruitDto.getMethod();
