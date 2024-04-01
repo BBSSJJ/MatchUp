@@ -2,7 +2,6 @@
     position: relative;
     width: 100%;
     height: 400px;
-    background-color: #35353d;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -16,7 +15,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    position: fixed;
+    position: absolute;
     bottom: 0;
     width: 100%;
     background-color: #ffffff;
@@ -33,7 +32,6 @@
 .input button {
     width: 20%;
     height: 100%;
-    background-color: #e1eaf5;
     cursor: pointer;
     outline: none;
     border: none;
@@ -56,6 +54,7 @@
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 5px;
+    color: black;
 }
 
 /* 자기 자신의 메시지 스타일 */
@@ -63,7 +62,8 @@
     align-self: flex-end;
 }
 
-.myMessage p {
+.myMessageP {
+    align-self: flex-end;
     background-color: #40d6db; 
 }
 
@@ -72,6 +72,7 @@
     align-self: flex-start;
 }
 
-.otherMessage p {
+.otherMessageP {
+    align-self: flex-start;
     background-color: #d6b86c;
 }

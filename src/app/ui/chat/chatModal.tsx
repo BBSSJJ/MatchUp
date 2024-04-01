@@ -34,7 +34,7 @@ export default function ChatModal ({isOpen, onOpenChange} :{
                 <DirectMessage roomId={roomId} />
             </ModalBody>
             <ModalFooter>
-                <Button color="danger" variant="light" onPress={async () => {
+                <Button color="danger" variant="ghost" onPress={async () => {
                     const response = await fetch(`${SERVER_API_URL}/api/chats/rooms/${roomId}`, {
                         method: 'DELETE',
                         headers: {
