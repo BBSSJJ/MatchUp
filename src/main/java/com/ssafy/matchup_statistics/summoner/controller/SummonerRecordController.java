@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/statistics/summoners/records")
-@Tag(name = "Summoner Records", description = "소환사의 전적정보를 조회 및 업데이트합니다.")
+@Tag(name = "Summoner Records", description = "소환사의 전적정보 조회 시 필요한 API입니다.")
 public class SummonerRecordController {
     private final SummonerService summonerService;
 

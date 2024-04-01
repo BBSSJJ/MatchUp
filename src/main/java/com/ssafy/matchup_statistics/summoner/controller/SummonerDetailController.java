@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/statistics/summoners/details")
-@Tag(name = "Summoner Details", description = "소환사의 상세페이지 정보를 조회합니다..")
+@Tag(name = "Summoner Details", description = "소환사의 상세페이지 조회 시 필요한 API입니다.")
 public class SummonerDetailController {
 
     private final SummonerService summonerService;
