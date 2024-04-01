@@ -78,11 +78,11 @@ export default function NavigationBar() {
         </Link>
       </NavbarBrand>
       <NavbarContent justify="start">
-        <NavbarItem>
+        {/* <NavbarItem>
           <Link color="foreground" className={path === '/champion' ? styles.active : ""} href="/champion">
             Champion
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem>
           <Link href="/article" className={path === '/article' ? styles.active : ""}>
             MatchUP Zone
