@@ -9,10 +9,12 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.TimeInfo;
-import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
+import com.ssafy.matchup_statistics.match.entity.Match;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.List;
 public class IndicatorBuilder {
 
     private final RiotRestApiAdaptor riotRestApiAdaptor;
-    private final MatchDaoImpl matchDaoImpl;
+    private final MongoTemplate mongoTemplate;
 
     public Indicator build(List<String> matchIds, String summonerId, String puuid) {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
@@ -38,7 +40,7 @@ public class IndicatorBuilder {
             MatchTimelineResponseDto matchTimelineResponseDtoByMatchId = riotRestApiAdaptor.getMatchTimelineResponseDtoByMatchId(matchId);
 
             // 매치정보는 별도로 저장
-            matchDaoImpl.save(matchDetailResponseDtoByMatchId);
+            mongoTemplate.save(new Match(matchId, new SummonerRecordInfoResponseDto.RecordMatchDetail(matchDetailResponseDtoByMatchId)));
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {

@@ -10,7 +10,6 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
-import com.ssafy.matchup_statistics.match.dao.MatchDaoImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -45,7 +45,7 @@ class MatchMacroIndicatorBuilderTest {
     @Mock
     RiotRestApiAdaptor riotRestApiAdaptor;
     @Mock
-    MatchDaoImpl matchDaoImpl;
+    MongoTemplate mongoTemplate;
     @InjectMocks
     IndicatorBuilder target;
     @Qualifier("kang_chan_bob_detail")
@@ -69,7 +69,7 @@ class MatchMacroIndicatorBuilderTest {
 
     @BeforeEach
     void init() {
-        target = new IndicatorBuilder(riotRestApiAdaptor, matchDaoImpl);
+        target = new IndicatorBuilder(riotRestApiAdaptor, mongoTemplate);
 
         // 본인 아이디 : 6
         // 상대 아이디 : 2

@@ -1,6 +1,7 @@
 package com.ssafy.matchup_statistics.summoner.dto.util;
 
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
