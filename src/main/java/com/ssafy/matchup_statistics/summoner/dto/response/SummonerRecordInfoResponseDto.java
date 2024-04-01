@@ -37,7 +37,7 @@ public class SummonerRecordInfoResponseDto {
         this.summonerInfo = new SummonerInfoResponseDto(summoner);
         this.leagueInfo = new LeagueInfoResponseDto(summoner.getLeague());
         this.record = new Record(indicator);
-        this.matches = matches.stream().map(m -> new RecordMatchDetail(m.getMatchDetail())).toList();
+        this.matches = matches.stream().map(Match::getMatchDetail).toList();
     }
 
     @Data

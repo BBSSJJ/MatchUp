@@ -2,10 +2,7 @@ package com.ssafy.matchup_statistics.indicator.entity;
 
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicatorStatistics;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -16,6 +13,8 @@ import java.util.List;
 @Document(collection = "indicators")
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Slf4j
 public class Indicator {
     @Id
