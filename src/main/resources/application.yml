@@ -163,7 +163,7 @@ spring:
         - id: chat-server-swagger
           uri: http://${CHAT_SERVER}:9003
           predicates:
-            - Path=/api/chat/swagger.json
+            - Path=/api/chats/swagger.json
           filters:
             - LogFilter
 
