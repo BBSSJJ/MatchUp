@@ -84,8 +84,8 @@ const SideBar: React.FC = () => {
 					{/* 친구목록 */}
 					<div className={chatOrFreiend ? "" : styles.hide}>
 						<p className={styles.title}>Friends</p>
-						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]" variant="shadow" onPress={() => handleFriendToggle('FRIEND')}>Duo</Button>
-						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]" variant="shadow" onPress={() => handleFriendToggle('SENT')}>Sent</Button>
+						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0] mr-2" variant="shadow" onPress={() => handleFriendToggle('FRIEND')}>Duo</Button>
+						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0] mr-2" variant="shadow" onPress={() => handleFriendToggle('SENT')}>Sent</Button>
 						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]" variant="shadow" onPress={() => handleFriendToggle('RECEIVED')}>Requested</Button>
 
 						<div className="flex flex-col gap-4 items-center z-20000">
