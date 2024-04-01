@@ -33,16 +33,6 @@ public class KafkaConfig {
         return props;
     }
 
-    //    @Bean
-//    public ConsumerFactory<String, Map<String, Object>> consumerFactory() {
-//        JsonDeserializer<Map<String, Object>> jsonDeserializer = new JsonDeserializer<>();
-//        jsonDeserializer.addTrustedPackages("*"); // 모든 패키지 신뢰 설정
-//
-//        return new DefaultKafkaConsumerFactory<>(
-//                consumerConfigs(),
-//                new StringDeserializer(),
-//                new ErrorHandlingDeserializer<>(jsonDeserializer)); // Deserializer 클래스 형식을 지정
-//    }
     @Bean
     public ConsumerFactory<String, FcmDto> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(
