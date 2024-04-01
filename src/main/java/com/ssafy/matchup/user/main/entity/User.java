@@ -46,6 +46,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myself", orphanRemoval = true)
     private List<Friendship> friends = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "feedbackingUser")
+    private final List<Feedback> feedbacking = new ArrayList<>();
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feedbackedUser")
     private final List<Feedback> feedbacked = new ArrayList<>();
 
