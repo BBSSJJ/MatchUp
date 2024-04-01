@@ -4,7 +4,8 @@ import { useEffect } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
 import { atom, useAtom } from 'jotai'
 import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
-import { atomWithStorage } from 'jotai/utils';
+import Cookies from 'js-cookie'
+
 
 const SERVER_URL = SERVER_API_URL
 
@@ -38,15 +39,23 @@ const HiddenLogin = ( ) => {
                 console.log("로그인 성공")
                 // console.log("로그인 요청에 대한 응답 : ", response)
                 // 쿠키의 유저 정보 저장
-                const userCookie = decodeURIComponent(document.cookie);
+                const userCookie = Cookies.get('user')
+
+                if (userCookie) {
+                    setUser(JSON.parse(userCookie))
+                    setIsLoggedIn(true)
+                    router.push('/lobby')
+                } else {
+                    console.log("no user cookie")
+                }
+                // const userCookie = decodeURIComponent(document.cookie);
                 // console.log(userCookie)
-                const jsonString = userCookie.substring(5);
-                setUser(JSON.parse(jsonString));
-                console.log(jsonString)
+                // const jsonString = userCookie.substring(5);
+                // setUser(JSON.parse(jsonString));
+                // console.log(jsonString)
                 // 로그인 상태 로컬 스토리지에 저장
-                setIsLoggedIn(true)
+                // setIsLoggedIn(true)
                 // redirect
-                router.push('/lobby')
                 // window.location.href = 'http://70.12.246.67:3000/lobby'
                 
             } else {
@@ -60,7 +69,6 @@ const HiddenLogin = ( ) => {
     // useEffect(() => {
         
     // }, [])
-    
     return null
 }
 
