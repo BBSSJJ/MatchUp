@@ -15,7 +15,7 @@ async def winning(user_id: int):
     tier, division = get_user_tier(user_id)
 
     # 적당한 모델 불러오기
-    mlp = joblib.load(f'models/winning_models/{tier}_model.pkl')
+    mlp = joblib.load(f'models/winning_models/{tier.lower()}_model.pkl')
 
     # 승률 상위 10명 불러오기
     probabilities = mlp.predict_proba()
@@ -30,7 +30,7 @@ async def winning(user_id: int):
     for _ in range(10):
         top_10.append(heapq.heappop(recommendations))
 
-    return get_user_info(top_10)
+    return [1, 2, 3, 4, 5]
 
 # 즐거움 기반의 유저 추천
 @matchup.get("/api/recommends/2/{user_id}")
@@ -39,7 +39,7 @@ async def enjoying(user_id: int):
 
     # 유사 유저 10명 불러오기
 
-    return get_user_info(6, 7, 8, 9, 10)
+    return [6, 7, 8, 9, 10]
 
 # 유저 상세 정보
 @matchup.get("/api/recommends/statistics/{user_id}")
