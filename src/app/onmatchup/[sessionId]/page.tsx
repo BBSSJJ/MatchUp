@@ -46,13 +46,24 @@ export default function Page({ params }: { params: { sessionId: string }}) {
 
   async function joinSession() {
     const OV = new OpenVidu()
+    const OVScreen = new OpenVidu()
+
     const session = OV.initSession()
+    const screen = OVScreen.initSession()
 
     session.on("streamCreated", (event) => {
       const subscriber = session.subscribe(event.stream, undefined);
       setOpenvidu((parameter: any) => ({
         ...parameter,
         subscribers: [...parameter.subscribers, subscriber]
+      }))
+    });
+
+    screen.on("streamCreated", (event) => {
+      const subscriberScreen = screen.subscribe(event.stream, undefined);
+      setOpenvidu((parameter: any) => ({
+        ...parameter,
+        subscribers: [...parameter.subscribers, subscriberScreen]
       }))
     });
 
