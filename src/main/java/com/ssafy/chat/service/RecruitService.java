@@ -23,7 +23,6 @@ public class RecruitService {
     private final KafkaTemplate<String, RecruitDto> kafkaTemplate;
 
     public List<RecruitDto> findRecruits() {
-
         return RecruitMapper.instance.convertListRecruitDto(mongoTemplate.findAll(Recruit.class));
     }
 
