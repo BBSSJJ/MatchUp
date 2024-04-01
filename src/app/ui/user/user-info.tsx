@@ -304,7 +304,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<Image
 						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
-						src={`https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records.latestChampion}.png`}
+						src={`https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
 						
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
@@ -375,12 +375,12 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				<div className="h-[250px] w-[650px]">
 					<p className="text-bold">전적 정보</p>
 					{/* <p>{data.win} / {data.lose}</p> */}
-					<p>승률 : {records.winRate}%</p>
+					<p>승률 : {records?.winRate}%</p>
 					<p>Tier : {user.riotAccount.tier}</p>
-					<p>Rank : {records.rank}</p>
+					<p>Rank : {records?.rank}</p>
 					<p>최근 사용한 챔피언</p>
 					<div className="flex">
-					{records.top3Champions.map((champion :string, index :number) => {
+					{records?.top3Champions.map((champion :string, index :number) => {
 						return (
 							<Image 
 								key={index}
@@ -393,7 +393,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					</div>
 					
 					<div className="flex flex-col">
-						<p>Main Position : {records.mostLane}</p>
+						<p>Main Position : {records?.mostLane}</p>
 							{/* <div className="flex">
 								<Image src={pos} width="20px" height="20px"/>
 								<p className={styles.bar}><span className={styles.barContent}></span></p>
