@@ -21,10 +21,11 @@ interface ChatMessage {
 }
 // 개별 채팅방
 export default function DirectMessage({roomId} : {roomId :string}) {
-    const [stompClient, setStompClient] = useState<Client | null>(null);
-    const [messages, setMessages] = useState<ChatMessages>({"list":[]}); // 기존 메시지
-    const [inputMessage, setInputMessage] = useState(""); // 입력 메시지
-    const WEBSOCKET_URL = "wss://matchup.site/api/ws";
+    const [stompClient, setStompClient] = useState<Client | null>(null)
+    const [messages, setMessages] = useState<ChatMessages>({"list":[]}) // 기존 메시지
+    const [inputMessage, setInputMessage] = useState("") // 입력 메시지
+	const messagesEndRef = useRef<HTMLDivElement>(null)
+    const WEBSOCKET_URL = "wss://matchup.site/api/ws"
     const [userInfo, setUserInfo] = useAtom<any>(userInfoAtom)
     
     const fetchPreviousMessages = async () => {
@@ -89,8 +90,15 @@ export default function DirectMessage({roomId} : {roomId :string}) {
     }, []);
 
 	useEffect(() => {
-		console.log('Messages 상태가 업데이트됨:', messages);
-	  }, [messages]);
+		scrollToBottom();
+		// console.log('Messages 상태가 업데이트됨:', messages);
+	}, [messages]);
+
+	const scrollToBottom = () => {
+		if (messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+		}
+    };
 
     const sendMessage = () => {
         // if (!stompClient) return;
@@ -105,7 +113,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 name: userInfo.riotAccount.summonerProfile.name.replaceAll('+', ' '),
                 iconUrl: userInfo.riotAccount.summonerProfile.iconUrl,
                 content: inputMessage,
-                timestamp: new Date().toISOString(), // Replace with the appropriate date-time format
+                timestamp: new Date().toISOString(), 
             };
             console.log("userInfo atom: " ,userInfo)
             console.log("messageObject:", messageObject)
@@ -129,14 +137,17 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 					{/* message 표시 */}
 					{messages.list.map((message, index) => (
 						<div key={index}  className={`${styles.messageContainer}`}>
-							<div className='flex'>
+							<div className={`flex ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
 								<Image src={message.iconUrl} width="20px" height="20px" />
 								<span className='text-tiny'>{message.name}</span>
 							</div>
-							<p className={`${styles.messageBubble} text-small ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>{message.content}</p>
-							<p className='text-tiny'>{message.timestamp}</p>
+							<div>
+								<p className='text-tiny'>{message.timestamp}</p>
+								<p className={`${styles.messageBubble} text-small ${message.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>{message.content}</p>
+							</div>	
 						</div>
 					))}
+					<div ref={messagesEndRef} />
 				</div>
 					
 				</div>
