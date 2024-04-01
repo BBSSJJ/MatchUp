@@ -43,10 +43,11 @@ export default function ChatModal ({isOpen, onOpenChange} :{
                     })
                     onClose()
                 }}>
-                채팅방 나가기
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -2 24 24" width="28" fill="currentColor"><path d="M2 0h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 2v16h8V2H2zm2 7h1a1 1 0 1 1 0 2H4a1 1 0 0 1 0-2z"></path></svg>
+                    나가기
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                Close
+                Match Up
                 </Button>
             </ModalFooter>
             </>

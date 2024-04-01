@@ -11,14 +11,12 @@ import Friends from "./chat/friends";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR, { mutate } from "swr";
 
-import  User from './Navbar'
 
 interface Chat {
     roomId: string;
     participants: number[]; 
     cnt: number; 
 }
-
 
 const chatFetcher = async (url:string) => {
     const response = await fetch(url); // 서버로부터 데이터 가져오기
@@ -34,8 +32,7 @@ const SideBar: React.FC = () => {
 	const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
-	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
-	const [friendMode, setFriendMode] = useState('FRIEND')
+	const [friendMode, setFriendMode] = useState('FRIEND') // 친구목록 중에서도 기존 친구목록 보여주기
 	const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
 	
 
@@ -74,53 +71,42 @@ const SideBar: React.FC = () => {
 	}
 
 	return (
-		<div style={{
-			position: 'fixed', 
-			right: 0, 
-			top: '4rem',
-			bottom: 0, 
-			width: '320px',
-			height: "100vh",
-			color: 'white',
-			backgroundColor: '#161A1E', 
-			overflowY: 'auto',
-			padding: '20px', 
-			zIndex: 1000,
-			boxShadow: '0 0 0.75px 0.15px #35ccbc',
-		}}>
+		<div className={styles.sidebar}>
 			{!isLoggedIn && <p>먼저 로그인하고 서비스를 이용하세요</p>}
 			{/* 로그인 하면 보이는 기능 */}
-			{isLoggedIn && 
-			<div>
-			{/* 토글버튼 */}
-			<Button className="h-[30px] min-w-0 mx-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>친구</Button>
-			<Button className="h-[30px] min-w-0" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>채팅</Button>
-			{/* 친구목록 */}
-			<div className={chatOrFreiend ? "" : styles.hide}>
-				<p className={styles.title}>Friends</p>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('FRIEND')}>friends</Button>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('SENT')}>sent</Button>
-				<Button className="w-[10px] h-[15px] min-w-0" color="warning" onPress={() => handleFriendToggle('RECEIVED')}>requested</Button>
+			{ isLoggedIn && 
+				<div className="flex flex-col">
+					{/* 토글버튼 */}
+					<div className="my-3">
+						<Button className="h-[30px] min-w-0 mx-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>Duo</Button>
+						<Button className="h-[30px] min-w-0 #219DEA" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>Chat</Button>
+					</div>
+					{/* 친구목록 */}
+					<div className={chatOrFreiend ? "" : styles.hide}>
+						<p className={styles.title}>Friends</p>
+						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('FRIEND')}>duo</Button>
+						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('SENT')}>sent</Button>
+						<Button className="w-[10px] h-[15px] min-w-0 bg-#10D7A0"  onPress={() => handleFriendToggle('RECEIVED')}>requested</Button>
 
-				<div className="flex flex-col gap-4 items-center z-20000">
-					<Friends mode={friendMode}/>
+						<div className="flex flex-col gap-4 items-center z-20000">
+							<Friends mode={friendMode}/>
+						</div>
+					</div>
+					{/* 채팅목록창 */}
+					<div className={chatOrFreiend ? styles.hide : "" }>
+						{/* <Button className={styles.chatButton} color="primary" variant="solid" onPress={onOpen}>Chats</Button> */}
+						{/* 채팅목록 */}
+						<div className={styles.chats}>
+							{chatRooms?.list?.map((chat :Chat) => {
+								return (
+									<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} you={chat.participants.filter(member => member !== userInfo.userId)}/>
+								)
+							})
+							}
+						</div>
+					</div>
 				</div>
-			</div>
-			{/* 채팅목록창 */}
-			<div className={chatOrFreiend ? styles.hide : "" }>
-				{/* <Button className={styles.chatButton} color="primary" variant="solid" onPress={onOpen}>Chats</Button> */}
-				{/* 채팅목록 */}
-				<div className={styles.chats}>
-					{chatRooms?.list?.map((chat :Chat) => {
-						return (
-							<ChatRoom key={chat.roomId} chatId={chat.roomId} badge={chat.cnt} you={chat.participants.filter(member => member !== userInfo.userId)}/>
-						)
-					})
-					}
-				</div>
-			</div>
-		</div>
-		}
+			}
 		</div>
 	);
 };
