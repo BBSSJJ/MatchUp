@@ -59,6 +59,16 @@ public class SummonerUserServiceImpl implements SummonerUserService {
     }
 
     @Override
+    public SummonerLeagueAccountInfoResponseDto loginSummoner(String summonerId) {
+        Summoner summoner = summonerBuilder.build(summonerId);
+
+        // 로그인 시 갱신 1회 수행
+        summonerRenewalService.renew(summoner);
+
+        return new SummonerLeagueAccountInfoResponseDto(summoner);
+    }
+
+    @Override
     public SummonerLeagueAccountInfoResponseDto loginSummoner(Long userId) {
 
         // DB에서 소환사 불러오기

@@ -109,4 +109,8 @@ public class SummonerService {
     public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
         return summonerTotalFluxService.getSummonerLeagueAccountInfo(page, dto);
     }
+
+    public SummonerLeagueAccountInfoResponseDto loginSummoner(String summonerId) {
+        return summonerUserService.loginSummoner(summonerId);
+    }
 }
