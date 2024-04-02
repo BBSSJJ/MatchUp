@@ -25,7 +25,7 @@ const RSO = () => {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include', 
-                body: JSON.stringify({ riotCode : riotCode?.replace('=', '') })
+                body: JSON.stringify({ riotCode : riotCode?.replaceAll('=', '') })
             })
             // 서버에서 성공 응답 받은 경우, 쿠키에 담긴 유저 정보 저장
             if (response.ok) {
