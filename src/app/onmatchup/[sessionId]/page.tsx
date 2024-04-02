@@ -115,13 +115,13 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       .catch((error) => {
         console.log('There was an error connecting to the session:', error.code, error.message);
       });
-
-    getToken().then((tokenScreen) => {
-      screen.connect(tokenScreen, { clientData: username })
-    })
+    
   }
     
   async function publishScreenShare() {
+    getToken().then((tokenScreen) => {
+      screen.connect(tokenScreen, { clientData: username })
+    })
     // --- 9.1) To create a publisherScreen set the property 'videoSource' to 'screen'
     var publisherScreen = await OVScreen.initPublisherAsync(undefined, { videoSource: "screen" });
   
@@ -171,7 +171,7 @@ export default function Page({ params }: { params: { sessionId: string }}) {
         session: sessionId
       }
     })
-    console.log(response.data)
+    window.alert('녹화 시작')
     return setRecordingId(response.data.id)
   }
   

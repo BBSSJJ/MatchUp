@@ -63,7 +63,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
       {messages.map((chat) => {
         return(
           <div key={chat.timestamp}>
-            <span style={{color: chat.name == user.riotAccount.summonerProfile.name ? "#C89B3C" : "#A09B8C"}}>{chat.name}</span>:
+            <span style={{color: chat.name == user.riotAccount.summonerProfile.name ? "#C89B3C" : "#A09B8C"}}>{chat.name.replaceAll('+', ' ')}</span>:
             <span> {chat.content}</span>
           </div>
         )
