@@ -46,6 +46,10 @@ public class MatchIndicatorStatistics {
         private int isOurTeamEarlySurrenderedCount;
         private int winCount;
         private int pingCountAvg;
+        private double killAvg;
+        private double deathAvg;
+        private double assistAvg;
+        private double kdaAvg;
 
         public Metadata(List<MatchIndicator> matchIndicators) {
             matchIndicators.forEach(matchIndicator -> {
@@ -63,10 +67,18 @@ public class MatchIndicatorStatistics {
                 if (matchIndicator.getMetadata().isWin()) winCount++;
 
                 pingCountAvg += matchIndicator.getMetadata().getPingCount();
+                killAvg += matchIndicator.getMetadata().getKill();
+                deathAvg += matchIndicator.getMetadata().getDeath();
+                assistAvg += matchIndicator.getMetadata().getAssist();
+                kdaAvg += matchIndicator.getMetadata().getKda();
             });
 
             timeDurationAvg /= totalCount;
             pingCountAvg /= totalCount;
+            killAvg /= totalCount;
+            deathAvg /= totalCount;
+            assistAvg /= totalCount;
+            kdaAvg /= totalCount;
         }
 
         private void updateMap(String key, LinkedHashMap<String, Integer> map) {
