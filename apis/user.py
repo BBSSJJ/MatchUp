@@ -18,7 +18,7 @@ def get_users(user_id: int):
 
 
 def get_user_ratings(user_id: int):
-    response = requests.get(f'https://matchup.site/api/feedbacks/users/{user_id}/').json()
+    response = requests.get(f'https://matchup.site/api/feedbacks/users/{user_id}').json()
 
     return response['list']
 
