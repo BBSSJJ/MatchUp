@@ -62,5 +62,12 @@ public class LeagueInfoResponseDto {
         this.rank = "no league data";
         this.summonerId = "no league data";
         this.summonerName = "no league data";
+        this.leaguePoints = 0;
+        this.wins = 0;
+        this.losses = 0;
+        this.veteran = false;
+        this.inactive = false;
+        this.freshBlood = false;
+        this.hotStreak = false;
     }
 }

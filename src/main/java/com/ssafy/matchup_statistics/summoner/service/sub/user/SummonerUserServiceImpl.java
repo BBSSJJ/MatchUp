@@ -8,23 +8,18 @@ import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.global.exception.RiotApiError;
 import com.ssafy.matchup_statistics.global.exception.RiotApiException;
-import com.ssafy.matchup_statistics.summoner.dao.SummonerDao;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
-import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
-import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
 import com.ssafy.matchup_statistics.summoner.service.builder.SummonerBuilder;
 import com.ssafy.matchup_statistics.summoner.service.sub.renewal.SummonerRenewalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SummonerUserServiceImpl implements SummonerUserService{
+public class SummonerUserServiceImpl implements SummonerUserService {
 
     private final SummonerBuilder summonerBuilder;
     private final SummonerRenewalService summonerRenewalService;
@@ -33,7 +28,6 @@ public class SummonerUserServiceImpl implements SummonerUserService{
 
     @Override
     public SummonerLeagueAccountInfoResponseDto registSummoner(String gameName, String tagLine) {
-
 
         AccountResponseDto accountInfo = riotWebClientFactory.getAccountInfo(gameName, tagLine).block();
         if (accountInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
@@ -54,21 +48,23 @@ public class SummonerUserServiceImpl implements SummonerUserService{
     }
 
     @Override
+    public SummonerLeagueAccountInfoResponseDto loginSummoner(String gameName, String tagLine) {
+        // 소환사 id로 소환사 불러오기
+        Summoner summoner = summonerBuilder.build(gameName, tagLine);
+
+        // 로그인 시 갱신 1회 수행
+        summonerRenewalService.renew(summoner);
+
+        return new SummonerLeagueAccountInfoResponseDto(summoner);
+    }
+
+    @Override
     public SummonerLeagueAccountInfoResponseDto loginSummoner(Long userId) {
 
         // DB에서 소환사 불러오기
         UserRiotAccountDto userRiotAccountDto = userDao.getUserRiotAccountDto(userId);
 
         // 소환사 id로 소환사 불러오기
-        Summoner summoner = summonerBuilder.build(userRiotAccountDto.getRiotAccountInfo().getSummonerProfile().getName(), userRiotAccountDto.getRiotAccountInfo().getSummonerProfile().getTag());
-
-        SummonerInfoResponseDto summonerInfo = new SummonerInfoResponseDto(summoner);
-        LeagueInfoResponseDto leagueInfo = riotWebClientFactory.getLeagueInfoResponseBySummonerId(summonerInfo.getId()).blockFirst();
-        AccountResponseDto accountInfo = riotWebClientFactory.getAccountInfo(summoner.getSummonerDetail().getPuuid()).block();
-
-        // 로그인 시 갱신 1회 수행
-        summonerRenewalService.renew(summoner);
-
-        return new SummonerLeagueAccountInfoResponseDto(summonerInfo, leagueInfo, accountInfo);
+        return loginSummoner(userRiotAccountDto.getRiotAccountInfo().getSummonerProfile().getName(), userRiotAccountDto.getRiotAccountInfo().getSummonerProfile().getTag());
     }
 }

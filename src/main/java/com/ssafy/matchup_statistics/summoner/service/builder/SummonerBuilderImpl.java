@@ -41,6 +41,9 @@ public class SummonerBuilderImpl implements SummonerBuilder {
 
         // 소환사 정보 받아오기
         Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> summonerDatas = getSummonerDatas(gameName, tagLine);
+        log.info("summoner Data : {}, {}, {}", summonerDatas.getLeft(), summonerDatas.getMiddle(), summonerDatas.getRight());
+
+        if (summonerDatas.getRight().getLeagueId().equals("no league data")) return makeSummoner(summonerDatas);
 
         // 매치 받아오기
         Pair<List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>>, List<String>> matches = getMatches(summonerDatas.getMiddle().getPuuid());
@@ -50,7 +53,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         mongoTemplate.save(indicator);
 
         // 소환사정보 생성 및 저장하기
-        Summoner summoner = build(summonerDatas, matches);
+        Summoner summoner = makeSummoner(summonerDatas, matches);
         mongoTemplate.save(summoner);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
 
@@ -72,7 +75,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         mongoTemplate.save(indicator);
 
         // 소환사정보 생성 및 저장하기
-        Summoner summoner = build(summonerDatas, matches);
+        Summoner summoner = makeSummoner(summonerDatas, matches);
         mongoTemplate.save(summoner);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
 
@@ -95,7 +98,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         mongoTemplate.save(indicator);
 
         // 소환사정보 생성 및 저장하기
-        Summoner summoner = build(summonerDatas, matches);
+        Summoner summoner = makeSummoner(summonerDatas, matches);
         mongoTemplate.save(summoner);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
 
@@ -115,7 +118,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         log.info("지표 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), indicator.getId());
 
         // 소환사정보 생성하기
-        Summoner summoner = build(summonerDatas, matches);
+        Summoner summoner = makeSummoner(summonerDatas, matches);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
 
         // 전적정보 반환
@@ -125,7 +128,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
                 indicator);
     }
 
-    private Summoner build(Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> summonerDatas, Pair<List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>>, List<String>> matches) {
+    private Summoner makeSummoner(Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> summonerDatas, Pair<List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>>, List<String>> matches) {
         return new Summoner(
                 summonerDatas.getMiddle().getId(),
                 new Account(summonerDatas.getLeft()),
@@ -135,10 +138,19 @@ public class SummonerBuilderImpl implements SummonerBuilder {
                 true);
     }
 
+    private Summoner makeSummoner(Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> summonerDatas) {
+        return new Summoner(
+                summonerDatas.getMiddle().getId(),
+                new Account(summonerDatas.getLeft()),
+                new SummonerDetail(summonerDatas.getMiddle()),
+                new League(summonerDatas.getRight()),
+                new ArrayList<>(), false);
+    }
+
     private Triple<AccountResponseDto, SummonerInfoResponseDto, LeagueInfoResponseDto> getSummonerDatas(String summonerId) {
 
         LeagueInfoResponseDto leagueInfo = riotWebClientFactory.getLeagueInfoResponseBySummonerId(summonerId).blockFirst();
-        if (leagueInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+        if (leagueInfo == null) leagueInfo = new LeagueInfoResponseDto();
 
         SummonerInfoResponseDto summonerInfo = riotWebClientFactory.getSummonerInfoResponseDtoBySummonerName(leagueInfo.getSummonerName()).block();
         if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
@@ -157,7 +169,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
         LeagueInfoResponseDto leagueInfo = riotWebClientFactory.getLeagueInfoResponseBySummonerId(summonerInfo.getId()).blockFirst();
-        if (leagueInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+        if (leagueInfo == null) leagueInfo = new LeagueInfoResponseDto();
 
         return Triple.of(accountInfo, summonerInfo, leagueInfo);
     }

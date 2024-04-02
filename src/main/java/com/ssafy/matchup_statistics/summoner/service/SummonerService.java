@@ -102,6 +102,10 @@ public class SummonerService {
         return summonerUserService.loginSummoner(userId);
     }
 
+    public SummonerLeagueAccountInfoResponseDto loginSummoner(String gameName, String tagLine) {
+        return summonerUserService.loginSummoner(gameName, tagLine);
+    }
+
     public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
         return summonerTotalFluxService.getSummonerLeagueAccountInfo(page, dto);
     }
