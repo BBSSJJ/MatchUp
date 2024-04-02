@@ -1,13 +1,17 @@
 package com.ssafy.matchup.user.friend.service;
 
+import com.ssafy.matchup.global.dto.FcmDto;
 import com.ssafy.matchup.user.friend.entity.FriendStatus;
 import com.ssafy.matchup.user.friend.entity.Friendship;
 import com.ssafy.matchup.user.friend.repository.FriendshipRepository;
 import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.repository.UserRepository;
+import com.ssafy.matchup.user.riotaccount.entity.SummonerProfile;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,7 @@ public class FriendshipService {
 
     private final UserRepository userRepository;
     private final FriendshipRepository friendshipRepository;
+    private final KafkaTemplate<String, FcmDto> kafkaTemplate;
 
     public List<UserDto> showFriendList(Long myId, FriendStatus friendStatus) {
         List<User> friendshipList = friendshipRepository.findFriendByMyself_IdAndFriendStatus(myId, friendStatus);
@@ -35,12 +40,18 @@ public class FriendshipService {
         if (friendshipRepository.findByMyIdAndFriendId(myId, friendId) != null) {
             throw new InternalError("already exist friendship");
         }
-        User myself = userRepository.getReferenceById(myId);
+        User myself = userRepository.findUserById(myId).orElseThrow(EntityNotFoundException::new);
         User friend = userRepository.getReferenceById(friendId);
         Friendship friendship1 = new Friendship(myself, friend, FriendStatus.SENT);
         Friendship friendship2 = new Friendship(friend, myself, FriendStatus.RECEIVED);
         friendshipRepository.save(friendship1);
         friendshipRepository.save(friendship2);
+
+        SummonerProfile summonerProfile = myself.getRiotAccount().getSummonerProfile();
+        String name = summonerProfile.getName()+"#"+summonerProfile.getTag();
+        String content = name + "님이 친구를 요청하셨습니다.";
+        FcmDto fcmDto = new FcmDto(name, summonerProfile.getIconUrl(), friendId, "FRIEND", content);
+        kafkaTemplate.send("alarm", fcmDto);
     }
 
     public void allowFriendRequest(Long myId, Long friendId) {
@@ -53,6 +64,13 @@ public class FriendshipService {
 
         friendship1.updateFriendStatus(FriendStatus.FRIEND);
         friendship2.updateFriendStatus(FriendStatus.FRIEND);
+
+        User myself = userRepository.findUserById(myId).orElseThrow(EntityNotFoundException::new);
+        SummonerProfile summonerProfile = myself.getRiotAccount().getSummonerProfile();
+        String name = summonerProfile.getName()+"#"+summonerProfile.getTag();
+        String content = name + "님이 친구 요청을 수락하셨습니다.";
+        FcmDto fcmDto = new FcmDto(name, summonerProfile.getIconUrl(), friendId, "FRIEND", content);
+        kafkaTemplate.send("alarm", fcmDto);
     }
 
 
