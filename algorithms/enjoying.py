@@ -50,7 +50,7 @@ def ten_neighbors(user_list, user_puuid):
 
     user_ids = []
 
-    for index in index_list:
+    for index in index_list[0]:
         user_ids.append(user_list[index]["userId"])
 
     return user_ids
