@@ -39,7 +39,7 @@ def get_user_profile(user_id: int):
     matchup_statistics_db = client["matchup_statistics_db"]
     
     # 해당하는 유저 정보만 불러오기
-    summoners_document = matchup_statistics_db["summoners"].find({"_id": get_user_puuid(user_id)})
+    summoners_document = matchup_statistics_db["summoners"].find_one({"_id": get_user_puuid(user_id)})
 
     user_record = {}
     
