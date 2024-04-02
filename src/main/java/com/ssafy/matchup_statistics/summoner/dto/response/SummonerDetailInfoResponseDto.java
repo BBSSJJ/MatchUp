@@ -15,12 +15,11 @@ public class SummonerDetailInfoResponseDto {
     private String latestChampion;
     private String[] top3Champions;
     private String mostLane;
-    private int pingCountAvg;
+    private double pingCountAvg;
     private double killAvg;
     private double deathAvg;
     private double assistAvg;
     private double kdaAvg;
-
 
 
     public SummonerDetailInfoResponseDto(Summoner summoner, Indicator indicator) {
@@ -33,6 +32,7 @@ public class SummonerDetailInfoResponseDto {
         this.latestChampion = calculator.calculateLatestChampion(indicator.getMatchIndicators());
         if (metadata.getTeamPositionCount() != null) this.mostLane = calculator.calculateMostLane(metadata.getTeamPositionCount());
         if (metadata.getChampionCount() != null) this.top3Champions = calculator.calculateMost3Champion(metadata.getChampionCount());
+        this.pingCountAvg = metadata.getPingCountAvg();
         this.killAvg = metadata.getKillAvg();
         this.deathAvg = metadata.getDeathAvg();
         this.assistAvg = metadata.getAssistAvg();
