@@ -52,10 +52,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (optionalUser.isEmpty()) {
 //            response.setHeader("Sns-Type", String.valueOf(snsType));
 //            response.setHeader("Sns-Id", snsId);
-            response.sendRedirect("https://auth.riotgames.com/authorize?" +
-                    "client_id=" + clientId +
-                    "&redirect_uri=" + riotRedirectUri +
-                    "&response_type=code&scope=openid+offline_access");
+            response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId + "/" + true);
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
         else {
@@ -70,7 +67,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //            response.getWriter().write(String.valueOf(entity.getBody()));
 //            response.setStatus(HttpStatus.OK.value());
 //            log.info("response header : {} {}", response.getHeaders("id"), response.getHeaders("role"));
-            response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId);
+            response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId + "/" + false);
         }
     }
 }
