@@ -111,18 +111,19 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	)
 
 	// 전적 정보 가져오기 
-	// const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
-	// 	`${SERVER_API_URL}/api/statistics/summoners/records/users/${userId}`,
-	// 	userFetcher,
-	// 	{
-	// 		onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-	// 		if (error.status === 401) return
-	// 		}, 
-	// 		revalidateOnFocus: false,
-	// 		revalidateOnMount: true,
-	// 		revalidateIfStale: true,
-	// 	},
-	// )
+	const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
+		`${SERVER_API_URL}/api/statistics/summoners/details/users/${userId}`,
+		userFetcher,
+		{
+			onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+			if (error.status === 401) return
+			if (error.status === 500) return 'unranked'
+			}, 
+			revalidateOnFocus: false,
+			revalidateOnMount: true,
+			revalidateIfStale: true,
+		},
+	)
 
 	// 친구목록
 	const {data: friends, error: friendError, isLoading: friendLoading } = useSWR(
@@ -164,7 +165,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 		// 기존 친구인지 확인
 		const isFriend = () => {
 			const friendsList = friends?.list?.map((user :any) => user.userId)
-			return friendsList.includes(userId)
+			return friendsList?.includes(userId)
 		}
 		
         fetchMicStatus() // 마이크 사용여부 가져오기
@@ -191,8 +192,8 @@ export default function UserProfile({ userId } :UserProfileProps) {
                 if (!response.ok) {
                     throw new Error('Failed to patch mic status');
                 }
-                // const data = await response.json();
-				return response.json()
+                const data = await response.json();
+				return data
                 // setOnOff(data.useMike); 
             } catch (error) {
                 console.error('Error patching mic status:', error);
@@ -304,12 +305,12 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					radius="lg"
 					className="border-none h-[250px] w-[250px]"
 				>
-					{/* <Image
+					<Image
 						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
-						src={`https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
+						src={records === 'unranked' ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
 						
-					/> */}
+					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
 						{userInfo.userId !== Number(userId) && (
@@ -377,31 +378,36 @@ export default function UserProfile({ userId } :UserProfileProps) {
 			<div className={styles.item3}>
 				<div className="h-[250px] w-[650px]">
 					<p className="text-bold">전적 정보</p>
-					{/* <p>{data.win} / {data.lose}</p> */}
-					{/* <p>승률 : {records?.winRate}%</p> */}
-					<p>Tier : {user.riotAccount.tier}</p>
-					{/* <p>Rank : {records?.rank}</p> */}
-					<p>최근 사용한 챔피언</p>
-					<div className="flex">
-					{/* {records?.top3Champions.map((champion :string, index :number) => {
-						return (
-							<Image 
-								key={index}
-								src={`https://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${champion}.png`}
-								width="50px"
-								height="50px"
-							/>
-						)
-					})} */}
-					</div>
-					
-					<div className="flex flex-col">
-						{/* <p>Main Position : {records?.mostLane}</p> */}
-							{/* <div className="flex">
-								<Image src={pos} width="20px" height="20px"/>
-								<p className={styles.bar}><span className={styles.barContent}></span></p>
-							</div> */}
-					</div>
+					{records === 'unranked' ? (<p>랭크 게임을 더 하고 오세요</p>) : (
+						<>s
+							<div>
+								<p>{records.win} / {records.lose}</p>
+								<p>승률 : {records?.winRate}%</p>
+								<p>Tier : {user.riotAccount.tier}</p>
+								<p>Rank : {records?.rank}</p>
+								<p>최근 사용한 챔피언</p>
+								<div className="flex">
+									{records?.top3Champions.map((champion :string, index :number) => {
+										return (
+											<Image 
+												key={index}
+												src={`https://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${champion}.png`}
+												width="50px"
+												height="50px"
+											/>
+										)
+									})}
+								</div>
+							</div>
+							<div className="flex flex-col">
+								<p>Main Position : {records?.mostLane}</p>
+									{/* <div className="flex">
+										<Image src={pos} width="20px" height="20px"/>
+										<p className={styles.bar}><span className={styles.barContent}></span></p>
+									</div> */}
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</div>
