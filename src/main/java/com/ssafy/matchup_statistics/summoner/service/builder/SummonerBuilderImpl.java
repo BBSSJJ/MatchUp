@@ -124,7 +124,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         // 전적정보 반환
         return new SummonerRecordInfoResponseDto(
                 summonerDatas.getMiddle(), summonerDatas.getRight(),
-                matches.getLeft().stream().map(Tuple2::getT1).sorted((s1, s2) -> (int) (s1.getInfo().getGameStartTimestamp() - s2.getInfo().getGameStartTimestamp())).toList(),
+                matches.getLeft().stream().map(Tuple2::getT1).sorted((s1, s2) -> (int) (s2.getInfo().getGameStartTimestamp() - s1.getInfo().getGameStartTimestamp())).toList(),
                 indicator);
     }
 
@@ -152,7 +152,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         LeagueInfoResponseDto leagueInfo = riotWebClientFactory.getLeagueInfoResponseBySummonerId(summonerId).blockFirst();
         if (leagueInfo == null) leagueInfo = new LeagueInfoResponseDto();
 
-        SummonerInfoResponseDto summonerInfo = riotWebClientFactory.getSummonerInfoResponseDtoBySummonerName(leagueInfo.getSummonerName()).block();
+        SummonerInfoResponseDto summonerInfo = riotWebClientFactory.getSummonerInfoResponseDtoBySummonerId(summonerId).block();
         if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
         AccountResponseDto accountInfo = riotWebClientFactory.getAccountInfo(summonerInfo.getPuuid()).block();
