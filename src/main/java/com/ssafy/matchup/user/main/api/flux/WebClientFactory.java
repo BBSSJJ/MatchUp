@@ -42,7 +42,7 @@ public class WebClientFactory {
         URI uri = UriComponentsBuilder
 //                .fromUriString("https://matchup.site" +
                 .fromUriString("http://" + statisticsServer + ":9004" +
-                        "/api/statistics/users/" + riotId)
+                        "/api/statistics/users/summoners/" + riotId + "/login")
                 .encode()
                 .build()
                 .toUri();
