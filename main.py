@@ -81,7 +81,7 @@ async def enjoying(user_id: int):
     for _ in range(10):
         w, recommendation_user_id = heapq.heappop(recommendations)
 
-        user_infos.append(apis.user.get_user_records_for_recommend(recommendation_user_id))
+        user_infos.append(apis.user.get_user_profile(recommendation_user_id))
 
     return user_infos
 
