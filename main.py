@@ -3,6 +3,7 @@ import fastapi
 import heapq
 import joblib
 import pandas as pd
+import scipy.stats
 
 import apis.user
 import algorithms.enjoying
@@ -109,12 +110,22 @@ async def enjoying(user_id: int, mic: bool, my_lane: str, partner_lane: str):
 # 유저 상세 정보
 @matchup.get("/api/recommends/statistics/{user_id}")
 async def user_info(user_id: int):
-    # 유저 데이터 불러오기
-    user_df = pd.DataFrame()
+    # 유저 티어 정보 가져오기
+    divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
 
-    tier = 'gold'
+    tier, division = apis.user.get_user_tier(user_id)
 
     # scaler 불러오기
-    scaler = joblib.load(f"statistics/scalers/{tier}.joblib")
+    if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
+        scaler = joblib.load(f"statistics/scalers/{tier}_{division}_scaler.joblib")
+    else:
+        scaler = joblib.load(f"statistics/scalers/{tier}_scaler.joblib")
 
-    return {}
+    # 유저 지표 불러오기
+    user_indicator = apis.user.get_user_indicator(user_id)
+
+    # 유저 상세 정보 확인
+    scaled_data = scaler.transform(user_indicator)
+    percentiles = scipy.stats.norm.cdf(scaled_data) * 100
+
+    return percentiles
