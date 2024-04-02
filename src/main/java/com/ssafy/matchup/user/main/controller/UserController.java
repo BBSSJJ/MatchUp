@@ -1,6 +1,7 @@
 package com.ssafy.matchup.user.main.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.matchup.global.dto.MessageDto;
 import com.ssafy.matchup.global.util.CookieUtil;
 import com.ssafy.matchup.global.util.JwtTokenUtil;
@@ -21,6 +22,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.util.EnumUtils;
 
+import java.lang.runtime.ObjectMethods;
 import java.util.List;
 
 @RestController
@@ -36,12 +38,12 @@ public class UserController {
     @PostMapping("/regist")
     ResponseEntity<MessageDto> userRegist(
             @RequestBody RegistUserRequestDto registUserRequestDto,
-            @CookieValue String snsId,
-            @CookieValue String snsType) throws JsonProcessingException {
+            @CookieValue(name = "user") String userCookie) throws JsonProcessingException {
 
         UserDto user = userService.addUser(registUserRequestDto);
-        UserSnsDto userSnsDto = new UserSnsDto(user, snsId, SnsType.valueOf(snsType));
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserSnsDto userSnsDto = objectMapper.readValue(userCookie, UserSnsDto.class);
         ResponseCookie cookie = cookieUtil.createUserCookie(userSnsDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
