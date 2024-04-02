@@ -19,9 +19,9 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
 
     # 승률 예측 모델 불러오기
     if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
-        mlp = joblib.load(f'models/winning/{tier.lower()}_{divisions[division]}_model.pkl')
+        mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_{divisions[division]}_model.pkl')
     else:
-        mlp = joblib.load(f'models/winning/{tier.lower()}_model.pkl')
+        mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_model.pkl')
 
     # 유저 목록 불러오기
     user_list = apis.user.get_users(user_id, mic)
