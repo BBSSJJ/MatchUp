@@ -121,19 +121,19 @@ export default function NavigationBar() {
                       }>탑</SelectItem>
                     <SelectItem key="jungle" value="jungle"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/jungle.png`}/>
+                        <Image width={20} alt="jungle" src={`/positionIcons/jungle.png`}/>
                       }>정글</SelectItem>
                     <SelectItem key="mid" value="mid"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/mid.png`}/>
+                        <Image width={20} alt="mid" src={`/positionIcons/mid.png`}/>
                       }>미드</SelectItem>
                     <SelectItem key="bottom" value="bottom"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/bottom.png`}/>
+                        <Image width={20} alt="bottom" src={`/positionIcons/bottom.png`}/>
                       }>원딜</SelectItem>
                     <SelectItem key="support" value="support"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
+                        <Image width={20} alt="support" src={`/positionIcons/support.png`}/>
                       }>서포터</SelectItem>
                   </Select>
                   <Select label="상대 라인" size="sm" onChange={(e) => setSearchingLine(e.target.value)}>
@@ -143,27 +143,40 @@ export default function NavigationBar() {
                       }>탑</SelectItem>
                     <SelectItem key="jungle" value="jungle"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/jungle.png`}/>
+                        <Image width={20} alt="jungle" src={`/positionIcons/jungle.png`}/>
                       }>정글</SelectItem>
                     <SelectItem key="mid" value="mid"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/mid.png`}/>
+                        <Image width={20} alt="mid" src={`/positionIcons/mid.png`}/>
                       }>미드</SelectItem>
                     <SelectItem key="bottom" value="bottom"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/bottom.png`}/>
+                        <Image width={20} alt="bottom" src={`/positionIcons/bottom.png`}/>
                       }>원딜</SelectItem>
                     <SelectItem key="support" value="support"
                       startContent={
-                        <Image width={20} alt="top" src={`/positionIcons/support.png`}/>
+                        <Image width={20} alt="support" src={`/positionIcons/support.png`}/>
                       }>서포터</SelectItem>
                   </Select>
                   <br />
-                  <Link href="/recommendation">
-                    <Button color="primary" className="text-base font-bold w-full">
+                  {/* <Link href={{
+                    pathname: "/recommendation/",
+                    query: {myLine: myLine, searchingLine: searchingLine, useMic: useMic}
+                  }}> */}
+                    <Button 
+                      color="primary" 
+                      className="text-base font-bold w-full" 
+                      isDisabled={Boolean(myLine.length == 0 || searchingLine.length == 0)}
+                      // onPress={() => nextRouter.push({
+                      //   pathname: "/recommendation/",
+                      //   query: {myLine: myLine, searchingLine: searchingLine, useMic: useMic}})}
+                      onPress={() => {
+                        router.push(`/recommendation?myLine=${myLine}&searchingLine=${searchingLine}&useMic=${useMic}`)
+                      }}
+                    >
                       매칭하기!
                     </Button>
-                  </Link>
+                  {/* </Link> */}
                 </div>
               </div>
             )}
