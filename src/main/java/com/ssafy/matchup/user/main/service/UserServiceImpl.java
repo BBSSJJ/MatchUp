@@ -32,7 +32,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,10 +127,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInTierResponseDto> getUsersInTier(Long userId) {
+    public List<UserInTierResponseDto> getUsersInTier(Long userId, Boolean useMike) {
         User user = userRepository.findUserById(userId).orElseThrow(EntityNotFoundException::new);
 
-        Boolean useMike = user.getSetting().getUseMike();
+//        Boolean useMike = user.getSetting().getUseMike();
         String tier = user.getRiotAccount().getTier();
         String leagueRank = user.getRiotAccount().getLeagueRank();
 

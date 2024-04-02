@@ -23,7 +23,7 @@ public interface UserService {
 
     void updateSetting(Long userId, Setting useMike);
 
-    List<UserInTierResponseDto> getUsersInTier(Long userId);
+    List<UserInTierResponseDto> getUsersInTier(Long userId, Boolean useMike);
 
     void registDumpUser(int page, RegistDumpUserRequestDto registDumpUserRequestDto);
 }

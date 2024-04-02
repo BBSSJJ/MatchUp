@@ -90,8 +90,8 @@ public class UserController {
     }
 
     @GetMapping("/{user-id}/tier-list")
-    ResponseEntity<List<UserInTierResponseDto>> userInTierList(@PathVariable("user-id") Long userId) {
-        return new ResponseEntity<>(userService.getUsersInTier(userId), HttpStatus.OK);
+    ResponseEntity<List<UserInTierResponseDto>> userInTierList(@PathVariable("user-id") Long userId,  @RequestParam("mic") Boolean useMike) {
+        return new ResponseEntity<>(userService.getUsersInTier(userId, useMike), HttpStatus.OK);
     }
 
     @PostMapping("/dump/{page}")
