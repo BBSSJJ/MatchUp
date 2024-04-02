@@ -65,7 +65,7 @@
 
 .thisUser {
     display: flex;
-    background-color: #7b9bd1;
+    background-color: #7b9bd1 !important;
     height: 150px;
     font-size: small;
     border-radius: 5px;

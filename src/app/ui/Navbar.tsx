@@ -52,12 +52,13 @@ export default function NavigationBar() {
     router.push('/login');
   }
 
+  // 검색어 입력 후 호출
   const handleClick = () => {
-    router.push(`/summoner/${keyword}`)
+    router.push(`/summoner/${keyword}/${tagline}`)
   }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push(`/summoner/${keyword}`)
+    router.push(`/summoner/${keyword}/${tagline}`)
   }
 
   const handleClear = (event: React.ChangeEvent<HTMLInputElement>) => {
