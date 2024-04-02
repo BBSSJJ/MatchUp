@@ -189,8 +189,8 @@ public class UserServiceImpl implements UserService {
 
 //            webClientFactory.sendSummonerName(summonerInfoDto.getName(), summonerProfile.getTag())
 //                    .subscribe(m -> log.info("message : {} ", m));
-            webClientFactory.sendSummonerName(summonerInfoDto.getName(), summonerProfile.getTag())
-                    .block();
+//            webClientFactory.postById(summonerInfoDto.getName(), summonerProfile.getTag())
+//                    .block();
         }
 
         log.info("page {} / tier {} {} : {}", page, registDumpUserRequestDto.getTier(), registDumpUserRequestDto.getDivision(), idList.toString());
