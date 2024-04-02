@@ -2,7 +2,7 @@ package com.ssafy.matchup.global.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.matchup.user.main.dto.UserDto;
+import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class CookieUtil {
     @Value("${cookie.period.refresh-token}")
     private int periodRefreshTokenCookie;
 
-    public ResponseCookie createUserCookie(UserDto user) throws JsonProcessingException {
+    public ResponseCookie createUserCookie(UserSnsDto user) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);

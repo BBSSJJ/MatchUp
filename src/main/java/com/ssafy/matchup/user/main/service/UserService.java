@@ -4,6 +4,7 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
 import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     UserDto addUser(RegistUserRequestDto registUserRequestDto);
 
-    UserDto findUser(LoginUserRequestDto loginUserRequestDto);
+    UserSnsDto findUser(LoginUserRequestDto loginUserRequestDto);
 
     UserDto getUser(Long userId);
 
