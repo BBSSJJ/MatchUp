@@ -20,7 +20,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
     getMessages()
 
     const stomp = new Client({
-      brokerURL: `wss://${SERVER_API_URL}/api/ws`,
+      brokerURL: `wss://matchup.site/api/ws`,
     })
     setClient(stomp)
 
@@ -39,6 +39,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
       url: `https://${SERVER_API_URL}/api/chats/rooms/${roomId}`
     })
       .then((response) => {
+        console.log(response.data)
         setMessages(response.data.list)
       })
   }
