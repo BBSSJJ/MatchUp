@@ -39,7 +39,6 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
       url: `${SERVER_API_URL}/api/chats/rooms/${roomId}`
     })
       .then((response) => {
-        console.log(response.data)
         setMessages(response.data.list)
       })
   }
