@@ -107,6 +107,10 @@ public class MatchIndicator {
             pingCount += macroData.getMyData().visionClearedPings;
             timeInfo = macroData.getTimeInfo();
             this.champion = macroData.getMyData().getChampionName();
+            this.kill = macroData.getMyData().getKills();
+            this.death = macroData.getMyData().getDeaths();
+            this.assist = macroData.getMyData().getAssists();
+            this.kda = ((double) (kill + assist) / (death + 1));
         }
 
         public Metadata(TimeInfo timeInfo, boolean isFinishedBeforeFifteen) {

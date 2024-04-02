@@ -33,7 +33,7 @@ spring:
 # 로그
 logging:
   level:
-    root: info
+    root: debug
 
 # IP 주소
 ip:
