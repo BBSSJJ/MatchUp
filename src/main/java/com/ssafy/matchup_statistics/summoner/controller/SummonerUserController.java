@@ -53,7 +53,7 @@ public class SummonerUserController {
         return ResponseEntity.ok(summonerService.loginSummoner(userId));
     }
 
-    @Operation(summary = "리그 티어별 해당정보 반환(Dump user 생성용)", description = "요청한 티어에 맞는 정보 205개 반환") // 해당 API가 어떤 역할을 하는지 설명
+    @Operation(summary = "리그 티어별 해당정보 반환(Dump user 생성용)", description = "요청한 티어에 맞는 정보 20개 반환") // 해당 API가 어떤 역할을 하는지 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "해당 티어 라이엇 정보 반환", // 응답코드 200일때 응답 설명
                     content = @Content(schema = @Schema(implementation = SummonerLeagueAccountInfoResponseDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
@@ -61,7 +61,7 @@ public class SummonerUserController {
                     content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
     @PostMapping("/pages/{page}")
-    public ResponseEntity<List<SummonerLeagueAccountInfoResponseDto>> loginSummonerInfo(
+    public ResponseEntity<List<SummonerLeagueAccountInfoResponseDto>> postDumpInfo(
             @PathVariable(value = "page") Integer page,
             @RequestBody @Valid LeagueEntryRequestDto dto) {
         return ResponseEntity.ok(summonerService.getSummonerLeagueAccountInfo(page, dto));
