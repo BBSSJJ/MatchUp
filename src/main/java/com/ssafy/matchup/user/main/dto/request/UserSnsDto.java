@@ -23,4 +23,9 @@ public class UserSnsDto {
         this.snsId = snsId;
         this.snsType = snsType;
     }
+
+    public UserSnsDto(String snsId, SnsType snsType) {
+        this.snsId = snsId;
+        this.snsType = snsType;
+    }
 }
