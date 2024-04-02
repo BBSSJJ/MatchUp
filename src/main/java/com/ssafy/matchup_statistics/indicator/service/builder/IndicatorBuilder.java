@@ -74,6 +74,7 @@ public class IndicatorBuilder {
             matchIndicators.add(matchIndicator);
         });
 
+        matchIndicators.sort((i1, i2) -> (int) (i2.getMetadata().getTimeInfo().getStartTime() - i1.getMetadata().getTimeInfo().getStartTime()));
         log.debug("생성된 매치 지표들 확인 : {}", matchIndicators);
 
         return new Indicator(summonerId, matchIndicators);

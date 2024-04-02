@@ -84,6 +84,7 @@ public class MatchIndicator {
         private int death;
         private int assist;
         private double kda;
+        private long startAt;
 
         public Metadata(LaneInfo laneInfo,
                         MacroData macroData,
