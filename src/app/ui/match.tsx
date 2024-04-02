@@ -1,62 +1,65 @@
-import MatchDetail from "./match-info";
+import MatchDetail, { ResponseData } from "./match-info";
 import { RIOT_API_KEY } from "./summoner-info"
 
 // 해당 puuid를 가진 유저의 솔랭 매치 아이디 가져오기
-async function getMatch(puuid: string) {
-    try {
-        // const typeOfMatch = 'ranked';
-        const countOfMatch = '10';
-        const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?queue=420&start=0&count=${countOfMatch}`
-        const response = await fetch(RIOT_API_URL,
-            {
-                headers: { "X-Riot-Token": RIOT_API_KEY }
-        });
+// async function getMatch(puuid: string) {
+//     try {
+//         // const typeOfMatch = 'ranked';
+//         const countOfMatch = '10';
+//         const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?queue=420&start=0&count=${countOfMatch}`
+//         const response = await fetch(RIOT_API_URL,
+//             {
+//                 headers: { "X-Riot-Token": RIOT_API_KEY }
+//         });
 
-        if(!response.ok) {
-            throw new Error('Failed to fetch match data');
-        }
-        return response.json();
-    } catch(error) {
-        console.error('Error fetching match data:', error);
-        throw error;
-    }
-}
+//         if(!response.ok) {
+//             throw new Error('Failed to fetch match data');
+//         }
+//         return response.json();
+//     } catch(error) {
+//         console.error('Error fetching match data:', error);
+//         throw error;
+//     }
+// }
 
-async function getMatchDetail(matchId: string) {
-    try {
-        const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`
-        const response = await fetch(RIOT_API_URL,
-            {
-                headers: { "X-Riot-Token": `${RIOT_API_KEY}` }
-        });
+// async function getMatchDetail(matchId: string) {
+//     try {
+//         const RIOT_API_URL = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`
+//         const response = await fetch(RIOT_API_URL,
+//             {
+//                 headers: { "X-Riot-Token": `${RIOT_API_KEY}` }
+//         });
 
-        if(!response.ok) {
-            throw new Error('Failed to fetch match detail data');
-        }
-        return response.json();
-    } catch (error) {
-        console.error('Error fetching match data:', error);
-        throw error;
-    }    
-}
+//         if(!response.ok) {
+//             throw new Error('Failed to fetch match detail data');
+//         }
+//         return response.json();
+//     } catch (error) {
+//         console.error('Error fetching match data:', error);
+//         throw error;
+//     }    
+// }
 
-export default async function MatchIds({ puuid }: {
-    puuid: string
+export default async function MatchIds({ matchIds, summonerId }: {
+    matchIds :ResponseData[];
+    summonerId :string
 }) {
-    const matchIds: string[] = await getMatch(puuid);
-    console.log("matchIds : ", matchIds, puuid);
-    const matchArray = await JSON.parse(JSON.stringify(matchIds)); // 20개의 최근 경기 아이디 배열
-    console.log("20개의 최근 경기 아이디 배열", matchArray)
-    const detailsPromises = matchIds.map(id => getMatchDetail(id));
-    const matchDetails = await Promise.all(detailsPromises);
+    // const matchIds: string[] = await getMatch(puuid);
+    // console.log("matchIds : ", matchIds, puuid);
+    // const matchArray = await JSON.parse(JSON.stringify(matchIds)); // 20개의 최근 경기 아이디 배열
+    const matchArray = matchIds 
+    console.log('???', matchArray)
+    // console.log("20개의 최근 경기 아이디 배열", matchArray)
+    // const detailsPromises = matchIds.map(id => getMatchDetail(id));
+    // const matchDetails = await Promise.all(detailsPromises);
     // const dataArray = matchIds.map(async (id) => {
     //     return await getMatchDetail(id);
     // })
     // console.log(matchDetails, "print");
     return (
         <div>
-            {matchArray.map((item: string, index: number) => {
-                return <MatchDetail key={index} puuid={puuid} data={matchDetails[index]} />
+            {matchArray !== undefined && Array.isArray(matchArray) && matchArray.map((match: ResponseData, index: number) => {
+                return <MatchDetail key={index} match={match} id={summonerId}/>
             })}
         </div>
     )
