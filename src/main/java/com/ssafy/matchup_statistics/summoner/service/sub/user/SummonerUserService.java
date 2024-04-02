@@ -8,4 +8,6 @@ public interface SummonerUserService {
     SummonerLeagueAccountInfoResponseDto loginSummoner(Long userId);
 
     SummonerLeagueAccountInfoResponseDto loginSummoner(String gameName, String tagLine);
+
+    SummonerLeagueAccountInfoResponseDto loginSummoner(String summonerId);
 }
