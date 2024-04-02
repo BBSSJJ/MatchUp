@@ -1,8 +1,9 @@
 package com.ssafy.matchup.user.main.service.sub;
 
-import com.ssafy.matchup.user.main.api.dto.LeagueInfoDto;
-import com.ssafy.matchup.user.main.api.dto.SummonerInfoDto;
-import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
+import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
+import com.ssafy.matchup.user.main.api.dto.response.LeagueInfoDto;
+import com.ssafy.matchup.user.main.api.dto.response.SummonerInfoDto;
+import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class InitUserService {
+public class UserInitService {
 
     @Value("${ddragon.version}")
     String ddragonVersion;
@@ -41,17 +42,15 @@ public class InitUserService {
 
 
     @Transactional
-    public RiotAccount initRiotAccount(RegistUserRequestDto registUserRequestDto, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto) {
-        String summonerName = registUserRequestDto.getRiotId();
-        SummonerInfoDto summonerInfoDto = summonerLeagueInfoResponseDto.getSummonerInfoDto();
-        LeagueInfoDto leagueInfoDto = summonerLeagueInfoResponseDto.getLeagueInfoDto();
-        String[] parts = summonerName.split("#");
-        String tag = parts[1].trim();
-        String name = summonerInfoDto.getName();
+    public RiotAccount initRiotAccount(SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto) {
+        SummonerInfoDto summonerInfoDto = summonerLeagueAccountInfoResponseDto.getSummonerInfoDto();
+        LeagueInfoDto leagueInfoDto = summonerLeagueAccountInfoResponseDto.getLeagueInfoDto();
+        AccountResponseDto accountResponseDto = summonerLeagueAccountInfoResponseDto.getAccountResponseDto();
+
 
         SummonerProfile summonerProfile = SummonerProfile.builder()
-                .name(name)
-                .tag(tag)
+                .name(accountResponseDto.getGameName())
+                .tag(accountResponseDto.getTagLine())
                 .iconUrl("https://ddragon.leagueoflegends.com/cdn/" + ddragonVersion
                         + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
                 .level(summonerInfoDto.getSummonerLevel()).build();
@@ -71,24 +70,30 @@ public class InitUserService {
     }
 
     @Transactional
-    public void updateRiotAccount(User user, SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto) {
-//        SummonerInfoDto summonerInfoDto = summonerLeagueInfoResponseDto.getSummonerInfoDto();
-//        SummonerProfile summonerProfile = SummonerProfile.builder()
-//                .name(name)
-//                .tag(tag)
-//                .iconUrl("https://ddragon.leagueoflegends.com/cdn/" + ddragonVersion
-//                        + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
-//                .level(summonerInfoDto.getSummonerLevel()).build();
-//
-//
-//        RiotAccount riotAccount = RiotAccount.builder()
-//                .id(summonerInfoDto.getId())
-//                .revisionDate(summonerInfoDto.getRevisionDate())
-//                .summonerProfile(summonerProfile)
-//                .tier(leagueInfoDto.getTier())
-//                .leagueRank(leagueInfoDto.getRank())
-//                .leaguePoint(leagueInfoDto.getLeaguePoints())
-//                .build();
+    public void updateInfo(User user, SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto) {
+        SummonerInfoDto summonerInfoDto = summonerLeagueAccountInfoResponseDto.getSummonerInfoDto();
+        LeagueInfoDto leagueInfoDto = summonerLeagueAccountInfoResponseDto.getLeagueInfoDto();
+        AccountResponseDto accountResponseDto = summonerLeagueAccountInfoResponseDto.getAccountResponseDto();
+
+
+        SummonerProfile summonerProfile = SummonerProfile.builder()
+                .name(accountResponseDto.getGameName())
+                .tag(accountResponseDto.getTagLine())
+                .iconUrl("https://ddragon.leagueoflegends.com/cdn/" + ddragonVersion
+                        + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
+                .level(summonerInfoDto.getSummonerLevel()).build();
+
+
+        RiotAccount riotAccount = RiotAccount.builder()
+                .id(summonerInfoDto.getId())
+                .revisionDate(summonerInfoDto.getRevisionDate())
+                .summonerProfile(summonerProfile)
+                .tier(leagueInfoDto.getTier())
+                .leagueRank(leagueInfoDto.getRank())
+                .leaguePoint(leagueInfoDto.getLeaguePoints())
+                .build();
+
+        user.updateRiotAccount(riotAccount);
     }
 
 }
