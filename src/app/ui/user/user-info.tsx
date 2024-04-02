@@ -163,44 +163,47 @@ export default function UserProfile({ userId } :UserProfileProps) {
             }
         };
 		// 기존 친구인지 확인
-		const isFriend = () => {
-			const friendsList = friends?.list?.map((user :any) => user.userId)
-			return friendsList?.includes(userId)
+		// const isFriend = () => {
+		// 	const friendsList = friends?.list?.map((user :any) => user.userId)
+		// 	return friendsList?.includes(userId)
+		// }
+		const friendsList = friends?.list?.map((user :any) => user.userId)
+		if (friendsList && friendsList.includes(userId)) {
+			setIsFriend(true);
+		} else {
+			setIsFriend(false);
 		}
-		
         fetchMicStatus() // 마이크 사용여부 가져오기
-		setIsFriend(isFriend)
+		// setIsFriend(isFriend)
 
-	}, [])
+	}, [friends, userId])
 
-	// 마이크 토글시마다 요청 보내기 
-	useEffect(() => {
-		const fetchMicStatus = async () => {
-			const param = {
-				'useMike': onOff
+	// 마이크 토글시 patch 요청 보내기 
+	const fetchMicStatus = async (status :boolean) => {
+		const param = {
+			useMike: status
+		}
+		try {
+			const response = await fetch(`${SERVER_API_URL}/api/users/settings`,
+			{
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body : JSON.stringify(param),
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to patch mic status');
 			}
-            try {
-                const response = await fetch(`${SERVER_API_URL}/api/users/settings`,
-				{
-					method: 'PATCH',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body : JSON.stringify(param),
-				}
-				);
-                if (!response.ok) {
-                    throw new Error('Failed to patch mic status');
-                }
-                // const data = await response.json();
-				return response
-                // setOnOff(data.useMike); 
-            } catch (error) {
-                console.error('Error patching mic status:', error);
-            }
-        };
-		fetchMicStatus()
-	}, [])
+			// 성공 응답을 받으면 
+			return response
+		} catch (error) {
+			console.error('Error patching mic status:', error);
+		}
+	};
+	
+	
 
 
 	// 유저 데이터 가져오기
@@ -256,8 +259,9 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				
 				if(!response.ok) {
 					console.error('친구요청 실패')
+				} else {
+					alert('친구요청 완료')
 				}
-				alert('친구요청 완료')
 				return response
 			} catch(error) {
 				console.error(error)
@@ -272,10 +276,11 @@ export default function UserProfile({ userId } :UserProfileProps) {
     }
 
 	// 마이크 사용여부 토글 
-	// const handleSwitch = async (event :React.ChangeEvent<HTMLInputElement>) => {
-	// 	const useMIC = event.target.checked 
-
-	// }
+	const handleSwitch = async (event :React.ChangeEvent<HTMLInputElement>) => {
+		const useMIC = event.target.checked
+		setOnOff(useMIC)
+		await fetchMicStatus(useMIC)
+	}
 	
 	if (userLoading || micLoading || recordsLoading || friendLoading ) {
 		return <h1>loading...</h1>
@@ -308,7 +313,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<Image
 						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
-						src={records === 'unranked' ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
+						src={records === undefined ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
 						
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
@@ -353,7 +358,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				<Switch
 					// defaultSelected
 					isSelected={onOff}
-					onChange={(event) => setOnOff(event.target.checked)}
+					onChange={handleSwitch}
 					size="lg"
 					color="secondary"
 					thumbIcon={({ isSelected, className }) =>
