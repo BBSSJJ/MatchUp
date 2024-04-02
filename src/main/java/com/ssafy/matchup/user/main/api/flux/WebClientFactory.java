@@ -26,6 +26,8 @@ public class WebClientFactory {
     private final WebClient webClient;
     @Value("${ip.server.statistics}")
     String statisticsServer;
+    @Value("${RIOT_API_KEY}")
+    String riotApiKey;
     @Value("${RIOT_CLIENT_ID}")
     String userName;
     @Value("${RIOT_CLIENT_SECRET}")
@@ -84,6 +86,7 @@ public class WebClientFactory {
     public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
         webClient.mutate()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
+                .defaultHeader("X-Riot-Token", riotApiKey)
                 .defaultHeaders(header -> header.setBasicAuth(userName, password));
 
         URI uri = UriComponentsBuilder
@@ -105,7 +108,8 @@ public class WebClientFactory {
 
     public Mono<AccountResponseDto> getAccountResponseDtoByToken(String tokenType, String accessToken) {
         webClient.mutate()
-                .defaultHeader("Authorization", tokenType + " " + accessToken);
+                .defaultHeader("Authorization", tokenType + " " + accessToken)
+                .defaultHeader("X-Riot-Token", riotApiKey);
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://asia.api.riotgames.com/riot/account/v1/accounts/me")
