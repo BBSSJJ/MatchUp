@@ -69,6 +69,7 @@ export async function stopRecording(recordingId: string) {
     url: `${URL}/recordings/stop/${recordingId}`,
     headers,
   })
+  window.alert('녹화 중단')
   return response.data
 }
 
