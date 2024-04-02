@@ -44,9 +44,9 @@ def ten_neighbors(user_list, user_puuid):
     my_early_surrender = my_document["matchIndicatorStatistics"]["metadata"]["isOurTeamEarlySurrenderedCount"]
     my_ping_count = my_document["matchIndicatorStatistics"]["metadata"]["pingCountAvg"]
 
-    my_vector = [[my_time_duration, my_early_surrender / my_total_count, my_ping_count]]
+    my_vector = [my_time_duration, my_early_surrender / my_total_count, my_ping_count]
 
-    distance_list, index_list = index.search(my_vector, 10)
+    distance_list, index_list = index.search(np.array([my_vector]).astype('float32'), 10)
 
     user_ids = []
 
