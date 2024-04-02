@@ -1,5 +1,6 @@
 import faiss
 import pymongo
+import numpy as np
 
 def ten_neighbors(user_list, user_id):
     puuid_list = []
@@ -31,7 +32,7 @@ def ten_neighbors(user_list, user_id):
 
     # 인덱스 생성
     index = faiss.IndexFlatL2(3)
-    index.add(user_vectors)
+    index.add(np.array(user_vectors).astype('float32'))
 
     # 본인 벡터 만들기
     my_document = matchup_statistics_db["indicators"].find_one({"_id": user_id})
