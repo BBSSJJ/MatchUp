@@ -39,9 +39,9 @@ async def winning(user_id: int):
 
 # 즐거움 기반의 유저 추천
 @matchup.get("/api/recommends/enjoying/{user_id}")
-async def enjoying(user_id: int):
+async def enjoying(user_id: int, mic: bool, my_lane: str, partner_lane: str):
     # 유저 목록 불러오기
-    user_list = apis.user.get_users(user_id)
+    user_list = apis.user.get_users(user_id, mic)
 
     if user_list is False:
         return []
@@ -69,7 +69,7 @@ async def enjoying(user_id: int):
                 if score == 5:
                     heapq.heappush(recommendations, (neighbor_weight, neighbor_rating["feedbackedUserId"]))
                     neighbor_weight += 0.1
-            
+
             if len(recommendations) >= 10 + weight:
                 break
             else:

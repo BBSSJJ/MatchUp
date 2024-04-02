@@ -19,8 +19,8 @@ def get_user_tier(user_id: int):
     return tier, division
 
 
-def get_users(user_id: int):
-    response = requests.get(f'https://matchup.site/api/users/{user_id}/tier-list')
+def get_users(user_id: int, mic: bool):
+    response = requests.get(f'https://matchup.site/api/users/{user_id}/tier-list', params={'mic': mic})
 
     if response.status_code == 200:
         return response.json()
