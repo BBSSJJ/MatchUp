@@ -8,18 +8,18 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
 import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
+import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.yaml.snakeyaml.util.EnumUtils;
 
 import java.util.List;
 
@@ -34,10 +34,15 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/regist")
-    ResponseEntity<MessageDto> userRegist(@RequestBody RegistUserRequestDto registUserRequestDto) throws JsonProcessingException {
-        UserDto user = userService.addUser(registUserRequestDto);
+    ResponseEntity<MessageDto> userRegist(
+            @RequestBody RegistUserRequestDto registUserRequestDto,
+            @CookieValue String snsId,
+            @CookieValue String snsType) throws JsonProcessingException {
 
-        ResponseCookie cookie = cookieUtil.createUserCookie(user);
+        UserDto user = userService.addUser(registUserRequestDto);
+        UserSnsDto userSnsDto = new UserSnsDto(user, snsId, SnsType.valueOf(snsType));
+
+        ResponseCookie cookie = cookieUtil.createUserCookie(userSnsDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("id", String.valueOf(user.getUserId()))
@@ -48,13 +53,13 @@ public class UserController {
 
     @PostMapping("/login")
     ResponseEntity<MessageDto> userLogin(@RequestBody LoginUserRequestDto loginUserRequestDto) throws JsonProcessingException {
-        UserDto user = userService.findUser(loginUserRequestDto);
+        UserSnsDto user = userService.findUser(loginUserRequestDto);
 
         ResponseCookie cookie = cookieUtil.createUserCookie(user);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("id", String.valueOf(user.getUserId()))
-                .header("role", String.valueOf(user.getRole()))
+                .header("id", String.valueOf(user.getUserDto().getUserId()))
+                .header("role", String.valueOf(user.getUserDto().getRole()))
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new MessageDto("login success"));
     }
