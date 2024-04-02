@@ -7,7 +7,7 @@ import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.LaneIndicatorStatistics;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicatorStatistics;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
-import jakarta.validation.constraints.Null;
+import com.ssafy.matchup_statistics.indicator.util.Calculator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

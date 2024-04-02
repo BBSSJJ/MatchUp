@@ -1,4 +1,4 @@
-package com.ssafy.matchup_statistics.summoner.dto.util;
+package com.ssafy.matchup_statistics.indicator.util;
 
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import org.springframework.stereotype.Component;
