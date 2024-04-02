@@ -8,7 +8,7 @@ def ten_neighbors(user_list, user_id):
         puuid_list.append(user["riotId"])
 
     # MongoDB 연결
-    client = pymongo.MongoClient("mongodb://matchup.site:3311/")
+    client = pymongo.MongoClient("mongodb://mongodb-statistics-service:3311/")
 
     # DB 불러오기
     matchup_statistics_db = client["matchup_statistics_db"]
