@@ -47,7 +47,7 @@ public class SummonerUserController {
             @ApiResponse(responseCode = "404", description = "라이엇 API에 요청 정보가 없습니다.", // 응답코드 400일때 응답 설명
                     content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
-    @PostMapping("/{summonerId}")
+    @PostMapping("/summoners/{summonerId}/login")
     public ResponseEntity<SummonerLeagueAccountInfoResponseDto> loginSummonerInfo(
             @PathVariable(value = "summonerId") String summonerId){
         return ResponseEntity.ok(summonerService.loginSummoner(summonerId));
