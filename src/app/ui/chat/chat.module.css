@@ -20,7 +20,7 @@
 .input {
     display: flex;
     align-items: center;
-    height: 30px;
+    height: 40px;
     /* padding: 0 5px; */
     position: absolute;
     bottom: 80px;

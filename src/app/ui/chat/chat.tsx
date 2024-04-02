@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import styles from "./chat.module.css"
-import { Button, Image } from '@nextui-org/react';
+import { Button, Image, Input } from '@nextui-org/react';
 import { useAtom } from 'jotai';
 import { userInfoAtom } from '@/store/authAtom';
 
@@ -151,7 +151,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 				</div>	
 			</div>
 				<div className={styles.input}>
-					<input
+					<Input
 						type="text"
 						value={inputMessage}
 						onChange={(e) => setInputMessage(e.target.value)}
@@ -161,7 +161,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 							}
 						}}
 					/>
-					<Button
+					{/* <Button
                         radius='full'
                         variant='ghost'
                         size='sm'
@@ -169,7 +169,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 						onClick={() => sendMessage()}
 					>
 						보내기
-					</Button>
+					</Button> */}
 				</div>
 		</div>
     )

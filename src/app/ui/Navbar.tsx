@@ -235,7 +235,6 @@ export default function NavigationBar() {
           </Button>
         } 
       </NavbarContent>
-      
     </Navbar>
   );
 }
