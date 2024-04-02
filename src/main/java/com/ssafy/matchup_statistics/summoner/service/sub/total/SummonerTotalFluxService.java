@@ -163,20 +163,39 @@ public class SummonerTotalFluxService implements SummonerTotalService {
 
     @Override
     public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
-        List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
         List<SummonerLeagueAccountInfoResponseDto> ret = new ArrayList<>();
 
-        leagueInfoResponseByTier.forEach(leagueInfo -> {
-            log.info("league info : {}", leagueInfo.getSummonerName());
+        List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
+        for (int i = 0; i < 20; i++) {
+            LeagueInfoResponseDto leagueInfo = leagueInfoResponseByTier.get(i);
             SummonerInfoResponseDto summonerInfo = getSummonerInfo(leagueInfo).block();
             if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
-            log.info("summonerInfo info : {}", summonerInfo.getId());
             AccountResponseDto accountInfo = getAccountResponseDto(summonerInfo).block();
             if (accountInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
-            log.info("account info : {}", accountInfo.getGameName());
+            Flux<String> matches = getMatchesBySummonerInfo(summonerInfo);
+            CountDownLatch latch = new CountDownLatch(20);
+            List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses = getMatchResponses(latch, matches);
+            Indicator indicator = indicatorBuilder.build(matchResponses, summonerInfo.getId(), summonerInfo.getPuuid());
+
+            // 통계지표 생성 완료 후 저장
+            mongoTemplate.save(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getId());
+
+            // 소환사 정보 생성 및 저장하기
+            Summoner summoner = new Summoner(
+                    summonerInfo.getId(),
+                    new Account(accountInfo),
+                    new SummonerDetail(summonerInfo),
+                    new League(leagueInfo),
+                    matches.collectList().block(),
+                    true);
+            mongoTemplate.save(summoner);
+
             ret.add(new SummonerLeagueAccountInfoResponseDto(summonerInfo, leagueInfo, accountInfo));
+        }
+        leagueInfoResponseByTier.forEach(leagueInfo -> {
         });
 
         return ret;
