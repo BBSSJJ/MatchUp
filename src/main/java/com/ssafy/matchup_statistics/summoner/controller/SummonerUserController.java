@@ -40,7 +40,21 @@ public class SummonerUserController {
         return ResponseEntity.ok(summonerService.registSummoner(gameName, tagLine));
     }
 
-    @Operation(summary = "소환사 로그인 시 지표 갱신 후 라이엇 정보 반환(userId)", description = "로그인 시 DB에 없는 매치정보가 있는지 확인하여 갱신 후, 해당 라이엇 계정 정보를 반환합니다.") // 해당 API가 어떤 역할을 하는지 설명
+    @Operation(summary = "소환사 로그인 시 지표 갱신 후 라이엇 정보 반환(gameName, tagLine)", description = "로그인 시 전적정보를 갱신 후, 해당 라이엇 계정 정보를 반환합니다.") // 해당 API가 어떤 역할을 하는지 설명
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "모든 정보 갱신완료, 라이엇 정보 반환", // 응답코드 200일때 응답 설명
+                    content = @Content(schema = @Schema(implementation = SummonerLeagueAccountInfoResponseDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
+            @ApiResponse(responseCode = "404", description = "라이엇 API에 요청 정보가 없습니다.", // 응답코드 400일때 응답 설명
+                    content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
+    })
+    @PostMapping("/riot-ids/{gameName}/tag-lines/{tagLine}/login")
+    public ResponseEntity<SummonerLeagueAccountInfoResponseDto> loginSummonerInfo(
+            @PathVariable(value = "gameName") String gameName,
+            @PathVariable(value = "tagLine") String tagLine) {
+        return ResponseEntity.ok(summonerService.loginSummoner(gameName, tagLine));
+    }
+
+    @Operation(summary = "소환사 로그인 시 지표 갱신 후 라이엇 정보 반환(userId) | Deprecated", description = "로그인 시 DB에 없는 매치정보가 있는지 확인하여 갱신 후, 해당 라이엇 계정 정보를 반환합니다.") // 해당 API가 어떤 역할을 하는지 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "모든 정보 갱신완료, 라이엇 정보 반환", // 응답코드 200일때 응답 설명
                     content = @Content(schema = @Schema(implementation = SummonerLeagueAccountInfoResponseDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
@@ -48,7 +62,7 @@ public class SummonerUserController {
                     content = @Content(schema = @Schema(implementation = MessageDto.class))) // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
     @PostMapping("/{userId}/login")
-    public ResponseEntity<SummonerLeagueAccountInfoResponseDto> loginSummonerInfo(
+    public ResponseEntity<SummonerLeagueAccountInfoResponseDto> loginSummonerInfoByUserId(
             @PathVariable(value = "userId") Long userId) {
         return ResponseEntity.ok(summonerService.loginSummoner(userId));
     }
