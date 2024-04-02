@@ -1,4 +1,4 @@
-package com.ssafy.matchup.user.main.api.dto;
+package com.ssafy.matchup.user.main.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

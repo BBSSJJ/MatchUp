@@ -1,7 +1,7 @@
 package com.ssafy.matchup.user.main.api.flux;
 
 import com.ssafy.matchup.global.dto.MessageDto;
-import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
+import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,36 @@ public class WebClientFactory {
 
     private final WebClient webClient;
 
-    public List<SummonerLeagueInfoResponseDto> getDumpRiotAccount(int page, RegistDumpUserRequestDto registDumpUserRequestDto) {
+    public Mono<SummonerLeagueAccountInfoResponseDto> postByNameAndTag(String name, String tag) {
+        URI uri = UriComponentsBuilder
+//                .fromUriString("https://matchup.site" +
+                .fromUriString("http://" + statisticsServer + ":9004" +
+                        "/api/statistics/users/riot-ids/" + name + "/tag-lines/" + tag + "/regist")
+                .encode()
+                .build()
+                .toUri();
+        return webClient.post()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(SummonerLeagueAccountInfoResponseDto.class);
+    }
+
+    public Mono<SummonerLeagueAccountInfoResponseDto> postById(Long userId) {
+        URI uri = UriComponentsBuilder
+//                .fromUriString("https://matchup.site" +
+                .fromUriString("http://" + statisticsServer + ":9004" +
+                        "/api/statistics/users/" + userId + "/login")
+                .encode()
+                .build()
+                .toUri();
+        return webClient.post()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(SummonerLeagueAccountInfoResponseDto.class);
+    }
+
+
+    public List<SummonerLeagueAccountInfoResponseDto> getDumpRiotAccount(int page, RegistDumpUserRequestDto registDumpUserRequestDto) {
         URI uri = UriComponentsBuilder
                 .fromUriString("http://" + statisticsServer + ":9004/api/summoners/leagues/accounts/league-entries/")
 //                .fromUriString("https://" + "matchup.site" + "/api/summoners/leagues/accounts/league-entries/")
@@ -34,17 +63,17 @@ public class WebClientFactory {
                 .build()
                 .toUri();
 
-        Flux<SummonerLeagueInfoResponseDto> responseDtoFlux = webClient.post()
+        Flux<SummonerLeagueAccountInfoResponseDto> responseDtoFlux = webClient.post()
                 .uri(uri)
                 .bodyValue(registDumpUserRequestDto)
                 .retrieve()
-                .bodyToFlux(SummonerLeagueInfoResponseDto.class)
+                .bodyToFlux(SummonerLeagueAccountInfoResponseDto.class)
                 .take(20);
 
         return responseDtoFlux.collectList().block();
     }
 
-    public Mono<MessageDto> sendSummonerName(String name, String tag){
+    public Mono<MessageDto> sendSummonerName(String name, String tag) {
         URI uri = UriComponentsBuilder
                 .fromUriString("http://" + statisticsServer +
                         ":9004/api/summoners/leagues/indicators/matches/riot-ids/" +

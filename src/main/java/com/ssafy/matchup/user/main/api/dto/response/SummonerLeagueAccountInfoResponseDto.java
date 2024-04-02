@@ -1,7 +1,5 @@
 package com.ssafy.matchup.user.main.api.dto.response;
 
-import com.ssafy.matchup.user.main.api.dto.LeagueInfoDto;
-import com.ssafy.matchup.user.main.api.dto.SummonerInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SummonerLeagueInfoResponseDto {
+public class SummonerLeagueAccountInfoResponseDto {
     private SummonerInfoDto summonerInfoDto;
     private LeagueInfoDto leagueInfoDto;
     private AccountResponseDto accountResponseDto;
