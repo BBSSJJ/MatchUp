@@ -57,7 +57,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Optional<User> optionalUser = userRepository.findUserBySnsTypeAndSnsId(snsType, snsId);
 
         if (optionalUser.isEmpty()) {
-            ResponseCookie userCookie = cookieUtil.createUserCookie(new UserSnsDto(UserDto.builder().build(), snsId, snsType));
+            ResponseCookie userCookie = cookieUtil.createUserCookie(new UserSnsDto(snsId, snsType));
             response.addHeader(HttpHeaders.SET_COOKIE, userCookie.toString());
             response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId + "/" + true);
         }
