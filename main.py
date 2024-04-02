@@ -50,7 +50,7 @@ async def enjoying(user_id: int):
     recommendations = []
 
     if len(my_ratings) < 10:
-        nearest_neighbors = algorithms.enjoying.ten_neighbors(user_list, user_id)
+        nearest_neighbors = algorithms.enjoying.ten_neighbors(user_list, apis.user.get_user_puuid(user_id))
 
         weight = 1
         neighbor_weight = 0
