@@ -2,8 +2,7 @@ package com.ssafy.matchup_statistics.summoner.dto.response;
 
 import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicatorStatistics;
-import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
-import com.ssafy.matchup_statistics.summoner.dto.util.Calculator;
+import com.ssafy.matchup_statistics.indicator.util.Calculator;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
 import lombok.Data;
 

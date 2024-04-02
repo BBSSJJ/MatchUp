@@ -85,6 +85,7 @@ public class MatchIndicator {
         private int assist;
         private double kda;
         private long startAt;
+        private String queueType;
 
         public Metadata(LaneInfo laneInfo,
                         MacroData macroData,
