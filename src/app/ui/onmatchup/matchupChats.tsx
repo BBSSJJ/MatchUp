@@ -47,7 +47,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
   function sendMessage() {
     if (client && client.connected) {
       client.publish({
-        destination: '/app/recruit',
+        destination: `/app/chat/${roomId}`,
         body: JSON.stringify({
           userId: user.userId,
           name: user.riotAccount.summonerProfile.name,
