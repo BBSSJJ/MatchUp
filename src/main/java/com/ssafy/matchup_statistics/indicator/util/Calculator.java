@@ -38,7 +38,8 @@ public class Calculator {
 
     public String calculateLatestChampion(List<MatchIndicator> matchIndicators) {
         String ret = "No Champion Used";
-        for (int i = 0; i < matchIndicators.size(); i++) {
+        matchIndicators.sort((m1, m2) -> (int) (m2.getMetadata().getTimeInfo().getStartTime() - m1.getMetadata().getTimeInfo().getStartTime()));
+        for (int i = matchIndicators.size() - 1; i >= 0; i--) {
             MatchIndicator matchIndicator = matchIndicators.get(i);
 
             // 챔피언이 선택 안된 게임 제외(15분 이전게임 Or 라인정보 없는 게임)

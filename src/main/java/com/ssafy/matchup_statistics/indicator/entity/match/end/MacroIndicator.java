@@ -1,11 +1,8 @@
 package com.ssafy.matchup_statistics.indicator.entity.match.end;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
-import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.base.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.PersistenceCreator;
 
@@ -13,13 +10,13 @@ import org.springframework.data.annotation.PersistenceCreator;
 @Slf4j
 public class MacroIndicator {
 
+    public final int DEFAULT_ROUND_UP;
     private SplitPoint splitPoint = new SplitPoint();
     private InitiatingPoint initiatingPoint = new InitiatingPoint();
     private JungleHoldPoint jungleHoldPoint = new JungleHoldPoint();
     private ObjectivePoint objectivePoint = new ObjectivePoint();
     private VisionPoint visionPoint = new VisionPoint();
     private TotalDealPoint totalDealPoint = new TotalDealPoint();
-    public final int DEFAULT_ROUND_UP;
 
     public MacroIndicator(MacroData macroData) {
 

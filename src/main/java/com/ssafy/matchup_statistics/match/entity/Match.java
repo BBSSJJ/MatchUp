@@ -1,7 +1,6 @@
 package com.ssafy.matchup_statistics.match.entity;
 
-import com.ssafy.matchup_statistics.global.dto.response.MatchDetailResponseDto;
-import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
+import com.ssafy.matchup_statistics.summoner.dto.response.RecordMatchDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Match {
     @Id
     private String id;
-    private SummonerRecordInfoResponseDto.RecordMatchDetail matchDetail;
+    private RecordMatchDetail matchDetail;
 }
 

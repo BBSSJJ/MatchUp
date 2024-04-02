@@ -5,6 +5,7 @@ import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto
 import com.ssafy.matchup_statistics.indicator.data.MacroData;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.*;
 import com.ssafy.matchup_statistics.indicator.entity.match.end.MacroIndicator;
+import com.ssafy.matchup_statistics.indicator.util.QueueTypeMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,12 +85,11 @@ public class MatchIndicator {
         private int death;
         private int assist;
         private double kda;
-        private long startAt;
-        private String queueType;
 
         public Metadata(LaneInfo laneInfo,
                         MacroData macroData,
                         MatchTimelineResponseDto matchTimelineResponseDto) {
+
             this.laneInfo = laneInfo;
             isFinishedBeforeFifteen = matchTimelineResponseDto.getInfo().getFrames().size() <= 15;
             isOurTeamEarlySurrendered = macroData.getMyData().teamEarlySurrendered;

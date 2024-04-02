@@ -9,6 +9,7 @@ import com.ssafy.matchup_statistics.indicator.entity.match.MatchIndicator;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.TimeInfo;
 import com.ssafy.matchup_statistics.match.entity.Match;
+import com.ssafy.matchup_statistics.summoner.dto.response.RecordMatchDetail;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,6 @@ public class IndicatorFluxBuilder {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
         log.info("매치 지표 생성시작");
 
-        if (matchIndicators.isEmpty()) return new Indicator(summonerId);
-
         matchResponses.forEach(matchResponse -> {
             long start = System.currentTimeMillis();
 
@@ -43,7 +42,7 @@ public class IndicatorFluxBuilder {
             log.debug("매치 id({}) 분석 시작", matchId);
 
             // 매치정보는 별도로 저장
-            mongoTemplate.save(new Match(matchId, new SummonerRecordInfoResponseDto.RecordMatchDetail(matchDetailResponseDtoByMatchId)));
+            mongoTemplate.save(new Match(matchId, new RecordMatchDetail(matchDetailResponseDtoByMatchId)));
 
             // 15분 이전에 끝난 게임 처리
             if (matchTimelineResponseDtoByMatchId.getInfo().getFrames().size() <= 15) {

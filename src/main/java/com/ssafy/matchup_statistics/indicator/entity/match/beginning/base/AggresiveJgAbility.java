@@ -3,8 +3,10 @@ package com.ssafy.matchup_statistics.indicator.entity.match.beginning.base;
 import com.ssafy.matchup_statistics.indicator.data.Before_15_Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Getter
 public class AggresiveJgAbility extends AggresiveLaneAbilility{
     private int killInvolvementInEnemyCamp;
