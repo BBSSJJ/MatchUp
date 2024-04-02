@@ -116,10 +116,12 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         // 통계정보 생성하기
         Indicator indicator = indicatorFluxBuilder.build(matches.getLeft(), summonerDatas.getMiddle().getId(), summonerDatas.getMiddle().getPuuid());
         log.info("지표 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), indicator.getId());
+        mongoTemplate.save(indicator);
 
         // 소환사정보 생성하기
         Summoner summoner = makeSummoner(summonerDatas, matches);
         log.info("소환사 생성완료(소환사명 : {}, pk : {})", summonerDatas.getLeft().getGameName() + "#" + summonerDatas.getLeft().getTagLine(), summoner.getId());
+        mongoTemplate.save(summoner);
 
         // 전적정보 반환
         return new SummonerRecordInfoResponseDto(
