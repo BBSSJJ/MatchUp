@@ -1,9 +1,8 @@
 package com.ssafy.chat.service;
 
-import com.mongodb.client.MongoClient;
 import com.ssafy.chat.dto.ChatDto;
 import com.ssafy.chat.dto.ChatRoomDto;
-import com.ssafy.chat.dto.FcmDto;
+import com.ssafy.matchup.global.dto.FcmDto;
 import com.ssafy.chat.entity.Chat;
 import com.ssafy.chat.entity.ChatRoom;
 import com.ssafy.chat.mapper.ChatMapper;
@@ -35,7 +34,6 @@ public class ChatService {
         Chat chat = new Chat(roomId, chatDto.getUserId(), chatDto.getName(), chatDto.getIconUrl(), chatDto.getContent(), LocalDateTime.now(), false);
         mongoTemplate.save(chat);
 
-        // Produce message to Kafka topic
         kafkaChatTemplate.send("chat", chat);
 
         Long receiverId = findReceiverId(roomId, chat.getUserId());
@@ -45,10 +43,8 @@ public class ChatService {
 
     public List<ChatRoomDto> findRooms(Long userId) {
 
-        log.error("채팅방 목록 불러오기 userId : {}", userId);
         Query query = new Query(Criteria.where("participants").in(userId));
         List<ChatRoomDto> chatRoomDtoList = ChatMapper.instance.convertListChatRoomDto(mongoTemplate.find(query, ChatRoom.class));
-        log.error("불러온 채팅방 개수 : {}", chatRoomDtoList.size());
 
         if (chatRoomDtoList != null) {
             for (ChatRoomDto chatRoomDto : chatRoomDtoList) {
@@ -62,20 +58,15 @@ public class ChatService {
 
     public List<ChatDto> findChattings(Long userId, String roomId) {
 
-        log.error("채팅 내역 불러오기 ----------------------------");
         Query query = notReadQuery(roomId, userId);
 
         Update update = new Update();
         update.set("isRead", true);
         mongoTemplate.updateMulti(query, update, Chat.class);
-        log.error("안읽은 메세지 읽음 처리-------------------------");
 
         query = new Query(Criteria.where("roomId").is(roomId));
         List<Chat> chats = mongoTemplate.find(query, Chat.class);
-        for(Chat chat : chats) {
-            log.error("- sender : {}",chat.getName());
-            log.error("- content: {}",chat.getContent());
-        }
+
         return ChatMapper.instance.convertListChatDto(chats);
     }
 

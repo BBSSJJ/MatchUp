@@ -1,4 +1,4 @@
-package com.ssafy.chat.dto;
+package com.ssafy.matchup.global.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
