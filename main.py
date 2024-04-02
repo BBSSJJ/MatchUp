@@ -117,9 +117,9 @@ async def user_info(user_id: int):
 
     # scaler 불러오기
     if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
-        scaler = joblib.load(f"statistics/scalers/{tier}_{division}_scaler.joblib")
+        scaler = joblib.load(f"statistics/scalers/{tier.lower()}_{division}_scaler.joblib")
     else:
-        scaler = joblib.load(f"statistics/scalers/{tier}_scaler.joblib")
+        scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
 
     # 유저 지표 불러오기
     user_indicator = apis.user.get_user_indicator(user_id)
