@@ -20,9 +20,12 @@ def get_user_tier(user_id: int):
 
 
 def get_users(user_id: int):
-    response = requests.get(f'https://matchup.site/api/users/{user_id}/tier-list').json()
+    response = requests.get(f'https://matchup.site/api/users/{user_id}/tier-list')
 
-    return response
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return False
 
 
 def get_user_ratings(user_id: int):

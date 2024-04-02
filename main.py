@@ -43,6 +43,9 @@ async def enjoying(user_id: int):
     # 유저 목록 불러오기
     user_list = apis.user.get_users(user_id)
 
+    if user_list is False:
+        return []
+
     # 유저 평가 데이터 확인
     my_ratings = apis.user.get_user_ratings(user_id)
 
