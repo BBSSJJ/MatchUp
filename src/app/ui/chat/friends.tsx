@@ -151,7 +151,6 @@ export default function Friends({mode} :{mode :string}) {
         } catch(error) {
             console.error('Error checking chat room:', error);            
         }
-
     }
 
     // 해당 유저와의 채팅방이 있다면 그 방의 번호를 roomId로 설정, 없다면 생성하고 생성된 방 번호를 roomId로 설정
