@@ -78,7 +78,7 @@ const SideBar: React.FC = () => {
 				<div className="flex flex-col">
 					{/* 토글버튼 */}
 					<div className="my-3 flex">
-						<Button className="h-[30px] min-w-0 mx-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>Duo</Button>
+						<Button className="h-[30px] min-w-0 mr-3" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('f')}>Duo</Button>
 						<Button className="h-[30px] min-w-0" color="warning" radius="full" variant="shadow" onPress={()=> handleToggle('c')}>Chat</Button>
 					</div>
 					{/* 친구목록 */}
