@@ -2,13 +2,14 @@ package com.ssafy.matchup.user.main.api.flux;
 
 import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
-import com.ssafy.matchup.user.main.dto.request.Auth;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.response.RsoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -22,19 +23,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebClientFactory {
 
+    private final WebClient webClient;
     @Value("${ip.server.statistics}")
     String statisticsServer;
-
     @Value("${RIOT_CLIENT_ID}")
     String userName;
-
     @Value("${RIOT_CLIENT_SECRET}")
     String password;
-
     @Value("${RIOT_REDIRECT_URI}")
     String redirectUri;
-
-    private final WebClient webClient;
 
     public Mono<SummonerLeagueAccountInfoResponseDto> postByNameAndTag(String name, String tag) {
         URI uri = UriComponentsBuilder
@@ -95,11 +92,14 @@ public class WebClientFactory {
                 .build()
                 .toUri();
 
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("grant_type", "authorization_code");
+        formData.add("code", riotCode);
+        formData.add("redirect_uri", redirectUri);
+
         return webClient.post()
                 .uri(uri)
-                .attribute("grant_type", "authorization_code")
-                .attribute("code", riotCode)
-                .attribute("redirect_uri", redirectUri)
+                .bodyValue(formData)
                 .retrieve().bodyToMono(RsoResponse.class);
     }
 
