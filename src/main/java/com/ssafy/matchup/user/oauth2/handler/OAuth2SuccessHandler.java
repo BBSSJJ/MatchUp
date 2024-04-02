@@ -1,15 +1,21 @@
 package com.ssafy.matchup.user.oauth2.handler;
 
+import com.ssafy.matchup.global.util.CookieUtil;
+import com.ssafy.matchup.user.main.dto.UserDto;
+import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
 import com.ssafy.matchup.user.oauth2.CustomOAuth2User;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -35,6 +41,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     String riotRedirectUri;
 
     private final UserRepository userRepository;
+    private final CookieUtil cookieUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -50,8 +57,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Optional<User> optionalUser = userRepository.findUserBySnsTypeAndSnsId(snsType, snsId);
 
         if (optionalUser.isEmpty()) {
-//            response.setHeader("Sns-Type", String.valueOf(snsType));
-//            response.setHeader("Sns-Id", snsId);
+            ResponseCookie userCookie = cookieUtil.createUserCookie(new UserSnsDto(UserDto.builder().build(), snsId, snsType));
+            response.addHeader(HttpHeaders.SET_COOKIE, userCookie.toString());
             response.sendRedirect("http://" + domainUrl + "/login/" + snsType + "/" + snsId + "/" + true);
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
