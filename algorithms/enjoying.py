@@ -20,10 +20,10 @@ def ten_neighbors(user_list, user_id):
     user_vectors = []
 
     for document in documents:
-        total_count = document["metadata"]["totalCount"]
-        time_duration = document["metadata"]["timeDurationAvg"]
-        early_surrender = document["metadata"]["isOurTeamEarlySurrenderedCount"]
-        ping_count = document["metadata"]["pingCountAvg"]
+        total_count = document["matchIndicatorStatistics"]["metadata"]["totalCount"]
+        time_duration = document["matchIndicatorStatistics"]["metadata"]["timeDurationAvg"]
+        early_surrender = document["matchIndicatorStatistics"]["metadata"]["isOurTeamEarlySurrenderedCount"]
+        ping_count = document["matchIndicatorStatistics"]["metadata"]["pingCountAvg"]
 
         user_vector = [time_duration, early_surrender / total_count, ping_count]
 
@@ -34,13 +34,12 @@ def ten_neighbors(user_list, user_id):
     index.add(user_vectors)
 
     # 본인 벡터 만들기
-
     my_document = matchup_statistics_db["indicators"].find_one({"_id": user_id})
     
-    my_total_count = my_document["metadata"]["totalCount"]
-    my_time_duration = my_document["metadata"]["timeDurationAvg"]
-    my_early_surrender = my_document["metadata"]["isOurTeamEarlySurrenderedCount"]
-    my_ping_count = my_document["metadata"]["pingCountAvg"]
+    my_total_count = my_document["matchIndicatorStatistics"]["metadata"]["totalCount"]
+    my_time_duration = my_document["matchIndicatorStatistics"]["metadata"]["timeDurationAvg"]
+    my_early_surrender = my_document["matchIndicatorStatistics"]["metadata"]["isOurTeamEarlySurrenderedCount"]
+    my_ping_count = my_document["matchIndicatorStatistics"]["metadata"]["pingCountAvg"]
 
     my_vector = [[my_time_duration, my_early_surrender / my_total_count, my_ping_count]]
 
