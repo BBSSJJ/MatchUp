@@ -45,7 +45,7 @@ public class MatchIndicatorStatistics {
         private int isFinishedBeforeFifteenCount;
         private int isOurTeamEarlySurrenderedCount;
         private int winCount;
-        private int pingCountAvg;
+        private double pingCountAvg;
         private double killAvg;
         private double deathAvg;
         private double assistAvg;

@@ -5,6 +5,8 @@ import com.ssafy.matchup_statistics.global.api.rest.RiotRestApiAdaptor;
 import com.ssafy.matchup_statistics.global.dto.response.AccountResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.LeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
+import com.ssafy.matchup_statistics.global.exception.RiotApiError;
+import com.ssafy.matchup_statistics.global.exception.RiotApiException;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
@@ -47,6 +49,8 @@ public class SummonerLeagueInfoService {
     public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueInfo(Integer page, LeagueEntryRequestDto dto) {
         List<SummonerLeagueAccountInfoResponseDto> ret = new ArrayList<>();
         List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
+        if (leagueInfoResponseByTier == null || leagueInfoResponseByTier.isEmpty()) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+
         leagueInfoResponseByTier.forEach(l -> {
             SummonerInfoResponseDto summonerInfoResponseDto = riotWebClientFactory.getSummonerInfoResponseDtoBySummonerName(l.getSummonerName()).block();
             AccountResponseDto accountInfo = riotWebClientFactory.getAccountInfo(summonerInfoResponseDto.getPuuid()).block();
