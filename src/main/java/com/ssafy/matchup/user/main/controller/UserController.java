@@ -57,7 +57,6 @@ public class UserController {
 
         ResponseCookie cookie = cookieUtil.createUserCookie(user);
 
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("id", String.valueOf(user.getUserId()))
                 .header("role", String.valueOf(user.getRole()))
