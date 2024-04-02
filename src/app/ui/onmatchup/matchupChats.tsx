@@ -36,7 +36,7 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
   function getMessages() {
     axios({
       method: 'get',
-      url: `https://${SERVER_API_URL}/api/chats/rooms/${roomId}`
+      url: `${SERVER_API_URL}/api/chats/rooms/${roomId}`
     })
       .then((response) => {
         console.log(response.data)
