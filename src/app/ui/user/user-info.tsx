@@ -192,8 +192,8 @@ export default function UserProfile({ userId } :UserProfileProps) {
                 if (!response.ok) {
                     throw new Error('Failed to patch mic status');
                 }
-                const data = await response.json();
-				return data
+                // const data = await response.json();
+				return response
                 // setOnOff(data.useMike); 
             } catch (error) {
                 console.error('Error patching mic status:', error);
