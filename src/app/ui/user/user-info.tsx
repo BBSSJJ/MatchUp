@@ -258,7 +258,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					console.error('친구요청 실패')
 				}
 				alert('친구요청 완료')
-				return response.json()
+				return response
 			} catch(error) {
 				console.error(error)
 			}
@@ -312,7 +312,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-						<p className="text-tiny text-white/80">{user.riotAccount.summonerProfile.name}</p>
+						<p className="text-tiny text-white/80">{user?.riotAccount.summonerProfile.name}</p>
 						{userInfo.userId !== Number(userId) && (
 							<div className="flex">
 								{/* 친구가 아닌 경우에만 보여주기 */}
@@ -381,7 +381,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					{records === 'unranked' ? (<p>랭크 게임을 더 하고 오세요</p>) : (
 						<>s
 							<div>
-								<p>{records.win} / {records.lose}</p>
+								<p>{records?.win} / {records?.lose}</p>
 								<p>승률 : {records?.winRate}%</p>
 								<p>Tier : {user.riotAccount.tier}</p>
 								<p>Rank : {records?.rank}</p>
