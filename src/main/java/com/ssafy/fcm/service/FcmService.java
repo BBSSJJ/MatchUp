@@ -3,7 +3,7 @@ package com.ssafy.fcm.service;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.ssafy.chat.dto.FcmDto;
+import com.ssafy.matchup.global.dto.FcmDto;
 import com.ssafy.fcm.entity.Token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
