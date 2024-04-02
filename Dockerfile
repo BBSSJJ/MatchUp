@@ -6,7 +6,7 @@ WORKDIR /app
 
 # 의존성 파일 복사 및 설치
 COPY ./requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+RUN pip install --upgrade -r /app/requirements.txt
 
 # 어플리케이션 코드 복사
 COPY . .
