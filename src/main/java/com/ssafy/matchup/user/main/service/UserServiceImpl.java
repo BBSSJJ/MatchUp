@@ -9,6 +9,8 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
+import com.ssafy.matchup.user.main.dto.response.RsoResponse;
 import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
@@ -30,6 +32,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,23 +55,26 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto addUser(RegistUserRequestDto registUserRequestDto) {
-        String summonerName = registUserRequestDto.getRiotId();
-        String[] parts = summonerName.split("#");
-        String name = parts[0].trim();
-        String tag = parts[1].trim();
+        String riotCode = registUserRequestDto.getRiotCode();
+        RsoResponse rsoResponse = webClientFactory.getRiotAccountByRiotCode(riotCode).block();
+        if (rsoResponse == null) throw new IllegalArgumentException("invalid riot code");
 
-        //라이엇 아이디 유효
-        SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto =
-                webClientFactory.postByNameAndTag(name, tag).block();
-        if (summonerLeagueAccountInfoResponseDto == null)
+        AccountResponseDto accountResponseDto = webClientFactory.getAccountResponseDtoByToken(rsoResponse.getOauthResponse().getTokenType(), rsoResponse.getOauthResponse().getAccessToken()).block();
+        if (accountResponseDto == null) throw new IllegalArgumentException("invalid account info");
+
+        String name = accountResponseDto.getGameName();
+        String tag = accountResponseDto.getTagLine();
+        SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto = webClientFactory.postByNameAndTag(name, tag).block();
+
+        // 라이엇 아이디 유효
+        if (summonerLeagueAccountInfoResponseDto == null) {
             throw new UsernameNotFoundException("user name doesn't exist");
+        }
 
-        //라이엇 아이디 사용중인지 검사
-        name = summonerLeagueAccountInfoResponseDto.getAccountResponseDto().getGameName();
-        tag = summonerLeagueAccountInfoResponseDto.getAccountResponseDto().getTagLine();
+        // 라이엇 아이디 사용중인지 검사
         Optional<RiotAccount> riotAccountOptional = riotAccountRepository
                 .findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
-        if (riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
+        if (riotAccountOptional.isPresent()) throw new DuplicateKeyException("already registed user!");
 
         //저장
         //TODO : 최적화 필요
@@ -81,13 +87,12 @@ public class UserServiceImpl implements UserService {
         newRiotAccount.updateUser(newUser);
         newUser.updateRiotAccount(newRiotAccount);
 
-
         return new UserDto(newUser);
     }
 
     @Transactional
     @Override
-    public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
+    public UserSnsDto findUser(LoginUserRequestDto loginUserRequestDto) {
         log.info("in findUser" );
         User user = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
                 loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
@@ -100,7 +105,7 @@ public class UserServiceImpl implements UserService {
         userInitService.updateInfo(user, summonerLeagueAccountInfoResponseDto);
         log.info("after update info" );
 
-        return new UserDto(user);
+        return new UserSnsDto(new UserDto(user), user.getSnsId(), user.getSnsType());
     }
 
     @Transactional(readOnly = true)

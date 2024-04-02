@@ -1,7 +1,10 @@
 package com.ssafy.matchup.user.main.api.flux;
 
+import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
+import com.ssafy.matchup.user.main.dto.request.Auth;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
+import com.ssafy.matchup.user.main.dto.response.RsoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +24,15 @@ public class WebClientFactory {
 
     @Value("${ip.server.statistics}")
     String statisticsServer;
+
+    @Value("${RIOT_CLIENT_ID}")
+    String userName;
+
+    @Value("${RIOT_CLIENT_SECRET}")
+    String password;
+
+    @Value("${RIOT_REDIRECT_URI}")
+    String redirectUri;
 
     private final WebClient webClient;
 
@@ -70,6 +82,40 @@ public class WebClientFactory {
 //                .take(20);
 
         return responseDtoFlux.collectList().block();
+    }
+
+    public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
+        webClient.mutate()
+                .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
+                .defaultHeaders(header -> header.setBasicAuth(userName, password));
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://auth.riotgames.com/token")
+                .encode()
+                .build()
+                .toUri();
+
+        return webClient.post()
+                .uri(uri)
+                .attribute("grant_type", "authorization_code")
+                .attribute("code", riotCode)
+                .attribute("redirect_uri", redirectUri)
+                .retrieve().bodyToMono(RsoResponse.class);
+    }
+
+    public Mono<AccountResponseDto> getAccountResponseDtoByToken(String tokenType, String accessToken) {
+        webClient.mutate()
+                .defaultHeader("Authorization", tokenType + " " + accessToken);
+
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://asia.api.riotgames.com/riot/account/v1/accounts/me")
+                .encode()
+                .build()
+                .toUri();
+
+        return webClient.get()
+                .uri(uri)
+                .retrieve().bodyToMono(AccountResponseDto.class);
     }
 
 //    public Mono<MessageDto> sendSummonerName(String name, String tag) {
