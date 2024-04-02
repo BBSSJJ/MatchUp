@@ -58,8 +58,8 @@ public class UserController {
         ResponseCookie cookie = cookieUtil.createUserCookie(user);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("id", String.valueOf(user.getUserDto().getUserId()))
-                .header("role", String.valueOf(user.getUserDto().getRole()))
+                .header("id", String.valueOf(user.getUserId()))
+                .header("role", String.valueOf(user.getRole()))
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new MessageDto("login success"));
     }
