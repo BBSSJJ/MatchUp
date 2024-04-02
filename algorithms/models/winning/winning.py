@@ -20,8 +20,9 @@ def top_ten(user_list):
     user_indicators = []
 
     for document in documents:
-        for match_indicator in document["matchIndicatorStatistics"]:
-            user_indicator = {}
+        match_indicator = document["matchIndicatorStatistics"]
+        
+        user_indicator = {}
 
         user_indicator["csDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["csDiffer"]
         user_indicator["expDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["expDiffer"]
