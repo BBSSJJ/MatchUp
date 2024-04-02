@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "indicators")
@@ -28,6 +29,12 @@ public class Indicator {
         this.matchIndicators = matchIndicators;
         log.debug("생성된 매치정보 : {}", matchIndicators);
         this.matchIndicatorStatistics = new MatchIndicatorStatistics(matchIndicators);
+    }
+
+    public Indicator(String summonerId) {
+        this.id = summonerId;
+        this.matchIndicators = new ArrayList<>();
+        this.matchIndicatorStatistics = new MatchIndicatorStatistics();
     }
 
     public void renew(Indicator matchIdsToRenew) {
