@@ -10,6 +10,7 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorFluxBuilder;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.league.entity.League;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
 import com.ssafy.matchup_statistics.summoner.entity.SummonerDetail;
 import lombok.RequiredArgsConstructor;
@@ -51,31 +52,31 @@ public class SummonerTotalFluxService implements SummonerTotalService {
         leagueInfoResponseDtos.forEach(leagueInfo -> {
             long start = System.currentTimeMillis();
 
-                SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(leagueInfo).block();
-                if (summonerInfoResponseDto == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+            SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(leagueInfo).block();
+            if (summonerInfoResponseDto == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
-                AccountResponseDto accountResponseDto = getAccountResponseDto(summonerInfoResponseDto).block();
-                if (accountResponseDto == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+            AccountResponseDto accountResponseDto = getAccountResponseDto(summonerInfoResponseDto).block();
+            if (accountResponseDto == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
-                Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
+            Flux<String> matches = getMatchesBySummonerInfo(summonerInfoResponseDto);
 
             CountDownLatch latch = new CountDownLatch(20);
             List<Tuple2<MatchDetailResponseDto, MatchTimelineResponseDto>> matchResponses = getMatchResponses(latch, matches);
             Indicator indicator = indicatorBuilder.build(matchResponses, summonerInfoResponseDto.getId(), summonerInfoResponseDto.getPuuid());
 
-                // 통계지표 생성 완료 후 저장
-                mongoTemplate.save(indicator);
-                log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getId());
+            // 통계지표 생성 완료 후 저장
+            mongoTemplate.save(indicator);
+            log.info("created statistics - 통계지표 생성 완료 : {}", indicator.getId());
 
-                // 소환사 정보 생성 및 저장하기
-                Summoner summoner = new Summoner(
-                        summonerInfoResponseDto.getId(),
-                        new Account(accountResponseDto),
-                        new SummonerDetail(summonerInfoResponseDto),
-                        new League(leagueInfo),
-                        matches.collectList().block(),
-                        true);
-                mongoTemplate.save(summoner);
+            // 소환사 정보 생성 및 저장하기
+            Summoner summoner = new Summoner(
+                    summonerInfoResponseDto.getId(),
+                    new Account(accountResponseDto),
+                    new SummonerDetail(summonerInfoResponseDto),
+                    new League(leagueInfo),
+                    matches.collectList().block(),
+                    true);
+            mongoTemplate.save(summoner);
 
             log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
 
@@ -88,7 +89,7 @@ public class SummonerTotalFluxService implements SummonerTotalService {
     public void save(String gameName, String tagLine) {
 
         long start = System.currentTimeMillis();
-        AccountResponseDto accountResponseDto = getAccountResponseDto(gameName,tagLine).block();
+        AccountResponseDto accountResponseDto = getAccountResponseDto(gameName, tagLine).block();
         if (accountResponseDto == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
         SummonerInfoResponseDto summonerInfoResponseDto = getSummonerInfo(accountResponseDto).block();
@@ -158,6 +159,27 @@ public class SummonerTotalFluxService implements SummonerTotalService {
 
         log.info("created all summoner(전체 소환사 생성완료), 총 소요시간 : {}ms", (System.currentTimeMillis() - totalStart));
         return total;
+    }
+
+    @Override
+    public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
+        List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
+        List<SummonerLeagueAccountInfoResponseDto> ret = new ArrayList<>();
+
+        leagueInfoResponseByTier.forEach(leagueInfo -> {
+            log.info("league info : {}", leagueInfo.getSummonerName());
+            SummonerInfoResponseDto summonerInfo = getSummonerInfo(leagueInfo).block();
+            if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+
+            log.info("summonerInfo info : {}", summonerInfo.getId());
+            AccountResponseDto accountInfo = getAccountResponseDto(summonerInfo).block();
+            if (accountInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+
+            log.info("account info : {}", accountInfo.getGameName());
+            ret.add(new SummonerLeagueAccountInfoResponseDto(summonerInfo, leagueInfo, accountInfo));
+        });
+
+        return ret;
     }
 
     public List<LeagueInfoResponseDto> getHighTierLeagueEntry(String highTier) {
