@@ -20,6 +20,12 @@ spring:
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
       hibernate:
         default_batch_fetch_size: 1000
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_SERVER}:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 logging:
   level:
     org.hibernate.SQL: debug

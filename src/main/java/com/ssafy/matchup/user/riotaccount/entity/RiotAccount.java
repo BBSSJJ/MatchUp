@@ -37,4 +37,12 @@ public class RiotAccount {
     public void updateUser(User user) {
         this.user = user;
     }
+
+    public void update(Long revisionDate, SummonerProfile summonerProfile, String tier, String rank, int leaguePoints){
+        this.revisionDate = revisionDate;
+        this.summonerProfile = summonerProfile;
+        this.tier = tier;
+        this.leagueRank = rank;
+        this.leaguePoint = leaguePoints;
+    }
 }

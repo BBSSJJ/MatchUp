@@ -75,7 +75,6 @@ public class UserInitService {
         LeagueInfoDto leagueInfoDto = summonerLeagueAccountInfoResponseDto.getLeagueInfoDto();
         AccountResponseDto accountResponseDto = summonerLeagueAccountInfoResponseDto.getAccountResponseDto();
 
-
         SummonerProfile summonerProfile = SummonerProfile.builder()
                 .name(accountResponseDto.getGameName())
                 .tag(accountResponseDto.getTagLine())
@@ -83,17 +82,13 @@ public class UserInitService {
                         + "/img/profileicon/" + summonerInfoDto.getProfileIconId() + ".png")
                 .level(summonerInfoDto.getSummonerLevel()).build();
 
-
-        RiotAccount riotAccount = RiotAccount.builder()
-                .id(summonerInfoDto.getId())
-                .revisionDate(summonerInfoDto.getRevisionDate())
-                .summonerProfile(summonerProfile)
-                .tier(leagueInfoDto.getTier())
-                .leagueRank(leagueInfoDto.getRank())
-                .leaguePoint(leagueInfoDto.getLeaguePoints())
-                .build();
-
-        user.updateRiotAccount(riotAccount);
+        user.getRiotAccount().update(
+                summonerInfoDto.getRevisionDate(),
+                summonerProfile,
+                leagueInfoDto.getTier(),
+                leagueInfoDto.getRank(),
+                leagueInfoDto.getLeaguePoints()
+        );
     }
 
 }
