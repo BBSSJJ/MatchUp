@@ -72,8 +72,8 @@ export default function LobbyChat() {
         return (
           <User
             avatarProps={{src: chat.iconUrl}}
-            description={`#${chat.name.split('#')[1]}`}
-            name={chat.name.split('#')[0]}
+            description={`#${chat.name.split('#')[1]}`.replaceAll('+', ' ')}
+            name={chat.name.split('#')[0].replaceAll('+', ' ')}
           />
         )
       case "myPosition":

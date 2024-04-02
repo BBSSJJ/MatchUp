@@ -47,9 +47,6 @@ export default function Page() {
       method: 'post',
       url: `${URL}/sessions`,
       headers,
-      data: {
-        recordingMode: 'ALWAYS'
-      }
     })
       .then(() => {
         getSessions()
