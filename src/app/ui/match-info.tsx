@@ -21,9 +21,9 @@ interface Participant {
     deaths: number;
     assists: number;
     largestMultiKill: number;
-    individualPosition: string;
-    role: string;
-    teamPosition: string;
+    individualPosition?: string;
+    role?: string;
+    teamPosition?: string;
     profileIcon: number;
 }
 
@@ -43,51 +43,54 @@ interface Info {
 }
 
 // api 요청을 보내서(summoner id, tagline) 받을 응답
-interface ResponseData {
+export interface ResponseData {
     metadata: Metadata;
     info: Info;
 }
 
-
-
 // 나중에 팀별 정보는 컴포넌트로 따로 분리할 예정
-export default function MatchDetail({ data, puuid } : {
-    data : ResponseData,
-    puuid : string
+export default function MatchDetail({ match, id } : {
+    match :ResponseData;
+    id :string // 해당 소환사 puuid
 }) {
-    const datas :Info | undefined = data?.info;
-    const playerData :Participant[] | undefined = datas?.participants;
-    const players :string[] | undefined = data?.metadata?.participants;
-    const gameDuration :number | undefined = datas?.gameDuration;
-    const teamData :Team[] | undefined = data?.info?.teams;
-    console.log("props로 받은 데이터 확인 : ", data)
-    const playerChampionImgs : string[] | undefined = playerData?.map((item) => {
-        return item.championName;
-    }) // 챔피언 이름 
+    const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
+
+    // const datas :Info | undefined = data?.info;
+    const playerData = match.metadata.participants // 함께한 플레이어 puuid 10개
+    // const players = data?.metadata?.participants;
+    const gameDuration = match.info.gameDuration // 경기 시간
+    const teamData = match.info.teams // 승패 정보 
+    // console.log("props로 받은 데이터 확인 : ", data)
+    const playerDetail = match.info.participants
+    const playerDetail1 = playerDetail.slice(0, playerDetail.length / 2)
+    const playerDetail2 = playerDetail.slice(playerDetail.length / 2, playerDetail.length)
+    const playerChampionImgs = playerDetail?.map((player) => {
+        return player.championName;
+    }) // 챔피언 이름 10개 수집 -> 이미지 가져옴
     // const playerSummonerIds = playerData?.map((item) => {
     //     return item.riotIdGameName;
     // }) // 소환사명
-    // console.log(teamData);
+    console.log("teamData", teamData);
     const result = teamData?.map((team) => {
-        if (team.win) {
+        if (team.win === true) {
             return 'win';
         } else {
             return 'lose';
         }
-    })
-    const team1 :Participant[] | undefined  = playerData && playerChampionImgs ? playerData.slice(0, playerChampionImgs.length / 2) : [];
-    const team2 :Participant[] | undefined = playerData && playerChampionImgs ? playerData?.slice(playerChampionImgs.length / 2, playerChampionImgs.length) :  [];
-    const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
-    const resultOfThisUser :string | undefined = team1?.length && team2?.length ? team1?.map((player) => {return player.puuid}).includes(puuid) ? result[0] : result[1] : undefined;
-    // console.log(resultOfThisUser, "result");
+    }) // ['win', 'lose']
+    console.log("result", result)
+    const team1 = playerData?.slice(0, playerData.length / 2) // 전팀 5인 puuid
+    const team2 = playerData?.slice(playerData.length / 2, playerData.length) // 후팀 5인 puuid
+    const resultOfThisUser = team1.includes(id) ? result[0] : result[1] // 검색된 소환사의 해당 경기 결과
+    console.log("전팀에 포함되는가?", team1.includes(id))
+    console.log(team1, id)
+    console.log(resultOfThisUser, "result");
     
-
     return (
         <main>
             <div className={styles.container}>
                 <div className={styles.match}>
                     {/* <p>matchId : {matchId}</p> */}
-                    
                     <div className={styles.playInfo}>
                         <p className={resultOfThisUser === 'win' ? styles.winText : styles.loseText}>{resultOfThisUser}</p>
                         <p className={styles.duration}>{Math.trunc(gameDuration / 60)}m {Math.trunc(((gameDuration / 60) - Math.trunc(gameDuration / 60)) * 60)}s</p>
@@ -116,11 +119,11 @@ export default function MatchDetail({ data, puuid } : {
                     </div>
                     <div className={toggle ? styles.hide : ""}>
                         {
-                            team1.map((player :Participant, index :number) => {
+                            playerDetail1.map((player :Participant, index :number) => {
                                 const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
                                 const items = [player.item0, player.item1, player.item2, player.item3, player.item4, player.item5, player.item6];
                                 return (
-                                        <div className={`${players[index] === puuid ? styles.thisUser : styles.playerInfo} ${result[0] === 'win' ? styles.win : styles.lose}`} key={index}>
+                                        <div className={`${team1[index] === id ? styles.thisUser : styles.playerInfo} ${result[0] === 'win' ? styles.win : styles.lose}`} key={index}>
                                         {/* <p>{index}</p> */}
                                         <div className={styles.playerProfile}>
                                             <Image
@@ -173,14 +176,13 @@ export default function MatchDetail({ data, puuid } : {
                     </div>
                 </div>
                 <div className={toggle ? styles.hide : ""}>
-                    
                     {
-                        team2.map((player :Participant, index :number) => {
+                        playerDetail2.map((player :Participant, index :number) => {
                             const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${player.profileIcon}.png`
                             const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
                             const items = [player.item0, player.item1, player.item2, player.item3, player.item4, player.item5, player.item6];
                             return (
-                                <div className={`${players[index] === puuid ? styles.thisUser : styles.playerInfo} ${result[1] === 'win' ? styles.win : styles.lose}`} key={index}>
+                                <div className={`${team2[index] === id ? styles.thisUser : styles.playerInfo} ${result[1] === 'win' ? styles.win : styles.lose}`} key={index}>
                                     {/* <p>{index}</p> */}
                                     <div className={styles.playerProfile}>
                                         <Image
