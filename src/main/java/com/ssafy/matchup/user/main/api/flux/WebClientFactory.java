@@ -38,11 +38,11 @@ public class WebClientFactory {
                 .bodyToMono(SummonerLeagueAccountInfoResponseDto.class);
     }
 
-    public Mono<SummonerLeagueAccountInfoResponseDto> postById(Long userId) {
+    public Mono<SummonerLeagueAccountInfoResponseDto> postById(String riotId) {
         URI uri = UriComponentsBuilder
 //                .fromUriString("https://matchup.site" +
                 .fromUriString("http://" + statisticsServer + ":9004" +
-                        "/api/statistics/users/" + userId + "/login")
+                        "/api/statistics/users/" + riotId)
                 .encode()
                 .build()
                 .toUri();

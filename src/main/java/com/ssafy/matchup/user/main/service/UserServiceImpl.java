@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
                 loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
 
         SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto =
-                webClientFactory.postById(user.getId()).block();
+                webClientFactory.postById(user.getRiotAccount().getId()).block();
         if (summonerLeagueAccountInfoResponseDto == null) throw new UsernameNotFoundException("no user");
 
         userInitService.updateInfo(user, summonerLeagueAccountInfoResponseDto);
