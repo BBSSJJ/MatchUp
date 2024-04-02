@@ -1,16 +1,15 @@
 package com.ssafy.matchup_statistics.summoner.service;
 
-import com.ssafy.matchup_statistics.global.dto.response.SummonerInfoResponseDto;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerDetailInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.dto.response.SummonerRecordInfoResponseDto;
+import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
 import com.ssafy.matchup_statistics.summoner.service.sub.detail.SummonerDetailService;
 import com.ssafy.matchup_statistics.summoner.service.sub.record.SummonerRecordService;
 import com.ssafy.matchup_statistics.summoner.service.sub.total.SummonerTotalService;
 import com.ssafy.matchup_statistics.summoner.service.sub.user.SummonerUserService;
-import com.ssafy.matchup_statistics.summoner.service.sub.SummonerLeagueInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -101,5 +100,9 @@ public class SummonerService {
 
     public SummonerLeagueAccountInfoResponseDto loginSummoner(Long userId) {
         return summonerUserService.loginSummoner(userId);
+    }
+
+    public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
+        return summonerTotalFluxService.getSummonerLeagueAccountInfo(page, dto);
     }
 }

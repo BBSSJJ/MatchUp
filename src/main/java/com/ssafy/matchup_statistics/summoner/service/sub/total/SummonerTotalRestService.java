@@ -9,6 +9,7 @@ import com.ssafy.matchup_statistics.indicator.entity.Indicator;
 import com.ssafy.matchup_statistics.indicator.service.builder.IndicatorBuilder;
 import com.ssafy.matchup_statistics.league.dto.request.LeagueEntryRequestDto;
 import com.ssafy.matchup_statistics.league.entity.League;
+import com.ssafy.matchup_statistics.summoner.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup_statistics.summoner.entity.Summoner;
 import com.ssafy.matchup_statistics.summoner.entity.SummonerDetail;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,11 @@ public class SummonerTotalRestService implements SummonerTotalService {
     @Override
     public int saveLeagueEntry(String tier) {
         return 0;
+    }
+
+    @Override
+    public List<SummonerLeagueAccountInfoResponseDto> getSummonerLeagueAccountInfo(Integer page, LeagueEntryRequestDto dto) {
+        return null;
     }
 
     public int saveLeagueEntry(LeagueEntryRequestDto dto) {
