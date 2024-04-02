@@ -139,7 +139,7 @@ spring:
         - id: bigdata-server-recommend
           uri: http://${BIGDATA_SERVER}:9005
           predicates:
-            - Path=/api/recommend/**
+            - Path=/api/recommends/**
           filters:
             - LogFilter
         #            - JwtTokenFilter
