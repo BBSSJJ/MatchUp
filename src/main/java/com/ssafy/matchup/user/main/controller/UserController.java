@@ -8,6 +8,7 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,7 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/{user-id}/tier-list")
-    ResponseEntity<List<String>> userInTierList(@PathVariable("user-id") Long userId) {
+    ResponseEntity<List<UserInTierResponseDto>> userInTierList(@PathVariable("user-id") Long userId) {
         return new ResponseEntity<>(userService.getUsersInTier(userId), HttpStatus.OK);
     }
 

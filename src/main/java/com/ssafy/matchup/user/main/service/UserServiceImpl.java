@@ -9,6 +9,7 @@ import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
+import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getUsersInTier(Long userId) {
+    public List<UserInTierResponseDto> getUsersInTier(Long userId) {
         User user = userRepository.findUserById(userId).orElseThrow(EntityNotFoundException::new);
 
         Boolean useMike = user.getSetting().getUseMike();
@@ -133,7 +134,7 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByTierAndLeagueRankAndUseMike(tierLeagueRankList, useMike).stream()
                 .filter(u -> !u.getRiotAccount().getId().equals(user.getRiotAccount().getId()))
-                .map(u -> u.getRiotAccount().getId()).toList();
+                .map(UserInTierResponseDto::new).toList();
     }
 
     @Transactional
