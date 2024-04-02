@@ -277,7 +277,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 
 	// }
 	
-	if (userLoading || micLoading ) {
+	if (userLoading || micLoading || recordsLoading || friendLoading ) {
 		return <h1>loading...</h1>
 	}
 
