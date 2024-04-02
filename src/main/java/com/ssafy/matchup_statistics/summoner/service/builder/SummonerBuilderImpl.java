@@ -124,7 +124,7 @@ public class SummonerBuilderImpl implements SummonerBuilder {
         // 전적정보 반환
         return new SummonerRecordInfoResponseDto(
                 summonerDatas.getMiddle(), summonerDatas.getRight(),
-                matches.getLeft().stream().map(Tuple2::getT1).toList(),
+                matches.getLeft().stream().map(Tuple2::getT1).sorted((s1, s2) -> (int) (s1.getInfo().getGameStartTimestamp() - s2.getInfo().getGameStartTimestamp())).toList(),
                 indicator);
     }
 
