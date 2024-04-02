@@ -11,7 +11,7 @@ matchup = FastAPI()
 
 # 승률 기반의 유저 추천
 @matchup.get("/api/recommends/winning/{user_id}")
-async def winning(user_id: int):
+async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # lane = ["top", "jungle", "mid", "bottom", "support"]
     # 유저 정보 가져오기
     tier, division = apis.user.get_user_tier(user_id)
     divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
