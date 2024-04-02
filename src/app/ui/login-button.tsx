@@ -31,11 +31,6 @@ const LoginButton = ({ snsType } : {snsType :string} ) => {
         <button className={buttonClassName} onClick={onClick}>
             <Image src="" alt="" />
         </button>
-        // <div className={buttonClassName} onClick={onClick}>
-        //     <a href="#" >
-                
-        //     </a>
-        // </div>
     )
 }
 
