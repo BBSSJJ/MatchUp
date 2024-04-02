@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+import fastapi
 
 import heapq
 import joblib
@@ -6,36 +6,53 @@ import pandas as pd
 
 import apis.user
 import algorithms.enjoying
+import algorithms.models.winning.winning
 
-matchup = FastAPI()
+matchup = fastapi.FastAPI()
 
 # 승률 기반의 유저 추천
 @matchup.get("/api/recommends/winning/{user_id}")
 async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # lane = ["top", "jungle", "mid", "bottom", "support"]
-    # 유저 정보 가져오기
+    # 내 티어 정보 가져오기
     tier, division = apis.user.get_user_tier(user_id)
     divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
 
-    if tier == "DIAMOND":
-        mlp = joblib.load(f'models/winning_models/{tier.lower()}_{divisions[division]}_model.pkl')
+    # 승률 예측 모델 불러오기
+    if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
+        mlp = joblib.load(f'models/winning/{tier.lower()}_{divisions[division]}_model.pkl')
     else:
-        # 적당한 모델 불러오기
-        mlp = joblib.load(f'models/winning_models/{tier.lower()}_model.pkl')
+        mlp = joblib.load(f'models/winning/{tier.lower()}_model.pkl')
+
+    # 유저 목록 불러오기
+    user_list = apis.user.get_users(user_id, mic)
+
+    # 추천 불가 유저 처리
+    if user_list is False:
+        return []
+    
+    # 유저 지표 불러오기
+    user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list, user_id))
+
+    # 유저 지표 정규화
+    normalized_user_indicators = (user_indicators - user_indicators.min()) / (user_indicators.max() - user_indicators.min())
 
     # 승률 상위 10명 불러오기
-    probabilities = mlp.predict_proba()
+    probabilities = mlp.predict_proba(normalized_user_indicators)
 
     recommendations = []
 
     for i, probability in enumerate(probabilities):
         heapq.heappush(recommendations, (-probability[1], i))
 
-    top_10 = []
+    # 유저 정보 반환하기
+    user_infos = []
 
     for _ in range(10):
-        top_10.append(heapq.heappop(recommendations))
+        probability, user_index = heapq.heappop(recommendations)
 
-    return [1, 2, 3, 4, 5]
+        user_infos.append(apis.user.get_user_profile(user_list[user_index]["userId"]))
+
+    return user_infos
 
 # 즐거움 기반의 유저 추천
 @matchup.get("/api/recommends/enjoying/{user_id}")
@@ -43,6 +60,7 @@ async def enjoying(user_id: int, mic: bool, my_lane: str, partner_lane: str):
     # 유저 목록 불러오기
     user_list = apis.user.get_users(user_id, mic)
 
+    # 추천 불가 유저 처리
     if user_list is False:
         return []
 
