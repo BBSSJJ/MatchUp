@@ -1,6 +1,6 @@
 package com.ssafy.matchup_statistics.indicator.entity.match.beginning;
 
-import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.AggresiveLaneAbilility;
+import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.AggresiveLaneAbility;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.BasicWeight;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.LaneAssist;
 import lombok.Getter;
@@ -15,12 +15,12 @@ import java.util.List;
 public class LaneIndicatorStatistics {
 
     private BasicWeight basicWeight;
-    private AggresiveLaneAbilility aggresiveLaneAbilility;
+    private AggresiveLaneAbility aggresiveLaneAbility;
     private LaneAssist laneAssist;
 
     public LaneIndicatorStatistics(List<LaneIndicator> laneIndicators) {
         List<BasicWeight> basicWeights = laneIndicators.stream().map(LaneIndicator::getBasicWeight).toList();
-        List<AggresiveLaneAbilility> aggresiveLaneAbililities = laneIndicators.stream().map(LaneIndicator::getAggresiveLaneAbilility).toList();
+        List<AggresiveLaneAbility> aggresiveLaneAbilities = laneIndicators.stream().map(LaneIndicator::getAggresiveLaneAbility).toList();
         List<LaneAssist> laneAssists = laneIndicators.stream().map(
                 laneIndicator -> (laneIndicator.getClass() == JgIndicator.class) ? ((JgIndicator) laneIndicator).getLaneAssist() : new LaneAssist()).toList();
 
@@ -29,9 +29,9 @@ public class LaneIndicatorStatistics {
             log.debug("basic weight size : {}", basicWeights.size());
             basicWeight = new BasicWeight(basicWeights);
         }
-        if (!aggresiveLaneAbililities.isEmpty()) {
+        if (!aggresiveLaneAbilities.isEmpty()) {
             log.debug("basic weight size : {}", basicWeights.size());
-            aggresiveLaneAbilility = new AggresiveLaneAbilility(aggresiveLaneAbililities);
+            aggresiveLaneAbility = new AggresiveLaneAbility(aggresiveLaneAbilities);
         }
         if (!laneAssists.isEmpty()) {
             log.debug("basic weight size : {}", basicWeights.size());

@@ -184,7 +184,7 @@ class MatchTopIndicatorBuilderTest {
         // then
         assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
-                .getAggresiveLaneAbilility()
+                .getAggresiveLaneAbility()
                 .getSoloKillDiffer())
                 .isEqualTo(1 - 1);
     }
@@ -205,7 +205,7 @@ class MatchTopIndicatorBuilderTest {
         // then
         assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
-                .getAggresiveLaneAbilility()
+                .getAggresiveLaneAbility()
                 .getDealDiffer())
                 .isEqualTo(15559 - 10355);
     }

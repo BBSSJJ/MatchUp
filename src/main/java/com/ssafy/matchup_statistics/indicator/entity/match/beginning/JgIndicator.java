@@ -30,7 +30,7 @@ public class JgIndicator extends LaneIndicator {
         laneAssist.setLaneAssistByDataBefore_15(before15Data);
 
         // 공격적인 라인전 생성
-        aggresiveJgAbility.setAggresiveLaneAbililityByDataBefore_15(before15Data);
-        aggresiveJgAbility.setAggresiveLaneAbililityByData_15(my15Data, opposite15Data);
+        aggresiveJgAbility.setAggresiveLaneAbilityByDataBefore_15(before15Data);
+        aggresiveJgAbility.setAggresiveLaneAbilityByData_15(my15Data, opposite15Data);
     }
 }
