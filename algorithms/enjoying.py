@@ -2,7 +2,7 @@ import faiss
 import pymongo
 import numpy as np
 
-def ten_neighbors(user_list, user_id):
+def ten_neighbors(user_list, user_puuid):
     puuid_list = []
 
     for user in user_list:
@@ -35,7 +35,9 @@ def ten_neighbors(user_list, user_id):
     index.add(np.array(user_vectors).astype('float32'))
 
     # 본인 벡터 만들기
-    my_document = matchup_statistics_db["indicators"].find_one({"_id": user_id})
+
+    # 본인 puuid 불러오기
+    my_document = matchup_statistics_db["indicators"].find_one({"_id": user_puuid})
     
     my_total_count = my_document["matchIndicatorStatistics"]["metadata"]["totalCount"]
     my_time_duration = my_document["matchIndicatorStatistics"]["metadata"]["timeDurationAvg"]

@@ -2,6 +2,14 @@ import typing
 import requests
 
 
+def get_user_puuid(user_id: int):
+    response = requests.get(f'https://matchup.site/api/users/{user_id}').json()
+
+    puuid = response['riotAccount']['id']
+
+    return puuid
+
+
 def get_user_tier(user_id: int):
     response = requests.get(f'https://matchup.site/api/users/{user_id}').json()
 
