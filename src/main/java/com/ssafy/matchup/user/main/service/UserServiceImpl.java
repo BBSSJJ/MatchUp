@@ -88,14 +88,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
+        log.info("in findUser" );
         User user = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
                 loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
-
+        log.info("user found" );
         SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto =
                 webClientFactory.postById(user.getRiotAccount().getId()).block();
         if (summonerLeagueAccountInfoResponseDto == null) throw new UsernameNotFoundException("no user");
+        log.info("before update user" );
 
         userInitService.updateInfo(user, summonerLeagueAccountInfoResponseDto);
+        log.info("after update info" );
 
         return new UserDto(user);
     }
