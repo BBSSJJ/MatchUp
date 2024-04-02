@@ -187,7 +187,7 @@ class MatchBtmIndicatorBuilderTest {
         // then
         assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
-                .getAggresiveLaneAbilility()
+                .getAggresiveLaneAbility()
                 .getDuoKillDiffer())
                 .isEqualTo(2 - 0);
     }
@@ -209,7 +209,7 @@ class MatchBtmIndicatorBuilderTest {
         // then
         assertThat(indicator.getMatchIndicators().get(0)
                 .getLaneIndicator()
-                .getAggresiveLaneAbilility()
+                .getAggresiveLaneAbility()
                 .getDealDiffer())
                 .isEqualTo(8081 - 7108);
     }

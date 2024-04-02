@@ -3,18 +3,17 @@ package com.ssafy.matchup_statistics.indicator.entity.match.beginning;
 import com.ssafy.matchup_statistics.global.dto.response.MatchTimelineResponseDto;
 import com.ssafy.matchup_statistics.indicator.entity.match.TeamPosition;
 import com.ssafy.matchup_statistics.indicator.entity.match.LaneInfo;
-import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.AggresiveLaneAbilility;
+import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.AggresiveLaneAbility;
 import com.ssafy.matchup_statistics.indicator.entity.match.beginning.base.BasicWeight;
 import com.ssafy.matchup_statistics.indicator.data.Before_15_Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
 public abstract class LaneIndicator {
     private BasicWeight basicWeight = new BasicWeight();
-    private AggresiveLaneAbilility aggresiveLaneAbilility = new AggresiveLaneAbilility();
+    private AggresiveLaneAbility aggresiveLaneAbility = new AggresiveLaneAbility();
 
     public LaneIndicator(LaneInfo laneInfo, MatchTimelineResponseDto matchTimelineResponseDto) {
         // 15분까지 데이터 모두 확인
@@ -29,8 +28,8 @@ public abstract class LaneIndicator {
         this.getBasicWeight().setBasicWeightByData_15(laneInfo, my15Data, opposite15Data);
 
         // 공격적인 라인전 생성
-        this.getAggresiveLaneAbilility().setAggresiveLaneAbililityByDataBefore_15(before15Data);
-        this.getAggresiveLaneAbilility().setAggresiveLaneAbililityByData_15(my15Data, opposite15Data);
+        this.getAggresiveLaneAbility().setAggresiveLaneAbilityByDataBefore_15(before15Data);
+        this.getAggresiveLaneAbility().setAggresiveLaneAbilityByData_15(my15Data, opposite15Data);
 
         if (laneInfo.getTeamPosition().equals(TeamPosition.JUNGLE)) {
             ((JgIndicator) this).addJgIndicator(before15Data, my15Data, opposite15Data);
