@@ -6,8 +6,8 @@ import { atom, useAtom } from 'jotai'
 import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import Cookies from 'js-cookie'
 
-const CLIENT_ID = process.env.CLIENT_ID
-const RIOT_REDIRECT_URI = process.env.RIOT_REDIRECT_URI 
+const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID
+const RIOT_REDIRECT_URI = process.env.NEXT_PUBLIC_RIOT_REDIRECT_URI
 const SERVER_URL = SERVER_API_URL
 
 // 소셜 로그인 시 이미 가입한 유저인 경우 -> 

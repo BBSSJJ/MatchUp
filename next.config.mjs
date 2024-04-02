@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-require('dotenv').config();
-
 const nextConfig = {
   images: {
     domains: [
@@ -9,7 +7,6 @@ const nextConfig = {
   },
   output: "standalone"
 };
-
 
 
 export default nextConfig;
