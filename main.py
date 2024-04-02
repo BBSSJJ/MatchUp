@@ -31,7 +31,7 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
         return []
     
     # 유저 지표 불러오기
-    user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list, user_id))
+    user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list))
 
     # 유저 지표 정규화
     normalized_user_indicators = (user_indicators - user_indicators.min()) / (user_indicators.max() - user_indicators.min())
