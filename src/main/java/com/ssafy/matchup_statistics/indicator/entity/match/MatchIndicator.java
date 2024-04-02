@@ -80,6 +80,10 @@ public class MatchIndicator {
         private boolean isWin;
         private int pingCount;
         private String champion;
+        private int kill;
+        private int death;
+        private int assist;
+        private double kda;
 
         public Metadata(LaneInfo laneInfo,
                         MacroData macroData,

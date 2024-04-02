@@ -16,6 +16,7 @@ public class SummonerDetailInfoResponseDto {
     private String[] top3Champions;
     private String mostLane;
 
+
     public SummonerDetailInfoResponseDto(Summoner summoner, Indicator indicator) {
         MatchIndicatorStatistics statistics = indicator.getMatchIndicatorStatistics();
         Calculator calculator = new Calculator();
