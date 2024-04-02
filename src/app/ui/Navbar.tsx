@@ -203,7 +203,7 @@ export default function NavigationBar() {
                 value={tagline}
                 isRequired
                 onClear={() => setTagline("")}
-                placeholder="#KR1"
+                placeholder="KR1"
                 variant="flat"
                 className="w-[100px] color-[#35ccbc]"
                 onValueChange={(value :string): void => { setTagline(value) }}
