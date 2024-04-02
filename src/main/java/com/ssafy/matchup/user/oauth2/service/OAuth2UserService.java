@@ -22,6 +22,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
+        log.info("in loadUser : {}", request.toString());
+
         OAuth2User oAuth2User = super.loadUser(request);
 
         // oAuth2User을 sns_type, sns_id로 변환

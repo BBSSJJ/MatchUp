@@ -32,6 +32,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("in AuthenticationSuccess : {}", authentication.toString());
 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         SnsType snsType = oAuth2User.getSnsType();
