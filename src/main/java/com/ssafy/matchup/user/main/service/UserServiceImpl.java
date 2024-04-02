@@ -1,10 +1,9 @@
 package com.ssafy.matchup.user.main.service;
 
-import com.ssafy.matchup.user.main.api.StatisticsServerApi;
-import com.ssafy.matchup.user.main.api.dto.LeagueInfoDto;
-import com.ssafy.matchup.user.main.api.dto.SummonerInfoDto;
 import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
-import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueInfoResponseDto;
+import com.ssafy.matchup.user.main.api.dto.response.LeagueInfoDto;
+import com.ssafy.matchup.user.main.api.dto.response.SummonerInfoDto;
+import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup.user.main.api.flux.WebClientFactory;
 import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
@@ -15,7 +14,7 @@ import com.ssafy.matchup.user.main.entity.User;
 import com.ssafy.matchup.user.main.entity.type.AuthorityType;
 import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.main.repository.UserRepository;
-import com.ssafy.matchup.user.main.service.sub.InitUserService;
+import com.ssafy.matchup.user.main.service.sub.UserInitService;
 import com.ssafy.matchup.user.main.service.sub.UserTierCheckService;
 import com.ssafy.matchup.user.riotaccount.entity.RiotAccount;
 import com.ssafy.matchup.user.riotaccount.entity.SummonerProfile;
@@ -45,8 +44,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RiotAccountRepository riotAccountRepository;
-    private final StatisticsServerApi statisticsServerApi;
-    private final InitUserService initUserService;
+    private final UserInitService userInitService;
     private final UserTierCheckService userTierCheckService;
     private final WebClientFactory webClientFactory;
 
@@ -59,21 +57,22 @@ public class UserServiceImpl implements UserService {
         String tag = parts[1].trim();
 
         //라이엇 아이디 유효
-        SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
-                statisticsServerApi.getRiotAccountInfo(name, tag);
-        if (summonerLeagueInfoResponseDto == null) throw new UsernameNotFoundException(summonerName);
+        SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto =
+                webClientFactory.postByNameAndTag(name, tag).block();
+        if (summonerLeagueAccountInfoResponseDto == null)
+            throw new UsernameNotFoundException("user name doesn't exist");
 
         //라이엇 아이디 사용중인지 검사
-        Optional<RiotAccount> riotAccountOptional = riotAccountRepository.findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
+        name = summonerLeagueAccountInfoResponseDto.getAccountResponseDto().getGameName();
+        tag = summonerLeagueAccountInfoResponseDto.getAccountResponseDto().getTagLine();
+        Optional<RiotAccount> riotAccountOptional = riotAccountRepository
+                .findRiotAccountBySummonerProfile_NameAndSummonerProfile_Tag(name, tag);
         if (riotAccountOptional.isPresent()) throw new DuplicateKeyException(summonerName);
-
-        //TODO : Statistics Server에 전적 분석 요청
-        webClientFactory.sendSummonerName(name, tag).subscribe(m -> log.info(""));
 
         //저장
         //TODO : 최적화 필요
-        RiotAccount riotAccount = initUserService.initRiotAccount(registUserRequestDto, summonerLeagueInfoResponseDto);
-        User user = initUserService.initUser(registUserRequestDto);
+        RiotAccount riotAccount = userInitService.initRiotAccount(summonerLeagueAccountInfoResponseDto);
+        User user = userInitService.initUser(registUserRequestDto);
 
         User newUser = userRepository.getReferenceById(user.getId());
         RiotAccount newRiotAccount = riotAccountRepository.getReferenceById(riotAccount.getId());
@@ -85,18 +84,17 @@ public class UserServiceImpl implements UserService {
         return new UserDto(newUser);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public UserDto findUser(LoginUserRequestDto loginUserRequestDto) {
         User user = userRepository.findUserBySnsTypeAndSnsId(loginUserRequestDto.getSnsType(),
                 loginUserRequestDto.getSnsId()).orElseThrow(EntityNotFoundException::new);
 
-        // TODO : 유저 업데이트, 닉네임 변경사항 알 수 있도록 response dto 변경요청
-//        SummonerLeagueInfoResponseDto summonerLeagueInfoResponseDto =
-//                statisticsServerApi.getRiotAccountInfo(user.getRiotAccount().getSummonerProfile().getName(),
-//                        user.getRiotAccount().getSummonerProfile().getTag());
-//        if (summonerLeagueInfoResponseDto == null) throw new EntityNotFoundException();
+        SummonerLeagueAccountInfoResponseDto summonerLeagueAccountInfoResponseDto =
+                webClientFactory.postById(user.getId()).block();
+        if (summonerLeagueAccountInfoResponseDto == null) throw new UsernameNotFoundException("no user");
 
+        userInitService.updateInfo(user, summonerLeagueAccountInfoResponseDto);
 
         return new UserDto(user);
     }
@@ -141,20 +139,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void registDumpUser(int page, RegistDumpUserRequestDto registDumpUserRequestDto) {
-        List<SummonerLeagueInfoResponseDto> dtoList = webClientFactory.getDumpRiotAccount(page, registDumpUserRequestDto);
+        List<SummonerLeagueAccountInfoResponseDto> dtoList = webClientFactory.getDumpRiotAccount(page, registDumpUserRequestDto);
 
         List<String> idList = new ArrayList<>();
 
-        for (SummonerLeagueInfoResponseDto dto : dtoList) {
+        for (SummonerLeagueAccountInfoResponseDto dto : dtoList) {
 
             LeagueInfoDto leagueInfoDto = dto.getLeagueInfoDto();
             SummonerInfoDto summonerInfoDto = dto.getSummonerInfoDto();
             AccountResponseDto accountResponseDto = dto.getAccountResponseDto();
 
+            Setting setting = new Setting(false);
+
             User user = User.builder()
                     .snsType(SnsType.NAVER)
                     .snsId(RandomStringUtils.random(30, true, true))
                     .role(AuthorityType.ROLE_USER)
+                    .setting(setting)
                     .build();
             userRepository.save(user);
 
