@@ -21,13 +21,13 @@ def top_ten(user_list):
 
     for document in documents:
         match_indicator = document["matchIndicatorStatistics"]
-        
+
         user_indicator = {}
 
         user_indicator["csDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["csDiffer"]
         user_indicator["expDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["expDiffer"]
         user_indicator["turretPlateDestroyDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["turretPlateDestroyDiffer"]
-        user_indicator["dealDiffer"] = match_indicator["laneIndicatorAvg"]["aggressiveLaneAbility"]["dealDiffer"]
+        user_indicator["dealDiffer"] = match_indicator["laneIndicatorAvg"]["aggresiveLaneAbilility"]["dealDiffer"]
 
         user_indicator["turretKillsPerDeaths"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["turretKillsPerDeaths"]
         user_indicator["damageDealtToTurretsPerTeamTotalTowerDamageDone"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["damageDealtToTurretsPerTeamTotalTowerDamageDone"]
