@@ -31,6 +31,8 @@ public class IndicatorFluxBuilder {
         List<MatchIndicator> matchIndicators = new ArrayList<>();
         log.info("매치 지표 생성시작");
 
+        if (matchIndicators.isEmpty()) return new Indicator(summonerId);
+
         matchResponses.forEach(matchResponse -> {
             long start = System.currentTimeMillis();
 
