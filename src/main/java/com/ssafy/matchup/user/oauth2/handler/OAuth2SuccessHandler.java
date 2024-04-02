@@ -28,6 +28,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${url.domain}")
     String domainUrl;
 
+    @Value("${RIOT_CLIENT_ID}")
+    String clientId;
+
+    @Value("${RIOT_REDIRECT_URI}")
+    String riotRedirectUri;
+
     private final UserRepository userRepository;
 
     @Override
@@ -46,7 +52,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (optionalUser.isEmpty()) {
 //            response.setHeader("Sns-Type", String.valueOf(snsType));
 //            response.setHeader("Sns-Id", snsId);
-            response.sendRedirect("http://" + domainUrl + "/login/riot-login/" + snsType + "/" + snsId);
+            response.sendRedirect("https://auth.riotgames.com/authorize?" +
+                    "client_id=" + clientId +
+                    "redirect_uri=" + riotRedirectUri +
+                    "&response_type=code&scope=openid+offline_access");
         }
         // TODO : 접속 상태 확인하는 redis에 유저 저장시키기
         else {
