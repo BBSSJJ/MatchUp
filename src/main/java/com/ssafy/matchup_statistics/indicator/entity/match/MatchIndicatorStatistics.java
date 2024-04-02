@@ -23,8 +23,8 @@ public class MatchIndicatorStatistics {
     private Metadata metadata;
 
     public MatchIndicatorStatistics(List<MatchIndicator> matchIndicators) {
-        List<LaneIndicator> laneIndicators = matchIndicators.stream().map(MatchIndicator::getLaneIndicator).toList();
-        List<MacroIndicator> macroIndicators = matchIndicators.stream().map(MatchIndicator::getMacroIndicator).toList();
+        List<LaneIndicator> laneIndicators = matchIndicators.stream().sorted((m1, m2) -> (int) (m2.getMetadata().getTimeInfo().getStartTime() - m1.getMetadata().getTimeInfo().getStartTime())).map(MatchIndicator::getLaneIndicator).toList();
+        List<MacroIndicator> macroIndicators = matchIndicators.stream().sorted((m1, m2) -> (int) (m2.getMetadata().getTimeInfo().getStartTime() - m1.getMetadata().getTimeInfo().getStartTime())).map(MatchIndicator::getMacroIndicator).toList();
         log.debug("{}개 라인통계 평균 생성시작", laneIndicators);
         if (!laneIndicators.isEmpty()) this.laneIndicatorAvg = new LaneIndicatorStatistics(laneIndicators);
         log.debug("{}개 운영통계 평균 생성시작", macroIndicators);
