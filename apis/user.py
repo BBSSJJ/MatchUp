@@ -1,6 +1,6 @@
 import typing
 import requests
-
+import pymongo
 
 def get_user_puuid(user_id: int):
     response = requests.get(f'https://matchup.site/api/users/{user_id}').json()
@@ -31,15 +31,25 @@ def get_user_ratings(user_id: int):
     return response['list']
 
 
-def get_user_records_for_recommend(user_id: int):
-    response = requests.get(f'https://matchup.site/api/statistics/summoners/records/users/{user_id}').json()
+def get_user_profile(user_id: int):
+    # MongoDB 연결
+    client = pymongo.MongoClient("mongodb://mongodb-statistics-service:3311/")
+
+    # DB 불러오기
+    matchup_statistics_db = client["matchup_statistics_db"]
+    
+    # 해당하는 유저 정보만 불러오기
+    summoners_document = matchup_statistics_db["summoners"].find({"_id": get_user_puuid(user_id)})
 
     user_record = {}
     
-    user_record['profileIconId'] = response['summonerInfo']['profileIconId']
-    user_record['name'] = response['summonerInfo']['name']
-    user_record['top3Champions'] = response['record']['top3Champions']
-    user_record['winRate'] = response['record']['winRate']
+    user_record["profile"] = summoners_document["summonerDetail"]["profileIconId"]
+    user_record["name"] = summoners_document["account"]["gameName"]
+    user_record["tag"] = summoners_document["account"]["tagLine"]
+    user_record["tier"] = summoners_document["league"]["tier"]
+    user_record["rank"] = summoners_document["league"]["rank"]
+    user_record["wins"] = summoners_document["league"]["wins"]
+    user_record["losses"] = summoners_document["league"]["losses"]
 
     return user_record
 
