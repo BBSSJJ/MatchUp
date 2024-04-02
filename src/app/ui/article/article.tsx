@@ -154,22 +154,6 @@ if (totalVotes === 0) {
     rightVotesPercentage = (article?.rightSympathies.length / totalVotes) * 100;
 }
 
-  // const totalVotes = (article?.leftSympathies.length === 0 || article?.rightSympathies.length === 0) ? 1 : article?.rightSympathies.length + article?.rightSympathies.length;
-  // let leftVotesPercentage
-  // let rightVotesPercentage
-  // if (article?.leftSympathies.length === 0 && article?.rightSympathies.length === 0) {
-  //   leftVotesPercentage = 50;
-  //   rightVotesPercentage = 50;
-  // } else if (article?.leftSympathies.length === 0) {
-  //   leftVotesPercentage = 0
-  //   rightVotesPercentage = 100;
-  // } else if (article?.rightSympathies.length === 0) {
-  //   leftVotesPercentage = 100
-  //   rightVotesPercentage = 0;
-  // } else {
-  //   leftVotesPercentage = (article?.leftSympathies.length / totalVotes) * 100;
-  //   rightVotesPercentage = (article?.rightSympathies.length / totalVotes) * 100;
-  // }
 
   // 투표 버튼 클릭 이벤트
   const handleVote = async (lor :string) => {
