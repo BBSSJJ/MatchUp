@@ -204,131 +204,131 @@ export const demoLobbyChats = [
 
 export const demoChats = [
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
   {
-    sender: "me",
+    name: "me",
     content: "프로젝트 생활수칙 마인드셋",
   },
   {
-    sender: "somebody",
+    name: "somebody",
     content: "이수민 남상엽 이연우 배성준 이원석 이준학",
   },
 ]
