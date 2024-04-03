@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider, Spinner } from "@nextui-org/react"
 import axios, { AxiosResponse } from "axios"
 import { useState } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
@@ -114,7 +114,7 @@ export default function Page(){
 						</Card>
 					))
 				) : (
-					<h1>언랭은 안받아요</h1>
+					<Spinner size="lg" />
 				)}
 			</div>
 			<h1 className="p-10">비슷한 플레이 스타일</h1>
@@ -166,7 +166,7 @@ export default function Page(){
 						</Card>
 					))
 				) : (
-					<h1>언랭은 안받아요</h1>
+					<Spinner size="lg" />
 				)}
 			</div>
 		</div>
