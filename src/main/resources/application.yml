@@ -28,9 +28,9 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    logging.level.reactor.netty.http.client: debug
-    root: debug
+#    org.hibernate.SQL: debug
+#    logging.level.reactor.netty.http.client: debug
+    root: info
 
 ip:
   db:
