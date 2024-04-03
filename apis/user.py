@@ -96,4 +96,4 @@ def get_user_indicator(user_id: int):
 
     user_indicator_df = pd.DataFrame([user_indicator], index=[0])
 
-    return user_indicator_df
+    return user_indicator

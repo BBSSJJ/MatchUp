@@ -40,14 +40,14 @@ def a1():
     user_indicator["dealPerGold"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["dealPerGold"]
     user_indicator["teamDamagePercentage"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["teamDamagePercentage"]
 
-    user_indicator_df = pd.DataFrame([user_indicator], index=[0])
+    user_indicator_df = pd.DataFrame([user_indicator])
 
     return user_indicator_df
 
-scaler = joblib.load("statistics/scalers/gold_scaler.joblib")
+# scaler = joblib.load("statistics/scalers/gold_scaler.joblib")
 
-scaled_data = scaler.transform(a1())
+# scaled_data = scaler.transform(a1())
 
-percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
+# percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
-print(percentiles)
+# print(percentiles)
