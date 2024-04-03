@@ -17,7 +17,7 @@ matchup = fastapi.FastAPI()
 async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # lane = ["top", "jungle", "mid", "bottom", "support"]
     # 변환 딕셔너리
     divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
-    lanes = {"top": "TOP", "jungle": "JUNGLE", "mid": "MIDDLE", "bottom": "BOTTOM", "support": "UTILITY"}
+    lanes = {"\"top\"": "TOP", "\"jungle\"": "JUNGLE", "\"mid\"": "MIDDLE", "\"bottom\"": "BOTTOM", "\"support\"": "UTILITY"}
 
     # 내 티어 정보 가져오기
     tier, division = apis.user.get_user_tier(user_id)
