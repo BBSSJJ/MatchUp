@@ -99,6 +99,32 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	const [trigger,setTrigger] = useState(false)
 	const [isFriend, setIsFriend] = useState(false) // 친구여부
 	
+
+	useEffect(() => {
+			const FetchImg = async () => {
+				const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
+					`${SERVER_API_URL}/api/statistics/summoners/details/users/${userId}`,
+					userFetcher,
+					{
+						onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+						if (error.status === 401) return
+						if (error.status === 500) return 'unranked'
+						}, 
+						revalidateOnFocus: false,
+						revalidateOnMount: true,
+						revalidateIfStale: true,
+					},
+				)
+				const container = document.querySelector('.container') as HTMLElement
+				const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
+				if (container) {
+				  container.style.backgroundImage = `url('${newImageUrl}')`
+				}
+			}
+			FetchImg()
+		}, [])
+
+
 	// 마이크 세팅 가져오기
 	const {data: mic,  error: micError, isLoading: micLoading } = useSWR(
 		`${SERVER_API_URL}/api/users/settings`,
@@ -227,18 +253,18 @@ export default function UserProfile({ userId } :UserProfileProps) {
 	const openChatRoom = async (userId :number) => {
         try {
             let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
-            console.log("기존의 roomID :", roomId)
+            // console.log("기존의 roomID :", roomId)
 
             if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
-                console.log("이 채팅방 열기 : ",roomId)
+                // console.log("이 채팅방 열기 : ",roomId)
                 setRoomId(roomId.roomId)
             } else { // 없다면 생성 
-                console.log('아직 채팅방 없음')
+                // console.log('아직 채팅방 없음')
                 await createChatRoom(userId, userInfo.userId)
                 const createdRoom = await IsChatRoom(userId)
                 const roomId = createdRoom.roomId
                 setRoomId(roomId)
-                console.log("채팅방 생성 :", roomId)
+                // console.log("채팅방 생성 :", roomId)
             }
         } catch (error) {
             console.error(error)
