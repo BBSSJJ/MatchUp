@@ -53,14 +53,14 @@ export default function Page(){
 				setEnjoyingList(response.data.slice(0, 5))
 			})
 		
-	axios({
-		method: 'get',
-		url: `${SERVER_API_URL}/api/recommends/winning/${userInfo.userId}`,
-		params: {my_lane, partner_lane, mic}
-	})
-		.then((response: AxiosResponse) => {
-			setWinningList(response.data.slice(0, 5))
+		axios({
+			method: 'get',
+			url: `${SERVER_API_URL}/api/recommends/winning/${userInfo.userId}`,
+			params: {my_lane, partner_lane, mic}
 		})
+			.then((response: AxiosResponse) => {
+				setWinningList(response.data.slice(0, 5))
+			})
 	})
 
 	return (
@@ -116,7 +116,6 @@ export default function Page(){
 				) : (
 					<h1>언랭은 안받아요</h1>
 				)}
-				<h1 v-if={winnigList.length == 1}>분석중입니다</h1>
 			</div>
 			<h1 className="p-10">비슷한 플레이 스타일</h1>
 			<div className="flex justify-evenly">
@@ -169,7 +168,6 @@ export default function Page(){
 				) : (
 					<h1>언랭은 안받아요</h1>
 				)}
-				<h1 v-if={winnigList.length == 1}>분석중입니다</h1>
 			</div>
 		</div>
 	)
