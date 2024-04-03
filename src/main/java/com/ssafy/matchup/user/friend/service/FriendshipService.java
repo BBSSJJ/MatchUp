@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 @Slf4j
 public class FriendshipService {
-
     private final UserRepository userRepository;
     private final FriendshipRepository friendshipRepository;
     private final KafkaTemplate<String, FcmDto> kafkaTemplate;
@@ -33,6 +32,10 @@ public class FriendshipService {
     public List<UserDto> showFriendList(Long myId, FriendStatus friendStatus) {
         List<User> friendshipList = friendshipRepository.findFriendByMyself_IdAndFriendStatus(myId, friendStatus);
         return friendshipList.stream().map(UserDto::new).collect(toList());
+    }
+
+    public List<UserDto> showUserList(String keyword) {
+        return userRepository.findUserByKeyword(keyword);
     }
 
     public void sendFriendRequest(Long myId, Long friendId) {

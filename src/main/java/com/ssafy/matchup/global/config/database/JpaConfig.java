@@ -43,6 +43,13 @@ public class JpaConfig implements EnvironmentAware {
     @Value("${password.db}")
     String DBPassword;
 
+
+    @Value("${dialect}")
+    String DIALECT;
+
+    @Value("${default_batch_fetch_size}")
+    String DEFAULT_BATCH_FETCH_SIZE;
+
     private Environment env;
 
     @Override
@@ -123,6 +130,8 @@ public class JpaConfig implements EnvironmentAware {
         properties.setProperty("spring.jpa.show-sql", env.getProperty("show-sql"));
         properties.setProperty("spring.jpa.properties.hibernate.format_sql", env.getProperty("format_sql"));
         properties.setProperty("spring.jpa.properties.hibernate.dialect", env.getProperty("dialect"));
+        properties.setProperty("hibernate.dialect", DIALECT);
+        properties.setProperty("hibernate.default_batch_fetch_size", DEFAULT_BATCH_FETCH_SIZE);
         return properties;
     }
 

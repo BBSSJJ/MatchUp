@@ -2,6 +2,8 @@ package com.ssafy.matchup.user.main.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.matchup.user.main.dto.QUserDto;
+import com.ssafy.matchup.user.main.dto.UserDto;
 import com.ssafy.matchup.user.main.entity.User;
 import jakarta.persistence.EntityManager;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,15 +31,18 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             predicate = (predicate != null) ? predicate.and(user.setting.useMike.eq(useMike)) : user.setting.useMike.eq(useMike);
 
         }
-//        if (useMike) {
-////            predicate = (predicate != null) ? predicate.and(user.setting.useMike) : user.setting.useMike.isTrue();
-//        }
-//        if (useMike) {
-//            predicate = (predicate != null) ? predicate.and(user.setting.useMike.eq(useMike)) : user.setting.useMike.eq(useMike);
-//        }
 
         return queryFactory.selectFrom(user)
                 .where(predicate)
+                .fetch();
+    }
+
+    @Override
+    public List<UserDto> findUserByKeyword(String keyword) {
+        return queryFactory.select(new QUserDto(user, riotAccount))
+                .from(user)
+                .leftJoin(riotAccount).fetchJoin()
+                .where(user.riotAccount.summonerProfile.name.contains(keyword))
                 .fetch();
     }
 }
