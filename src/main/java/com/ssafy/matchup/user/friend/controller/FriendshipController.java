@@ -29,6 +29,12 @@ public class FriendshipController {
         return new ResponseEntity<>(new ListDto<>(friendshipService.showFriendList(jwtTokenUtil.getUserId(request), friendStatus)), HttpStatus.OK);
     }
 
+    @Operation(summary = "친구 검색", description = "쿼리 파라미터로 KEYWORD를 받아서 친구 목록을 조회합니다.")
+    @GetMapping
+    public ResponseEntity<ListDto<UserDto>> showFriendList(HttpServletRequest request, @RequestParam(value = "keyword") String keyword) {
+        return new ResponseEntity<>(new ListDto<>(friendshipService.showUserList(keyword)), HttpStatus.OK);
+    }
+
     @Operation(summary = "친구 요청", description = "친구 요청하는 API 입니다.")
     @PostMapping("/{friend-id}")
     public ResponseEntity<?> requestFriendship(HttpServletRequest request, @PathVariable("friend-id") Long friendId) {
