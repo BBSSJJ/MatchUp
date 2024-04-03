@@ -115,6 +115,11 @@ public class WebClientFactory {
         formData.add("grant_type", "authorization_code");
         formData.add("code", riotCode);
         formData.add("redirect_uri", redirectUri);
+
+        log.info("riot api key : {}", riotApiKey);
+        log.info("Content-Type : {}", webClient.head().header("Content-Type"));
+        log.info("X-Riot-Token : {}", webClient.head().header("X-Riot-Token"));
+        log.info("Authorization : {}", webClient.head().header("Authorization"));
         log.info("form 1 : {}, {}", "grant_type", formData.get("grant_type"));
         log.info("form 2 : {}, {}", "code", formData.get("code"));
         log.info("form 3 : {}, {}", "redirect_uri", formData.get("redirect_uri"));
