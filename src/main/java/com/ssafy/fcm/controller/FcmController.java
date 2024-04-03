@@ -3,12 +3,14 @@ package com.ssafy.fcm.controller;
 import com.ssafy.fcm.dto.MessageDataDto;
 import com.ssafy.fcm.dto.ClientTokenDto;
 import com.ssafy.fcm.service.FcmService;
+import com.ssafy.fcm.util.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,16 +25,17 @@ import org.springframework.web.bind.annotation.*;
 public class FcmController {
 
     private final FcmService fcmService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Operation(summary = "클라이언트 토큰 등록", description = "클라이언트 토큰을 등록하는 API입니다.") // 해당 API가 어떤 역할을 하는지 설명
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "클라이언트 토큰 등록 성공", // 응답코드 200일때 응답 설명
                     content = @Content(schema = @Schema(implementation = MessageDataDto.class))), // 해당 응답코드에서 어떤 클래스를 응답하는지 작성
     })
-    @PostMapping("/clients/{userId}")
-    public ResponseEntity<?> registClientToken(@PathVariable Long userId, @RequestBody ClientTokenDto clientTokenDto) {
+    @PostMapping
+    public ResponseEntity<?> registClientToken(HttpServletRequest request, @RequestBody ClientTokenDto clientTokenDto) {
 
-        fcmService.registClientToken(userId, clientTokenDto.getToken());
+        fcmService.registClientToken(jwtTokenUtil.getUserId(request), clientTokenDto.getToken());
 
         return new ResponseEntity<>(new MessageDataDto("regist client Token"), HttpStatus.OK);
     }
