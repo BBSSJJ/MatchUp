@@ -24,6 +24,7 @@ export default function LobbyChat() {
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
   const [user, setUser] = useAtom<any>(userInfoAtom)
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+  const [userDetail, setUserDetail] = useState<any>({})
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -61,20 +62,21 @@ export default function LobbyChat() {
 
   useEffect(() => {
     getRecruits()
-
+    
     const stomp = new Client({
       brokerURL: "wss://matchup.site/api/ws",
     })
     setClient(stomp)
-
+    
     stomp.activate()
-
+    
     stomp.onConnect = () => {
       stomp.subscribe('/topic/recruit', () => {
         getRecruits()
       })
     }
-
+    
+    getDetails()
   }, [])
 
   function getRecruits() {
@@ -84,6 +86,16 @@ export default function LobbyChat() {
     })
       .then((response) => {
         setMessages(response.data.list.reverse())
+      })
+  }
+
+  async function getDetails() {
+    await axios({
+      method: 'get',
+      url: `https://matchup.site/api/statistics/summoners/details/users/${user.userId}`
+    })
+      .then((response) => {
+        setUserDetail(response.data)
       })
   }
 
@@ -185,8 +197,8 @@ export default function LobbyChat() {
       case "delete":
         return (
           <ButtonGroup size="sm">
-            <Button color="warning" isDisabled className="text-sm text-white">수정</Button>
-            <Button color="danger" className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
+            <Button color="warning" isDisabled={user.userId !== chat.userId} className="text-sm text-white">수정</Button>
+            <Button color="danger" isDisabled={user.userId !== chat.userId} className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
           </ButtonGroup>
         )
     }
@@ -230,11 +242,11 @@ export default function LobbyChat() {
           wishLine: selectedSearchingPosition,
           gameType: 'solo rank',
           content: memo,
-          win: 64, //최근 20판 승리?
-          lose: 74, //최근 20판 패배?
-          kill: 2.1, //최근 20판 킬?
-          death: 3.4, //최근 20판 데스?
-          assist: 13.8, //최근 20판 어시스트?
+          win: userDetail.win, //최근 20판 승리?
+          lose: userDetail.lose, //최근 20판 패배?
+          kill: userDetail.killAvg, //최근 20판 킬?
+          death: userDetail.deathAvg, //최근 20판 데스?
+          assist: userDetail.assistAvg, //최근 20판 어시스트?
         })
       })
       setMyPosition(new Set(['']))
