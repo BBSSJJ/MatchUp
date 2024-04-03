@@ -29,6 +29,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+    root: debug
 
 ip:
   db:
