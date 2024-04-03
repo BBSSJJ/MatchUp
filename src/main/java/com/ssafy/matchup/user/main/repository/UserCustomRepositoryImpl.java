@@ -41,7 +41,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public List<UserDto> findUserByKeyword(String keyword) {
         return queryFactory.select(new QUserDto(user, riotAccount))
                 .from(user)
-                .leftJoin(riotAccount).fetchJoin()
+                .leftJoin(user.riotAccount, riotAccount).fetchJoin()
                 .where(user.riotAccount.summonerProfile.name.contains(keyword))
                 .fetch();
     }
