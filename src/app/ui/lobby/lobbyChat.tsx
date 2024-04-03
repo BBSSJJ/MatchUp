@@ -192,7 +192,7 @@ export default function LobbyChat() {
         )
       case "delete":
         return (
-          <Button color="danger" isDisabled={user.userId !== chat.userId} className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
+          <Button color="danger" isDisabled={!isLoggedIn || user.userId !== chat.userId} className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
         )
     }
   }
