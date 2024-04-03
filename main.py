@@ -38,7 +38,7 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
         return []
     
     # 내 지표 불러오기
-    my_indicator = pd.DataFrame([apis.user.get_user_indicator(user_id)])
+    my_indicator = pd.DataFrame([apis.user.get_user_lane_indicator(user_id, lanes[my_lane])])
 
     # 유저 지표 불러오기
     user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list, lanes[partner_lane]))

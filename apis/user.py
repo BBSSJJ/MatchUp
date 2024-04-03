@@ -97,6 +97,76 @@ def get_user_indicator(user_id: int):
     return user_indicator
 
 
+def get_user_lane_indicator(user_id: int, lane: str):
+    # MongoDB 연결
+    client = pymongo.MongoClient("mongodb://mongodb-statistics-service:3311/")
+
+    # DB 불러오기
+    matchup_statistics_db = client["matchup_statistics_db"]
+
+    # 해당하는 유저 정보만 불러오기
+    document = matchup_statistics_db["indicators"].find_one({"_id": get_user_puuid(user_id)})
+
+    if document["matchIndicatorStatistics"]["metadata"]["teamPositionCount"].get(lane, -1) == -1:
+        return get_user_indicator(user_id)
+
+    match_indicators = document["matchIndicators"]
+
+    # 유저 지표 불러오기
+    user_indicator = {
+        "csDiffer": 0,
+        "expDiffer": 0,
+        "turretPlateDestroyDiffer": 0,
+        "dealDiffer": 0,
+        "turretKillsPerDeaths": 0,
+        "damageDealtToTurretsPerTeamTotalTowerDamageDone": 0,
+        "totalTimeCCingOthersPerTotalDamageTaken": 0,
+        "totalDamageTakenPerTeamTotalDamageTaken": 0,
+        "damageSelfMitigatedPerTotalDamageTaken": 0,
+        "visionScorePerDeath": 0,
+        "totalJungleObjectivePerGameDuration": 0,
+        "getObjectiveDifferPerGameDuration": 0,
+        "damagePerMinute": 0,
+        "dealPerGold": 0,
+        "teamDamagePercentage": 0,
+    }
+
+    count = 0
+
+    for match_indicator in match_indicators:
+        if match_indicator["metadata"]["laneInfo"].get("teamPosition") != lane:
+            continue
+
+        count += 1
+
+        user_indicator["csDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["csDiffer"]
+        user_indicator["expDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["expDiffer"]
+        user_indicator["turretPlateDestroyDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["turretPlateDestroyDiffer"]
+        user_indicator["dealDiffer"] = match_indicator["laneIndicatorAvg"]["aggresiveLaneAbility"]["dealDiffer"]
+
+        user_indicator["turretKillsPerDeaths"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["turretKillsPerDeaths"]
+        user_indicator["damageDealtToTurretsPerTeamTotalTowerDamageDone"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["damageDealtToTurretsPerTeamTotalTowerDamageDone"]
+
+        user_indicator["totalTimeCCingOthersPerTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["totalTimeCCingOthersPerTotalDamageTaken"]
+        user_indicator["totalDamageTakenPerTeamTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["totalDamageTakenPerTeamTotalDamageTaken"]
+        user_indicator["damageSelfMitigatedPerTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["damageSelfMitigatedPerTotalDamageTaken"]
+
+        user_indicator["visionScorePerDeath"] = match_indicator["macroIndicatorAvg"]["visionPoint"]["visionScorePerDeath"]
+        user_indicator["totalJungleObjectivePerGameDuration"] = match_indicator["macroIndicatorAvg"]["jungleHoldPoint"]["totalJungleObjectivePerGameDuration"]
+
+        user_indicator["getObjectiveDifferPerGameDuration"] = match_indicator["macroIndicatorAvg"]["objectivePoint"]["getObjectiveDifferPerGameDuration"]
+
+        user_indicator["damagePerMinute"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["damagePerMinute"]
+        user_indicator["dealPerGold"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["dealPerGold"]
+        user_indicator["teamDamagePercentage"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["teamDamagePercentage"]
+
+    for indicator in user_indicator:
+        if user_indicator[indicator] != 0:
+            user_indicator[indicator] = user_indicator[indicator] / count
+
+    return user_indicator
+
+
 def get_user_keyword(index: int, percentile: int):
     if index == 0:
         if percentile > 0.66:
