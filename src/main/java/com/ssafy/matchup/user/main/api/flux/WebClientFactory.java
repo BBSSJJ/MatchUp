@@ -8,6 +8,8 @@ import io.netty.handler.logging.LogLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -130,7 +132,12 @@ public class WebClientFactory {
         return webClient.post()
                 .uri(uri)
                 .body(BodyInserters.fromFormData(formData))
-                .retrieve().bodyToMono(RsoResponse.class)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, response -> {
+                    log.info("response : {}", response);
+                    return Mono.error(new IllegalStateException(("Failed!")));
+                })
+                .bodyToMono(RsoResponse.class)
                 .doOnError(exception -> log.warn("Failed to send notification to {}, cause {} | exception body : {}", uri, exception.getMessage(), exception.getStackTrace()));
     }
 
