@@ -40,10 +40,17 @@ public class UserController {
             @RequestBody RegistUserRequestDto registUserRequestDto,
             @CookieValue(name = "user") String userCookie) throws JsonProcessingException {
 
-        UserDto user = userService.addUser(registUserRequestDto);
 
         ObjectMapper objectMapper = new ObjectMapper();
         UserSnsDto userSnsDto = objectMapper.readValue(userCookie, UserSnsDto.class);
+
+        registUserRequestDto.setSnsId(userSnsDto.getSnsId());
+        registUserRequestDto.setSnsType(userSnsDto.getSnsType());
+        log.info("sns id : {}",userSnsDto.getSnsId());
+        log.info("sns type : {}", userSnsDto.getSnsType());
+
+        UserDto user = userService.addUser(registUserRequestDto);
+
         ResponseCookie cookie = cookieUtil.createUserCookie(userSnsDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
