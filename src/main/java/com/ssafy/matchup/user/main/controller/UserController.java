@@ -50,6 +50,9 @@ public class UserController {
         log.info("sns type : {}", userSnsDto.getSnsType());
 
         UserDto user = userService.addUser(registUserRequestDto);
+        userSnsDto.setUserId(user.getUserId());
+        userSnsDto.setRole(user.getRole());
+        userSnsDto.setRiotAccount(user.getRiotAccount());
 
         ResponseCookie cookie = cookieUtil.createUserCookie(userSnsDto);
 
