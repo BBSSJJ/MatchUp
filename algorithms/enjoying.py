@@ -105,8 +105,13 @@ def ten_neighbors(user_list, user_puuid, user_id, my_lane, partner_lane):
             user_vectors.append(user_vector)
 
     # 인덱스 생성
-    index = faiss.IndexFlatL2(3)
-    index.add(np.array(user_vectors).astype('float32'))
+    if user_id % 2 == 0:
+        index = faiss.IndexFlatL2(3)
+        index.add(np.array(user_vectors).astype('float32'))
+    
+    else:
+        index = faiss.IndexFlatL2(15)
+        index.add(np.array(user_vectors).astype('float32'))
 
     # 본인 벡터 만들기
 
