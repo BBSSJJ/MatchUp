@@ -7,7 +7,10 @@ import com.ssafy.matchup.user.main.dto.response.RsoResponse;
 import io.netty.handler.logging.LogLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.parser.AcceptEncoding;
+import org.eclipse.jetty.http.HttpHeader;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -98,16 +101,11 @@ public class WebClientFactory {
 
         String authStr = userName + ":" + password;
         String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
-        log.info("basic auth credential : {}", base64Creds);
-
 
         WebClient client = WebClient.builder()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
                 .defaultHeader("X-Riot-Token", riotApiKey)
                 .defaultHeader("Authorization", "Basic " + base64Creds)
-                .defaultHeader("Accept", "*/*")
-                .defaultHeader("Accept-Encoding", "gzip, deflate, br")
-                .defaultHeader("Connection", "keep-alive")
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
 
@@ -136,9 +134,10 @@ public class WebClientFactory {
     }
 
     public Mono<AccountResponseDto> getAccountResponseDtoByToken(String tokenType, String accessToken) {
-        webClient.mutate()
+        WebClient client = WebClient.builder()
                 .defaultHeader("Authorization", tokenType + " " + accessToken)
-                .defaultHeader("X-Riot-Token", riotApiKey);
+                .defaultHeader("X-Riot-Token", riotApiKey)
+                .build();
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://asia.api.riotgames.com/riot/account/v1/accounts/me")
@@ -146,7 +145,7 @@ public class WebClientFactory {
                 .build()
                 .toUri();
 
-        return webClient.get()
+        return client.get()
                 .uri(uri)
                 .retrieve().bodyToMono(AccountResponseDto.class);
     }
