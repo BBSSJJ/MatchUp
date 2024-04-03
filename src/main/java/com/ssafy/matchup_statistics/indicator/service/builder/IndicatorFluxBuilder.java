@@ -76,6 +76,7 @@ public class IndicatorFluxBuilder {
             matchIndicators.add(matchIndicator);
         });
         log.debug("생성된 매치지표 : {}", matchIndicators);
+        if (matchIndicators.isEmpty()) return new Indicator(summonerId);
         return new Indicator(summonerId, matchIndicators);
     }
 }
