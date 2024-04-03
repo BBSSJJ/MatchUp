@@ -130,9 +130,13 @@ async def user_info(user_id: int):
 
     # scaler 불러오기
     if tier == "no league data":
-        return 
-    elif (tier == "MASTER") or (tier == "GRANDMASTER") or (tier == "CHALLENGER"):
-        return
+        return apis.user.get_user_keyword(-1, 0)
+    elif tier == "MASTER":
+        return apis.user.get_user_keyword(-4, 0)
+    elif tier == "GRANDMASTER":
+        return apis.user.get_user_keyword(-3, 0)
+    elif tier == "CHALLENGER":
+        return apis.user.get_user_keyword(-2, 0)
     elif tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_{divisions[division]}_scaler.joblib")
     else:
