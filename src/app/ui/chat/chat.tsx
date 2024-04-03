@@ -137,7 +137,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 					{/* message 표시 */}
 					{messages?.list?.map((message, index) => (
 						<div key={index}  className={`my-2 ${styles.messageContainer}`}>
-							<div className={`flex my-2 ${message?.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
+							<div className={`flex my-1 ${message?.userId === userInfo.userId ? styles.myMessage : styles.otherMessage}`}>
 								<Image src={message?.iconUrl} width="20px" height="20px" />
 								<span className='text-tiny mx-2'>{message?.name}</span>
 							</div>

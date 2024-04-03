@@ -75,17 +75,17 @@ export default function NavigationBar() {
       <NavbarBrand className="mr-4">
         <Link href="/lobby" className="font-bold text-inherit">
           <div className="flex items-center">
-            {/* <Image
+            <Image
               className="w-[40px] h-[40px]"
               src="/logo.png"
-            /> */}
-            <SiLeagueoflegends
+            />
+            {/* <SiLeagueoflegends
             style={{
               color: '#aeb04f',
               width: '32px',
               height: '32px',
               marginRight: '5px'
-            }} />
+            }} /> */}
             <span className="text-bold text-2xl">MatchUP</span>
           </div>
         </Link>
@@ -199,7 +199,7 @@ export default function NavigationBar() {
                 value={keyword}
                 isRequired
                 onClear={() => setKeyword("")}
-                placeholder="enter player name"
+                placeholder="enter summoner name"
                 variant="faded"
                 className={`${styles.input} w-[80px] mr-2`}
                 startContent={
@@ -212,7 +212,7 @@ export default function NavigationBar() {
                 value={tagline}
                 isRequired
                 onClear={() => setTagline("")}
-                placeholder="KR1"
+                placeholder="Tagline"
                 variant="flat"
                 className="w-[100px] color-[#35ccbc]"
                 onValueChange={(value :string): void => { setTagline(value) }}
