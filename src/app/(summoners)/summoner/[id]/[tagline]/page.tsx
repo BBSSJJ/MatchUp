@@ -9,7 +9,7 @@ export default async function SummonerDetail({
 }) {
   return (
     <div className={styles.container}>
-      <h3>User Information</h3>
+      {/* <h3>{id} Information</h3> */}
       <SummonerInfo id={id} tagline={tagline}/>
     </div>
   )

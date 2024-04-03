@@ -1,3 +1,18 @@
+"use client"
+import Lottie from 'react-lottie-player'
+import loading from './loading3.json'
+import styles from './styles.module.css'
+
 export default function Loading() {
-  return <h2>Loading a summoner info</h2>;
+  return (
+    <div className={styles.center}>
+      <Lottie
+        loop
+        animationData={loading}
+        play
+        style={{ width: 500, height: 500 }}
+      />
+    </div>
+    
+  )
 }

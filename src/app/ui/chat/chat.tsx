@@ -115,8 +115,8 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 content: inputMessage,
                 timestamp: new Date().toISOString(), 
             };
-            console.log("userInfo atom: " ,userInfo)
-            console.log("messageObject:", messageObject)
+            // console.log("userInfo atom: " ,userInfo)
+            // console.log("messageObject:", messageObject)
 
             // 입력한 메시지를 서버로 전송
            
