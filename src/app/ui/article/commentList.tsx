@@ -37,6 +37,10 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
       setReplyContent("")
       return
     }
+    if(!replyContent.trim()){
+      alert("내용을 입력하세요!")
+      return
+    }
     setToggle(prev => !prev)
 
     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`, 
