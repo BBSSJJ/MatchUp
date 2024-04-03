@@ -69,3 +69,22 @@ def a1():
 # percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
 # print(percentiles)
+
+# A는 하나의 행만 존재
+A = pd.DataFrame({
+    'Feature1': [3],
+    'Feature2': [5],
+    'Feature3': [7]
+})
+
+# B는 여러 개의 행이 존재
+B = pd.DataFrame({
+    'Feature1': [2, 4, 6],
+    'Feature2': [3, 5, 7],
+    'Feature3': [4, 6, 8]
+})
+
+# B의 각 행과 A의 평균을 구함
+updated_B = (B + A.values) / 2
+
+print(updated_B)
