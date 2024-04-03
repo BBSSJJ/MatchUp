@@ -30,6 +30,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     logging.level.reactor.netty.http.client: debug
+    root: debug
 
 ip:
   db:
