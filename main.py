@@ -22,6 +22,13 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
     # 내 티어 정보 가져오기
     tier, division = apis.user.get_user_tier(user_id)
 
+    # 유저 목록 불러오기
+    user_list = apis.user.get_users(user_id, mic)
+
+    # 추천 불가 유저 처리
+    if user_list is False:
+        return []
+    
     # 승률 예측 모델 불러오기
     if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
         mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_{divisions[division]}_model.pkl')
@@ -30,12 +37,6 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
         mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_model.pkl')
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
 
-    # 유저 목록 불러오기
-    user_list = apis.user.get_users(user_id, mic)
-
-    # 추천 불가 유저 처리
-    if user_list is False:
-        return []
     
     # 내 지표 불러오기
     my_indicator = pd.DataFrame([apis.user.get_user_lane_indicator(user_id, lanes[my_lane])])
@@ -128,7 +129,11 @@ async def user_info(user_id: int):
     tier, division = apis.user.get_user_tier(user_id)
 
     # scaler 불러오기
-    if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
+    if tier == "no league data":
+        return 
+    elif (tier == "MASTER") or (tier == "GRANDMASTER") or (tier == "CHALLENGER"):
+        return
+    elif tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_{divisions[division]}_scaler.joblib")
     else:
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
