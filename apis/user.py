@@ -168,8 +168,29 @@ def get_user_lane_indicator(user_id: int, lane: str):
 
 
 def get_user_keyword(index: int, percentile: float):
-    if index == -2:
-        
+    if index == -4:
+        return [{
+            "keyword": "MASTER",
+            "rank": 1
+        }]
+
+    elif index == -3:
+        return [{
+            "keyword": "GRANDMASTER",
+            "rank": 1,
+        }]
+
+    elif index == -2:
+        return [{
+            "keyword": "CHALLENGER",
+            "rank": 1,
+        }]
+    
+    elif index == -1:
+        return [{
+            "keyword": "롤린이",
+            "rank": 3,
+        }]
 
     elif index == 0:
         if percentile > 0.66:
