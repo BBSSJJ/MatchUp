@@ -30,8 +30,8 @@ public class FriendshipController {
     }
 
     @Operation(summary = "친구 검색", description = "쿼리 파라미터로 KEYWORD를 받아서 친구 목록을 조회합니다.")
-    @GetMapping
-    public ResponseEntity<ListDto<UserDto>> showFriendList(HttpServletRequest request, @RequestParam(value = "keyword") String keyword) {
+    @GetMapping("/keywords/{keyword}")
+    public ResponseEntity<ListDto<UserDto>> showFriendList(@PathVariable(value = "keyword") String keyword) {
         return new ResponseEntity<>(new ListDto<>(friendshipService.showUserList(keyword)), HttpStatus.OK);
     }
 
