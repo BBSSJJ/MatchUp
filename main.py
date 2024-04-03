@@ -123,11 +123,11 @@ async def user_info(user_id: int):
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
 
     # 유저 지표 불러오기
-    return apis.user.get_user_indicator(user_id)
-    user_indicator = pd.DataFrame([apis.user.get_user_indicator(user_id)])
+    user_indicator = apis.user.get_user_indicator(user_id)
+    user_indicator_df = pd.DataFrame([user_indicator])
 
     # 유저 상세 정보 확인
-    scaled_data = scaler.transform(user_indicator)
+    scaled_data = scaler.transform(user_indicator_df)
     percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
     return percentiles

@@ -42,7 +42,25 @@ def a1():
 
     user_indicator_df = pd.DataFrame([user_indicator])
 
-    return user_indicator
+    a2 = {
+        "csDiffer": 5,
+        "expDiffer": 337,
+        "turretPlateDestroyDiffer": -0.583333333333333,
+        "dealDiffer": 1030,
+        "turretKillsPerDeaths": 18416,
+        "damageDealtToTurretsPerTeamTotalTowerDamageDone": 15913,
+        "totalTimeCCingOthersPerTotalDamageTaken": 78,
+        "totalDamageTakenPerTeamTotalDamageTaken": 21372,
+        "damageSelfMitigatedPerTotalDamageTaken": 65421,
+        "visionScorePerDeath": 531569,
+        "totalJungleObjectivePerGameDuration": 408,
+        "getObjectiveDifferPerGameDuration": 46,
+        "damagePerMinute": 66460000,
+        "dealPerGold": 157810,
+        "teamDamagePercentage": 0.201954810923512
+    }
+
+    return a2
 
 # scaler = joblib.load("statistics/scalers/gold_scaler.joblib")
 
