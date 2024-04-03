@@ -102,11 +102,22 @@ def get_user_indicator(user_id: int):
 def get_user_keyword(index: int, percentile: int):
     if index == 0:
         if percentile > 0.66:
-            return {"압도적 라인전 CS 차이", 1}
+            return {
+                "keyword": "압도적 라인전 CS 차이",
+                "rank": 1
+                }
         elif percentile > 0.33:
-            return {"평균 라인전 CS 차이", 2}
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
         else:
-            return {"라인전 CS 차이", 3}
-
+            return {
+                "keyword": "부족한 라인전 CS 차이",
+                "rank": 3
+            }
     else:
-        return {"압도적 라인전 경험치 차이", 1}
+        return {
+            "keyword": "키워드 이름",
+            "rank": 1
+        }

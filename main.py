@@ -130,9 +130,17 @@ async def user_info(user_id: int):
     scaled_data = scaler.transform(user_indicator_df)
     percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
+    # 유저 키워드 생성
     user_keywords = []
+    keywords = []
 
     for index, percentile in enumerate(percentiles[0]):
-        user_keywords.append(apis.user.get_user_keyword(index, percentile))
+        if 0 <= index < 4:
+            user_keywords.append(apis.user.get_user_keyword(index, percentile))
+        else:
+            heapq.heappush(keywords, (-percentile, apis.user.get_user_keyword(index, percentile)))
+    
+    for _ in range(2):
+        user_keywords.append(heapq.heappop(keywords)[1])
 
     return user_keywords
