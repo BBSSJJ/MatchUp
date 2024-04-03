@@ -85,10 +85,10 @@
 
 ## 6. API 명세서
 
-[user](./산출물/API명세서/user/index.html)
-[statistics](./산출물/API명세서/statistics/index.html)
-[chat](./산출물/API명세서/chat/index.html)
-[alarm](./산출물/API명세서/alarm/index.html)
+### ![USER API 명세서](./산출물/API명세서/user/index.html)
+### ![STATISTICS API 명세서]](./산출물/API명세서/statistics/index.html)
+### ![CHAT API 명세서](./산출물/API명세서/chat/index.html)
+### ![ALARM API 명세서](./산출물/API명세서/alarm/index.html)
 
 [맨위로](#매치업MatchUP)
 
