@@ -74,7 +74,7 @@ export default function MatchDetail({ match, id } : {
     // const playerSummonerIds = playerData?.map((item) => {
     //     return item.riotIdGameName;
     // }) // 소환사명
-    console.log("teamData", teamData);
+    // console.log("teamData", teamData);
     const result = teamData?.map((team) => {
         if (team.win === true) {
             return 'win';
@@ -82,13 +82,13 @@ export default function MatchDetail({ match, id } : {
             return 'lose';
         }
     }) // ['win', 'lose']
-    console.log("result", result)
+    // console.log("result", result)
     const team1 = playerData?.slice(0, playerData.length / 2) // 전팀 5인 puuid
     const team2 = playerData?.slice(playerData.length / 2, playerData.length) // 후팀 5인 puuid
     const resultOfThisUser = team1.includes(id) ? result[0] : result[1] // 검색된 소환사의 해당 경기 결과
-    console.log("전팀에 포함되는가?", team1.includes(id))
-    console.log(team1, id)
-    console.log(resultOfThisUser, "result");
+    // console.log("전팀에 포함되는가?", team1.includes(id))
+    // console.log(team1, id)
+    // console.log(resultOfThisUser, "result");
     
     return (
         <main>  
