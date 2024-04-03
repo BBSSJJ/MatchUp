@@ -85,10 +85,10 @@
 
 ## 6. API 명세서
 
-### ![USER API 명세서](/uploads/cdda09fae3d2f1d9e6c975e5d0f94942/index.html)
-### ![STATISTICS API 명세서]](/uploads/6fc2eb379302e05d72ad0cc2d2297547/index.html)
+### ![USER API 명세서](/uploads/48d8baccbcf0d004c0d98de907a07969/index.html)
+### ![STATISTICS API 명세서](/uploads/6fc2eb379302e05d72ad0cc2d2297547/index.html)
 ### ![CHAT API 명세서](/uploads/b4b19dfb19d8016988c1db087379c175/index.html)
-### ![ALARM API 명세서](/uploads/77a44d96f3a1f0c604e65058aed51e87/index.html)
+### ![ALARM API 명세서](/uploads/6d9b7179336fbc4b2b212d3b30870926/index.html)
 
 [맨위로](#매치업MatchUP)
 
