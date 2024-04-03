@@ -160,6 +160,7 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 								sendMessage();
 							}
 						}}
+                        className='w-11/12'
 					/>
 					{/* <Button
                         radius='full'
