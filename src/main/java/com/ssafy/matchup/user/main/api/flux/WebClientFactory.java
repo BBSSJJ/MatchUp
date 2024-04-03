@@ -11,6 +11,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -90,7 +91,7 @@ public class WebClientFactory {
 
         HttpClient httpClient = HttpClient.create().wiretap(true);
 
-                String authStr = userName + ":" + password;
+        String authStr = userName + ":" + password;
         String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
 
         webClient.mutate()
@@ -112,7 +113,7 @@ public class WebClientFactory {
 
         return webClient.post()
                 .uri(uri)
-                .bodyValue(formData)
+                .body(BodyInserters.fromFormData(formData))
                 .retrieve().bodyToMono(RsoResponse.class)
                 .doOnError(exception -> log.warn("Failed to send notification to {}, cause {} | exception body : {}", uri, exception.getMessage(), exception.getStackTrace()));
     }
