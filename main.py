@@ -7,8 +7,8 @@ import pandas as pd
 import scipy.stats
 
 import apis.user
-import algorithms.enjoying
 import algorithms.models.winning.winning
+import algorithms.models.enjoying.enjoying
 
 matchup = fastapi.FastAPI()
 
@@ -82,12 +82,11 @@ async def enjoying(user_id: int, mic: bool, my_lane: str, partner_lane: str):
         return []
     
     # 추천 리스트
-    recommendations = []
+    nearest_neighbors = algorithms.models.enjoying.enjoying.ten_neighbors(user_list, apis.user.get_user_puuid(user_id), user_id, lanes[my_lane], lanes[partner_lane])
 
-    nearest_neighbors = algorithms.enjoying.ten_neighbors(user_list, apis.user.get_user_puuid(user_id), user_id, lanes[my_lane], lanes[partner_lane])
-
-    weight = 1
-    neighbor_weight = 0
+    # recommendations = []
+    # weight = 1
+    # neighbor_weight = 0
 
     # 평점이 있을 경우
     # for neighbor in nearest_neighbors:
