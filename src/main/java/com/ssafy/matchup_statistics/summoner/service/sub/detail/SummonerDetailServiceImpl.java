@@ -22,7 +22,7 @@ public class SummonerDetailServiceImpl implements SummonerDetailService{
         Summoner summonerInDB = summonerDao.getSummonerInDB(gameName, tagLine);
         Indicator indicatorInDB = summonerDao.getIndicatorInDB(summonerInDB.getId());
 
-        return new SummonerDetailInfoResponseDto(summonerInDB, indicatorInDB);
+        return new SummonerDetailInfoResponseDto(summonerInDB.getLeague().getRank(), summonerInDB.getLeague().getRank(), indicatorInDB);
     }
 
     @Override

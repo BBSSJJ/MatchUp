@@ -24,20 +24,20 @@ public class SummonerRecordInfoResponseDto {
     private SummonerInfoResponseDto summonerInfo;
     private LeagueInfoResponseDto leagueInfo;
     private List<RecordMatchDetail> matches;
-    private Record record;
+    private SummonerDetailInfoResponseDto record;
 
     public SummonerRecordInfoResponseDto(SummonerInfoResponseDto summonerInfo, LeagueInfoResponseDto leagueInfo, List<MatchDetailResponseDto> matches, Indicator indicator) {
         this.summonerInfo = summonerInfo;
         this.leagueInfo = leagueInfo;
         this.matches = matches.stream().map(RecordMatchDetail::new).toList();
-        this.record = new Record(indicator);
+        this.record = new SummonerDetailInfoResponseDto(leagueInfo.getRank(), leagueInfo.getTier(), indicator);
     }
 
     public SummonerRecordInfoResponseDto(Summoner summoner, Indicator indicator, List<Match> matches) {
         this.summonerInfo = new SummonerInfoResponseDto(summoner);
         this.leagueInfo = new LeagueInfoResponseDto(summoner.getLeague());
         this.matches = matches.stream().map(Match::getMatchDetail).toList();
-        this.record = new Record(indicator);
+        this.record = new SummonerDetailInfoResponseDto(summoner.getLeague().getRank(), summoner.getLeague().getTier(), indicator);
     }
 
     @Data
