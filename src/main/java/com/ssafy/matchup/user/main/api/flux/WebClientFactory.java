@@ -3,7 +3,7 @@ package com.ssafy.matchup.user.main.api.flux;
 import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
-import com.ssafy.matchup.user.main.dto.response.RsoResponse;
+import com.ssafy.matchup.user.main.dto.response.OauthResponse;
 import io.netty.handler.logging.LogLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +90,7 @@ public class WebClientFactory {
         return responseDtoFlux.collectList().block();
     }
 
-    public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
+    public Mono<OauthResponse> getRiotAccountByRiotCode(String riotCode) {
 
         HttpClient httpClient = HttpClient.create().wiretap("reactor.netty.http.client.HttpClient",
                 LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
@@ -104,7 +104,6 @@ public class WebClientFactory {
                 .defaultHeader("Authorization", "Basic " + base64Creds)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
-
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://auth.riotgames.com/token")
@@ -125,7 +124,7 @@ public class WebClientFactory {
                     log.info("response : {}", response);
                     return Mono.error(new IllegalStateException(("Failed!")));
                 })
-                .bodyToMono(RsoResponse.class)
+                .bodyToMono(OauthResponse.class)
                 .doOnError(exception -> log.warn("Failed to send notification to {}, cause {} | exception body : {}", uri, exception.getMessage(), exception.getStackTrace()));
     }
 

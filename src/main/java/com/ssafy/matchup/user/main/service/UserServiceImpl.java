@@ -10,7 +10,7 @@ import com.ssafy.matchup.user.main.dto.request.LoginUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.RegistUserRequestDto;
 import com.ssafy.matchup.user.main.dto.request.UserSnsDto;
-import com.ssafy.matchup.user.main.dto.response.RsoResponse;
+import com.ssafy.matchup.user.main.dto.response.OauthResponse;
 import com.ssafy.matchup.user.main.dto.response.UserInTierResponseDto;
 import com.ssafy.matchup.user.main.entity.Setting;
 import com.ssafy.matchup.user.main.entity.User;
@@ -56,10 +56,10 @@ public class UserServiceImpl implements UserService {
     public UserDto addUser(RegistUserRequestDto registUserRequestDto) {
         String riotCode = registUserRequestDto.getRiotCode();
         log.info("riot code : {}", riotCode);
-        RsoResponse rsoResponse = webClientFactory.getRiotAccountByRiotCode(riotCode).block();
-        if (rsoResponse == null) throw new IllegalArgumentException("invalid riot code");
+        OauthResponse oauthResponse = webClientFactory.getRiotAccountByRiotCode(riotCode).block();
+        if (oauthResponse == null) throw new IllegalArgumentException("invalid riot code");
 
-        AccountResponseDto accountResponseDto = webClientFactory.getAccountResponseDtoByToken(rsoResponse.getOauthResponse().getTokenType(), rsoResponse.getOauthResponse().getAccessToken()).block();
+        AccountResponseDto accountResponseDto = webClientFactory.getAccountResponseDtoByToken(oauthResponse.getTokenType(), oauthResponse.getAccessToken()).block();
         if (accountResponseDto == null) throw new IllegalArgumentException("invalid account info");
 
         String name = accountResponseDto.getGameName();
