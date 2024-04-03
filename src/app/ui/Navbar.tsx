@@ -55,6 +55,10 @@ export default function NavigationBar() {
 
   // 검색어 입력 후 호출
   const handleClick = () => {
+    if(!keyword.trim() || !tagline.trim()) {
+      alert('소환사명과 태그라인(#KR1)을 모두 입력하세요.')
+      return
+    }
     router.push(`/summoner/${keyword}/${tagline}`)
   }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -76,8 +80,8 @@ export default function NavigationBar() {
         <Link href="/lobby" className="font-bold text-inherit">
           <div className="flex items-center">
             <Image
-              className="w-[40px] h-[40px]"
-              src="/logo.png"
+              className="min-w-[45px] min-h-[45px]"
+              src='/logo.png'
             />
             {/* <SiLeagueoflegends
             style={{

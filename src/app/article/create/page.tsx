@@ -76,7 +76,13 @@ export default function CreateArticle() {
 
   const postContentToServer = async () => {
     try {
-    
+      if(articleTitle.trim() === '') {
+        alert('제목을 입력하세요!')
+        return
+      } else if ( left.trim() === '' || right.trim() === '') {
+        alert('투표 선택지를 입력하세요!')
+        return
+      }
       const response = await fetch(`${SERVER_URL}/api/mz/articles`, {
         method: 'POST',
         headers: {
@@ -102,7 +108,7 @@ export default function CreateArticle() {
       // 글 작성에 성공하면 게시글 페이지로
       router.push("/article")
     } catch (error) {
-      console.log("작성한 글 내용", editorContent);
+      // console.log("작성한 글 내용", editorContent);
       console.error('Error posting content to server:', error);
     }
   };
@@ -115,11 +121,11 @@ export default function CreateArticle() {
         body: formData,
       })
       const responseData = await response.json()
-      console.log("json으로 변환한 응답 데이터", responseData)
+      // console.log("json으로 변환한 응답 데이터", responseData)
       // const imageUrl = response.fileName
       // return imageUrl
       if (response.status === 200) {
-        console.log("200", responseData.fileName)
+        // console.log("200", responseData.fileName)
         const imageUrl = responseData.fileName
         return imageUrl
       }
@@ -132,7 +138,7 @@ export default function CreateArticle() {
   return (
     <div className='mx-[50px] my-6 relative flex flex-col'>
       <Button
-        className='w-[50px] my-4'
+        className='w-[50px] ml-auto'
         size="sm"
         variant="ghost"
         onClick={() => {router.back()}
@@ -144,8 +150,8 @@ export default function CreateArticle() {
         <Input
           label="Title"
           labelPlacement="outside-left"
-          placeholder='글의 제목을 입력하세요.'
-          className="max-w-[320px]"
+          placeholder='제목을 입력하세요.'
+          className="min-w-[300px] items-center"
           // width="450px"
           onValueChange={(value: string): void => { setArticleTitle(value) }}
         />
@@ -171,7 +177,7 @@ export default function CreateArticle() {
           images_upload_url: 'https://matchup.site/file/uploads/',
           file_picker_types: 'file image media',
           video_template_callback: (data :VideoTemplateCallbackData) => {
-            console.log("여기가 문제인가:", data)
+            // console.log("여기가 문제인가:", data)
             const newUrl = 'https://matchup.site/file/uploads/' + data.source
             return `<video width="${data.width}" height="${data.height}"${data.poster ? ` poster="${data.poster}"` : ''} controls="controls">\n` +
             `<source src="${newUrl}"${data.sourcemime ? ` type="${data.sourcemime}"` : ''} />\n` +
@@ -188,12 +194,12 @@ export default function CreateArticle() {
             input.addEventListener('change', (e) => {
               const input = e.target as HTMLInputElement
               if (input.files && input.files.length > 0) {
-                console.log("input tag에 파일을 담음")
+                // console.log("input tag에 파일을 담음")
                 file = input.files[0]; // 선택한 파일에 접근
               }
               
               if(file) {
-                console.log("파일이 undefined가 아님", file)
+                // console.log("파일이 undefined가 아님", file)
                 const reader = new FileReader(); 
                 // base64로 인코딩된 파일 데이터를 가져와서 이미지 blob registry에 등록
                 reader.addEventListener('load', async () => {
@@ -218,7 +224,7 @@ export default function CreateArticle() {
                   if (typeof imageUrl === 'string') {
                     const fileType = file?.type
                     // 배포 후 주소 변경할 것 
-                    console.log("cb함수호출")
+                    // console.log("cb함수호출")
                     const url = "https://matchup.site/file/uploads/"
                     if(fileType!.startsWith('image/')) {
                       cb(url + imageUrl, { title: file!.name });
@@ -248,6 +254,8 @@ export default function CreateArticle() {
         <div className='flex justify-between items-center'>
           <p className='font-bold my-6'>투표 생성</p>
           <Button 
+            variant="ghost"
+            color='danger'
             onClick={postContentToServer}
           >
             작성하기
