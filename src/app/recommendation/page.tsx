@@ -1,12 +1,13 @@
 'use client'
 
-import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider, Spinner, Textarea } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider, Spinner } from "@nextui-org/react"
 import axios, { AxiosResponse } from "axios"
 import { useState } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
 import { userInfoAtom } from "@/store/authAtom"
 import { useAtom } from "jotai"
 import { useSearchParams } from "next/navigation"
+import Link from "next/link"
 
 type Recommendation = {
   profile: number
@@ -72,6 +73,7 @@ export default function Page(){
 						<Spinner size="lg" />
 					) : (
 						winnigList.map((user: Recommendation, index: number) => (
+							// <Link key={index} href={`/user/`}>
 							<Card key={index} isPressable>
 								<CardHeader>
 									<User
@@ -115,6 +117,7 @@ export default function Page(){
 								</div>
 								</CardFooter>
 							</Card>
+							// </Link>
 						))
 					)
 				) : (
