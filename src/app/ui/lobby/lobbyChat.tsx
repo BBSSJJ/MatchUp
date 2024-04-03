@@ -24,6 +24,8 @@ export default function LobbyChat() {
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
   const [user, setUser] = useAtom<any>(userInfoAtom)
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+  const MAX_RETRY_COUNT = 3
+  let retryCount = 0
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -50,6 +52,13 @@ export default function LobbyChat() {
     
             if (!response.ok) {
                 console.error("클라이언트 토큰 등록 실패")
+                if (retryCount < MAX_RETRY_COUNT) {
+                  // console.log(`Retrying... (${retryCount + 1}/${MAX_RETRY_COUNT})`);
+                  retryCount++;
+                  requestPermission();
+                } else {
+                  console.log(response);
+                }
             }
             console.log(response)
           }

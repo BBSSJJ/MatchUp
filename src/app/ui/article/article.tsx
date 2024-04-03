@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import { useEffect, useState } from 'react';
 import { getArticle, getComments } from './article-wrapper';
+import { useAtomValue } from 'jotai';
+import { isLoggedInAtom } from '@/store/authAtom';
 
 interface ArticleProps {
   title?: string;
@@ -108,6 +110,7 @@ const ArticlePage = ({id} :{id :number}) => {
   const router = useRouter()
   // const [replies, setReplies] = useState<CommentList>(null)
   const [commentContent, setCommentContent] = useState("")
+  const isLoggedIn = useAtomValue(isLoggedInAtom) 
 
   // 데이터 가져오기
   const {data: article, error: articleError, isLoading: articleLoading } = useSWR(
@@ -181,6 +184,13 @@ if (totalVotes === 0) {
 
     if(!commentContent.trim()){
       alert("내용을 입력하세요!")
+      return
+    }
+    // 비로그인 시 댓글 작성 불가
+    if (!isLoggedIn) {
+      alert("댓글은 회원만 작성할 수 있습니다.")
+      setCommentContent("")
+      return
     }
     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${id}`, {
       method: 'POST',
