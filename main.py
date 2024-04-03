@@ -129,4 +129,4 @@ async def user_info(user_id: int):
     # scaled_data = scaler.transform(user_indicator)
     # percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
-    return user_indicator
+    return pd.DataFrame([user_indicator])
