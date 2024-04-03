@@ -41,7 +41,7 @@ const HiddenLogin = ( ) => {
                     },
                     credentials: 'include', 
                     body: JSON.stringify({ snsType, snsId }),
-                })
+                }) // 로그인 요청
 
                 if(response.ok) {
                     console.log("로그인 성공")
@@ -60,6 +60,7 @@ const HiddenLogin = ( ) => {
                 } else {
                     console.log('로그인 실패')
                 }
+                
                 router.push('/') // 기존 회원
             }
             
