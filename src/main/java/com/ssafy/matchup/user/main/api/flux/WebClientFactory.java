@@ -109,7 +109,7 @@ public class WebClientFactory {
                 .uri(uri)
                 .bodyValue(formData)
                 .retrieve().bodyToMono(RsoResponse.class)
-                .doOnError(exception -> log.warn("Failed to send notification to {}, cause {}", uri, exception.getMessage()));
+                .doOnError(exception -> log.warn("Failed to send notification to {}, cause {} | exception body : {}", uri, exception.getMessage(), exception.getStackTrace()));
     }
 
     public Mono<AccountResponseDto> getAccountResponseDtoByToken(String tokenType, String accessToken) {
