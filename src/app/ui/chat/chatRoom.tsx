@@ -19,7 +19,7 @@ export const youFetcher =async (url:string) => {
 }
 
 // 채팅목록에서 보이는 개별 채팅방 - 여기서 DM누르면 모달창이 뜸
-export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :number; you :number[] }) {
+export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :number; you :number[]; }) {
     const [isRoomOpen, setIsRoomOpen] = useAtom(isRoomOpenAtom)
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const [scrollBehavior, setScrollBehavior] = React.useState<ModalProps["scrollBehavior"]>("inside");
@@ -43,7 +43,6 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
         {
           onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             if (error.status === 401) return
-      
           }, 
           revalidateOnFocus: false,
           revalidateOnMount: true,
@@ -58,7 +57,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
           onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
             if (error.status === 401) return
           }, 
-          revalidateOnFocus: false,
+          revalidateOnFocus: true,
           revalidateOnMount: true,
         }
     )
@@ -72,7 +71,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
             if (error.status === 401) return
       
           }, 
-          revalidateOnFocus: false,
+          revalidateOnFocus: true,
           revalidateOnMount: true,
         }
     )
@@ -101,7 +100,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
                         <h4 className="text-sm">{partner?.riotAccount.summonerProfile.name}</h4>
                         {/* <h4 className="text-[7px]">{chatId}</h4> */}
                         {/* <h4 className="text-small font-semibold leading-none text-default-600">소환사명</h4> */}
-                        <h5 className="text-tiny tracking-tight text-default-400">{(chat?.list?.at(-1)?.userId !== userInfo.userId) && unreadChat.cnt > 0 ? <Chip color="success">{unreadChat?.cnt}</Chip> : null}{chat.list?.at(-1)?.content}</h5>
+                        <h5 className="text-tiny tracking-tight text-default-400">{chat.list?.at(-1)?.content}{(chat?.list?.at(-1)?.userId !== userInfo.userId) && unreadChat.cnt > 0 ? <Chip size="sm" color="success" className="ml-2">{unreadChat?.cnt}</Chip> : null}</h5>
                     </div>
                     </div>
                     <Button

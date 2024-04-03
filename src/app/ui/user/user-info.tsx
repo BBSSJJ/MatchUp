@@ -1,5 +1,5 @@
 "use client"
-import {Card, CardFooter, Image, Button, Badge, useDisclosure, Switch} from "@nextui-org/react";
+import {Card, CardFooter, Image, Button, Badge, useDisclosure, Switch, Tooltip} from "@nextui-org/react";
 import styles from "./user-info.module.css"
 import { useAtom, useAtomValue } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
@@ -288,6 +288,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					console.error('친구요청 실패')
 				} else {
 					alert('친구요청 완료')
+					mutate(`${SERVER_API_URL}/api/friends?friendStatus=FRIEND`)
 				}
 				if (friendsList && friendsList.includes(userId)) {
 					setIsFriend(true);
@@ -406,14 +407,17 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					{
 						keyword?.map((keyword :any, index :number) => {
 							return (
-							<Button key={index} radius="full" className="bg-gradient-to-tr from-green-500 to-blue-500 text-white shadow-lg m-1 h-[25px]">
-								{keyword.keyword}
-							</Button>)
+								<Tooltip content={keyword.content}>
+									<Button key={index} radius="full" className="bg-gradient-to-tr from-green-500 to-blue-500 text-white shadow-lg m-1 h-[25px]">
+										{keyword.keyword}
+									</Button>
+    							</Tooltip>
+							)
 						})
 					}
 				</div>
 				<div className={styles.item3}>
-					<div className="h-[250px] w-[650px]">
+					<div className="h-[250px] w-[80%]">
 						<p className="text-bold text-#332828 mb-2">전적 정보</p>
 						{records === 'unranked' ? (<p>랭크 게임을 더 하고 오세요</p>) : (
 							<>
