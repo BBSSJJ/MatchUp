@@ -22,26 +22,10 @@ export default function LobbyChat() {
   const [searchingPosition, setSearchingPosition] = useState(new Set([""]))
   const [memo, setMemo] = useState('')
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
-  const [useri, setUser] = useAtom(userInfoAtom)
+  const [user, setUser] = useAtom<any>(userInfoAtom)
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
   const [userDetail, setUserDetail] = useState<any>({})
 
-  const user = {
-    userId: 6,
-    role:"ROLE_USER",
-    riotAccount:{
-      id:"azZhIpYEutVjtlT7il9eUX1Gjv_UcgLeukxNSiBtpafNHA",
-      summonerProfile:{
-        name:"피아노의자",
-        tag:"KR1",
-        iconUrl:"https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/5.png",
-        level:9
-      },
-      tier:"no+league+data",
-      leagueRank:"no+league+data",
-      leaguePoint:0
-    }
-  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
