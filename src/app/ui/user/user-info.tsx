@@ -182,11 +182,11 @@ export default function UserProfile({ userId } :UserProfileProps) {
         fetchMicStatus() // 마이크 사용여부 가져오기
 		// setIsFriend(isFriend)
 
-		const container = document.querySelector('.container') as HTMLElement
-		if(records?.latestChampion !== '최근 플레이한 챔피언 없음' && container) {
-			const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
-			container.style.backgroundImage = `url('${newImageUrl}')`
-		} 
+		// const container = document.querySelector('.container') as HTMLElement
+		// if(records?.latestChampion !== '최근 플레이한 챔피언 없음' && container) {
+		// 	const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
+		// 	container.style.backgroundImage = `url('${newImageUrl}')`
+		// } 
 
 
 	}, [friends, userId])

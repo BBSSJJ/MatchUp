@@ -27,6 +27,7 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
     const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
     
     const handleChat = () => {
+        mutate(`${SERVER_API_URL}/api/chats/users/${you}`)
         setRoomId(chatId)
         onOpen()
     }
