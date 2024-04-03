@@ -60,8 +60,8 @@ const HiddenLogin = ( ) => {
                 } else {
                     console.log('로그인 실패')
                 }
-                
-                router.push('/') // 기존 회원
+
+                router.push('/lobby') // 기존 회원
             }
             
             // console.log("로그인 요청 보냄")

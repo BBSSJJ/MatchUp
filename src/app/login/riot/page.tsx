@@ -34,7 +34,7 @@ const RSO = () => {
                 if (userCookie) {
                     setUser(JSON.parse(userCookie))
                     setIsLoggedIn(true)
-                    window.location.href = `${SERVER_API_URL}`
+                    window.location.href = `${SERVER_API_URL}/lobby`
                 } else {
                     console.log('no user cookie')
                 }
