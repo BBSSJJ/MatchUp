@@ -37,8 +37,8 @@ public class WebClientFactory {
     String riotApiKey;
     @Value("${RIOT_CLIENT_ID}")
     String userName;
-    @Value("${RIOT_CLIENT_SECRET}")
-    String password;
+//    @Value("${RIOT_CLIENT_SECRET}")
+    String password = "XFi9j3GzogWPAwZBQvCBZPJEguhP8yZ9milz8dt3rAj";
     @Value("${RIOT_REDIRECT_URI}")
     String redirectUri;
 
