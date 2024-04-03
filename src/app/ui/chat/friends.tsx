@@ -7,7 +7,7 @@ import { roomIdAtom } from '@/store/chatAtom';
 import { useAtom } from 'jotai';
 import { userInfoAtom } from '@/store/authAtom';
 import ChatModal from './chatModal';
-
+import Link from 'next/link';
 
 interface Friend {
     userId: number;
@@ -200,13 +200,15 @@ export default function Friends({mode} :{mode :string}) {
             return (
                 <Card key={friend.userId} className="w-[340px]">
                     <CardHeader className="justify-between">
-                        <div className="flex gap-5">
-                            <Avatar isBordered radius="full" size="sm" src={`${friend.riotAccount.summonerProfile.iconUrl}`} />
-                            <div className="flex flex-col gap-1 items-start justify-center">
-                                <h4 className="text-small font-semibold leading-none text-default-600">{friend.riotAccount.summonerProfile.name}</h4>
-                                {/* <h5 className="text-small tracking-tight text-default-400">@zoeylang</h5> */}
+                        <Link href={`/users/${friend.userId}`}>
+                            <div className="flex gap-5">
+                                <Avatar isBordered radius="full" size="sm" src={`${friend.riotAccount.summonerProfile.iconUrl}`} />
+                                <div className="flex flex-col gap-1 items-start justify-center">
+                                    <h4 className="text-small font-semibold leading-none text-default-600">{friend.riotAccount.summonerProfile.name}</h4>
+                                    {/* <h5 className="text-small tracking-tight text-default-400">@zoeylang</h5> */}
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                             {/* 삭제 버튼 */}
                             <Button
                                 onPress={() => handleDelete(friend.userId)}

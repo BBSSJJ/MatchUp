@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { getArticle, getComments } from './article-wrapper';
 import { useAtomValue } from 'jotai';
 import { isLoggedInAtom } from '@/store/authAtom';
+import Link from 'next/link';
 
 interface ArticleProps {
   title?: string;
@@ -235,7 +236,7 @@ if (totalVotes === 0) {
         <div>
           <h1 className="articleTitle">{article?.title}</h1>
           <div className="articleInfo">
-            <p>{article?.author!.riotAccount?.summonerProfile?.name}</p>
+            <Link href={`/users/${article.author.userId}`}><p>{article?.author!.riotAccount?.summonerProfile?.name}</p></Link>
             <p>조회수 : {article?.views}</p>
           </div>
           <hr />
