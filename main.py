@@ -123,7 +123,7 @@ async def user_info(user_id: int):
         scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
 
     # 유저 지표 불러오기
-    user_indicator = apis.user.get_user_indicator(user_id)
+    user_indicator = pd.DataFrame([apis.user.get_user_indicator(user_id)])
 
     # 유저 상세 정보 확인
     scaled_data = scaler.transform(user_indicator)

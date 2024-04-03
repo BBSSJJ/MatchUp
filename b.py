@@ -11,4 +11,4 @@ scaled_data = scaler.transform(a.a1())
 
 percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
-print(percentiles[0])
+print(percentiles)
