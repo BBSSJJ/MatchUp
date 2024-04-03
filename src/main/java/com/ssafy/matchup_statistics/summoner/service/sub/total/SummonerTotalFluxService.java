@@ -153,6 +153,8 @@ public class SummonerTotalFluxService implements SummonerTotalService {
                     true);
             mongoTemplate.save(summoner);
 
+
+
             log.info("created summoner(소환사 생성완료) : {}, 소요시간 : {}ms", summoner.getId(), (System.currentTimeMillis() - start));
 
         });
