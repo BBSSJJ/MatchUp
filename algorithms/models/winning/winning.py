@@ -48,7 +48,7 @@ def top_ten(user_list, lane):
         count = 0
 
         for match_indicator in match_indicators:
-            if match_indicator["metadata"]["laneInfo"]["teamPosition"] != lane:
+            if match_indicator["metadata"]["laneInfo"].get("teamPosition") != lane:
                 continue
             
             count += 1
