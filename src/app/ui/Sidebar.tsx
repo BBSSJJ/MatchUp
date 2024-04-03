@@ -148,7 +148,7 @@ const SideBar: React.FC = () => {
 													}}
 												/>
 												<div>
-													{result!.list.map((item :Friend, index: number) => {
+													{result && result!.list.map((item :Friend, index: number) => {
 														return (
 															<Link href={`/user/${item.userId}`}>
 																<p>{item.riotAccount.summonerProfile.name} #{item.riotAccount.summonerProfile.tag}</p>
