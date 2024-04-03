@@ -139,26 +139,26 @@ def get_user_lane_indicator(user_id: int, lane: str):
 
         count += 1
 
-        user_indicator["csDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["csDiffer"]
-        user_indicator["expDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["expDiffer"]
-        user_indicator["turretPlateDestroyDiffer"] = match_indicator["laneIndicatorAvg"]["basicWeight"]["turretPlateDestroyDiffer"]
-        user_indicator["dealDiffer"] = match_indicator["laneIndicatorAvg"]["aggresiveLaneAbility"]["dealDiffer"]
+        user_indicator["csDiffer"] = match_indicator["laneIndicator"]["basicWeight"]["csDiffer"]
+        user_indicator["expDiffer"] = match_indicator["laneIndicator"]["basicWeight"]["expDiffer"]
+        user_indicator["turretPlateDestroyDiffer"] = match_indicator["laneIndicator"]["basicWeight"]["turretPlateDestroyDiffer"]
+        user_indicator["dealDiffer"] = match_indicator["laneIndicator"]["aggresiveLaneAbility"]["dealDiffer"]
 
-        user_indicator["turretKillsPerDeaths"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["turretKillsPerDeaths"]
-        user_indicator["damageDealtToTurretsPerTeamTotalTowerDamageDone"] = match_indicator["macroIndicatorAvg"]["splitPoint"]["damageDealtToTurretsPerTeamTotalTowerDamageDone"]
+        user_indicator["turretKillsPerDeaths"] = match_indicator["macroIndicator"]["splitPoint"]["turretKillsPerDeaths"]
+        user_indicator["damageDealtToTurretsPerTeamTotalTowerDamageDone"] = match_indicator["macroIndicator"]["splitPoint"]["damageDealtToTurretsPerTeamTotalTowerDamageDone"]
 
-        user_indicator["totalTimeCCingOthersPerTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["totalTimeCCingOthersPerTotalDamageTaken"]
-        user_indicator["totalDamageTakenPerTeamTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["totalDamageTakenPerTeamTotalDamageTaken"]
-        user_indicator["damageSelfMitigatedPerTotalDamageTaken"] = match_indicator["macroIndicatorAvg"]["initiatingPoint"]["damageSelfMitigatedPerTotalDamageTaken"]
+        user_indicator["totalTimeCCingOthersPerTotalDamageTaken"] = match_indicator["macroIndicator"]["initiatingPoint"]["totalTimeCCingOthersPerTotalDamageTaken"]
+        user_indicator["totalDamageTakenPerTeamTotalDamageTaken"] = match_indicator["macroIndicator"]["initiatingPoint"]["totalDamageTakenPerTeamTotalDamageTaken"]
+        user_indicator["damageSelfMitigatedPerTotalDamageTaken"] = match_indicator["macroIndicator"]["initiatingPoint"]["damageSelfMitigatedPerTotalDamageTaken"]
 
-        user_indicator["visionScorePerDeath"] = match_indicator["macroIndicatorAvg"]["visionPoint"]["visionScorePerDeath"]
-        user_indicator["totalJungleObjectivePerGameDuration"] = match_indicator["macroIndicatorAvg"]["jungleHoldPoint"]["totalJungleObjectivePerGameDuration"]
+        user_indicator["visionScorePerDeath"] = match_indicator["macroIndicator"]["visionPoint"]["visionScorePerDeath"]
+        user_indicator["totalJungleObjectivePerGameDuration"] = match_indicator["macroIndicator"]["jungleHoldPoint"]["totalJungleObjectivePerGameDuration"]
 
-        user_indicator["getObjectiveDifferPerGameDuration"] = match_indicator["macroIndicatorAvg"]["objectivePoint"]["getObjectiveDifferPerGameDuration"]
+        user_indicator["getObjectiveDifferPerGameDuration"] = match_indicator["macroIndicator"]["objectivePoint"]["getObjectiveDifferPerGameDuration"]
 
-        user_indicator["damagePerMinute"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["damagePerMinute"]
-        user_indicator["dealPerGold"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["dealPerGold"]
-        user_indicator["teamDamagePercentage"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["teamDamagePercentage"]
+        user_indicator["damagePerMinute"] = match_indicator["macroIndicator"]["totalDealPoint"]["damagePerMinute"]
+        user_indicator["dealPerGold"] = match_indicator["macroIndicator"]["totalDealPoint"]["dealPerGold"]
+        user_indicator["teamDamagePercentage"] = match_indicator["macroIndicator"]["totalDealPoint"]["teamDamagePercentage"]
 
     for indicator in user_indicator:
         if user_indicator[indicator] != 0:
