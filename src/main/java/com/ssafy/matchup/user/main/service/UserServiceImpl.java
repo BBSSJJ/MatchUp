@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
         OauthResponse oauthResponse = webClientFactory.getRiotAccountByRiotCode(riotCode).block();
         if (oauthResponse == null) throw new IllegalArgumentException("invalid riot code");
 
+        log.info("access token : {}", oauthResponse.getAccessToken());
         AccountResponseDto accountResponseDto = webClientFactory.getAccountResponseDtoByToken(oauthResponse.getTokenType(), oauthResponse.getAccessToken()).block();
         if (accountResponseDto == null) throw new IllegalArgumentException("invalid account info");
 
