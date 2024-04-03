@@ -16,6 +16,12 @@
     /* position: absolute;
     right: 10px; */
     /* z-index: 2000; */
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+
+.chatModal::-webkit-scrollbar {
+    display: none;
 }
 
 .input {
