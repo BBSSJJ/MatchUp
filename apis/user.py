@@ -94,8 +94,6 @@ def get_user_indicator(user_id: int):
     user_indicator["dealPerGold"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["dealPerGold"]
     user_indicator["teamDamagePercentage"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["teamDamagePercentage"]
 
-    user_indicator_df = pd.DataFrame([user_indicator], index=[0])
-
     return user_indicator
 
 
@@ -103,7 +101,24 @@ def get_user_keyword(index: int, percentile: int):
     if index == 0:
         if percentile > 0.66:
             return {
-                "keyword": "압도적 라인전 CS 차이",
+                "keyword": "농사꾼 나서스",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "나서스",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "베인한테 맞는 나서스",
+                "rank": 3
+            }
+
+    elif index == 1:
+        if percentile > 0.66:
+            return {
+                "keyword": "질리언",
                 "rank": 1
                 }
         elif percentile > 0.33:
@@ -113,11 +128,227 @@ def get_user_keyword(index: int, percentile: int):
             }
         else:
             return {
-                "keyword": "부족한 라인전 CS 차이",
+                "keyword": "CS는 사치",
                 "rank": 3
             }
-    else:
-        return {
-            "keyword": "키워드 이름",
-            "rank": 1
-        }
+        
+    elif index == 2:
+        if percentile > 0.66:
+            return {
+                "keyword": "니 포탑 쩔더라",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+        
+    elif index == 3:
+        if percentile > 0.66:
+            return {
+                "keyword": "압도적 라인전 딜량 차이",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 4:
+        if percentile > 0.66:
+            return {
+                "keyword": "압도적 타워 철거",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 5:
+        if percentile > 0.66:
+            return {
+                "keyword": "팀 타워 철거왕",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+
+    elif index == 6:
+        if percentile > 0.66:
+            return {
+                "keyword": "이니시에이팅의 달인",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 7:
+        if percentile > 0.66:
+            return {
+                "keyword": "팀 탱킹 담당",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+
+    elif index == 8:
+        if percentile > 0.66:
+            return {
+                "keyword": "데미지 최소화",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 9:
+        if percentile > 0.66:
+            return {
+                "keyword": "시야왕",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+        
+    elif index == 10:
+        if percentile > 0.66:
+            return {
+                "keyword": "상대 정글",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 11:
+        if percentile > 0.66:
+            return {
+                "keyword": "오브젝트왕",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 12:
+        if percentile > 0.66:
+            return {
+                "keyword": "DPM 왕",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 13:
+        if percentile > 0.66:
+            return {
+                "keyword": "DPG 왕",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }
+    
+    elif index == 14:
+        if percentile > 0.66:
+            return {
+                "keyword": "팀 데미지 담당",
+                "rank": 1
+                }
+        elif percentile > 0.33:
+            return {
+                "keyword": "평균 라인전 CS 차이",
+                "rank": 2
+            }
+        else:
+            return {
+                "keyword": "CS는 사치",
+                "rank": 3
+            }

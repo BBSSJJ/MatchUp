@@ -15,15 +15,20 @@ matchup = fastapi.FastAPI()
 # 승률 기반의 유저 추천
 @matchup.get("/api/recommends/winning/{user_id}")
 async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # lane = ["top", "jungle", "mid", "bottom", "support"]
+    # 변환 딕셔너리
+    divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
+    lanes = {"top": "TOP", "jungle": "JUNGLE", "mid": "MIDDLE", "bottom": "BOTTOM", "support": "UTILITY"}
+
     # 내 티어 정보 가져오기
     tier, division = apis.user.get_user_tier(user_id)
-    divisions = {"I": 1, "II": 2, "III": 3, "IV": 4}
 
     # 승률 예측 모델 불러오기
     if tier == "DIAMOND" or (tier == "EMERALD" and divisions[division] <= 2):
         mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_{divisions[division]}_model.pkl')
+        scaler = joblib.load(f"statistics/scalers/{tier.lower()}_{divisions[division]}_scaler.joblib")
     else:
         mlp = joblib.load(f'algorithms/models/winning/{tier.lower()}_model.pkl')
+        scaler = joblib.load(f"statistics/scalers/{tier.lower()}_scaler.joblib")
 
     # 유저 목록 불러오기
     user_list = apis.user.get_users(user_id, mic)
@@ -32,14 +37,20 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
     if user_list is False:
         return []
     
+    # 내 지표 불러오기
+    my_indicator = pd.DataFrame(apis.user.get_user_indicator(user_id))
+
     # 유저 지표 불러오기
-    user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list))
+    user_indicators = pd.DataFrame(algorithms.models.winning.winning.top_ten(user_list, lanes[partner_lane]))
+
+    # 내 지표와 유저 지표 통합
+    user_indicators = (user_indicators + my_indicator.values) / 2
 
     # 유저 지표 정규화
-    normalized_user_indicators = (user_indicators - user_indicators.min()) / (user_indicators.max() - user_indicators.min())
+    scaled_data = scaler.transform(user_indicators)
 
     # 승률 상위 10명 불러오기
-    probabilities = mlp.predict_proba(normalized_user_indicators)
+    probabilities = mlp.predict_proba(scaled_data)
 
     recommendations = []
 
