@@ -14,20 +14,20 @@ import { useAtom } from "jotai"
 
 const APPLICATION_SERVER_URL = 'https://matchup.site/openvidu/'
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
-var OVScreen: OpenVidu
-var screen: Session
-var screensharing: boolean = false
+// var OVScreen: OpenVidu
+// var screen: Session
+// var screensharing: boolean = false
 
 export default function Page({ params }: { params: { sessionId: string }}) {
   const [openvidu, setOpenvidu] = useState<any>({
     session: undefined,
     publisher: undefined,
     subscribers: [],
-    screens: []
+    // screens: []
   });
   const [username, setUsername] = useState('Participant' + Math.floor(Math.random() * 100))
   const [ovSession, setOvSession] = useState<Session | undefined>(undefined)
-  const [recordingId, setRecordingId] = useState<string>('')
+  // const [recordingId, setRecordingId] = useState<string>('')
 
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
 
@@ -53,10 +53,10 @@ export default function Page({ params }: { params: { sessionId: string }}) {
 
   async function joinSession() {
     const OV = new OpenVidu()
-    OVScreen = new OpenVidu()
+    // OVScreen = new OpenVidu()
 
     const session = OV.initSession()
-    screen = OVScreen.initSession()
+    // screen = OVScreen.initSession()
 
     session.on("streamCreated", (event) => {
       // if (event.stream.typeOfVideo == "CAMERA") {
@@ -122,40 +122,40 @@ export default function Page({ params }: { params: { sessionId: string }}) {
     
   }
     
-  async function publishScreenShare() {
-    getToken().then((tokenScreen) => {
-      screen.connect(tokenScreen, { clientData: username })
-    })
-    // --- 9.1) To create a publisherScreen set the property 'videoSource' to 'screen'
-    var publisherScreen = await OVScreen.initPublisherAsync(undefined, { videoSource: "screen" });
+  // async function publishScreenShare() {
+  //   getToken().then((tokenScreen) => {
+  //     screen.connect(tokenScreen, { clientData: username })
+  //   })
+  //   // --- 9.1) To create a publisherScreen set the property 'videoSource' to 'screen'
+  //   var publisherScreen = await OVScreen.initPublisherAsync(undefined, { videoSource: "screen" });
   
-    // --- 9.2) Publish the screen share stream only after the user grants permission to the browser
-    publisherScreen.once('accessAllowed', (event) => {
-      screensharing = true;
-      // If the user closes the shared window or stops sharing it, unpublish the stream
-      publisherScreen.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-        console.log('User pressed the "Stop sharing" button');
-        screen.unpublish(publisherScreen);
-        screensharing = false;
-      });
-      screen.publish(publisherScreen);
-    });
+  //   // --- 9.2) Publish the screen share stream only after the user grants permission to the browser
+  //   publisherScreen.once('accessAllowed', (event) => {
+  //     screensharing = true;
+  //     // If the user closes the shared window or stops sharing it, unpublish the stream
+  //     publisherScreen.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+  //       console.log('User pressed the "Stop sharing" button');
+  //       screen.unpublish(publisherScreen);
+  //       screensharing = false;
+  //     });
+  //     screen.publish(publisherScreen);
+  //   });
   
-    publisherScreen.on('videoElementCreated', function (event) {
-      // appendUserData(event.element, screen.connection);
-      event.element['muted'] = true;
-    });
+  //   publisherScreen.on('videoElementCreated', function (event) {
+  //     // appendUserData(event.element, screen.connection);
+  //     event.element['muted'] = true;
+  //   });
   
-    publisherScreen.once('accessDenied', (event) => {
-      console.error('Screen Share: Access Denied');
-    });
-  }
+  //   publisherScreen.once('accessDenied', (event) => {
+  //     console.error('Screen Share: Access Denied');
+  //   });
+  // }
 
   function leaveSession () {
     if (ovSession) {
       ovSession.disconnect()
-      screen.disconnect()
-      screensharing = false
+      // screen.disconnect()
+      // screensharing = false
       setOpenvidu((parameter: any) => ({
         ...parameter,
         session: undefined,
@@ -166,18 +166,18 @@ export default function Page({ params }: { params: { sessionId: string }}) {
     }
   }
 
-  async function startRecording(sessionId: string) {
-    const response = await axios({
-      method: 'post',
-      url: `${APPLICATION_SERVER_URL}api/recordings/start`,
-      headers,
-      data: {
-        session: sessionId
-      }
-    })
-    window.alert('녹화 시작')
-    return setRecordingId(response.data.id)
-  }
+  // async function startRecording(sessionId: string) {
+  //   const response = await axios({
+  //     method: 'post',
+  //     url: `${APPLICATION_SERVER_URL}api/recordings/start`,
+  //     headers,
+  //     data: {
+  //       session: sessionId
+  //     }
+  //   })
+  //   window.alert('녹화 시작')
+  //   return setRecordingId(response.data.id)
+  // }
   
 
   return (
@@ -185,20 +185,28 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       {openvidu.session ? (
         <div className="flex justify-between">
           {openvidu.publisher ? (
-            <div>
-              <p>{openvidu.publisher.stream.typeOfVideo}{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p>
-              {/* <Image 
+            <>
+              {/* <p>{openvidu.publisher.stream.typeOfVideo}{JSON.parse(openvidu.publisher.stream.connection.data).clientData}</p> */}
+              <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
-                style={{opacity: 0.5}}
-              /> */}
-              <div>
+                style={{opacity: 0.8}}
+              />
+              <div className="p-0 w-0">
                 <UserVideoComponent streamManager={openvidu.publisher} />
               </div>
-            </div>
-          ) : null}
+            </>
+          ) : (
+            <Image 
+                src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"
+                alt="image"
+                width={308}
+                height={560}
+                style={{opacity: 0.2}}
+              />
+          )}
           <div className="w-screen">
             <MatchupChats roomId={params.sessionId} />
             <div className="flex justify-center pt-10">
@@ -210,21 +218,29 @@ export default function Page({ params }: { params: { sessionId: string }}) {
               <Button color="warning" onPress={() => stopRecording(recordingId)}>녹화중지</Button> */}
             </div>
           </div>
-          {openvidu.subscribers.map((sub: any) => (
-            <div key={sub.id}>
-              <p>{sub.stream.typeOfVideo}{JSON.parse(sub.stream.connection.data).clientData}</p>
-              {/* <Image 
+          {openvidu.subscribers.length !== 0 ? (openvidu.subscribers.map((sub: any) => (
+            <>
+              {/* <p>{sub.stream.typeOfVideo}{JSON.parse(sub.stream.connection.data).clientData}</p> */}
+              <Image 
                 src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg"
                 alt="image"
                 width={308}
                 height={560}
-                style={{opacity: 0.5}}
-              /> */}
-              <div>
+                style={{opacity: 0.8}}
+              />
+              <div className="p-0 w-0">
                 <UserVideoComponent streamManager={sub} />
               </div>
-            </div>
-          ))}
+            </>
+          ))) : (
+            <Image 
+              src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg"
+              alt="image"
+              width={308}
+              height={560}
+              style={{opacity: 0.2}}
+            />
+          )}
           {/* {openvidu.screens.map((screen: any) => (
             <div key={screen.id}>
             <p>screen{JSON.parse(screen.stream.connection.data).clientData}</p>
@@ -235,11 +251,27 @@ export default function Page({ params }: { params: { sessionId: string }}) {
           ))} */}
         </div>
       ) : (
-          <div>
-            <MatchupChats roomId={params.sessionId} />
-            <div className="flex justify-center pt-10">
-              <Button onPress={joinSession} color="success">음성채팅 시작</Button>
+          <div className="flex justify-between">
+            <Image 
+                src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg"
+                alt="image"
+                width={308}
+                height={560}
+                style={{opacity: 0.3}}
+              />
+            <div className="w-screen">
+              <MatchupChats roomId={params.sessionId} />
+              <div className="flex justify-center pt-10">
+                <Button onPress={joinSession} color="success">음성채팅 시작</Button>
+              </div>
             </div>
+            <Image 
+                src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg"
+                alt="image"
+                width={308}
+                height={560}
+                style={{opacity: 0.3}}
+              />
           </div>
       )}
     </div>
