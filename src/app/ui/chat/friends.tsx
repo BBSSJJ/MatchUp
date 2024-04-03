@@ -200,7 +200,7 @@ export default function Friends({mode} :{mode :string}) {
             return (
                 <Card key={friend.userId} className="w-[340px]">
                     <CardHeader className="justify-between">
-                        <Link href={`/users/${friend.userId}`}>
+                        <Link href={`/user/${friend.userId}`}>
                             <div className="flex gap-5">
                                 <Avatar isBordered radius="full" size="sm" src={`${friend.riotAccount.summonerProfile.iconUrl}`} />
                                 <div className="flex flex-col gap-1 items-start justify-center">
