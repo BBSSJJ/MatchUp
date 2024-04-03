@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -84,10 +85,14 @@ public class WebClientFactory {
     }
 
     public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
+
+        String authStr = userName + ":" + password;
+        String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
+
         webClient.mutate()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
                 .defaultHeader("X-Riot-Token", riotApiKey)
-                .defaultHeaders(header -> header.setBasicAuth(userName, password));
+                .defaultHeader("Authorization", "Basic " + base64Creds);
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://auth.riotgames.com/token")
