@@ -58,16 +58,17 @@ export default function ArticleList() {
     {
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         if (error.status === 401) return
-  
       }, 
       revalidateOnFocus: false,
       revalidateOnMount: true,
-    }
-    // { refreshInterval: 500 }
+    },
+    { refreshInterval: 500 }
   )
 
   // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
-  
+  if (isLoading) {
+    return <h1>loading...</h1>
+  }
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -278,7 +279,7 @@ export default function ArticleList() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {articles?.length} articles</span>
+          <span className="text-default-400 text-small">Total {15} articles</span>
         </div>
       </div>
     );

@@ -2,6 +2,8 @@
 import { Avatar, AvatarGroup, Button, Image } from "@nextui-org/react";
 import styles from "./match-info.module.css"
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
 
 interface Participant {
     championName: string;
@@ -40,6 +42,7 @@ interface Info {
     participants: Participant[];
     teams: Team[];
     gameDuration: number;
+    queueType: string;
 }
 
 // api 요청을 보내서(summoner id, tagline) 받을 응답
@@ -59,6 +62,7 @@ export default function MatchDetail({ match, id } : {
     const playerData = match.metadata.participants // 함께한 플레이어 puuid 10개
     // const players = data?.metadata?.participants;
     const gameDuration = match.info.gameDuration // 경기 시간
+    const queue = match.info.queueType
     const teamData = match.info.teams // 승패 정보 
     // console.log("props로 받은 데이터 확인 : ", data)
     const playerDetail = match.info.participants
@@ -87,11 +91,12 @@ export default function MatchDetail({ match, id } : {
     console.log(resultOfThisUser, "result");
     
     return (
-        <main>
+        <main>  
             <div className={styles.container}>
                 <div className={styles.match}>
                     {/* <p>matchId : {matchId}</p> */}
                     <div className={styles.playInfo}>
+                        <p className="text-sm">QueueType: {queue !== null ? queue : 'event'}</p>
                         <p className={resultOfThisUser === 'win' ? styles.winText : styles.loseText}>{resultOfThisUser}</p>
                         <p className={styles.duration}>{Math.trunc(gameDuration / 60)}m {Math.trunc(((gameDuration / 60) - Math.trunc(gameDuration / 60)) * 60)}s</p>
                         <AvatarGroup>
@@ -117,7 +122,12 @@ export default function MatchDetail({ match, id } : {
                             {toggle ? 'More' : 'Close'}
                         </Button>
                     </div>
-                    <div className={toggle ? styles.hide : ""}>
+                    <motion.div 
+                        className={toggle ? styles.hide : ""}
+                        initial={{ opacity: 0 }} // 초기 상태
+                        animate={{ opacity: toggle ? 0 : 1 }} // 애니메이션 적용
+                        transition={{ duration: 0.3 }} // 애니메이션 지속 시간
+                    >
                         {
                             playerDetail1.map((player :Participant, index :number) => {
                                 const champImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${player.championName}.png`
@@ -173,7 +183,7 @@ export default function MatchDetail({ match, id } : {
                                 )
                             })
                         }
-                    </div>
+                    </motion.div>
                 </div>
                 <div className={toggle ? styles.hide : ""}>
                     {

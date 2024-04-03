@@ -141,7 +141,7 @@ const ArticlePage = ({id} :{id :number}) => {
   // const [voteCount, setVoteCount] = useState<{ left: number; right: number }>({ left: article?.leftSympathies.length || 0, right: article?.rightSympathies.length || 0 })
 
 
-  // 투표기능 
+// 투표기능 
 const totalVotes = (article?.leftSympathies.length || 0) + (article?.rightSympathies.length || 0);
 let leftVotesPercentage;
 let rightVotesPercentage;
@@ -248,7 +248,7 @@ if (totalVotes === 0) {
               style={{ width: `${leftVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
               animate={{ width: `${leftVotesPercentage}%`, opacity: 1 }}
-              transition={{ duration: 1}}
+              transition={{ duration: 0.55}}
               // exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.leftSympathies.length} */}
@@ -259,7 +259,7 @@ if (totalVotes === 0) {
               style={{ width: `${rightVotesPercentage}%` }}
               initial={{ width: '0%', opacity: 0 }}
               animate={{ width: `${rightVotesPercentage}%`, opacity: 1 }}
-              transition={{ duration: 1}}
+              transition={{ duration: 0.55}}
               // exit={{ width: "0%", opacity: 0 }}
             >
               {/* {article.rightSympathies.length} */}
