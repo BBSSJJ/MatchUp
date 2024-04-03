@@ -131,7 +131,6 @@ public class WebClientFactory {
     public Mono<AccountResponseDto> getAccountResponseDtoByToken(String tokenType, String accessToken) {
         WebClient client = WebClient.builder()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
-                .defaultHeader("X-Riot-Token", riotApiKey)
                 .defaultHeader("Authorization", tokenType + " " + accessToken)
                 .build();
 
