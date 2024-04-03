@@ -6,8 +6,10 @@ import com.ssafy.matchup.user.main.entity.type.SnsType;
 import com.ssafy.matchup.user.riotaccount.api.dto.RiotAccountDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserSnsDto {
     private Long userId;
