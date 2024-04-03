@@ -202,7 +202,7 @@ export default function Page({ params }: { params: { sessionId: string }}) {
           <div className="w-screen">
             <MatchupChats roomId={params.sessionId} />
             <div className="flex justify-center pt-10">
-              <Link href={'/onmatchup'} onClick={leaveSession}>
+              <Link href={'/lobby'} onClick={leaveSession}>
                 <Button>나가기</Button>
               </Link>
               {/* <Button onPress={publishScreenShare}>화면 공유</Button>
