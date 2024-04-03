@@ -328,7 +328,7 @@ export default function LobbyChat() {
                         <Button color="danger" variant="flat" className="text-white" onPress={onClose}>
                           닫기
                         </Button>
-                        <Button color="primary" onPress={sendMessage} onClick={onClose}>
+                        <Button color="primary" onPress={editMessage} onClick={onClose}>
                           작성하기
                         </Button>
                       </ModalFooter>
