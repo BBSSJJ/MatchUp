@@ -93,7 +93,7 @@ const SideBar: React.FC = () => {
     )
 	// 소환사명으로 친구 조회
 	const handleClick = async () => {
-		const response = await fetch(`${SERVER_API_URL}/api/friends/keywords?keyword=${keyword}`,
+		const response = await fetch(`${SERVER_API_URL}/api/friends/keywords/${keyword}`,
 		{
 			method: 'GET',
 			headers: {
