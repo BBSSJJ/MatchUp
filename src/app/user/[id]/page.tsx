@@ -20,7 +20,7 @@ export default async function UserPage({
   params: { id :string, };
 }) {
 	useEffect(() => {
-		const fetchImg = async () => {
+		const FetchImg = async () => {
 			const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
 				`${SERVER_API_URL}/api/statistics/summoners/details/users/${id}`,
 				userFetcher,
@@ -40,7 +40,7 @@ export default async function UserPage({
 			  container.style.backgroundImage = `url('${newImageUrl}')`
 			}
 		}
-		fetchImg()
+		FetchImg()
 	}, [])
 	
 
