@@ -236,7 +236,7 @@ if (totalVotes === 0) {
         <div>
           <h1 className="articleTitle">{article?.title}</h1>
           <div className="articleInfo">
-            <Link href={`/users/${article.author.userId}`}><p>{article?.author!.riotAccount?.summonerProfile?.name}</p></Link>
+            <Link href={`/user/${article?.author.userId}`}><p>{article?.author!.riotAccount?.summonerProfile?.name}</p></Link>
             <p>조회수 : {article?.views}</p>
           </div>
           <hr />
