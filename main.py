@@ -130,4 +130,9 @@ async def user_info(user_id: int):
     scaled_data = scaler.transform(user_indicator_df)
     percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
-    return user_indicator
+    user_keywords = []
+
+    for index, percentile in enumerate(percentiles[0]):
+        user_keywords.append(apis.user.get_user_keyword(index, percentile))
+
+    return user_keywords

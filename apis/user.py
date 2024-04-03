@@ -97,3 +97,16 @@ def get_user_indicator(user_id: int):
     user_indicator_df = pd.DataFrame([user_indicator], index=[0])
 
     return user_indicator
+
+
+def get_user_keyword(index: int, percentile: int):
+    if index == 0:
+        if percentile > 0.66:
+            return {"압도적 라인전 CS 차이", 1}
+        elif percentile > 0.33:
+            return {"평균 라인전 CS 차이", 2}
+        else:
+            return {"라인전 CS 차이", 3}
+
+    else:
+        return {"압도적 라인전 경험치 차이", 1}
