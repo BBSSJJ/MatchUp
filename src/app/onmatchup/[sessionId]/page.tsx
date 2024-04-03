@@ -9,6 +9,8 @@ import Link from "next/link"
 import UserVideoComponent from './UserVideoComponent';
 import { Button } from "@nextui-org/react"
 import { stopRecording } from "@/app/lib/openvidu"
+import { userInfoAtom } from "@/store/authAtom"
+import { useAtom } from "jotai"
 
 const APPLICATION_SERVER_URL = 'https://matchup.site/openvidu/'
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
@@ -26,6 +28,8 @@ export default function Page({ params }: { params: { sessionId: string }}) {
   const [username, setUsername] = useState('Participant' + Math.floor(Math.random() * 100))
   const [ovSession, setOvSession] = useState<Session | undefined>(undefined)
   const [recordingId, setRecordingId] = useState<string>('')
+
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom)
 
   async function getSession(sessionId: string) {
     const response = await axios.get(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId, {
@@ -197,10 +201,14 @@ export default function Page({ params }: { params: { sessionId: string }}) {
           ) : null}
           <div className="w-screen">
             <MatchupChats roomId={params.sessionId} />
-            <Link href={'/onmatchup'} onClick={leaveSession}>나가기</Link>
-            <Button onPress={publishScreenShare}>Screen Share</Button>
-            <Button color="danger" onPress={() => startRecording(params.sessionId)}>녹화하기</Button>
-            <Button color="warning" onPress={() => stopRecording(recordingId)}>녹화중지</Button>
+            <div className="flex justify-center pt-10">
+              <Link href={'/onmatchup'} onClick={leaveSession}>
+                <Button>나가기</Button>
+              </Link>
+              {/* <Button onPress={publishScreenShare}>화면 공유</Button>
+              <Button color="danger" onPress={() => startRecording(params.sessionId)}>녹화하기</Button>
+              <Button color="warning" onPress={() => stopRecording(recordingId)}>녹화중지</Button> */}
+            </div>
           </div>
           {openvidu.subscribers.map((sub: any) => (
             <div key={sub.id}>
@@ -229,7 +237,9 @@ export default function Page({ params }: { params: { sessionId: string }}) {
       ) : (
           <div>
             <MatchupChats roomId={params.sessionId} />
-            <button onClick={joinSession}>시작하기</button>
+            <div className="flex justify-center pt-10">
+              <Button onPress={joinSession} color="success">음성채팅 시작</Button>
+            </div>
           </div>
       )}
     </div>
