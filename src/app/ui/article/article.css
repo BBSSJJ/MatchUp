@@ -4,10 +4,10 @@
 
 .article {
   display: flex;
-  border: solid 1px white;
+  border: solid 1px #01ffff;
   width: 90%;
   margin: 0 auto;
-  background-color: #161A1E;
+  background-color: #163049;
 }
 
 .articleListContent {

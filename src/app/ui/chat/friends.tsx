@@ -161,18 +161,18 @@ export default function Friends({mode} :{mode :string}) {
     const openChatRoom = async (userId :number) => {
         try {
             let roomId = await IsChatRoom(userId) // 두 사람의 채팅방이 있는지 확인 
-            console.log("기존의 roomID :", roomId)
+            // console.log("기존의 roomID :", roomId)
 
             if('roomId' in roomId) { // res에 roomId 속성이 있는 경우
-                console.log("이 채팅방 열기 : ",roomId)
+                // console.log("이 채팅방 열기 : ",roomId)
                 setRoomId(roomId.roomId)
             } else { // 없다면 생성 
-                console.log('아직 채팅방 없음')
+                // console.log('아직 채팅방 없음')
                 await createChatRoom(userId, userInfo.userId)
                 const createdRoom = await IsChatRoom(userId)
                 const roomId = createdRoom.roomId
                 setRoomId(roomId)
-                console.log("채팅방 생성 :", roomId)
+                // console.log("채팅방 생성 :", roomId)
             }
         } catch (error) {
             console.error(error)
@@ -198,7 +198,7 @@ export default function Friends({mode} :{mode :string}) {
             <p className='m-3'>No Friends yet</p>
         ) : (friends?.list?.map((friend :Friend) => {
             return (
-                <Card key={friend.userId} className="w-[340px]">
+                <Card key={friend.userId} className="max-w-[340px]">
                     <CardHeader className="justify-between">
                         <Link href={`/users/${friend.userId}`}>
                             <div className="flex gap-5">
@@ -212,12 +212,11 @@ export default function Friends({mode} :{mode :string}) {
                             {/* 삭제 버튼 */}
                             <Button
                                 onPress={() => handleDelete(friend.userId)}
-                                className='m-4 ml-auto w-[15px] h-[15px]'
+                                className='m-4 w-[15px] h-[15px]'
                                 isIconOnly 
                                 color="danger"
-                                
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 24 24" width="28" fill="currentColor"><path d="M7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 24 24" width="15" fill="currentColor"><path d="M7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
                             </Button>
                         {mode === 'duo' && (
                             <Button
