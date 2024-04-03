@@ -171,7 +171,7 @@ def get_user_keyword(index: int, percentile: int):
     if index == 0:
         if percentile > 0.66:
             return {
-                "keyword": "농사꾼 나서스",
+                "keyword": "농사 대박 나서스",
                 "rank": 1
                 }
         elif percentile > 0.33:
@@ -188,17 +188,17 @@ def get_user_keyword(index: int, percentile: int):
     elif index == 1:
         if percentile > 0.66:
             return {
-                "keyword": "질리언",
+                "keyword": "마치 닐라, 질리언",
                 "rank": 1
                 }
         elif percentile > 0.33:
             return {
-                "keyword": "평균 라인전 CS 차이",
+                "keyword": "1렙차",
                 "rank": 2
             }
         else:
             return {
-                "keyword": "CS는 사치",
+                "keyword": "흑백화면 장인",
                 "rank": 3
             }
         
@@ -210,19 +210,19 @@ def get_user_keyword(index: int, percentile: int):
                 }
         elif percentile > 0.33:
             return {
-                "keyword": "평균 라인전 CS 차이",
+                "keyword": "갱오면 타워 나감",
                 "rank": 2
             }
         else:
             return {
-                "keyword": "CS는 사치",
+                "keyword": "갱 안오면 우리 타워 나감",
                 "rank": 3
             }
         
     elif index == 3:
         if percentile > 0.66:
             return {
-                "keyword": "압도적 라인전 딜량 차이",
+                "keyword": "사디스트",
                 "rank": 1
                 }
         elif percentile > 0.33:
