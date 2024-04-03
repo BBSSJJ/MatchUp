@@ -66,9 +66,6 @@ export default function ArticleList() {
   )
 
   // const pages = Math.ceil(articles?.list?.length / rowsPerPage);
-  if (isLoading) {
-    return <h1>loading...</h1>
-  }
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -279,7 +276,7 @@ export default function ArticleList() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {15} articles</span>
+          <span className="text-default-400 text-small">Total {articles?.list?.length} articles</span>
         </div>
       </div>
     );
