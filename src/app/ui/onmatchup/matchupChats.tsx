@@ -73,10 +73,10 @@ export default function MatchupChats({ roomId }: {roomId: string}) {
   return (
     <div>
       <ScrollShadow hideScrollBar className="chatbox" size={30}>
-        {demoChats.map((chat, index) => {
+        {messages.map((chat) => {
           return(
-            <div key={index}>
-              <span style={{color: chat.name == "me" ? "#C89B3C" : "#A09B8C"}}>{chat.name.replaceAll('+', ' ')}</span>:
+            <div key={chat.timestamp}>
+              <span style={{color: chat.name == user.riotAccount.summonerProfile.name ? "#C89B3C" : "#A09B8C"}}>{chat.name.replaceAll('+', ' ')}</span>:
               <span> {chat.content}</span>
             </div>
           )
