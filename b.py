@@ -9,6 +9,8 @@ scaler = joblib.load("statistics/scalers/diamond_1_scaler.joblib")
 
 b1 = pd.DataFrame([a.a1()])
 
+print(b1.to_dict(orient="records"))
+
 scaled_data = scaler.transform(b1)
 
 percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
