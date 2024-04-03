@@ -5,6 +5,8 @@ import { Button, Textarea } from '@nextui-org/react';
 import styles from './commentList.module.css'
 import { SERVER_API_URL } from '@/utils/instance-axios';
 import useSWR, { mutate } from 'swr';
+import { useAtomValue } from 'jotai';
+import { isLoggedInAtom } from '@/store/authAtom';
 
 interface Writer {
   userId?: number;
@@ -22,14 +24,21 @@ interface Writer {
 const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId: number, parentId: number}) => {
   const [toggle, setToggle] :[boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(true);
   const [replyContent, setReplyContent] = useState("")
-
+  const isLoggedIn = useAtomValue(isLoggedInAtom)
   const { data , error } = useSWR(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`)
   const utcDate = new Date(comment.createdAt)
   utcDate.setHours(utcDate.getHours() + 8)
   const createdAtKST = utcDate.toISOString().replace("T", " ").slice(0, -5)
 
+  // 대댓글 달기
   const handleReply = async () => {
+    if(!isLoggedIn) {
+      alert("댓글은 회원만 작성할 수 있습니다.")
+      setReplyContent("")
+      return
+    }
     setToggle(prev => !prev)
+
     const response = await fetch(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`, 
     {
       method: 'POST',
@@ -45,7 +54,6 @@ const Comment = ({ comment, articleId, parentId } : { comment :Reply, articleId:
     if (response.ok) {
       setReplyContent("")
       mutate(`${SERVER_API_URL}/api/mz/comments/articles/${articleId}`)
-
     }
   }
 
