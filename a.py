@@ -88,3 +88,7 @@ B = pd.DataFrame({
 updated_B = (B + A.values) / 2
 
 print(updated_B)
+
+partner_lane = "jungle"
+lanes = {"top": "TOP", "jungle": "JUNGLE", "mid": "MIDDLE", "bottom": "BOTTOM", "support": "UTILITY"}
+print(lanes[partner_lane])
