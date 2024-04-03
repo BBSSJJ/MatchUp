@@ -91,13 +91,13 @@
 
 해당 명세서를 다운로드 후, 크롬으로 실행하여 확인합니다.
 
-### [User API 명세서![logo](./assets/img/swagger.png){: width="100" height="100"}](/uploads/48d8baccbcf0d004c0d98de907a07969/index.html)
+### [User API 명세서![logo](./assets/img/swagger.png){: width="30" height="30"}](/uploads/48d8baccbcf0d004c0d98de907a07969/index.html)
 
-### [Statistics API 명세서![logo](./assets/img/swagger.png){: width="100" height="100"}](/uploads/6fc2eb379302e05d72ad0cc2d2297547/index.html)
+### [Statistics API 명세서![logo](./assets/img/swagger.png){: width="30" height="30"}](/uploads/6fc2eb379302e05d72ad0cc2d2297547/index.html)
 
-### [Chat API 명세서![logo](./assets/img/swagger.png){: width="100" height="100"}](/uploads/b4b19dfb19d8016988c1db087379c175/index.html)
+### [Chat API 명세서![logo](./assets/img/swagger.png){: width="30" height="30"}](/uploads/b4b19dfb19d8016988c1db087379c175/index.html)
 
-### [Alarm API 명세서![logo](./assets/img/swagger.png){: width="100" height="100"}](/uploads/6d9b7179336fbc4b2b212d3b30870926/index.html)
+### [Alarm API 명세서![logo](./assets/img/swagger.png){: width="30" height="30"}](/uploads/6d9b7179336fbc4b2b212d3b30870926/index.html)
 
 [맨위로](#매치업matchup)
 
