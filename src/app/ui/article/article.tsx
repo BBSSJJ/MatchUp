@@ -226,7 +226,7 @@ if (totalVotes === 0) {
       <Button
         size='sm'
         color='secondary'
-        className='ml-[10%]'
+        className='ml-[10%] m-3'
         onClick={() => {router.back()}}
       >
         뒤로가기
@@ -239,7 +239,7 @@ if (totalVotes === 0) {
             <p>조회수 : {article?.views}</p>
           </div>
           <hr />
-          <p className='mt-3 text-right'>{article?.createdAt}</p>
+          <p className='my-3 text-right'>{article?.createdAt}</p>
           {/* <p className="articleContent">{article.content}</p> */}
           <div dangerouslySetInnerHTML={{ __html: article?.content }} />
           <div className="articleVoteButtons">
