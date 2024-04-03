@@ -106,6 +106,8 @@ export default function Friends({mode} :{mode :string}) {
 
     const reloadFriends = async () => {
         mutate(`${SERVER_API_URL}/api/friends?friendStatus=FRIEND`)
+        mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
+        mutate(`${SERVER_API_URL}/api/friends?friendStatus=RECEIVED`)
     }
 
     // 버튼 클릭시 수행 : void
@@ -114,6 +116,7 @@ export default function Friends({mode} :{mode :string}) {
         onOpen()
     }
 
+    // 친구요청 수락
     const handleAccept = async (friendId :number) => {
         try {
             const response= await fetch(`${SERVER_API_URL}/api/friends/${friendId}`, {
@@ -126,7 +129,7 @@ export default function Friends({mode} :{mode :string}) {
             if(!response.ok) {
                 throw new Error('cannot create')
             }
-
+            reloadFriends()
             return response.json()
         } catch (error) {
             console.error(error)
@@ -145,7 +148,8 @@ export default function Friends({mode} :{mode :string}) {
             if (!response.ok) {
                 console.error('친구 삭제 실패')
             }
-            mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
+            reloadFriends()
+            // mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
             return response.json()
 
         } catch(error) {
@@ -194,7 +198,7 @@ export default function Friends({mode} :{mode :string}) {
             <p className='m-3'>No Friends yet</p>
         ) : (friends?.list?.map((friend :Friend) => {
             return (
-                <Card key={friend.userId} className="max-w-[340px]">
+                <Card key={friend.userId} className="w-[340px]">
                     <CardHeader className="justify-between">
                         <div className="flex gap-5">
                             <Avatar isBordered radius="full" size="sm" src={`${friend.riotAccount.summonerProfile.iconUrl}`} />
@@ -206,14 +210,14 @@ export default function Friends({mode} :{mode :string}) {
                             {/* 삭제 버튼 */}
                             <Button
                                 onPress={() => handleDelete(friend.userId)}
-                                className='m-4 ml-auto w-[10px] h-[10px]'
+                                className='m-4 ml-auto w-[15px] h-[15px]'
                                 isIconOnly 
                                 color="danger"
                                 
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 24 24" width="28" fill="currentColor"><path d="M7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
                             </Button>
-                        {mode === 'DUO' && (
+                        {mode === 'FRIEND' && (
                             <Button
                             className={"bg-transparent text-foreground border-default-200"}
                             color="primary"
