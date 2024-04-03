@@ -11,6 +11,8 @@ public class SummonerDetailInfoResponseDto {
     private String rank;
     private String tier;
     private double winRate;
+    private Integer win;
+    private Integer lose;
     private String latestChampion;
     private String[] top3Champions;
     private String mostLane;
@@ -32,6 +34,8 @@ public class SummonerDetailInfoResponseDto {
         if (metadata.getTeamPositionCount() != null) this.mostLane = calculator.calculateMostLane(metadata.getTeamPositionCount());
         if (metadata.getChampionCount() != null) this.top3Champions = calculator.calculateMost3Champion(metadata.getChampionCount());
         this.pingCountAvg = metadata.getPingCountAvg();
+        this.win = metadata.getWinCount();
+        this.lose = metadata.getTotalCount() - metadata.getWinCount();
         this.killAvg = metadata.getKillAvg();
         this.deathAvg = metadata.getDeathAvg();
         this.assistAvg = metadata.getAssistAvg();
