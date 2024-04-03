@@ -12,7 +12,7 @@ public interface MzArticleService {
 
     void addMzArticle(Long userId, WriteMzArticleRequestDto writeMzArticleRequestDto);
 
-    MzArticleDto detailMzArticle(Long articleId);
+    MzArticleDto detailMzArticle(Long articleId, boolean b);
 
     void deleteMzArticle(Long articleId, Long userId);
 

@@ -64,19 +64,23 @@ public class MzArticleServiceImpl implements MzArticleService {
 
     @Transactional
     @Override
-    public MzArticleDto detailMzArticle(Long articleId) {
+    public MzArticleDto detailMzArticle(Long articleId, boolean firstRead) {
         Optional<MzArticle> mzArticleOptional = mzArticleRepository.findMzArticleById(articleId);
         if (mzArticleOptional.isEmpty()) throw new EntityNotFoundException();
         MzArticle mzArticle = mzArticleOptional.get();
+
         log.info("mzArticle : {}", mzArticle);
+
+        if (firstRead)
+            mzArticleRepository.updateViews(articleId);
+
         List<SympathyDto> leftSympathies = sympathyRepository.findLeftSympathiesByMzArticleId(articleId)
                 .stream().map(SympathyDto::new).collect(toList());
         List<SympathyDto> rightSympathies = sympathyRepository.findRightSympathiesByMzArticleId(articleId)
                 .stream().map(SympathyDto::new).collect(toList());
         MzArticleDto mzArticleDto = new MzArticleDto(mzArticle);
         mzArticleDto.setSympathies(leftSympathies, rightSympathies);
-        // TODO : Cookie 이용해서 하루에 한번만 조회수 오르도록 구현
-        mzArticleRepository.updateViews(articleId);
+
         return mzArticleDto;
     }
 

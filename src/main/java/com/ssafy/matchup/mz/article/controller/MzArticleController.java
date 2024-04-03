@@ -1,6 +1,7 @@
 package com.ssafy.matchup.mz.article.controller;
 
 import com.ssafy.matchup.global.dto.ListDto;
+import com.ssafy.matchup.global.util.CookieUtil;
 import com.ssafy.matchup.global.util.JwtTokenUtil;
 import com.ssafy.matchup.mz.article.dto.MzArticleDto;
 import com.ssafy.matchup.mz.article.dto.SimpleMzArticleDto;
@@ -8,6 +9,7 @@ import com.ssafy.matchup.mz.article.dto.request.WriteMzArticleRequestDto;
 import com.ssafy.matchup.mz.article.service.MzArticleService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class MzArticleController {
 
     private final JwtTokenUtil jwtTokenUtil;
+    private final CookieUtil cookieUtil;
     private final MzArticleService mzArticleService;
 
 //    @Operation(summary = "게시글 목록", description = "전체 게시글을 페이지 별로 조회하는 API입니다.")
@@ -59,8 +62,8 @@ public class MzArticleController {
 
     @Operation(summary = "게시글 조회", description = "게시글을 조회하는 API입니다.")
     @GetMapping("/{article-id}")
-    ResponseEntity<MzArticleDto> mzArticleDetails(@PathVariable("article-id") Long articleId) {
-        return new ResponseEntity<>(mzArticleService.detailMzArticle(articleId), HttpStatus.OK);
+    ResponseEntity<MzArticleDto> mzArticleDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("article-id") Long articleId) {
+        return new ResponseEntity<>(mzArticleService.detailMzArticle(articleId, cookieUtil.firstRead(request, response, articleId)), HttpStatus.OK);
     }
 
     @Operation(summary = "게시글 수정", description = "게시글을 수정하는 API입니다.")
