@@ -103,6 +103,9 @@ public class WebClientFactory {
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
                 .defaultHeader("X-Riot-Token", riotApiKey)
                 .defaultHeader("Authorization", "Basic " + base64Creds)
+                .defaultHeader("Accept", "*/*")
+                .defaultHeader("Accept-Encoding", "gzip, deflate, br")
+                .defaultHeader("Connection", "keep-alive")
                 .clientConnector(new ReactorClientHttpConnector(httpClient));
 
         URI uri = UriComponentsBuilder
