@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem, Imag
 import { ListboxWrapper } from "./ListboxWrapper"
 import { useEffect, useState, useMemo } from "react";
 
-export default function CreateModal({isOpen, onOpenChange, client, chat, userDetail}: {
+export default function UpdateModal({isOpen, onOpenChange, client, chat, userDetail}: {
   isOpen: boolean, 
   onOpenChange: () => void, 
   client: any, 
@@ -179,7 +179,7 @@ export default function CreateModal({isOpen, onOpenChange, client, chat, userDet
                 닫기
               </Button>
               <Button color="primary" onPress={() => editMessage(chat)} onClick={onClose}>
-                작성하기
+                수정하기
               </Button>
             </ModalFooter>
           </>
