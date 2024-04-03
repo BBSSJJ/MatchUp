@@ -166,8 +166,9 @@ public class SummonerTotalFluxService implements SummonerTotalService {
         List<SummonerLeagueAccountInfoResponseDto> ret = new ArrayList<>();
 
         List<LeagueInfoResponseDto> leagueInfoResponseByTier = riotWebClientFactory.getLeagueInfoResponseByTier(page, dto).collectList().block();
-        for (int i = 0; i < 20; i++) {
-            LeagueInfoResponseDto leagueInfo = leagueInfoResponseByTier.get(i);
+        if (leagueInfoResponseByTier == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
+
+        for (LeagueInfoResponseDto leagueInfo : leagueInfoResponseByTier) {
             SummonerInfoResponseDto summonerInfo = getSummonerInfo(leagueInfo).block();
             if (summonerInfo == null) throw new RiotApiException(RiotApiError.NOT_IN_RIOT_API);
 
