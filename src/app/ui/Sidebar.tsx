@@ -113,7 +113,7 @@ const SideBar: React.FC = () => {
 		<div className={styles.sidebar}>
 			{!isLoggedIn && <p>먼저 로그인하고 서비스를 이용하세요</p>}
 			{/* 로그인 하면 보이는 기능 */}
-			{ !isLoggedIn && 
+			{ isLoggedIn && 
 				<div className="flex flex-col">
 					{/* 토글버튼 */}
 					<div className="my-3 flex">
@@ -150,7 +150,7 @@ const SideBar: React.FC = () => {
 												<div>
 													{result && result!.list.map((item :Friend, index: number) => {
 														return (
-															<Link href={`/user/${item.userId}`}>
+															<Link key={index} href={`/user/${item.userId}`}>
 																<p>{item.riotAccount.summonerProfile.name} #{item.riotAccount.summonerProfile.tag}</p>
 															</Link>
 														)

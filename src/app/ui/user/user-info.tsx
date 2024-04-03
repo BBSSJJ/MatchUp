@@ -87,7 +87,7 @@ const userFetcher = async (url:string) => {
 
 // 프로필 페이지
 export default function UserProfile({ userId } :UserProfileProps) {
-	const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
+	// const keywords = ['트리플킬 장인', 'MVP', 'ACE', '슬로우 스타터', '불굴의 의지', '???']
 	const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
 	// const userdata = data ?? { tier: 'Default', win: 0, lose: 0 };
