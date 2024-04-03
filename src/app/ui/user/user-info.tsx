@@ -407,7 +407,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					{
 						keyword?.map((keyword :any, index :number) => {
 							return (
-								<Tooltip content={keyword.content}>
+								<Tooltip key={index} content={keyword.content}>
 									<Button key={index} radius="full" className="bg-gradient-to-tr from-green-500 to-blue-500 text-white shadow-lg m-1 h-[25px]">
 										{keyword.keyword}
 									</Button>
