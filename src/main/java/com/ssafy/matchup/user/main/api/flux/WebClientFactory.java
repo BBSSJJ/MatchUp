@@ -6,7 +6,13 @@ import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.response.RsoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.HttpClientTransport;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.http.HttpField;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.reactive.JettyClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -86,13 +92,23 @@ public class WebClientFactory {
 
     public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
 
+        SslContextFactory.Client sslContextFactory = new SslContextFactory.Client();
+        HttpClient httpClient = new HttpClient((HttpClientTransport) sslContextFactory) {
+            @Override
+            public Request newRequest(URI uri) {
+                Request request = super.newRequest(uri);
+                return enhance(request);
+            }
+        };
+
         String authStr = userName + ":" + password;
         String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
 
         webClient.mutate()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
                 .defaultHeader("X-Riot-Token", riotApiKey)
-                .defaultHeader("Authorization", "Basic " + base64Creds);
+                .defaultHeader("Authorization", "Basic " + base64Creds)
+                .clientConnector(new JettyClientHttpConnector(httpClient));
 
         URI uri = UriComponentsBuilder
                 .fromUriString("https://auth.riotgames.com/token")
@@ -128,6 +144,40 @@ public class WebClientFactory {
                 .retrieve().bodyToMono(AccountResponseDto.class);
     }
 
+    private Request enhance(Request request) {
+        StringBuilder group = new StringBuilder();
+        request.onRequestBegin(theRequest -> {
+            // append request url and method to group
+        });
+        request.onRequestHeaders(theRequest -> {
+            for (HttpField header : theRequest.getHeaders()) {
+                // append request headers to group
+            }
+        });
+        request.onRequestContent((theRequest, content) -> {
+            // append content to group
+        });
+        request.onRequestSuccess(theRequest -> {
+            log.debug(group.toString());
+            group.delete(0, group.length());
+        });
+        group.append("\n");
+        request.onResponseBegin(theResponse -> {
+            // append response status to group
+        });
+        request.onResponseHeaders(theResponse -> {
+            for (HttpField header : theResponse.getHeaders()) {
+                // append response headers to group
+            }
+        });
+        request.onResponseContent((theResponse, content) -> {
+            // append content to group
+        });
+        request.onResponseSuccess(theResponse -> {
+            log.debug(group.toString());
+        });
+        return request;
+    }
 //    public Mono<MessageDto> sendSummonerName(String name, String tag) {
 //        URI uri = UriComponentsBuilder
 //                .fromUriString("http://" + statisticsServer +
