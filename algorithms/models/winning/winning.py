@@ -56,7 +56,7 @@ def top_ten(user_list, lane):
             user_indicator["csDiffer"] += match_indicator["laneIndicator"]["basicWeight"]["csDiffer"]
             user_indicator["expDiffer"] += match_indicator["laneIndicator"]["basicWeight"]["expDiffer"]
             user_indicator["turretPlateDestroyDiffer"] += match_indicator["laneIndicator"]["basicWeight"]["turretPlateDestroyDiffer"]
-            user_indicator["dealDiffer"] += match_indicator["laneIndicator"]["aggresiveLaneAbilility"]["dealDiffer"]
+            user_indicator["dealDiffer"] += match_indicator["laneIndicator"]["aggresiveLaneAbility"]["dealDiffer"]
 
             user_indicator["turretKillsPerDeaths"] += match_indicator["macroIndicator"]["splitPoint"]["turretKillsPerDeaths"]
             user_indicator["damageDealtToTurretsPerTeamTotalTowerDamageDone"] += match_indicator["macroIndicator"]["splitPoint"]["damageDealtToTurretsPerTeamTotalTowerDamageDone"]
