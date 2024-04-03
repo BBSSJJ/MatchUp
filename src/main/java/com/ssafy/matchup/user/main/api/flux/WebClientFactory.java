@@ -110,6 +110,7 @@ public class WebClientFactory {
                 .defaultHeader("Connection", "keep-alive")
                 .clientConnector(new ReactorClientHttpConnector(httpClient));
 
+
         URI uri = UriComponentsBuilder
                 .fromUriString("https://auth.riotgames.com/token")
                 .encode()
