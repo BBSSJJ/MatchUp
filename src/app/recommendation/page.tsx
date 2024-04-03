@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider, Spinner } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, CardFooter, User, Image, Divider, Spinner, Textarea } from "@nextui-org/react"
 import axios, { AxiosResponse } from "axios"
 import { useState } from "react"
 import { SERVER_API_URL } from "@/utils/instance-axios"
@@ -68,105 +68,113 @@ export default function Page(){
 			<h1 className="py-10 p-10">높은 듀오 승률</h1>
 			<div className="flex justify-evenly">
 				{winnigList.length !== 0 ? (
-					winnigList.map((user: Recommendation, index: number) => (
-						<Card key={index} isPressable>
-							<CardHeader>
-								<User
-									avatarProps={{src: `https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/${user.profile}.png`}}
-									description={`#${user.tag}`}
-									name={user.name}
-								/>
-							</CardHeader>
-							<Divider/>
-							<CardBody>
-							<div className="flex justify-around">
-								<Image
-									width={30}
-									alt="tierIcon"
-									src={user.tier !== "GRANDMASTER" ? `/Emblems/${user.tier.slice(0, 1)}.png` : '/Emblems/GM.png'}
-								/>
-								<p className="text-lg">{user.tier} {user.rank}</p>
-							</div>
-							</CardBody>
-							<Divider/>
-							<CardFooter>
-							<div className="flex justify-between w-44">
-								<div 
-									className="bg-blue-700 flex items-center rounded-l-lg" 
-									style={{
-										width: `${(user.wins * 100) / (user.wins + user.losses)}%`,
-										paddingLeft: "5%"
-									}}
-								>
-									<p className="text-sm">{user.wins}승</p>
+					winnigList.length == 1 ? (
+						<Spinner size="lg" />
+					) : (
+						winnigList.map((user: Recommendation, index: number) => (
+							<Card key={index} isPressable>
+								<CardHeader>
+									<User
+										avatarProps={{src: `https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/${user.profile}.png`}}
+										description={`#${user.tag}`}
+										name={user.name}
+									/>
+								</CardHeader>
+								<Divider/>
+								<CardBody>
+								<div className="flex justify-around">
+									<Image
+										width={30}
+										alt="tierIcon"
+										src={user.tier !== "GRANDMASTER" ? `/Emblems/${user.tier.slice(0, 1)}.png` : '/Emblems/GM.png'}
+									/>
+									<p className="text-lg">{user.tier} {user.rank}</p>
 								</div>
-								<div 
-									className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
-									style={{
-										width: `${(user.losses * 100) / (user.wins + user.losses)}%`,
-										paddingRight: "5%"
-									}}
-								>
-									<p className="text-sm">{user.losses}패</p>
+								</CardBody>
+								<Divider/>
+								<CardFooter>
+								<div className="flex justify-between w-44">
+									<div 
+										className="bg-blue-700 flex items-center rounded-l-lg" 
+										style={{
+											width: `${(user.wins * 100) / (user.wins + user.losses)}%`,
+											paddingLeft: "5%"
+										}}
+									>
+										<p className="text-sm">{user.wins}승</p>
+									</div>
+									<div 
+										className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
+										style={{
+											width: `${(user.losses * 100) / (user.wins + user.losses)}%`,
+											paddingRight: "5%"
+										}}
+									>
+										<p className="text-sm">{user.losses}패</p>
+									</div>
 								</div>
-							</div>
-							</CardFooter>
-						</Card>
-					))
+								</CardFooter>
+							</Card>
+						))
+					)
 				) : (
-					<Spinner size="lg" />
+					<h2 className="text-4xl text-red-500">티어를 배정받지 않은 유저는 추천이 불가합니다.</h2>
 				)}
 			</div>
 			<h1 className="p-10">비슷한 플레이 스타일</h1>
 			<div className="flex justify-evenly">
 				{enjoyingList.length !== 0 ? (
-					enjoyingList.map((user: Recommendation, index: number) => (
-						<Card key={index} isPressable>
-							<CardHeader>
-								<User
-									avatarProps={{src: `https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/${user.profile}.png`}}
-									description={`#${user.tag}`}
-									name={user.name}
-								/>
-							</CardHeader>
-							<Divider/>
-							<CardBody>
-							<div className="flex justify-around">
-								<Image
-									width={30}
-									alt="tierIcon"
-									src={user.tier !== "GRANDMASTER" ? `/Emblems/${user.tier.slice(0, 1)}.png` : '/Emblems/GM.png'}
-								/>
-								<p className="text-lg">{user.tier} {user.rank}</p>
-							</div>
-							</CardBody>
-							<Divider/>
-							<CardFooter>
-							<div className="flex justify-between w-44">
-								<div 
-									className="bg-blue-700 flex items-center rounded-l-lg" 
-									style={{
-										width: `${(user.wins * 100) / (user.wins + user.losses)}%`,
-										paddingLeft: "5%"
-									}}
-								>
-									<p className="text-sm">{user.wins}승</p>
+					enjoyingList.length == 1 ? (
+						<Spinner size="lg" />
+					) : (
+						enjoyingList.map((user: Recommendation, index: number) => (
+							<Card key={index} isPressable>
+								<CardHeader>
+									<User
+										avatarProps={{src: `https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/${user.profile}.png`}}
+										description={`#${user.tag}`}
+										name={user.name}
+									/>
+								</CardHeader>
+								<Divider/>
+								<CardBody>
+								<div className="flex justify-around">
+									<Image
+										width={30}
+										alt="tierIcon"
+										src={user.tier !== "GRANDMASTER" ? `/Emblems/${user.tier.slice(0, 1)}.png` : '/Emblems/GM.png'}
+									/>
+									<p className="text-lg">{user.tier} {user.rank}</p>
 								</div>
-								<div 
-									className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
-									style={{
-										width: `${(user.losses * 100) / (user.wins + user.losses)}%`,
-										paddingRight: "5%"
-									}}
-								>
-									<p className="text-sm">{user.losses}패</p>
+								</CardBody>
+								<Divider/>
+								<CardFooter>
+								<div className="flex justify-between w-44">
+									<div 
+										className="bg-blue-700 flex items-center rounded-l-lg" 
+										style={{
+											width: `${(user.wins * 100) / (user.wins + user.losses)}%`,
+											paddingLeft: "5%"
+										}}
+									>
+										<p className="text-sm">{user.wins}승</p>
+									</div>
+									<div 
+										className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
+										style={{
+											width: `${(user.losses * 100) / (user.wins + user.losses)}%`,
+											paddingRight: "5%"
+										}}
+									>
+										<p className="text-sm">{user.losses}패</p>
+									</div>
 								</div>
-							</div>
-							</CardFooter>
-						</Card>
-					))
+								</CardFooter>
+							</Card>
+						))
+					)
 				) : (
-					<Spinner size="lg" />
+					<h2 className="text-4xl text-red-500">티어를 배정받지 않은 유저는 추천이 불가합니다.</h2>
 				)}
 			</div>
 		</div>

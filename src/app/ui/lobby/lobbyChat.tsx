@@ -4,7 +4,7 @@ import {
   Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, 
   User, Image, Textarea, Button, ButtonGroup, Listbox, ListboxItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, 
-  useDisclosure, Input
+  useDisclosure, Input, Select, SelectItem
 } from "@nextui-org/react"
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
@@ -268,7 +268,9 @@ export default function LobbyChat() {
 
   return (
     <div>
-      <Button onPress={() => {isLoggedIn ? onOpen() : window.alert("로그인이 필요합니다.")}}>작성하기</Button>
+      <div className="flex justify-end p-5">
+        <Button className="ml-10 font-bold" color="primary" onPress={() => {isLoggedIn ? onOpen() : window.alert("로그인이 필요합니다.")}}>글 작성하기</Button>
+      </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (

@@ -46,8 +46,8 @@ export default function ArticleList() {
   // const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortDescriptor, setSortDescriptor] = useState({
-    column: "views",
-    direction: "ascending",
+    column: "createdAt",
+    direction: "descending",
   });
   const [page, setPage] = React.useState(1);
  
@@ -91,7 +91,7 @@ export default function ArticleList() {
     //   );
     // }
 
-    return filteredArticles;
+    return filteredArticles.reverse();
   }, [articles, filterValue]);
 
   const pages = React.useMemo(() => {
