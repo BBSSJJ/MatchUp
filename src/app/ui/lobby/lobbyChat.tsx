@@ -38,22 +38,23 @@ export default function LobbyChat() {
           }
         })
         .then(async () => {
-          const response = await fetch(`${SERVER_API_URL}/api/alarm`,
-          {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({token: await getFirebaseToken() })
-          })
-  
-          if (!response.ok) {
-              console.error("클라이언트 토큰 등록 실패")
+          if (isLoggedIn) { // 로그인 된 상태에만 요청을 보내도록
+            const response = await fetch(`${SERVER_API_URL}/api/alarm`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({token: await getFirebaseToken() })
+            })
+    
+            if (!response.ok) {
+                console.error("클라이언트 토큰 등록 실패")
+            }
+            console.log(response)
           }
-          console.log(response)
         })
       };
-  
       requestPermission();
     }
   
