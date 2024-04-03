@@ -44,7 +44,6 @@ def top_ten(user_list, lane):
 
         match_indicators = document["matchIndicators"]
 
-
         count = 0
 
         for match_indicator in match_indicators:
