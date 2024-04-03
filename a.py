@@ -40,7 +40,7 @@ def a1():
     user_indicator["dealPerGold"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["dealPerGold"]
     user_indicator["teamDamagePercentage"] = match_indicator["macroIndicatorAvg"]["totalDealPoint"]["teamDamagePercentage"]
 
-    user_indicator_df = pd.DataFrame([user_indicator])
+    user_indicator_df = pd.DataFrame([user_indicator], index=[0])
 
     return user_indicator_df
 
