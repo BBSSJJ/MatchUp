@@ -12,6 +12,8 @@ import { useEffect, useState, useMemo } from "react";
 import { ListboxWrapper } from "./ListboxWrapper";
 import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
 import { useAtom } from "jotai";
+import { getFirebaseToken } from "../../../../firebase/firebaseConfig";
+import { SERVER_API_URL } from "@/utils/instance-axios";
 
 export default function LobbyChat() {
   const [client, setClient] = useState<Client | null>(null)
@@ -22,6 +24,40 @@ export default function LobbyChat() {
   var {isOpen, onOpen, onOpenChange} = useDisclosure()
   const [user, setUser] = useAtom<any>(userInfoAtom)
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const requestPermission = () => {
+        console.log('Requesting permission...');
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            // 퍼미션 허가 후 추가적으로 수행할 작업이 있다면 여기에 추가
+          } else {
+            console.log('Notification permission denied.');
+          }
+        })
+        .then(async () => {
+          const response = await fetch(`${SERVER_API_URL}/api/alarm`,
+          {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({token: await getFirebaseToken() })
+          })
+  
+          if (!response.ok) {
+              console.error("클라이언트 토큰 등록 실패")
+          }
+          console.log(response)
+        })
+      };
+  
+      requestPermission();
+    }
+  
+  }, []);
 
   useEffect(() => {
     getRecruits()
