@@ -14,6 +14,7 @@ import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
 import { useAtom } from "jotai";
 import { getFirebaseToken } from "../../../../firebase/firebaseConfig";
 import { SERVER_API_URL } from "@/utils/instance-axios";
+import Link from "next/link";
 
 export default function LobbyChat() {
   const [client, setClient] = useState<Client | null>(null)
@@ -114,11 +115,13 @@ export default function LobbyChat() {
     switch (columnKey) {
       case "summoner":
         return (
-          <User
-            avatarProps={{src: chat.iconUrl}}
-            description={`#${chat.name.split('#')[1]}`.replaceAll('+', ' ')}
-            name={chat.name.split('#')[0].replaceAll('+', ' ')}
-          />
+          <Link href={`https://matchup.site/user/${chat.userId}`}>
+            <User
+              avatarProps={{src: chat.iconUrl}}
+              description={`#${chat.name.split('#')[1]}`.replaceAll('+', ' ')}
+              name={chat.name.split('#')[0].replaceAll('+', ' ')}
+            />
+          </Link>
         )
       case "myPosition":
         return (
