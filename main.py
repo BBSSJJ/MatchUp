@@ -71,52 +71,50 @@ async def winning(user_id: int, mic: bool, my_lane: str, partner_lane: str):  # 
 # 즐거움 기반의 유저 추천
 @matchup.get("/api/recommends/enjoying/{user_id}")
 async def enjoying(user_id: int, mic: bool, my_lane: str, partner_lane: str):
+    # 변환 딕셔너리
+    lanes = {"top": "TOP", "jungle": "JUNGLE", "mid": "MIDDLE", "bottom": "BOTTOM", "support": "UTILITY"}
+
     # 유저 목록 불러오기
     user_list = apis.user.get_users(user_id, mic)
 
     # 추천 불가 유저 처리
     if user_list is False:
         return []
-
-    # 유저 평가 데이터 확인
-    my_ratings = apis.user.get_user_ratings(user_id)
-
+    
     # 추천 리스트
     recommendations = []
 
-    if len(my_ratings) < 10:
-        nearest_neighbors = algorithms.enjoying.ten_neighbors(user_list, apis.user.get_user_puuid(user_id))
+    nearest_neighbors = algorithms.enjoying.ten_neighbors(user_list, apis.user.get_user_puuid(user_id), user_id, lanes[my_lane], lanes[partner_lane])
 
-        weight = 1
-        neighbor_weight = 0
+    weight = 1
+    neighbor_weight = 0
 
-        for neighbor in nearest_neighbors:
-            heapq.heappush(recommendations, (weight, neighbor))
+    # 평점이 있을 경우
+    # for neighbor in nearest_neighbors:
+    #     heapq.heappush(recommendations, (weight, neighbor))
 
-            neighbor_ratings = apis.user.get_user_ratings(neighbor)
+    #     neighbor_ratings = apis.user.get_user_ratings(neighbor)
 
-            for neighbor_rating in neighbor_ratings:
-                score = neighbor_rating["score"]
+    #     for neighbor_rating in neighbor_ratings:
+    #         score = neighbor_rating["score"]
 
-                if score == 5:
-                    heapq.heappush(recommendations, (neighbor_weight, neighbor_rating["feedbackedUserId"]))
-                    neighbor_weight += 0.1
+    #         if score == 5:
+    #             heapq.heappush(recommendations, (neighbor_weight, neighbor_rating["feedbackedUserId"]))
+    #             neighbor_weight += 0.1
 
-            if len(recommendations) >= 10 + weight:
-                break
-            else:
-                weight += 1
-
-    else:
-        pass
+    #     if len(recommendations) >= 10 + weight:
+    #         break
+    #     else:
+    #         weight += 1
 
     # 유저 정보 반환하기
     user_infos = []
 
-    for _ in range(10):
-        w, recommendation_user_id = heapq.heappop(recommendations)
+    for index in range(10):
+        # 평점이 있을 경우
+        # w, recommendation_user_id = heapq.heappop(recommendations)
 
-        user_infos.append(apis.user.get_user_profile(recommendation_user_id))
+        user_infos.append(apis.user.get_user_profile(nearest_neighbors[index]))
 
     return user_infos
 
