@@ -3,10 +3,15 @@ import Link from "next/link";
 import styles from "./styles.module.css";
 import { RIOT_API_KEY } from "../ui/summoner-info";
 import Champion from "../ui/champion";
+import { useEffect } from "react";
+import { SERVER_API_URL } from "@/utils/instance-axios"
+import { getFirebaseToken } from '../../../firebase/firebaseConfig';
+import FirebaseToken from "../ui/firebase-token";
+import dynamic from 'next/dynamic';
 
-export const metadata = {
-  title: "Match Up",
-};
+// export const metadata = {
+//   title: "Match Up",
+// };
 
 const API_FOR_CHAMPION = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations";
 
@@ -20,6 +25,11 @@ async function getFreeChampions() {
   return response.json();
 }
 
+const DynamicFirebaseToken = dynamic(
+  () => import("../ui/firebase-token"),
+  { ssr: false }
+);
+
 // 여기가 메인페이지 - root segment 
 export default async function HomePage() {
   // const movies = await getMovies();
@@ -31,6 +41,8 @@ export default async function HomePage() {
     return champions[`${id}`]
   })
   // console.log(freeChampionNames);
+
+  
 
   return (
     <div>
