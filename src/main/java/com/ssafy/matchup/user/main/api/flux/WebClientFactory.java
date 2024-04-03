@@ -93,6 +93,8 @@ public class WebClientFactory {
 
         String authStr = userName + ":" + password;
         String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
+        log.info("basic auth credential : {}", base64Creds);
+
 
         webClient.mutate()
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded")

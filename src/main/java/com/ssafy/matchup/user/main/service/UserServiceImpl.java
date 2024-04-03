@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto addUser(RegistUserRequestDto registUserRequestDto) {
         String riotCode = registUserRequestDto.getRiotCode();
+        log.info("riot code : {}", riotCode);
         RsoResponse rsoResponse = webClientFactory.getRiotAccountByRiotCode(riotCode).block();
         if (rsoResponse == null) throw new IllegalArgumentException("invalid riot code");
 
