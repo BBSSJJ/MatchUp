@@ -4,7 +4,7 @@ import styles from "./user-info.module.css"
 import { useAtom, useAtomValue } from "jotai";
 import { isLoggedInAtom, userInfoAtom } from "@/store/authAtom";
 import { SERVER_API_URL } from "@/utils/instance-axios";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import ChatModal from "@/app/ui/chat/chatModal";
 import { roomIdAtom } from "@/store/chatAtom";
 import MicIcon from '@mui/icons-material/Mic';
@@ -29,6 +29,10 @@ export interface UserData {
 
 interface UserProfileProps {
 	userId: string;
+}
+
+const updateDuo = () => {
+	mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
 }
 // 채팅방 생성
 const createChatRoom = async (userId :number, myId :number) => {
@@ -203,7 +207,6 @@ export default function UserProfile({ userId } :UserProfileProps) {
 		}
 	};
 	
-	
 
 
 	// 유저 데이터 가져오기
@@ -313,8 +316,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					<Image
 						alt="Lv- profile"
 						className="object-center h-[250px] w-[250px]"
-						src={records === undefined ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
-						
+						src={records === '최근 플레이한 챔피언 없음' ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
 					/>
 					<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 						<p className="text-tiny text-white/80">{user?.riotAccount.summonerProfile.name}</p>
@@ -382,15 +384,15 @@ export default function UserProfile({ userId } :UserProfileProps) {
 			</div>
 			<div className={styles.item3}>
 				<div className="h-[250px] w-[650px]">
-					<p className="text-bold">전적 정보</p>
+					<p className="text-bold text-#332828 mb-2">전적 정보</p>
 					{records === 'unranked' ? (<p>랭크 게임을 더 하고 오세요</p>) : (
-						<>s
+						<>
 							<div>
-								<p>{records?.win} / {records?.lose}</p>
+								<p>WIN / LOSE : {records?.win} / {records?.lose}</p>
 								<p>승률 : {records?.winRate}%</p>
 								<p>Tier : {user.riotAccount.tier}</p>
 								<p>Rank : {records?.rank}</p>
-								<p>최근 사용한 챔피언</p>
+								<p className="my-2">최근 사용한 챔피언</p>
 								<div className="flex">
 									{records?.top3Champions.map((champion :string, index :number) => {
 										return (
