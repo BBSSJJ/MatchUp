@@ -126,10 +126,8 @@ async def user_info(user_id: int):
     user_indicator = apis.user.get_user_indicator(user_id)
     user_indicator_df = pd.DataFrame([user_indicator])
 
-    return user_indicator
-
     # 유저 상세 정보 확인
     scaled_data = scaler.transform(user_indicator_df)
     percentiles = np.round(scipy.stats.norm.cdf(scaled_data) * 100, 2)
 
-    return percentiles
+    return user_indicator
