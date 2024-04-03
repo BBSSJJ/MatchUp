@@ -69,19 +69,19 @@
 - 다른 유저들은 댓글 및 공감으로 의견 공유 가능
 - 사람들이 어떤 플레이어의 입장에 더 공감하는지 그래프로 시각화
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
 
 ## 4. 프로젝트 구조
 
 ![sa](./assets/img/sa.png)
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
 
 ## 5. 화면 명세서
 
 ![image](./assets/img/LOGO.png)
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
 
 ## 6. API 명세서
 
@@ -90,7 +90,7 @@
 ### ![CHAT API 명세서](/uploads/b4b19dfb19d8016988c1db087379c175/index.html)
 ### ![ALARM API 명세서](/uploads/6d9b7179336fbc4b2b212d3b30870926/index.html)
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
 
 ## 7. 컨벤션
 
@@ -300,7 +300,7 @@ ex)
     // (생략)
 ```
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
 
 ## 8. 일정 관리
 
@@ -408,4 +408,4 @@ ex)
 
 ![번다운](./assets/img/번다운%20차트/통합.jpg)
 
-[맨위로](#매치업MatchUP)
+[맨위로](#매치업matchup)
