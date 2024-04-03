@@ -21,13 +21,13 @@ const getFirebaseToken = async () => {
     try {
         const currentToken = await getToken(messaging, { vapidKey: "BP3-XwR7C4KGwYeY04Ue65rZFaw8VVH3hNZDZScOohjf-mvYtIEGMwbeE961pah6WWhE_Boc_JAB2CXJheeO05c" });
         if (currentToken) {
-            console.log("클라이언트 토큰 : ",currentToken); // 토큰 사용
+            // console.log("클라이언트 토큰 : ",currentToken); // 토큰 사용
             return currentToken
         } else {
-            console.log('No registration token available. Request permission to generate one.');
+            // console.log('No registration token available. Request permission to generate one.');
         }
     } catch (error) {
-        console.log('An error occurred while retrieving token. ', error);
+        // console.log('An error occurred while retrieving token. ', error);
     }
     // const getToken = (messaging, {vapidKey: "BP3-XwR7C4KGwYeY04Ue65rZFaw8VVH3hNZDZScOohjf-mvYtIEGMwbeE961pah6WWhE_Boc_JAB2CXJheeO05c"})
     //     .then((currentToken) => {
