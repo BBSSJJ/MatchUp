@@ -11,10 +11,25 @@ const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
 
 export default function Page() {
   const [myRooms, setMyRooms] = useState<any>([])
+  const [sessions, setSessions] = useState<string[]>([])
 
   useEffect(() => {
     getRooms()
-  })
+    getSessions()
+  }, [])
+
+  function getSessions() {
+    axios({
+      method: 'get',
+      url: `${URL}/sessions`,
+      headers
+    })
+    .then((response) => {
+      const nowSessions = response.data.content.map((session: any) => session.sessionId)
+      setSessions(nowSessions)
+    })
+  
+  }
 
 
   function getRooms() {
@@ -27,10 +42,16 @@ export default function Page() {
     })
   }
 
-  function goSession() {
+  function createSessionWOID() {
+    axios({
+      method: 'post',
+      url: `${URL}/sessions`,
+      headers,
+    })
+      .then(() => {
+        getSessions()
+      })
   }
-
-
 
   return (
     <div>
@@ -41,6 +62,13 @@ export default function Page() {
           <button onClick={() => {createSession(room.roomId)}}>
             <Link href={`/onmatchup/${room.roomId}`}>{room.roomId}</Link>
           </button>
+          <hr />
+        </div>
+      ))}
+      <button onClick={createSessionWOID}>세션 생성하기(임시)</button>
+      {sessions.map((session) => (
+        <div key={session}>
+          <Link href={`/onmatchup/${session}`}>{session}</Link>
           <hr />
         </div>
       ))}

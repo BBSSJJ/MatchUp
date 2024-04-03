@@ -1,5 +1,4 @@
 import axios from "axios";
-import { OpenVidu } from "openvidu-browser";
 
 const URL = "https://matchup.site/openvidu/api"
 const headers = { Authorization: "Basic T1BFTlZJRFVBUFA6TWF0Y2hVcA==" }
@@ -52,17 +51,51 @@ export function deleteSession() {
     })
 }
 
-export function searchSession() {
-  axios({
-    method: 'get',
-    url: `${URL}/sessions/{sessionId}`,
-    headers
+export async function startRecording(sessionId: string) {
+  const response = await axios({
+    method: 'post',
+    url: `${URL}/recordings/start`,
+    headers,
+    data: {
+      session: sessionId
+    }
   })
-    .then((response) => {
-      console.log(response.data)
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  return response.data
 }
+
+export async function stopRecording(recordingId: string) {
+  const response = await axios({
+    method: 'post',
+    url: `${URL}/recordings/stop/${recordingId}`,
+    headers,
+  })
+  window.alert('녹화 중단')
+  return response.data
+}
+
+export async function getRecording(recordingId: string) {
+  const response = await axios({
+    method: 'get',
+    url: `${URL}/recordings/${recordingId}`,
+    headers,
+  })
+  return response.data
+}
+
+export async function getRecordings() {
+  const response = await axios({
+    method: 'get',
+    url: `${URL}/recordings`,
+    headers,
+  })
+  return response.data
+}
+
+export async function deleteRecording(recordingId: string) {
+  const response = await axios({
+    method: 'delete',
+    url: `${URL}/recordings/${recordingId}`,
+    headers,
+  })
+  return response.data
+} 
