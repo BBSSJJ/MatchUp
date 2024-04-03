@@ -67,8 +67,8 @@ export default async function SummonerInfo({ id, tagline }: { id: string, taglin
                         className={styles.profile}
                     />
                     <div className={styles.profileText}>
-                        <p>{summoner.name}</p>
-                        <p>solo rank : {summoner.summonerLevel} </p>
+                        <p className="text-bold color-[#e0b750]">{summoner.summonerInfo.name}</p>
+                        <p className="text-sm">solo rank : {summoner.leagueInfo.rank} </p>
                     </div>
                 </div>
                 {/* <Summoner puuid={summoner.puuid} /> */}
@@ -79,7 +79,7 @@ export default async function SummonerInfo({ id, tagline }: { id: string, taglin
         console.error(error)
         return (
             <div>
-                <p>Summoner not found</p>
+                <p className="m-8">Summoner not found</p>
             </div>
         );
     }

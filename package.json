@@ -33,7 +33,9 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-icons": "^5.0.1",
+    "react-lottie-player": "^2.0.0",
     "sockjs-client": "^1.6.1",
+    "sweetalert2": "^11.10.7",
     "swiper": "^11.0.7",
     "swr": "^2.2.5"
   },
