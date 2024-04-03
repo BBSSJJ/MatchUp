@@ -150,28 +150,26 @@ export default function DirectMessage({roomId} : {roomId :string}) {
 					<div ref={messagesEndRef} />
 				</div>	
 			</div>
-				<div className={styles.input}>
-					<Input
-						type="text"
-						value={inputMessage}
-						onChange={(e) => setInputMessage(e.target.value)}
-						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
-								sendMessage();
-							}
-						}}
-                        className='w-11/12'
-					/>
-					{/* <Button
-                        radius='full'
-                        variant='ghost'
-                        size='sm'
-						className='w-[20%] h-[100%]'  
-						onClick={() => sendMessage()}
-					>
-						보내기
-					</Button> */}
-				</div>
+            <Input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                }}
+                className='w-10/12'
+            />
+            {/* <Button
+                radius='full'
+                variant='ghost'
+                size='sm'
+                className='w-[20%] h-[100%]'  
+                onClick={() => sendMessage()}
+            >
+                보내기
+            </Button> */}
 		</div>
     )
 }
