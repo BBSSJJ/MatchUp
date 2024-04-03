@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Nippo'; 
-    src: url('/Nippo-Bold.woff') format('woff');
+    src: url('/fonts/Nippo-Bold.woff') format('woff');
     unicode-range: U+0041-005A, U+0061-007A, U+0030-0039, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
     font-weight: bold;
     font-style: normal;
@@ -9,7 +9,7 @@
 
 body {
     background-color: #161A1E;
-    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI', 'Nippo', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, , Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     color: azure;
     padding-top: 150px;
 }

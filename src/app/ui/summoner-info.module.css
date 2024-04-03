@@ -18,5 +18,8 @@
 .profileText {
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    margin-left: 25px;
+    line-height:2;
+    color: #25acc4;
+    align-self : center;
 }

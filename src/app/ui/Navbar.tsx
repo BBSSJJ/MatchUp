@@ -9,6 +9,7 @@ import { motion } from "framer-motion"
 import { atom, useAtom } from 'jotai'
 import { isLoggedInAtom, userInfoAtom } from '@/store/authAtom'
 import { SERVER_API_URL } from "@/utils/instance-axios";
+import { SiLeagueoflegends } from "react-icons/si";
 
 interface User {
   userId: number;
@@ -74,10 +75,17 @@ export default function NavigationBar() {
       <NavbarBrand className="mr-4">
         <Link href="/lobby" className="font-bold text-inherit">
           <div className="flex items-center">
-            <Image
+            {/* <Image
               className="w-[40px] h-[40px]"
               src="/logo.png"
-            />
+            /> */}
+            <SiLeagueoflegends
+            style={{
+              color: '#aeb04f',
+              width: '32px',
+              height: '32px',
+              marginRight: '5px'
+            }} />
             <span className="text-bold text-2xl">MatchUP</span>
           </div>
         </Link>
@@ -176,6 +184,7 @@ export default function NavigationBar() {
                 isClearable
                 // isDisabled
                 value={keyword}
+                isRequired
                 onClear={() => setKeyword("")}
                 placeholder="enter player name"
                 variant="faded"
@@ -194,6 +203,11 @@ export default function NavigationBar() {
                 variant="flat"
                 className="w-[100px] color-[#35ccbc]"
                 onValueChange={(value :string): void => { setTagline(value) }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleClick()
+                  }
+                }}
               />
               <Button 
                 type="button"
