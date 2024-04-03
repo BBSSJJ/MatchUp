@@ -155,7 +155,7 @@ export default function LobbyChat() {
         return (
           <div className="flex justify-between w-40">
             <div 
-              className="bg-blue-700 flex items-center rounded-l-lg" 
+              className={(chat.win + chat.lose) ? "bg-blue-700 flex items-center rounded-l-lg" : "bg-slate-600 flex items-center rounded-l-lg"}
               style={{
                 width: `${(chat.win + chat.lose) ? ((chat.win * 100) / (chat.win + chat.lose)) : 50}%`,
                 paddingLeft: "5%"
@@ -164,7 +164,7 @@ export default function LobbyChat() {
               {chat.win}승
             </div>
             <div 
-              className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
+              className={(chat.win + chat.lose) ? "bg-red-700 flex items-center flex-row-reverse rounded-r-lg" : "bg-slate-700 flex items-center flex-row-reverse rounded-r-lg"} 
               style={{
                 width: `${(chat.win + chat.lose) ? ((chat.lose * 100) / (chat.win + chat.lose)) : 50}%`,
                 paddingRight: "5%"
