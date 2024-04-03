@@ -67,7 +67,7 @@ export default async function SummonerInfo({ id, tagline }: { id: string, taglin
                         className={styles.profile}
                     />
                     <div className={styles.profileText}>
-                        <p className="text-bold color-[#e0b750]">{summoner.summonerInfo.name}</p>
+                        <p className="text-bold color-[#DD135A]">{summoner.summonerInfo.name}</p>
                         <p className="text-sm">solo rank : {summoner.leagueInfo.rank} </p>
                     </div>
                 </div>

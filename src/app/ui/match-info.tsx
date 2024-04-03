@@ -96,7 +96,7 @@ export default function MatchDetail({ match, id } : {
                 <div className={styles.match}>
                     {/* <p>matchId : {matchId}</p> */}
                     <div className={styles.playInfo}>
-                        <p className="text-sm">QueueType: {queue !== null ? queue : 'event'}</p>
+                        <p className="text-tiny">QueueType: {queue !== null ? queue : 'event'}</p>
                         <p className={resultOfThisUser === 'win' ? styles.winText : styles.loseText}>{resultOfThisUser}</p>
                         <p className={styles.duration}>{Math.trunc(gameDuration / 60)}m {Math.trunc(((gameDuration / 60) - Math.trunc(gameDuration / 60)) * 60)}s</p>
                         <AvatarGroup>
