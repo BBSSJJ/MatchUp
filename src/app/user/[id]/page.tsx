@@ -1,4 +1,3 @@
-"use client"
 import UserProfile from "@/app/ui/user/user-info"
 import styles from "./styles.module.css"
 import { RIOT_API_KEY } from "@/app/ui/summoner-info";
@@ -19,40 +18,42 @@ export default async function UserPage({
 }: {
   params: { id :string, };
 }) {
-	useEffect(() => {
-		const FetchImg = async () => {
-			const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
-				`${SERVER_API_URL}/api/statistics/summoners/details/users/${id}`,
-				userFetcher,
-				{
-					onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-					if (error.status === 401) return
-					if (error.status === 500) return 'unranked'
-					}, 
-					revalidateOnFocus: false,
-					revalidateOnMount: true,
-					revalidateIfStale: true,
-				},
-			)
-			const container = document.querySelector('.container') as HTMLElement
-			const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
-			if (container) {
-			  container.style.backgroundImage = `url('${newImageUrl}')`
-			}
-		}
-		FetchImg()
-	}, [])
+	// useEffect(() => {
+	// 	const FetchImg = async () => {
+	// 		const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
+	// 			`${SERVER_API_URL}/api/statistics/summoners/details/users/${id}`,
+	// 			userFetcher,
+	// 			{
+	// 				onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+	// 				if (error.status === 401) return
+	// 				if (error.status === 500) return 'unranked'
+	// 				}, 
+	// 				revalidateOnFocus: false,
+	// 				revalidateOnMount: true,
+	// 				revalidateIfStale: true,
+	// 			},
+	// 		)
+	// 		const container = document.querySelector('.container') as HTMLElement
+	// 		const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
+	// 		if (container) {
+	// 		  container.style.backgroundImage = `url('${newImageUrl}')`
+	// 		}
+	// 	}
+	// 	FetchImg()
+	// }, [])
 	
 
 	return (
-		<div className={styles.container}>
-			{/* <h3>User Page :{id}</h3> */}
+		<>
 			<UserProfile userId={id}/>
-		</div>
+		</>
+		// <div className={styles.container}>
+		// 	{/* <h3>User Page :{id}</h3> */}
+		// </div>
 	)
 }
 
-function useEffect(arg0: () => void, arg1: never[]) {
-	throw new Error("Function not implemented.");
-}
+// function useEffect(arg0: () => void, arg1: never[]) {
+// 	throw new Error("Function not implemented.");
+// }
    
