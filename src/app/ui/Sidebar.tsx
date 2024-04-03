@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
-import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, ModalProps} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Avatar, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, ModalProps, Divider, Input} from "@nextui-org/react";
 import ChatRoom from "./chat/chatRoom";
 import DirectMessage from "./chat/chat";
 import { useAtom, useAtomValue } from "jotai";
@@ -10,12 +10,37 @@ import { isRoomOpenAtom } from '@/store/chatAtom'
 import Friends from "./chat/friends";
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import useSWR, { mutate } from "swr";
+import { SearchIcon } from "./SearchIcon";
+import Link from "next/link";
 
 
 interface Chat {
     roomId: string;
     participants: number[]; 
     cnt: number; 
+}
+
+interface RiotAccount {
+    id: string;
+    summonerProfile: {
+        name: string;
+        tag: string;
+        iconUrl: string;
+        level: number;
+    };
+    tier: string;
+    leagueRank: string;
+    leaguePoint: number;
+}
+
+interface Friend {
+    userId: number;
+    role: string;
+    riotAccount: RiotAccount;
+}
+
+interface FriendListResponse {
+    list: Friend[];
 }
 
 const chatFetcher = async (url:string) => {
@@ -34,7 +59,8 @@ const SideBar: React.FC = () => {
 	const [chatOrFreiend, setChatOrFreiend] = useState(true) // 기본값은 친구목록 보여주기
 	const [friendMode, setFriendMode] = useState('FRIEND') // 친구목록 중에서도 기존 친구목록 보여주기
 	const userInfo = useAtomValue<any>(userInfoAtom) // read-only-atom
-	
+	const [keyword, setKeyword] = useState("")
+	const [result, setResult] = useState<any>('')	
 
 	// 친구, 채팅 토글
 	const handleToggle = (category :string) => {
@@ -65,6 +91,19 @@ const SideBar: React.FC = () => {
 			revalidateIfStale: true,
         },
     )
+	// 소환사명으로 친구 조회
+	const handleClick = async () => {
+		const response = await fetch(`${SERVER_API_URL}/api/friends/keywords?keyword=${keyword}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		const data = await response.json()
+		setResult(data)
+	}
+	
 
 	if (chatRoomLoading) {
 		return <h1>Loading...</h1>
@@ -74,7 +113,7 @@ const SideBar: React.FC = () => {
 		<div className={styles.sidebar}>
 			{!isLoggedIn && <p>먼저 로그인하고 서비스를 이용하세요</p>}
 			{/* 로그인 하면 보이는 기능 */}
-			{ isLoggedIn && 
+			{ !isLoggedIn && 
 				<div className="flex flex-col">
 					{/* 토글버튼 */}
 					<div className="my-3 flex">
@@ -83,12 +122,56 @@ const SideBar: React.FC = () => {
 					</div>
 					{/* 친구목록 */}
 					<div className={chatOrFreiend ? "" : styles.hide}>
-						<p className={styles.title}>Friends</p>
+						<div className="flex justify-start item-center leading-8">
+							<span className={styles.title}>Friends</span>
+							<Button onPress={onOpen} size="sm" className="ml-2 w-[45px]">
+								<SearchIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+							</Button>
+							<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+								<ModalContent>
+									{(onClose) => (
+										<>
+											<ModalHeader className="flex flex-col gap-1">Search</ModalHeader>
+											<ModalBody>
+												<Input
+													placeholder="Enter summoner name"
+													isClearable
+													value={keyword}
+													isRequired
+													onClear={() => setKeyword("")}
+													variant="flat"
+													onValueChange={(value :string): void => { setKeyword(value) }}
+													onKeyDown={(e) => {
+														if (e.key === 'Enter') {
+														  handleClick()
+														}
+													}}
+												/>
+												<div>
+													{result!.list.map((item :Friend, index: number) => {
+														return (
+															<Link href={`/user/${item.userId}`}>
+																<p>{item.riotAccount.summonerProfile.name} #{item.riotAccount.summonerProfile.tag}</p>
+															</Link>
+														)
+													})}
+												</div>
+											</ModalBody>
+											<ModalFooter>
+												<Button color="danger" variant="light" onPress={onClose}>
+												Close
+												</Button>
+											</ModalFooter>
+										</>
+									)}
+								</ModalContent>
+							</Modal>
+						</div>
 						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0] mr-2" variant="shadow" onPress={() => handleFriendToggle('FRIEND')}>Duo</Button>
 						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0] mr-2" variant="shadow" onPress={() => handleFriendToggle('SENT')}>Sent</Button>
 						<Button className="w-auto h-[25px] min-w-0 bg-[#10D7A0]" variant="shadow" onPress={() => handleFriendToggle('RECEIVED')}>Requested</Button>
-
-						<div className="flex flex-col gap-4 items-center z-20000">
+						<Divider className="my-4" />
+						<div className="flex flex-col gap-4 items-center z-20000 border">
 							<Friends mode={friendMode}/>
 						</div>
 					</div>
