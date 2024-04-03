@@ -23,7 +23,7 @@ async function getSummoner(id :string, tagline :string) {
         );
 
         if (!response.ok) {
-            console.log('response body: ', await response.json())
+            // console.log('response body: ', await response.json())
             // throw new Error('Failed to fetch `summoner data');
         }
         const data = await response.json()
@@ -56,7 +56,7 @@ async function getSummoner(id :string, tagline :string) {
 export default async function SummonerInfo({ id, tagline }: { id: string, tagline :string }) {
     try {
         const summoner = await getSummoner(id, tagline); // 여기서 데이터 한 번에 받음
-        console.log("response: ", summoner)
+        // console.log("response: ", summoner)
         // const summonerProfile = await getProfile(summoner.puuid)
         const profileImgUrl = `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/${summoner?.summonerInfo?.profileIconId}.png`;
         return (
