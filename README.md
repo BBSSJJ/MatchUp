@@ -73,7 +73,11 @@
 
 ## 4. 프로젝트 구조
 
+### 시스템 아키텍쳐
+
 ![sa](./assets/img/sa.png)
+
+### 기술 스택
 
 [맨위로](#매치업matchup)
 
@@ -84,6 +88,8 @@
 [맨위로](#매치업matchup)
 
 ## 6. API 명세서
+
+해당 명세서를 다운로드 후, 크롬으로 실행하여 확인합니다.
 
 ### ![USER API 명세서](/uploads/48d8baccbcf0d004c0d98de907a07969/index.html)
 ### ![STATISTICS API 명세서](/uploads/6fc2eb379302e05d72ad0cc2d2297547/index.html)
