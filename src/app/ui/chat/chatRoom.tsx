@@ -31,6 +31,10 @@ export default function ChatRoom({chatId, badge, you} :{ chatId :string; badge :
         onOpen()
     }
 
+    const updateChats = () => {
+        mutate(`${SERVER_API_URL}/api/chats/users/${you}`)
+    }
+
     // 채팅 상대방 정보 가져오기
     const {data: partner , error: partnerError, isLoading: partnerLoading } = useSWR(
         `${SERVER_API_URL}/api/users/${you}`,

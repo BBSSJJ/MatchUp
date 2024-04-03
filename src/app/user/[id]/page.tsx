@@ -1,44 +1,48 @@
+"use client"
 import UserProfile from "@/app/ui/user/user-info"
 import styles from "./styles.module.css"
 import { RIOT_API_KEY } from "@/app/ui/summoner-info";
 import { UserData } from "@/app/ui/user/user-info";
+import useSWR from "swr";
+import { SERVER_API_URL } from "@/utils/instance-axios";
 
-// const encryptedSummonerId = 'ALCPx8GgXfWuiYEmZvQzzuuTeINIORAsA3FA_SuuOf-fpw';
-// async function GetTier(encryptedSummonerId :string) {
-// 	try {
-// 		// Make a fetch request
-// 		const response = await fetch(`https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${encryptedSummonerId}`,
-// 		{
-//             headers : { "X-Riot-Token": RIOT_API_KEY }
-//         });
-		
-// 		// Check if response is successful
-// 		if (!response.ok) {
-// 			throw new Error('Failed to fetch data');
-// 		}
-
-// 		// Parse response data
-// 		const data = await response.json();
-// 		const userData =  {
-// 			tier : data.tier,
-// 			win: data.wins,
-// 			lose : data.losses,
-// 		}
-// 		return userData;
-// 		} catch (error) {
-// 			// Handle errors
-// 			console.log(error);
-// 		}
-// }
+const userFetcher = async (url:string) => {
+    const response = await fetch(url); // 서버로부터 데이터 가져오기
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json(); // JSON 형식으로 변환하여 반환
+}
 
 export default async function UserPage({
   params: { id },
 }: {
   params: { id :string, };
 }) {
+	useEffect(() => {
+		const fetchImg = async () => {
+			const {data: records,  error: recordsError, isLoading: recordsLoading } = useSWR(
+				`${SERVER_API_URL}/api/statistics/summoners/details/users/${id}`,
+				userFetcher,
+				{
+					onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+					if (error.status === 401) return
+					if (error.status === 500) return 'unranked'
+					}, 
+					revalidateOnFocus: false,
+					revalidateOnMount: true,
+					revalidateIfStale: true,
+				},
+			)
+			const container = document.querySelector('.container') as HTMLElement
+			const newImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${records?.latestChampion}_0.jpg`
+			if (container) {
+			  container.style.backgroundImage = `url('${newImageUrl}')`
+			}
+		}
+		fetchImg()
+	}, [])
 	
-	// const userData2 = await GetTier(encryptedSummonerId)
-	// console.log(userData2, 'Userdata');
 
 	return (
 		<div className={styles.container}>
@@ -46,5 +50,9 @@ export default async function UserPage({
 			<UserProfile userId={id}/>
 		</div>
 	)
+}
+
+function useEffect(arg0: () => void, arg1: never[]) {
+	throw new Error("Function not implemented.");
 }
    
