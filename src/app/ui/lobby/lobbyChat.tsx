@@ -26,6 +26,7 @@ export default function LobbyChat() {
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
   const MAX_RETRY_COUNT = 3
   let retryCount = 0
+  const [userDetail, setUserDetail] = useState<any>({})
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -71,20 +72,21 @@ export default function LobbyChat() {
 
   useEffect(() => {
     getRecruits()
-
+    
     const stomp = new Client({
       brokerURL: "wss://matchup.site/api/ws",
     })
     setClient(stomp)
-
+    
     stomp.activate()
-
+    
     stomp.onConnect = () => {
       stomp.subscribe('/topic/recruit', () => {
         getRecruits()
       })
     }
-
+    
+    getDetails()
   }, [])
 
   function getRecruits() {
@@ -94,6 +96,16 @@ export default function LobbyChat() {
     })
       .then((response) => {
         setMessages(response.data.list.reverse())
+      })
+  }
+
+  async function getDetails() {
+    await axios({
+      method: 'get',
+      url: `https://matchup.site/api/statistics/summoners/details/users/${user.userId}`
+    })
+      .then((response) => {
+        setUserDetail(response.data)
       })
   }
 
@@ -118,8 +130,8 @@ export default function LobbyChat() {
         return (
           <User
             avatarProps={{src: chat.iconUrl}}
-            description={`#${chat.name.split('#')[1]}`}
-            name={chat.name.split('#')[0]}
+            description={`#${chat.name.split('#')[1]}`.replaceAll('+', ' ')}
+            name={chat.name.split('#')[0].replaceAll('+', ' ')}
           />
         )
       case "myPosition":
@@ -159,7 +171,7 @@ export default function LobbyChat() {
             <div 
               className="bg-blue-700 flex items-center rounded-l-lg" 
               style={{
-                width: `${(chat.win * 100) / (chat.win + chat.lose)}%`,
+                width: `${(chat.win + chat.lose) ? ((chat.win * 100) / (chat.win + chat.lose)) : 50}%`,
                 paddingLeft: "5%"
               }}
             >
@@ -168,7 +180,7 @@ export default function LobbyChat() {
             <div 
               className="bg-red-700 flex items-center flex-row-reverse rounded-r-lg" 
               style={{
-                width: `${(chat.lose * 100) / (chat.win + chat.lose)}%`,
+                width: `${(chat.win + chat.lose) ? ((chat.lose * 100) / (chat.win + chat.lose)) : 50}%`,
                 paddingRight: "5%"
               }}
             >
@@ -180,7 +192,7 @@ export default function LobbyChat() {
         return (
           <div>
             <p className="text-xs">{chat.kill} / {chat.death} / {chat.assist}</p>
-            <p className="text-base">{((chat.kill + chat.assist) / chat.death).toFixed(2)}</p>
+            <p className="text-base">{chat.death ? ((chat.kill + chat.assist) / chat.death).toFixed(2) : 0}</p>
           </div>
         )
       case "memo":
@@ -195,29 +207,150 @@ export default function LobbyChat() {
       case "delete":
         return (
           <ButtonGroup size="sm">
-            <Button color="warning" isDisabled className="text-sm text-white">수정</Button>
-            <Button color="danger" className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
+            <Button onPress={onOpen} isDisabled={user.userId !== chat.userId} color="warning" className="text-sm text-white">수정</Button>
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">정보 입력</ModalHeader>
+                      <ModalBody>
+                        <div className="flex gap-2">
+                          <ListboxWrapper>
+                            <p className="text-small text-default-600 text-center">주 포지션</p>
+                            <br />
+                            <Listbox 
+                              aria-label="myPosition"
+                              variant="flat"
+                              selectionMode="single"
+                              defaultSelectedKeys={[chat.line]}
+                              selectedKeys={myPosition}
+                              onSelectionChange={(keys: any) => setMyPosition(keys)}
+                            >
+                              <ListboxItem 
+                                key="top" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="top"
+                                    src={`/positionIcons/top.png`}
+                                  />
+                                }>탑</ListboxItem>
+                              <ListboxItem 
+                                key="jungle" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="jungle"
+                                    src={`/positionIcons/jungle.png`}
+                                  />
+                                }>정글</ListboxItem>
+                              <ListboxItem 
+                                key="mid" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="mid"
+                                    src={`/positionIcons/mid.png`}
+                                  />
+                                }>미드</ListboxItem>
+                              <ListboxItem 
+                                key="bottom" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="bottom"
+                                    src={`/positionIcons/bottom.png`}
+                                  />
+                                }>원딜</ListboxItem>
+                              <ListboxItem 
+                                key="support" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="support"
+                                    src={`/positionIcons/support.png`}
+                                  />
+                                }>서포터</ListboxItem>
+                            </Listbox>
+                          </ListboxWrapper>
+                          <ListboxWrapper>
+                            <p className="text-small text-default-600 text-center">찾는 포지션</p>
+                            <br />
+                            <Listbox 
+                              aria-label="searchingPosition"
+                              variant="flat"
+                              selectionMode="single"
+                              defaultSelectedKeys={[chat.wishLine]}
+                              selectedKeys={searchingPosition}
+                              onSelectionChange={(keys: any) => setSearchingPosition(keys)}
+                            >
+                              <ListboxItem 
+                                key="top" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="top"
+                                    src={`/positionIcons/top.png`}
+                                  />
+                                }>탑</ListboxItem>
+                              <ListboxItem 
+                                key="jungle" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="jungle"
+                                    src={`/positionIcons/jungle.png`}
+                                  />
+                                }>정글</ListboxItem>
+                              <ListboxItem 
+                                key="mid" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="mid"
+                                    src={`/positionIcons/mid.png`}
+                                  />
+                                }>미드</ListboxItem>
+                              <ListboxItem 
+                                key="bottom" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="bottom"
+                                    src={`/positionIcons/bottom.png`}
+                                  />
+                                }>원딜</ListboxItem>
+                              <ListboxItem 
+                                key="support" 
+                                startContent={
+                                  <Image 
+                                    width={20}
+                                    alt="support"
+                                    src={`/positionIcons/support.png`}
+                                  />
+                                }>서포터</ListboxItem>
+                            </Listbox>
+                          </ListboxWrapper>
+                        </div>
+                        <Input label="메모" placeholder="메모를 적어주세요." onValueChange={setMemo}/>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button color="danger" variant="flat" className="text-white" onPress={onClose}>
+                          닫기
+                        </Button>
+                        <Button color="primary" onPress={editMessage} onClick={onClose}>
+                          작성하기
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
+            <Button color="danger" isDisabled={user.userId !== chat.userId} className="text-sm" onPress={() => deleteMessage(chat.objectId)}>삭제</Button>
           </ButtonGroup>
         )
     }
   }
-
-  // const demoUserInfo = {
-  //   "userId":6,
-  //   "role":"ROLE_USER",
-  //   "riotAccount":{
-  //     "id":"azZhIpYEutVjtlT7il9eUX1Gjv_UcgLeukxNSiBtpafNHA",
-  //     "summonerProfile":{
-  //       "name":"피아노의자",
-  //       "tag":"KR1",
-  //       "iconUrl":"https://ddragon.leagueoflegends.com/cdn/14.6.1/img/profileicon/5.png",
-  //       "level":9
-  //     },
-  //     "tier":"no+league+data",
-  //     "leagueRank":"no+league+data",
-  //     "leaguePoint":0
-  //   }
-  // }
 
   const rankToNumber: any = {
     'I': '1',
@@ -240,16 +373,41 @@ export default function LobbyChat() {
           wishLine: selectedSearchingPosition,
           gameType: 'solo rank',
           content: memo,
-          win: 64, //최근 20판 승리?
-          lose: 74, //최근 20판 패배?
-          kill: 2.1, //최근 20판 킬?
-          death: 3.4, //최근 20판 데스?
-          assist: 13.8, //최근 20판 어시스트?
+          win: userDetail.win ? userDetail.win : 0, //최근 20판 승리?
+          lose: userDetail.lose ? userDetail.lose : 0, //최근 20판 패배?
+          kill: userDetail.killAvg ? userDetail.killAvg : 0, //최근 20판 킬?
+          death: userDetail.deathAvg ? userDetail.deathAvg : 0, //최근 20판 데스?
+          assist: userDetail.assistAvg ? userDetail.assistAvg : 0, //최근 20판 어시스트?
         })
       })
       setMyPosition(new Set(['']))
       setSearchingPosition(new Set(['']))
       setMemo('')
+    }
+  }
+
+  function editMessage(chat: any) {
+    if (client && client.connected) {
+      client.publish({
+        destination: '/app/recruit',
+        body: JSON.stringify({
+          method: 'update',
+          objectId: chat.objectId,
+          userId: chat.userId,
+          name: chat.name,
+          iconUrl: chat.iconUrl,
+          tier: chat.tier,
+          line: selectedMyPosition,
+          wishLine: selectedSearchingPosition,
+          gameType: 'solo rank',
+          content: memo,
+          win: userDetail.win ? userDetail.win : 0, //최근 20판 승리?
+          lose: userDetail.lose ? userDetail.lose : 0, //최근 20판 패배?
+          kill: userDetail.killAvg ? userDetail.killAvg : 0, //최근 20판 킬?
+          death: userDetail.deathAvg ? userDetail.deathAvg : 0, //최근 20판 데스?
+          assist: userDetail.assistAvg ? userDetail.assistAvg : 0, //최근 20판 어시스트?
+        })
+      })
     }
   }
 
