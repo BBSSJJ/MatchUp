@@ -4,6 +4,7 @@ import com.ssafy.matchup.user.main.api.dto.response.AccountResponseDto;
 import com.ssafy.matchup.user.main.api.dto.response.SummonerLeagueAccountInfoResponseDto;
 import com.ssafy.matchup.user.main.dto.request.RegistDumpUserRequestDto;
 import com.ssafy.matchup.user.main.dto.response.RsoResponse;
+import io.netty.handler.logging.LogLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.net.URI;
 import java.util.Base64;
@@ -89,7 +91,8 @@ public class WebClientFactory {
 
     public Mono<RsoResponse> getRiotAccountByRiotCode(String riotCode) {
 
-        HttpClient httpClient = HttpClient.create().wiretap(true);
+        HttpClient httpClient = HttpClient.create().wiretap("reactor.netty.http.client.HttpClient",
+                LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
 
         String authStr = userName + ":" + password;
         String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
@@ -112,6 +115,9 @@ public class WebClientFactory {
         formData.add("grant_type", "authorization_code");
         formData.add("code", riotCode);
         formData.add("redirect_uri", redirectUri);
+        log.info("form 1 : {}, {}", "grant_type", formData.get("grant_type"));
+        log.info("form 2 : {}, {}", "code", formData.get("code"));
+        log.info("form 3 : {}, {}", "redirect_uri", formData.get("redirect_uri"));
 
         return webClient.post()
                 .uri(uri)
