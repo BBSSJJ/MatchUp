@@ -167,24 +167,18 @@ export default function NavigationBar() {
                       }>서포터</SelectItem>
                   </Select>
                   <br />
-                  {/* <Link href={{
+                  <Link href={{
                     pathname: "/recommendation/",
                     query: {myLine: myLine, searchingLine: searchingLine, useMic: useMic}
-                  }}> */}
+                  }}>
                     <Button 
                       color="primary" 
                       className="text-base font-bold w-full" 
                       isDisabled={Boolean(myLine.length == 0 || searchingLine.length == 0)}
-                      // onPress={() => nextRouter.push({
-                      //   pathname: "/recommendation/",
-                      //   query: {myLine: myLine, searchingLine: searchingLine, useMic: useMic}})}
-                      onPress={() => {
-                        router.push(`/recommendation?myLine=${myLine}&searchingLine=${searchingLine}&useMic=${useMic}`)
-                      }}
                     >
                       매칭하기!
                     </Button>
-                  {/* </Link> */}
+                  </Link>
                 </div>
               </div>
             )}
