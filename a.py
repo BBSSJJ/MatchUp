@@ -42,7 +42,7 @@ def a1():
 
     user_indicator_df = pd.DataFrame([user_indicator])
 
-    return user_indicator_df
+    return user_indicator
 
 # scaler = joblib.load("statistics/scalers/gold_scaler.joblib")
 
