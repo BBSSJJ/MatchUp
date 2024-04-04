@@ -158,7 +158,7 @@ export default function CreateArticle() {
         
       </div>
       <Editor
-        apiKey='1gn4r9v0aqj7ukaoide2t623xjf6t226fbqtwcmwk153pm2v'
+        apiKey='8aum2e2t4747gni5yj1ennpxe1uqw6mu6vzo5fck4socnjlt'
         ref={editorRef}
         init={{
           plugins: 'anchor autolink charmap emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange fullscreen export formatpainter pageembed linkchecker a11ychecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags typography inlinecss',
