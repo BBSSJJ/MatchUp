@@ -113,7 +113,6 @@ export default function DirectMessage({roomId} : {roomId :string}) {
                 name: userInfo.riotAccount.summonerProfile.name.replaceAll('+', ' '),
                 iconUrl: userInfo.riotAccount.summonerProfile.iconUrl,
                 content: inputMessage,
-                timestamp: new Date().toISOString().slice(0,-4).replace('T', ' '), 
             };
             // console.log("userInfo atom: " ,userInfo)
             // console.log("messageObject:", messageObject)
