@@ -103,7 +103,7 @@
 
 ## 5. 구현 화면
 
-![image](./assets/img/LOGO.png){: width="100" height="100"}
+[![image](./assets/img/LOGO.png){: width="100" height="100"}](https://matchup.site)
 
 ### 메인페이지
 
