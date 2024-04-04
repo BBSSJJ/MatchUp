@@ -431,7 +431,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 							<>
 								<div>
 									<p>WIN / LOSE : {records?.win} / {records?.lose}</p>
-									<p>승률 : {records?.winRate * 100}%</p>
+									<p>승률 : {(records?.winRate * 100).toFixed(2)}%</p>
 									<p>Tier : {user.riotAccount.tier}</p>
 									<p>Rank : {records?.rank}</p>
 									<p className="my-2">최근 사용한 챔피언</p>
