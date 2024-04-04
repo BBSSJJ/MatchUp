@@ -103,6 +103,8 @@
 
 ## 5. 구현 화면
 
+아래 버튼으로 직접 접속해보세요!
+
 [![image](./assets/img/LOGO.png){: width="100" height="100"}](https://matchup.site)
 
 ### 메인페이지
