@@ -39,28 +39,4 @@ public class SummonerRecordInfoResponseDto {
         this.matches = matches.stream().map(Match::getMatchDetail).toList();
         this.record = new SummonerDetailInfoResponseDto(summoner.getLeague().getRank(), summoner.getLeague().getTier(), indicator);
     }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Record {
-        private double winRate;
-        private String latestChampion;
-        private String[] top3Champions = new String[3];
-        private String mostLane;
-
-        public Record(Indicator indicator) {
-            Calculator calculator = new Calculator();
-            log.info("Indicator : {}", indicator);
-            log.info("matchIndicator : {}", indicator.getMatchIndicators());
-            MatchIndicatorStatistics matchIndicatorStatistics = indicator.getMatchIndicatorStatistics();
-
-            this.winRate = calculator.calculateWinRate(indicator.getMatchIndicators());
-            this.latestChampion = calculator.calculateLatestChampion(indicator.getMatchIndicators());
-            if (matchIndicatorStatistics.getMetadata() != null && matchIndicatorStatistics.getMetadata().getChampionCount() != null)
-                this.top3Champions = calculator.calculateMost3Champion(matchIndicatorStatistics.getMetadata().getChampionCount());
-            if (matchIndicatorStatistics.getMetadata() != null && matchIndicatorStatistics.getMetadata().getTeamPositionCount() != null)
-                this.mostLane = calculator.calculateMostLane(matchIndicatorStatistics.getMetadata().getTeamPositionCount());
-        }
-    }
 }
