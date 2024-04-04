@@ -38,7 +38,7 @@
 
 ### 기획의도
 
-게임 유저 추천 및 전략 분석 커뮤니티
+#### 게임 유저 추천 및 전략 분석 커뮤니티
 
 ### 메인 기능
 
@@ -103,7 +103,7 @@
 
 ## 5. 구현 화면
 
-![image](./assets/img/LOGO.png){: width="50" height="50"}
+![image](./assets/img/LOGO.png){: width="100" height="100"}
 
 ### 메인페이지
 
