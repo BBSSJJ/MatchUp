@@ -407,7 +407,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 							Microphone
 						</Switch>) : (
 							<div>
-							<p>Microphone</p> <span>{ onOff ? <MicIcon /> : <MicOffIcon /> }</span>
+							<span>Microphone</span> <span>{ onOff ? <MicIcon /> : <MicOffIcon /> }</span>
 							</div>
 						)
 					}
