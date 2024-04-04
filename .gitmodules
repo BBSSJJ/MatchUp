@@ -1,0 +1,36 @@
+[submodule "api-gateway"]
+	path = api-gateway
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = api-gateway
+[submodule "bigdata-server"]
+	path = bigdata-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = bigdata-server
+[submodule "alarm-server"]
+	path = alarm-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = alarm-server
+[submodule "web-server"]
+	path = web-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = web-server
+[submodule "user-server"]
+	path = user-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = user-server
+[submodule "chat-server"]
+	path = chat-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = chat-server
+[submodule "api-docs-server"]
+	path = api-docs-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = api-docs-server
+[submodule "file-server"]
+	path = file-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = file-server
+[submodule "statistics-server"]
+	path = statistics-server
+	url = https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A405.git
+	branch = statistics-server
