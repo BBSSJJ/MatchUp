@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-server
+  ports:
+    - protocol: TCP
+      port: 9006          # 외부에서 접근할 포트
+      targetPort: 9006    # 채팅 서버가 사용하는 포트
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server-deployment
+spec:
+  replicas: 1             # 초기 레플리카 수
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: 0710june/web-server:latest   # 채팅 서버 이미지
+        ports:
+        - containerPort: 9006    # 채팅 서버가 사용하는 포트
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: matchup-config

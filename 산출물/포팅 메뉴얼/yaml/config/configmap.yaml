@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matchup-config
+data:
+  application.properties: |
+    GOOGLE_CLIENT_ID: 277005555389-m0jqui7duqki8ec5i3ohued0uvjetdiq.apps.googleusercontent.com
+    GOOGLE_CLIENT_SECRET: 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
+    KAKAO_CLIENT_ID: de83b1c4ade048952fd79041030d4751
+    KAKAO_CLIENT_SECRET: SXK7wYtmSRsnfbNmaDHrn5Q4P1cukt0U
+    NAVER_CLIENT_ID: VQfU539iE9qAm8lYl_QC
+    NAVER_CLIENT_SECRET: PVneF0FChl
+
+    DOMAIN_URL: matchup.site
+
+    USER_SERVER: user-service
+
+    AUTH_SERVER: auth-service
+
+    API_GATEWAY: api-gateway-service
+
+    KAFKA_SERVER: kafka-service
+
+    CHAT_SERVER: chat-service
+
+    WEB_SERVER: web-service
+
+    STATISTICS_SERVER: statistics-service
+
+    BIGDATA_SERVER: bigdata-service
+
+    ALARM_SERVER: alarm-service
+
+    MATCHUP_USER_DB: mysql-user-service
+    MATCHUP_USER_DB_REPL: mysql-user-repl-service
+
+    MATCHUP_CHAT_DB: mongodb-chat-service
+    MATCHUP_STATISTIC_DB: mongodb-statistics-service
+    MATCHUP_LEARNING_DB: mongodb-learning-service
+    MATCHUP_FCM_DB: mongodb-fcm-service
+
+    MATCHUP_USER_REDIS: redis-user-service
+    MATCHUP_TOKEN_REDIS: redis-token-service
+
+    DB_ID: matchup_user
+    DB_REPL_ID: matchup_user_repl
+    DB_PASSWORD: Matchupa405!
+
+    JWT_SECRET_KEY: 123123235134613576123562345123412341234512351236123612341234234234
+
+    RIOT_API_KEY: RGAPI-2d7a478e-d9ff-45b4-bf3a-2d98d665b084
+    RIOT_CLIENT_ID: d5f72ea1-723d-4aae-a13f-1ee103b4889a
+    RIOT_CLIENT_SECRET: es-P6h0uAJVd5gXnc17tc_45HPBPG6q6eP5mFrq4aFg
+    RIOT_REDIRECT_URI: https://matchup.site/login/riot
+
+    DDRAGON_VERSION: 14.6.1
+
+    ACCOUNT_KEY_PATH: /key/serviceAccountKey.json
