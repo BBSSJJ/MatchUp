@@ -104,6 +104,11 @@ const SideBar: React.FC = () => {
 		setResult(data)
 	}
 	
+	const handleModalClose = () => {
+        setResult(''); // 모달이 닫힐 때 result 값을 초기화
+        onOpenChange(); // 모달을 닫음
+    }
+
 
 	if (chatRoomLoading) {
 		return <h1>Loading...</h1>
@@ -158,7 +163,7 @@ const SideBar: React.FC = () => {
 												</div>
 											</ModalBody>
 											<ModalFooter>
-												<Button color="danger" variant="light" onPress={onClose}>
+												<Button color="danger" variant="light" onPress={() => handleModalClose()}>
 												Close
 												</Button>
 											</ModalFooter>
