@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: statistics-service
+spec:
+  selector:
+    app: statistics-server
+  ports:
+    - protocol: TCP
+      port: 9004
+      targetPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statistics-server-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: statistics-server
+  template:
+    metadata:
+      labels:
+        app: statistics-server
+    spec:
+      containers:
+      - name: statistics-server
+        image: 0710june/statistics-server:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: matchup-config

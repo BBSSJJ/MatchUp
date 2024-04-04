@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-docs-service
+spec:
+  selector:
+    app: api-docs-server
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-docs-server-deployment
+spec:
+  replicas: 1             # 초기 레플리카 수
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: api-docs-server
+  template:
+    metadata:
+      labels:
+        app: api-docs-server
+    spec:
+      containers:
+      - name: api-docs-server
+        image: 0710june/api-docs-server:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: matchup-config
