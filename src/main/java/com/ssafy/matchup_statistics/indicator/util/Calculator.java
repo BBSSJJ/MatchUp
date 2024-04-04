@@ -33,7 +33,7 @@ public class Calculator {
                 if (matchIndicator.getMetadata().isWin()) winCount++;
             }
         }
-        return (double) winCount * 100 / totalCount;
+        return (double) winCount / totalCount;
     }
 
     public String calculateLatestChampion(List<MatchIndicator> matchIndicators) {
