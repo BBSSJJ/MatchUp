@@ -223,7 +223,7 @@ export default function Friends({mode} :{mode :string}) {
                             </Button>
                         )}
                             <Button
-                            className={"bg-transparent text-foreground border-default-200"}
+                            className={"bg-transparent text-foreground ml-1 border-default-200"}
                             color="primary"
                             radius="full"
                             size="sm"
