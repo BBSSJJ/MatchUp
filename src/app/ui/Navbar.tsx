@@ -106,13 +106,21 @@ export default function NavigationBar() {
           </Link>
         </NavbarItem>
         <Popover placement="bottom" offset={10}>
-          <PopoverTrigger>
+          {isLoggedIn ? (
+            <PopoverTrigger>
+              <NavbarItem>
+                <a className={path === '/recommendation' ? styles.active : ""}>
+                  Match
+                </a>
+              </NavbarItem>
+            </PopoverTrigger>
+          ) : (
             <NavbarItem>
-              <a className={path === '/recommendation' ? styles.active : ""}>
-                Match
-              </a>
+              <a className={path === '/recommendation' ? styles.active : ""} onClick={() => {!isLoggedIn ? window.alert("로그인이 필요합니다.") : (window.alert(''))}}>
+                  Match
+                </a>
             </NavbarItem>
-          </PopoverTrigger>
+          )}
           {/* 추천 버튼을 누르면 먼저 뜨는 모달창 */}
           <PopoverContent className="w-[250px]">
             {(titleProps) => (
