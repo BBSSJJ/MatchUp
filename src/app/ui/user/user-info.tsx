@@ -389,7 +389,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				<div className={styles.item2}>
 					{/* <SiLeagueoflegends /> */}
 					{/* 마이크 사용여부 토글 - 마이 페이지에서만 보이게 */}
-					{ userInfo.userId !== Number(userId) && (
+					{ userInfo.userId === Number(userId) ? (
 						<Switch
 							// defaultSelected
 							isSelected={onOff}
@@ -405,7 +405,11 @@ export default function UserProfile({ userId } :UserProfileProps) {
 							}
 							>
 							Microphone
-						</Switch>)
+						</Switch>) : (
+							<div>
+							<p>Microphone</p> <span>{ onOff ? <MicIcon /> : <MicOffIcon /> }</span>
+							</div>
+						)
 					}
 					
 					{
