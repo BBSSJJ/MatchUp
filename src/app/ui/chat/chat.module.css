@@ -62,7 +62,7 @@
 }
 
 .myMessageP {
-    width: min-content;
+    /* width: min-content; */
     align-self: flex-end;
     background-color: #40d6db; 
 }
