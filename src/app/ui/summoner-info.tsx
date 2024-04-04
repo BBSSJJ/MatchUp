@@ -68,7 +68,11 @@ export default async function SummonerInfo({ id, tagline }: { id: string, taglin
                     />
                     <div className={styles.profileText}>
                         <p className="text-bold color-[#DD135A]">{summoner.summonerInfo.name}</p>
-                        <p className="text-sm">solo rank : {summoner.leagueInfo.tier} {summoner.leagueInfo.rank} </p>
+                        {summoner.leagueInfo.tier !== "no league data" ? (
+                            <p className="text-sm">solo rank : {summoner.leagueInfo.tier} {summoner.leagueInfo.rank} </p>
+                        ) : (
+                            <p className="text-sm">solo rank : Unranked</p>
+                        )}
                     </div>
                 </div>
                 {/* <Summoner puuid={summoner.puuid} /> */}
