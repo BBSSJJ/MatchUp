@@ -347,7 +347,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 						<Image
 							alt="Lv- profile"
 							className="object-center h-[250px] w-[250px]"
-							src={records === '최근 플레이한 챔피언 없음' ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
+							src={records?.latestChampion === '최근 플레이한 챔피언 없음' ? "https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/Yuumi.png" : `https://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/${records?.latestChampion}.png`}
 						/>
 						<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 							<p className="text-tiny text-white/80">{user?.riotAccount.summonerProfile.name}</p>
