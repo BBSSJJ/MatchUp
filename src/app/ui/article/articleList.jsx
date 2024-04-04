@@ -271,7 +271,7 @@ export default function ArticleList() {
             <Button
               className="bg-foreground text-background"
               endContent={<PlusIcon />}
-              onClick={() => {isLoggedIn ? handleCreateArticle : window.alert("로그인이 필요합니다.")}}
+              onClick={() => {isLoggedIn ? handleCreateArticle() : window.alert("로그인이 필요합니다.")}}
               size="sm"
             >
               Add New
