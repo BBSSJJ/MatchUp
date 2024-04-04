@@ -417,7 +417,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 					}
 				</div>
 				<div className={styles.item3}>
-					<div className="h-[250px] w-[80%]">
+					<div className="h-[250px] w-[650px]">
 						<p className="text-bold text-#332828 mb-2">전적 정보</p>
 						{records === 'unranked' ? (<p>랭크 게임을 더 하고 오세요</p>) : (
 							<>
