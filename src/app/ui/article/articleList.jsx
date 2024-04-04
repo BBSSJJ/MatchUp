@@ -40,7 +40,7 @@ const fetcher = async (url) => {
 };
 
 
-const INITIAL_VISIBLE_COLUMNS = ["id", "title", "author", "views", "createdAt"];
+const INITIAL_VISIBLE_COLUMNS = ["title", "author", "views", "createdAt"];
 export default function ArticleList() {
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
   const router = useRouter();
