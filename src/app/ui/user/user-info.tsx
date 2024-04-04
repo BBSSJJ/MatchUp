@@ -289,6 +289,7 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				} else {
 					alert('친구요청 완료')
 					mutate(`${SERVER_API_URL}/api/friends?friendStatus=FRIEND`)
+					mutate(`${SERVER_API_URL}/api/friends?friendStatus=SENT`)
 				}
 				if (friendsList && friendsList.includes(userId)) {
 					setIsFriend(true);
@@ -387,23 +388,26 @@ export default function UserProfile({ userId } :UserProfileProps) {
 				
 				<div className={styles.item2}>
 					{/* <SiLeagueoflegends /> */}
-					{/* 마이크 사용여부 토글 */}
-					<Switch
-						// defaultSelected
-						isSelected={onOff}
-						onChange={handleSwitch}
-						size="lg"
-						color="secondary"
-						thumbIcon={({ isSelected, className }) =>
-							isSelected ? (
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -2 24 24" width="28" fill="currentColor"><path d="M9 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm0-2a5 5 0 0 1 5 5v6a5 5 0 0 1-10 0V5a5 5 0 0 1 5-5zM0 11.03a1 1 0 1 1 2 0A6.97 6.97 0 0 0 8.97 18h.06A6.97 6.97 0 0 0 16 11.03a1 1 0 1 1 2 0A8.97 8.97 0 0 1 9.03 20h-.06A8.97 8.97 0 0 1 0 11.03z"></path></svg>
-							) : (
-								null
-							)
-						}
-						>
-						Microphone
-					</Switch>
+					{/* 마이크 사용여부 토글 - 마이 페이지에서만 보이게 */}
+					{ userInfo.userId !== Number(userId) && (
+						<Switch
+							// defaultSelected
+							isSelected={onOff}
+							onChange={handleSwitch}
+							size="lg"
+							color="secondary"
+							thumbIcon={({ isSelected, className }) =>
+								isSelected ? (
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -2 24 24" width="28" fill="currentColor"><path d="M9 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm0-2a5 5 0 0 1 5 5v6a5 5 0 0 1-10 0V5a5 5 0 0 1 5-5zM0 11.03a1 1 0 1 1 2 0A6.97 6.97 0 0 0 8.97 18h.06A6.97 6.97 0 0 0 16 11.03a1 1 0 1 1 2 0A8.97 8.97 0 0 1 9.03 20h-.06A8.97 8.97 0 0 1 0 11.03z"></path></svg>
+								) : (
+									null
+								)
+							}
+							>
+							Microphone
+						</Switch>)
+					}
+					
 					{
 						keyword?.map((keyword :any, index :number) => {
 							return (
