@@ -28,6 +28,8 @@ import useSWR from 'swr';
 import { SERVER_API_URL } from "@/utils/instance-axios";
 import styles from './articleList.module.css'
 import './article.css'
+import { isLoggedInAtom } from "@/store/authAtom";
+import { useAtom } from "jotai";
 
 const fetcher = async (url) => {
   const response = await fetch(url); // 서버로부터 데이터 가져오기
@@ -40,6 +42,7 @@ const fetcher = async (url) => {
 
 const INITIAL_VISIBLE_COLUMNS = ["id", "title", "author", "views", "createdAt"];
 export default function ArticleList() {
+  const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
   const router = useRouter();
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -268,7 +271,7 @@ export default function ArticleList() {
             <Button
               className="bg-foreground text-background"
               endContent={<PlusIcon />}
-              onClick={handleCreateArticle}
+              onClick={() => {isLoggedIn ? handleCreateArticle : window.alert("로그인이 필요합니다.")}}
               size="sm"
             >
               Add New
